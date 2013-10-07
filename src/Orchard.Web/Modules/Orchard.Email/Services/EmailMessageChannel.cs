@@ -1,0 +1,67 @@
+﻿using System;
+using System.Net;
+using System.Net.Mail;
+using Orchard.ContentManagement;
+using Orchard.Logging;
+using Orchard.Email.Models;
+using Orchard.Messaging.Services;
+using Orchard.Messaging.Models;
+
+namespace Orchard.Email.Services {
+    public class EmailMessageChannel : MessageChannelBase {
+        private readonly IOrchardServices _services;
+        private readonly Lazy<SmtpClient> _smtpClientField;
+
+        public EmailMessageChannel(IOrchardServices services) {
+            _services = services;
+            _smtpClientField = new Lazy<SmtpClient>(CreateSmtpClient);
+            Logger = NullLogger.Instance;
+        }
+
+        private SmtpClient SmtpClient {
+            get { return _smtpClientField.Value; }
+        }
+
+        public override void Dispose() {
+            if (!_smtpClientField.IsValueCreated) return;
+            _smtpClientField.Value.Dispose();
+        }
+
+        public override void Send(QueuedMessage message) {
+            var smtpSettings = _services.WorkContext.CurrentSite.As<SmtpSettingsPart>();
+            if (smtpSettings == null || !smtpSettings.IsValid()) return;
+
+            var mailMessage = new MailMessage {
+                From = new MailAddress(smtpSettings.Address), 
+                Subject = message.Subject, 
+                Body = message.Body, 
+                IsBodyHtml = message.Body != null && message.Body.Contains("<") && message.Body.Contains(">")
+            };
+
+            foreach (var recipient in message.Recipients) {
+                mailMessage.To.Add(new MailAddress(recipient.AddressOrAlias, recipient.Name));
+            }
+
+            SmtpClient.Send(mailMessage);
+        }
+
+        private SmtpClient CreateSmtpClient() {
+            var smtpSettings = _services.WorkContext.CurrentSite.As<SmtpSettingsPart>();
+            var smtpClient = new SmtpClient {
+                UseDefaultCredentials = !smtpSettings.RequireCredentials
+            };
+           
+            if (!smtpClient.UseDefaultCredentials && !String.IsNullOrWhiteSpace(smtpSettings.UserName)) {
+                smtpClient.Credentials = new NetworkCredential(smtpSettings.UserName, smtpSettings.Password);
+            }
+
+            if (smtpSettings.Host != null)
+                smtpClient.Host = smtpSettings.Host;
+
+            smtpClient.Port = smtpSettings.Port;
+            smtpClient.EnableSsl = smtpSettings.EnableSsl;
+            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            return smtpClient;
+        }
+    }
+}
