@@ -22,6 +22,10 @@ namespace Orchard.Messaging.Services {
         IEnumerable<MessageQueue> GetIdleQueues();
         IEnumerable<QueuedMessage> EnterProcessingStatus(MessageQueue queue);
         void ExitProcessingStatus(MessageQueue queue);
+        IEnumerable<MessageQueue> GetQueues();
+        int CountMessages(int queueId, QueuedMessageStatus? status = null);
+        IEnumerable<QueuedMessage> GetMessages(int queueId, QueuedMessageStatus? status = null, int startIndex = 0, int pageSize = 10);
+        MessageQueue CreateQueue();
     }
 
     [OrchardFeature("Orchard.Messaging.Queuing")]
@@ -82,7 +86,7 @@ namespace Orchard.Messaging.Services {
         public IDictionary<string, IMessageChannel> ChannelsDictionary { get; private set; }
 
         public MessageQueue GetDefaultQueue() {
-            return ActivateMessageQueue(_queueRepository.Table.FirstOrDefault() ?? CreateDefaultQueue());
+            return ActivateQueue(_queueRepository.Table.FirstOrDefault() ?? CreateDefaultQueue());
         }
 
         public MessagePriority GetPriority(int id) {
@@ -95,7 +99,7 @@ namespace Orchard.Messaging.Services {
 
         public MessageQueue GetQueue(int id) {
             var record = _queueRepository.Get(id);
-            return record != null ? ActivateMessageQueue(record) : null;
+            return record != null ? ActivateQueue(record) : null;
         }
 
         public MessagePriority GetDefaultPriority() {
@@ -129,7 +133,7 @@ namespace Orchard.Messaging.Services {
         }
 
         public IEnumerable<MessageQueue> GetIdleQueues() {
-            return _queueRepository.Table.Where(x => x.Status == MessageQueueStatus.Idle).Select(x => ActivateMessageQueue(x));
+            return _queueRepository.Table.Where(x => x.Status == MessageQueueStatus.Idle).Select(x => ActivateQueue(x));
         }
 
         public IEnumerable<QueuedMessage> EnterProcessingStatus(MessageQueue queue) {
@@ -151,6 +155,33 @@ namespace Orchard.Messaging.Services {
             queue.EndedUtc = _clock.UtcNow;
         }
 
+        public IEnumerable<MessageQueue> GetQueues() {
+            return _queueRepository.Table.Select(ActivateQueue);
+        }
+
+        public int CountMessages(int queueId, QueuedMessageStatus? status = null) {
+            return GetMessagesQuery(queueId, status).Count();
+        }
+
+        public IEnumerable<QueuedMessage> GetMessages(int queueId, QueuedMessageStatus? status = null, int startIndex = 0, int pageSize = 10) {
+            return GetMessagesQuery(queueId, status).Skip(startIndex).Take(pageSize).Select(ActivateMessage);
+        }
+
+        public MessageQueue CreateQueue() {
+            var record = new MessageQueueRecord();
+            _queueRepository.Create(record);
+            return ActivateQueue(record);
+        }
+
+        public IQueryable<QueuedMessageRecord> GetMessagesQuery(int queueId, QueuedMessageStatus? status = null) {
+            var query = _messageRepository.Table.Where(x => x.QueueId == queueId);
+
+            if (status != null)
+                query = query.Where(x => x.Status == status.Value);
+
+            return query;
+        }
+
         private IEnumerable<QueuedMessage> GetPendingMessages(int queueId) {
             return _messageRepository.Table
                 .Where(x => x.Status == QueuedMessageStatus.Pending && x.QueueId == queueId)
@@ -166,7 +197,7 @@ namespace Orchard.Messaging.Services {
             };
         }
 
-        private MessageQueue ActivateMessageQueue(MessageQueueRecord record) {
+        private MessageQueue ActivateQueue(MessageQueueRecord record) {
             var queue = new MessageQueue(record);
             queue.AvailableTimeFunc = () => CalculateAvailableProcessingTime(queue);
             queue.HasAvailableTimeFunc = () => queue.AvailableTime > TimeSpan.Zero;

@@ -1,0 +1,45 @@
+﻿@using Orchard.Messaging.Models
+@{
+    Layout.Title = T("Manage Queues");
+}
+<div class="manage">
+    @Html.ActionLink(T("Create Queue").ToString(), "Create", new { Area = "Orchard.Messaging" }, new { @class = "button primaryAction" })
+</div>
+@if (!Model.Any()) {
+    <div class="message info">@T("There are no queues.")</div>
+}
+else {
+    <table>
+        <thead>
+            <tr>
+                <th>@T("ID")</th>
+                <th>@T("Name")</th>
+                <th>@T("Status")</th>
+                <th>@T("Pending")</th>
+                <th>@T("Sent")</th>
+                <th>@T("Faulted")</th>
+                <th>@T("Actions")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var queue in Model.Queues) {
+                <tr>
+                    <td>@queue.Id</td>
+                    <td>@queue.Name</td>
+                    <td>@queue.Status</td>
+                    <td>@queue.Pending</td>
+                    <td>@queue.Sent</td>
+                    <td>@queue.Faulted</td>
+                    <td>
+                        @if (queue.Status == MessageQueueStatus.Paused) {
+                            using (Html.BeginFormAntiForgeryPost(Url.Action("Resume", new { id = queue.Id }))) { <a href="#" class="submit-form">@T("Resume")</a> }
+                        }
+                        @if (queue.Status == MessageQueueStatus.Idle || queue.Status == MessageQueueStatus.Processing) {
+                            using (Html.BeginFormAntiForgeryPost(Url.Action("Pause", new { id = queue.Id }))) { <a href="#" class="submit-form">@T("Pause")</a> }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -60,6 +60,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AdminQueueController.cs" />
+    <Compile Include="ViewModels\MessageQueueViewModel.cs" />
+    <Compile Include="ViewModels\MessageFilter.cs" />
     <Compile Include="Drivers\MessageSettingsPartDriver.cs" />
     <Compile Include="Handlers\MessageSettingsPartHandler.cs" />
     <Compile Include="Migrations\MessagingQueuingMigrations.cs" />
@@ -100,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AdminQueue\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

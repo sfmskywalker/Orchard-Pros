@@ -2,11 +2,8 @@
 using Orchard.Tasks;
 
 namespace Orchard.Messaging.Services {
-    public interface IMessageQueueBackgroundTask : IBackgroundTask {
-    }
-
     [OrchardFeature("Orchard.Messaging.Queuing")]
-    public class MessageQueueBackgroundTask : Component, IMessageQueueBackgroundTask {
+    public class MessageQueueBackgroundTask : Component, IBackgroundTask {
         private readonly IMessageQueueProcessor _messageQueueProcessor;
         public MessageQueueBackgroundTask(IMessageQueueProcessor messageQueueProcessor) {
             _messageQueueProcessor = messageQueueProcessor;
