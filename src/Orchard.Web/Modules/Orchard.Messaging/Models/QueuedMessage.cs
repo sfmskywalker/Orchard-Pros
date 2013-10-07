@@ -54,10 +54,12 @@ namespace Orchard.Messaging.Models {
 
         public DateTime? StartedUtc {
             get { return Record.StartedUtc; }
+            internal set { Record.StartedUtc = value; }
         }
 
         public DateTime? CompletedUtc {
             get { return Record.CompletedUtc; }
+            internal set { Record.CompletedUtc = value; }
         }
 
         public MessageQueue Queue {

@@ -65,7 +65,7 @@
     <Compile Include="Migrations\MessagingQueuingMigrations.cs" />
     <Compile Include="Migrations\MessagingMigrations.cs" />
     <Compile Include="Models\MessageQueue.cs" />
-    <Compile Include="Services\IMessageQueueProcessor.cs" />
+    <Compile Include="Services\MessageQueueProcessor.cs" />
     <Compile Include="Services\MessageChannelBase.cs" />
     <Compile Include="Services\MessageQueueBackgroundTask.cs" />
     <Compile Include="Services\IMessageChannel.cs" />
