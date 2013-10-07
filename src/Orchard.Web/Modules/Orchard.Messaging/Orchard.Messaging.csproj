@@ -44,6 +44,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\newtonsoft.json\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,14 +64,22 @@
     <Compile Include="Handlers\MessageSettingsPartHandler.cs" />
     <Compile Include="Migrations\MessagingQueuingMigrations.cs" />
     <Compile Include="Migrations\MessagingMigrations.cs" />
-    <Compile Include="Models\MessagePriority.cs" />
     <Compile Include="Models\MessageQueue.cs" />
-    <Compile Include="Models\MessageQueueStatus.cs" />
+    <Compile Include="Services\IMessageQueueProcessor.cs" />
+    <Compile Include="Services\MessageChannelBase.cs" />
+    <Compile Include="Services\MessageQueueBackgroundTask.cs" />
+    <Compile Include="Services\IMessageChannel.cs" />
     <Compile Include="Models\QueuedMessage.cs" />
+    <Compile Include="Models\MessagePriority.cs" />
+    <Compile Include="Models\MessageQueueRecord.cs" />
+    <Compile Include="Models\MessageQueueStatus.cs" />
+    <Compile Include="Models\QueuedMessageRecord.cs" />
     <Compile Include="Models\MessageSettingsPart.cs" />
     <Compile Include="Models\MessageSettingsPartRecord.cs" />
     <Compile Include="Models\QueuedMessageStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\MessageQueueManager.cs" />
+    <Compile Include="Models\MessageRecipient.cs" />
     <Compile Include="ViewModels\MessageSettingsPartViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

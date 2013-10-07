@@ -1,17 +1,68 @@
+using System;
+
 namespace Orchard.Messaging.Models {
     public class MessageQueue {
-        public virtual int Id { get; set; }
-        public string Name { get; set; }
-        public MessageQueueStatus Status { get; set; }
+        // ReSharper disable InconsistentNaming
+        internal Func<TimeSpan> AvailableTimeFunc;
+        internal Func<bool> HasAvailableTimeFunc;
+        // ReSharper restore InconsistentNaming
+
+        internal MessageQueue(MessageQueueRecord record) {
+            Record = record;
+        }
+
+        internal MessageQueueRecord Record { get; private set; }
+
+        public int Id {
+            get { return Record.Id; }
+        }
+
+        public string Name {
+            get { return Record.Name; }
+            set { Record.Name = value; }
+        }
+
+        public MessageQueueStatus Status {
+            get { return Record.Status; }
+            internal set { Record.Status = value; }
+        }
+
+        public DateTime? StartedUtc {
+            get { return Record.StartedUtc; }
+            internal set { Record.StartedUtc = value; }
+        }
+
+        public DateTime? EndedUtc {
+            get { return Record.EndedUtc; }
+            internal set { Record.EndedUtc = value; }
+        }
 
         /// <summary>
-        /// Update Interval in seconds.
+        /// Update frequency.
         /// </summary>
-        public int UpdateInterval { get; set; }
+        public TimeSpan UpdateFrequency {
+            get { return TimeSpan.FromSeconds(Record.UpdateFrequency); }
+            set { Record.UpdateFrequency = (int) value.TotalSeconds; }
+        }
 
         /// <summary>
-        /// The number of seconds this queue is allowed to process messages
+        /// The time this queue is given to process messages
         /// </summary>
-        public int TimeSlice { get; set; }
+        public TimeSpan TimeSlice {
+            get { return TimeSpan.FromSeconds(Record.TimeSlice); }
+            set { Record.TimeSlice = (int)value.TotalSeconds; }
+        }
+
+        public TimeSpan AvailableTime {
+            get { return AvailableTimeFunc(); }
+        }
+
+        public bool HasAvailableTime {
+            get { return HasAvailableTimeFunc(); }
+        }
+
+        public override string ToString() {
+            return String.Format("{0} - {1}", Name, Status);
+        }
     }
 }

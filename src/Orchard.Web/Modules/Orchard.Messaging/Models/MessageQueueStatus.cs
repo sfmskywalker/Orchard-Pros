@@ -1,6 +1,6 @@
 namespace Orchard.Messaging.Models {
     public enum MessageQueueStatus {
-        Active,
+        Idle,
         Processing,
         Paused
     }
