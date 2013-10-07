@@ -6,12 +6,12 @@ using Orchard.Messaging.Services;
 namespace Orchard.Messaging.Models {
     public class QueuedMessage {
         // ReSharper disable InconsistentNaming
-        internal Lazy<MessageQueue> QueueField;
-        internal Lazy<IMessageChannel> ChannelField;
-        internal Lazy<IEnumerable<MessageRecipient>> RecipientsField;
+        public Lazy<MessageQueue> QueueField;
+        public Lazy<IMessageChannel> ChannelField;
+        public Lazy<IEnumerable<MessageRecipient>> RecipientsField;
         // ReSharper restore InconsistentNaming
 
-        internal QueuedMessage(QueuedMessageRecord record) {
+        public QueuedMessage(QueuedMessageRecord record) {
             Record = record;
         }
 

@@ -3,15 +3,15 @@ using System;
 namespace Orchard.Messaging.Models {
     public class MessageQueue {
         // ReSharper disable InconsistentNaming
-        internal Func<TimeSpan> AvailableTimeFunc;
-        internal Func<bool> HasAvailableTimeFunc;
+        public Func<TimeSpan> AvailableTimeFunc;
+        public Func<bool> HasAvailableTimeFunc;
         // ReSharper restore InconsistentNaming
 
-        internal MessageQueue(MessageQueueRecord record) {
+        public MessageQueue(MessageQueueRecord record) {
             Record = record;
         }
 
-        internal MessageQueueRecord Record { get; private set; }
+        public MessageQueueRecord Record { get; private set; }
 
         public int Id {
             get { return Record.Id; }
