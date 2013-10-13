@@ -1,7 +1,7 @@
 using Orchard.Messaging.Models;
 
 namespace Orchard.Messaging.ViewModels {
-    public class MessageFilter {
+    public class MessagesFilter {
         public QueuedMessageStatus? Status { get; set; }
     }
 }

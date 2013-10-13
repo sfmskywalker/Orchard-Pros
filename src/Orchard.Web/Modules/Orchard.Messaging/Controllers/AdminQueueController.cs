@@ -1,15 +1,18 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using Orchard.Environment.Extensions;
 using Orchard.Localization;
 using Orchard.Messaging.Models;
 using Orchard.Messaging.Services;
 using Orchard.Messaging.ViewModels;
+using Orchard.UI.Admin;
 using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
 
 namespace Orchard.Messaging.Controllers {
     [OrchardFeature("Orchard.Messaging.Queuing")]
+    [Admin]
     public class AdminQueueController : Controller {
         private readonly IMessageQueueManager _messageQueueManager;
         private readonly IOrchardServices _services;
@@ -39,23 +42,26 @@ namespace Orchard.Messaging.Controllers {
             return View(model);
         }
 
-        public ActionResult Edit(int id) {
+        public ActionResult Edit(int id, string returnUrl) {
             var queue = _messageQueueManager.GetQueue(id);
             var model = new MessageQueueViewModel {
                 Id = queue.Id,
                 Name = queue.Name,
                 UpdateFrequency = queue.UpdateFrequency,
-                TimeSlice = queue.TimeSlice
+                TimeSlice = queue.TimeSlice,
+                ReturnUrl = returnUrl
             };
             return View(model);
         }
 
         [HttpPost]
         public ActionResult Edit(MessageQueueViewModel model) {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+                return View(model);
+
             CreateOrUpdateQueue(model);
             _services.Notifier.Information(T("Your queue has been updated."));
-            return RedirectToAction("Edit", new {id = model.Id});
+            return Url.IsLocalUrl(model.ReturnUrl) ? (ActionResult) Redirect(model.ReturnUrl) : RedirectToAction("Edit", new {id = model.Id});
         }
 
         public ActionResult Create() {
@@ -64,13 +70,15 @@ namespace Orchard.Messaging.Controllers {
 
         [HttpPost]
         public ActionResult Create(MessageQueueViewModel model) {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+                return View(model);
+
             var queue = CreateOrUpdateQueue(model);
             _services.Notifier.Information(T("Your queue has been created."));
             return RedirectToAction("Edit", new { id = queue.Id });
         }
 
-        public ActionResult List(int id, MessageFilter filter, PagerParameters pagerParameters) {
+        public ActionResult List(int id, MessagesFilter filter, PagerParameters pagerParameters) {
             var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
             var queue = _messageQueueManager.GetQueue(id);
 
@@ -81,7 +89,9 @@ namespace Orchard.Messaging.Controllers {
             var messages = _messageQueueManager.GetMessages(queue.Id, filter.Status, pager.GetStartIndex(), pager.PageSize).ToList();
             var model = _services.New.ViewModel()
                 .Pager(_services.New.Pager(pager).TotalItemCount(messageCount))
-                .Messages(messages);
+                .Queue(queue)
+                .Messages(messages)
+                .Filter(filter);
 
             return View(model);
         }

@@ -1,12 +1,13 @@
 ﻿@using Orchard.Messaging.Models
 @{
+    var queues = (IEnumerable<dynamic>) Model.Queues;
     Layout.Title = T("Manage Queues");
 }
 <div class="manage">
     @Html.ActionLink(T("Create Queue").ToString(), "Create", new { Area = "Orchard.Messaging" }, new { @class = "button primaryAction" })
 </div>
-@if (!Model.Any()) {
-    <div class="message info">@T("There are no queues.")</div>
+@if (!queues.Any()) {
+    <div class="message info">@T("There are no queues. <a href=\"{0}\">Create a new Queue</a>.", Url.Action("Create", "AdminQueue"))</div>
 }
 else {
     <table>
@@ -22,7 +23,7 @@ else {
             </tr>
         </thead>
         <tbody>
-            @foreach (var queue in Model.Queues) {
+            @foreach (var queue in queues) {
                 <tr>
                     <td>@queue.Id</td>
                     <td>@queue.Name</td>

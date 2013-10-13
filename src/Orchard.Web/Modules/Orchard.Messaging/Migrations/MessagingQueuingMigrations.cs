@@ -1,10 +1,17 @@
 ﻿using System;
 using Orchard.Data.Migration;
 using Orchard.Environment.Extensions;
+using Orchard.Messaging.Services;
 
 namespace Orchard.Messaging.Migrations {
     [OrchardFeature("Orchard.Messaging.Queuing")]
     public class MessagingQueuingMigrations : DataMigrationImpl {
+        private readonly IMessageQueueManager _messageQueueManager;
+
+        public MessagingQueuingMigrations(IMessageQueueManager messageQueueManager) {
+            _messageQueueManager = messageQueueManager;
+        }
+
         public int Create() {
             SchemaBuilder.CreateTable("MessagePriority", table => table
                 .Column<int>("Id", c => c.Identity().PrimaryKey())
@@ -12,7 +19,7 @@ namespace Orchard.Messaging.Migrations {
                 .Column<string>("Name", c => c.WithLength(50))
                 .Column<string>("DisplayText", c => c.WithLength(50)));
 
-            SchemaBuilder.CreateTable("MessageQueue", table => table
+            SchemaBuilder.CreateTable("MessageQueueRecord", table => table
                 .Column<int>("Id", c => c.Identity().PrimaryKey())
                 .Column<string>("Name", c => c.WithLength(50))
                 .Column<string>("Status", c => c.WithLength(50))
@@ -21,7 +28,7 @@ namespace Orchard.Messaging.Migrations {
                 .Column<DateTime>("StartedUtc")
                 .Column<DateTime>("EndedUtc"));
 
-            SchemaBuilder.CreateTable("QueuedMessage", table => table
+            SchemaBuilder.CreateTable("QueuedMessageRecord", table => table
                 .Column<int>("Id", c => c.Identity().PrimaryKey())
                 .Column<int>("QueueId", c => c.NotNull())
                 .Column<int>("Priority_Id")
@@ -36,7 +43,14 @@ namespace Orchard.Messaging.Migrations {
                 .Column<DateTime>("StartedUtc")
                 .Column<DateTime>("CompletedUtc")
                 .Column<string>("Result", c => c.Unlimited()));
+            
+            CreateDefaultQueue();
+
             return 1;
+        }
+
+        private void CreateDefaultQueue() {
+            _messageQueueManager.CreateDefaultQueue();
         }
     }
 }

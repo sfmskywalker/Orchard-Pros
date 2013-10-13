@@ -60,9 +60,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\MessageActivity.cs" />
+    <Compile Include="AdminMenu.cs" />
     <Compile Include="Controllers\AdminQueueController.cs" />
+    <Compile Include="Forms\MessageForms.cs" />
     <Compile Include="ViewModels\MessageQueueViewModel.cs" />
-    <Compile Include="ViewModels\MessageFilter.cs" />
+    <Compile Include="ViewModels\MessagesFilter.cs" />
     <Compile Include="Drivers\MessageSettingsPartDriver.cs" />
     <Compile Include="Handlers\MessageSettingsPartHandler.cs" />
     <Compile Include="Migrations\MessagingQueuingMigrations.cs" />
@@ -100,12 +103,36 @@
       <Project>{2D1D92BB-4555-4CBE-8D0E-63563D6CE4C6}</Project>
       <Name>Orchard.Framework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
+      <Project>{9916839c-39fc-4ceb-a5af-89ca7e87119f}</Project>
+      <Name>Orchard.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
+      <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
+      <Name>Orchard.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Workflows\Orchard.Workflows.csproj">
+      <Project>{7059493c-8251-4764-9c1e-2368b8b485bc}</Project>
+      <Name>Orchard.Workflows</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\AdminQueue\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AdminQueue\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\MessageQueueViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AdminQueue\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AdminQueue\List.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

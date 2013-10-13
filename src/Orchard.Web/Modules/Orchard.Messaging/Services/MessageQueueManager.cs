@@ -26,6 +26,9 @@ namespace Orchard.Messaging.Services {
         int CountMessages(int queueId, QueuedMessageStatus? status = null);
         IEnumerable<QueuedMessage> GetMessages(int queueId, QueuedMessageStatus? status = null, int startIndex = 0, int pageSize = 10);
         MessageQueue CreateQueue();
+        MessageQueue CreateDefaultQueue();
+        IMessageChannel GetChannel(string name);
+        IEnumerable<IMessageChannel> GetChannels();
     }
 
     [OrchardFeature("Orchard.Messaging.Queuing")]
@@ -81,6 +84,10 @@ namespace Orchard.Messaging.Services {
 
         public IMessageChannel GetChannel(string name) {
             return ChannelsDictionary[name];
+        }
+
+        public IEnumerable<IMessageChannel> GetChannels() {
+            return ChannelsDictionary.Select(x => x.Value);
         }
 
         public IDictionary<string, IMessageChannel> ChannelsDictionary { get; private set; }
@@ -168,9 +175,19 @@ namespace Orchard.Messaging.Services {
         }
 
         public MessageQueue CreateQueue() {
-            var record = new MessageQueueRecord();
+            var record = new MessageQueueRecord {
+                Status = MessageQueueStatus.Idle,
+                TimeSlice = 30,
+                UpdateFrequency = 60
+            };
             _queueRepository.Create(record);
             return ActivateQueue(record);
+        }
+
+        MessageQueue IMessageQueueManager.CreateDefaultQueue() {
+            var queue = CreateQueue();
+            queue.Name = "Default";
+            return queue;
         }
 
         public IQueryable<QueuedMessageRecord> GetMessagesQuery(int queueId, QueuedMessageStatus? status = null) {

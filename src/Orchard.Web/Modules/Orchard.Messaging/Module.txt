@@ -14,4 +14,4 @@ Features:
 		Name: Message Queuing
 		Description: Provides message queuing facilities and APIs, enabling the queing of messages to be processed at regular intervals. Includes support for prioritized messages and templates messages using shapes.
 		Category: Messaging
-		Dependencies: Orchard.Messaging
+		Dependencies: Orchard.Messaging, Orchard.Forms, Orchard.Workflows

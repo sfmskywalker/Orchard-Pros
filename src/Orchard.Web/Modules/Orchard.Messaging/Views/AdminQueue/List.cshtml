@@ -1,0 +1,50 @@
+﻿@using Orchard.Messaging.Models
+@using Orchard.Messaging.ViewModels
+@{
+    var queue = (MessageQueue) Model.Queue;
+    var messages = (IEnumerable<QueuedMessage>) Model.Messages;
+    var filter = (MessagesFilter) Model.Filter;
+    Layout.Title = T("{0} Queue", queue.Name);
+}
+<div class="manage">
+    @Html.ActionLink(T("{0} Queue Properties", queue.Name).ToString(), "Edit", "AdminQueue", new { id = queue.Id, area = "Orchard.Messaging", returnUrl = Request.Url.PathAndQuery }, null)
+</div>
+@if (!messages.Any()) {
+    if (filter.Status == null) {
+        <div class="message info">@T("There no messages in this queue yet.")</div>
+    }
+    else {
+        <div class="message info">@T("There no messages in the '{0}' status.", filter.Status)</div>
+    }
+}
+else {
+    <table>
+        <thead>
+            <tr>
+                <th>@T("Priority")</th>
+                <th>@T("Subject")</th>
+                <th>@T("Status")</th>
+                <th>@T("Created")</th>
+                <th>@T("Started")</th>
+                <th>@T("Completed")</th>
+                <th>@T("Actions")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var message in messages) {
+                <tr>
+                    <td>@message.Priority</td>
+                    <td>@message.Subject</td>
+                    <td>@message.Status</td>
+                    <td>@message.CreatedUtc</td>
+                    <td>@message.StartedUtc</td>
+                    <td>@message.CompletedUtc</td>
+                    <td>
+                        <a href="#">@T("Details")</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Display(Model.Pager)
+}
