@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Orchard.DisplayManagement;
 using Orchard.Forms.Services;
 using Orchard.Localization;
+using Orchard.Messaging.Models;
 using Orchard.Messaging.Services;
 
 namespace Orchard.Messaging.Forms {
@@ -45,6 +47,12 @@ namespace Orchard.Messaging.Forms {
                     Title: T("Body"),
                     Description: T("The body of the message."),
                     Classes: new[] { "tokenized" }),
+                _Priority: New.SelectList(
+                    Id: "priority",
+                    Name: "Priority",
+                    Title: T("Priority"),
+                    Description: ("The priority of this message."),
+                    Items: GetPriorities().ToList()),
                 _Channel: New.SelectList(
                     Id: "channel",
                     Name: "Channel",
@@ -61,9 +69,18 @@ namespace Orchard.Messaging.Forms {
             context.Form("MessageActivity", form);
         }
 
+        private IEnumerable<SelectListItem> GetPriorities() {
+            var priorities = _messageQueueManager.GetPriorities().ToList();
+            if (!priorities.Any())
+                priorities = _messageQueueManager.CreateDefaultPrioritySet().ToList();
+            return priorities.Select(x => new SelectListItem { Text = x.DisplayText, Value = x.Id.ToString(CultureInfo.InvariantCulture) });
+        }
+
         private IEnumerable<SelectListItem> GetQueues() {
-            var queues = _messageQueueManager.GetQueues();
-            return queues.Select(x => new SelectListItem {Text = x.Name, Value = x.Id.ToString()});
+            var queues = _messageQueueManager.GetQueues().ToList();
+            if (!queues.Any())
+                queues = new List<MessageQueue> {_messageQueueManager.CreateDefaultQueue()};
+            return queues.Select(x => new SelectListItem {Text = x.Name, Value = x.Id.ToString(CultureInfo.InvariantCulture)});
         }
 
         private IEnumerable<SelectListItem> GetChannels() {

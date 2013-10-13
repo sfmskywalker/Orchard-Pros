@@ -17,6 +17,7 @@ namespace Orchard.Messaging.Services {
         MessageQueue GetDefaultQueue();
         MessagePriority GetPriority(int id);
         MessagePriority GetPriority(string name);
+        IEnumerable<MessagePriority> GetPriorities();
         MessagePriority GetDefaultPriority();
         IEnumerable<MessagePriority> CreateDefaultPrioritySet();
         IEnumerable<MessageQueue> GetIdleQueues();
@@ -69,7 +70,7 @@ namespace Orchard.Messaging.Services {
             var message = new QueuedMessageRecord {
                 Subject = subject,
                 Body = body,
-                Recipients = ToJson(recipients),
+                Recipients = ToJson(recipients.ToList()),
                 ChannelName = channelName,
                 Priority = priority ?? GetDefaultPriority(),
                 QueueId = queue.Id,
@@ -102,6 +103,10 @@ namespace Orchard.Messaging.Services {
 
         public MessagePriority GetPriority(string name) {
             return _priorityRepository.Get(x => x.Name == name);
+        }
+
+        public IEnumerable<MessagePriority> GetPriorities() {
+            return _priorityRepository.Table;
         }
 
         public MessageQueue GetQueue(int id) {
@@ -195,6 +200,8 @@ namespace Orchard.Messaging.Services {
 
             if (status != null)
                 query = query.Where(x => x.Status == status.Value);
+
+            query = query.OrderByDescending(x => x.CreatedUtc);
 
             return query;
         }

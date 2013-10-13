@@ -96,6 +96,11 @@ namespace Orchard.Messaging.Controllers {
             return View(model);
         }
 
+        [HttpPost, ActionName("List")]
+        public ActionResult Filter(int id, QueuedMessageStatus? status) {
+            return RedirectToAction("List", new {id, status});
+        }
+
         private MessageQueue CreateOrUpdateQueue(MessageQueueViewModel model) {
             var queue = _messageQueueManager.GetQueue(model.Id) ?? _messageQueueManager.CreateQueue();
             queue.Name = model.Name;

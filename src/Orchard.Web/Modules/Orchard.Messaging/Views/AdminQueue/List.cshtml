@@ -1,5 +1,6 @@
 ﻿@using Orchard.Messaging.Models
 @using Orchard.Messaging.ViewModels
+@using Orchard.Utility.Extensions
 @{
     var queue = (MessageQueue) Model.Queue;
     var messages = (IEnumerable<QueuedMessage>) Model.Messages;
@@ -9,7 +10,19 @@
 <div class="manage">
     @Html.ActionLink(T("{0} Queue Properties", queue.Name).ToString(), "Edit", "AdminQueue", new { id = queue.Id, area = "Orchard.Messaging", returnUrl = Request.Url.PathAndQuery }, null)
 </div>
-@if (!messages.Any()) {
+@using (Html.BeginFormAntiForgeryPost()) {
+<fieldset class="bulk-actions">
+    <label for="filterResults" class="bulk-filter">@T("Filter")</label>
+    <select id="filterResults" name="status">
+        @Html.SelectOption(filter.Status, default(QueuedMessageStatus?), T("All").ToString())
+        @Html.SelectOption(filter.Status, QueuedMessageStatus.Pending, T("Pending").ToString())
+        @Html.SelectOption(filter.Status, QueuedMessageStatus.Sending, T("Sending").ToString())
+        @Html.SelectOption(filter.Status, QueuedMessageStatus.Sent, T("Sent").ToString())
+        @Html.SelectOption(filter.Status, QueuedMessageStatus.Faulted, T("Faulted").ToString())
+    </select>
+    <button type="submit" name="submit.Filter" value="yes please">@T("Apply")</button>
+</fieldset>
+if (!messages.Any()) {
     if (filter.Status == null) {
         <div class="message info">@T("There no messages in this queue yet.")</div>
     }
@@ -18,7 +31,7 @@
     }
 }
 else {
-    <table>
+    <table class="items">
         <thead>
             <tr>
                 <th>@T("Priority")</th>
@@ -34,7 +47,7 @@ else {
             @foreach (var message in messages) {
                 <tr>
                     <td>@message.Priority</td>
-                    <td>@message.Subject</td>
+                    <td>@message.Subject.Ellipsize(100, "...")</td>
                     <td>@message.Status</td>
                     <td>@message.CreatedUtc</td>
                     <td>@message.StartedUtc</td>
@@ -46,5 +59,6 @@ else {
             }
         </tbody>
     </table>
+    }
     @Display(Model.Pager)
 }
