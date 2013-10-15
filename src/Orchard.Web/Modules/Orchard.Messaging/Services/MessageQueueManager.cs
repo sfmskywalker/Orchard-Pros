@@ -26,6 +26,7 @@ namespace Orchard.Messaging.Services {
         IEnumerable<MessageQueue> GetQueues();
         int CountMessages(int queueId, QueuedMessageStatus? status = null);
         IEnumerable<QueuedMessage> GetMessages(int queueId, QueuedMessageStatus? status = null, int startIndex = 0, int pageSize = 10);
+        QueuedMessage GetMessage(int id);
         MessageQueue CreateQueue();
         MessageQueue CreateDefaultQueue();
         IMessageChannel GetChannel(string name);
@@ -177,6 +178,10 @@ namespace Orchard.Messaging.Services {
 
         public IEnumerable<QueuedMessage> GetMessages(int queueId, QueuedMessageStatus? status = null, int startIndex = 0, int pageSize = 10) {
             return GetMessagesQuery(queueId, status).Skip(startIndex).Take(pageSize).Select(ActivateMessage);
+        }
+
+        public QueuedMessage GetMessage(int id) {
+            return ActivateMessage(_messageRepository.Get(id));
         }
 
         public MessageQueue CreateQueue() {

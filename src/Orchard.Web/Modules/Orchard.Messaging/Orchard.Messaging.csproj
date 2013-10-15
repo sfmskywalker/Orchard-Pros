@@ -63,6 +63,8 @@
     <Compile Include="Activities\MessageActivity.cs" />
     <Compile Include="AdminMenu.cs" />
     <Compile Include="Controllers\AdminQueueController.cs" />
+    <Compile Include="Controllers\AdminMessageController.cs" />
+    <Compile Include="Controllers\AdminPriorityController.cs" />
     <Compile Include="Forms\MessageForms.cs" />
     <Compile Include="ViewModels\MessageQueueViewModel.cs" />
     <Compile Include="ViewModels\MessagesFilter.cs" />
@@ -140,7 +142,9 @@
   <ItemGroup>
     <Content Include="Views\AdminQueue\List.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\AdminMessage\Details.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\Web.config" />
   </ItemGroup>

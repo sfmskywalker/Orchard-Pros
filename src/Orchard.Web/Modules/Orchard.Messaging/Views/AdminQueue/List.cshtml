@@ -37,7 +37,7 @@ else {
             <tr>
                 <th>@T("Status")</th>
                 <th>@T("Priority")</th>
-                <th>@T("Recipient")</th>
+                <th>@T("Recipients")</th>
                 <th>@T("Subject")</th>
                 <th>@T("Created")</th>
                 <th>@T("Started")</th>
@@ -56,7 +56,7 @@ else {
                     <td>@message.StartedUtc</td>
                     <td>@message.CompletedUtc</td>
                     <td>
-                        <a href="#">@T("Details")</a>
+                        <a href="@Url.Action("Details", "AdminMessage", new { message.Id, returnUrl = Request.Url.PathAndQuery })">@T("Details")</a>
                     </td>
                 </tr>
             }
