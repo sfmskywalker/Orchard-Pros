@@ -93,6 +93,12 @@
     <Content Include="Placement.info" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Styles\admin-messaging.min.css">
+      <DependentUpon>admin-messaging.css</DependentUpon>
+    </Content>
+    <Content Include="Styles\Images\status.png" />
+    <Content Include="Styles\admin-messaging.css" />
+    <Content Include="Styles\workflows-activity-sendmessage.css" />
     <Content Include="Views\EditorTemplates\Parts\MessageSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +139,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\AdminQueue\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Styles\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Activity-SendMessage.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

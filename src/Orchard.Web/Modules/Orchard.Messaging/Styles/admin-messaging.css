@@ -1,0 +1,22 @@
+﻿.message-status {
+    background: url('./images/status.png') no-repeat -17px -17px;
+    padding-left: 25px;
+    line-height: 16px;
+    vertical-align: middle;
+}
+
+.message-status.pending {
+    background-position: -17px -17px;
+}
+
+.message-status.sending {
+    background-position: -17px -67px;
+}
+
+.message-status.sent {
+    background-position: -17px -116px;
+}
+
+.message-status.faulted {
+    background-position: -17px -166px;
+}
