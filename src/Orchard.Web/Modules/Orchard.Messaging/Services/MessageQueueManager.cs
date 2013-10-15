@@ -31,6 +31,8 @@ namespace Orchard.Messaging.Services {
         MessageQueue CreateDefaultQueue();
         IMessageChannel GetChannel(string name);
         IEnumerable<IMessageChannel> GetChannels();
+        void Resume(MessageQueue queue);
+        void Pause(MessageQueue queue);
     }
 
     [OrchardFeature("Orchard.Messaging.Queuing")]
@@ -90,6 +92,20 @@ namespace Orchard.Messaging.Services {
 
         public IEnumerable<IMessageChannel> GetChannels() {
             return ChannelsDictionary.Select(x => x.Value);
+        }
+
+        public void Resume(MessageQueue queue) {
+            if(queue.Status != MessageQueueStatus.Paused)
+                throw new InvalidOperationException("Cannot resume a queue that is not paused.");
+
+            queue.Status = MessageQueueStatus.Idle;
+        }
+
+        public void Pause(MessageQueue queue) {
+            if (queue.Status == MessageQueueStatus.Paused)
+                throw new InvalidOperationException("Cannot resume a queue that is already paused.");
+
+            queue.Status = MessageQueueStatus.Paused;
         }
 
         public IDictionary<string, IMessageChannel> ChannelsDictionary { get; private set; }
@@ -230,7 +246,13 @@ namespace Orchard.Messaging.Services {
             var queue = new MessageQueue(record);
             queue.AvailableTimeFunc = () => CalculateAvailableProcessingTime(queue);
             queue.HasAvailableTimeFunc = () => queue.AvailableTime > TimeSpan.Zero;
+            queue.CalculateNextRunFunc = () => CalculateNextRun(queue);
             return queue;
+        }
+
+        private DateTime CalculateNextRun(MessageQueue queue) {
+            var lastRun = queue.EndedUtc != null ? queue.EndedUtc.Value : _clock.UtcNow;
+            return lastRun + queue.UpdateFrequency;
         }
 
         private TimeSpan CalculateAvailableProcessingTime(MessageQueue queue) {

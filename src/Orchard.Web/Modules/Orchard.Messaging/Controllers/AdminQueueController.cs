@@ -28,9 +28,6 @@ namespace Orchard.Messaging.Controllers {
         public ActionResult Index() {
             var queues = _messageQueueManager.GetQueues().ToList();
 
-            if (queues.Count == 1)
-                return RedirectToAction("List", new {id = queues.First().Id});
-
             var queueShapes = queues.Select(x => _services.New.Queue(x)
                 .Pending(_messageQueueManager.CountMessages(x.Id, QueuedMessageStatus.Pending))
                 .Faulted(_messageQueueManager.CountMessages(x.Id, QueuedMessageStatus.Faulted))
@@ -99,6 +96,22 @@ namespace Orchard.Messaging.Controllers {
         [HttpPost, ActionName("List")]
         public ActionResult Filter(int id, QueuedMessageStatus? status) {
             return RedirectToAction("List", new {id, status});
+        }
+
+        [HttpPost]
+        public ActionResult Resume(int id) {
+            var queue = _messageQueueManager.GetQueue(id);
+            _messageQueueManager.Resume(queue);
+            _services.Notifier.Information(T("Queue '{0}' has been resumed.", queue.Name));
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Pause(int id) {
+            var queue = _messageQueueManager.GetQueue(id);
+            _messageQueueManager.Pause(queue);
+            _services.Notifier.Information(T("Queue '{0}' has been paused.", queue.Name));
+            return RedirectToAction("Index");
         }
 
         private MessageQueue CreateOrUpdateQueue(MessageQueueViewModel model) {

@@ -29,7 +29,8 @@ namespace Orchard.Messaging.Services {
 
         private IEnumerable<MessageQueue> GetQueuesToProcess() {
             var queues = _manager.GetIdleQueues().ToList();
-            var q = from queue in queues 
+            var q = from queue in queues
+                    where queue.Status == MessageQueueStatus.Idle
                     let lastProcessedUtc = queue.EndedUtc.GetValueOrDefault()
                     let timeSinceLastProcessAction = _clock.UtcNow - lastProcessedUtc
                     where timeSinceLastProcessAction > queue.UpdateFrequency

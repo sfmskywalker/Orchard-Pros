@@ -5,6 +5,7 @@ namespace Orchard.Messaging.Models {
         // ReSharper disable InconsistentNaming
         public Func<TimeSpan> AvailableTimeFunc;
         public Func<bool> HasAvailableTimeFunc;
+        public Func<DateTime> CalculateNextRunFunc;
         // ReSharper restore InconsistentNaming
 
         public MessageQueue(MessageQueueRecord record) {
@@ -59,6 +60,10 @@ namespace Orchard.Messaging.Models {
 
         public bool HasAvailableTime {
             get { return HasAvailableTimeFunc(); }
+        }
+
+        public DateTime NextRun {
+            get { return CalculateNextRunFunc(); }
         }
 
         public override string ToString() {

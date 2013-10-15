@@ -1,5 +1,5 @@
 ﻿.message-status {
-    background: url('./images/status.png') no-repeat -17px -17px;
+    background: url('./images/message-status.png') no-repeat -17px -17px;
     padding-left: 25px;
     line-height: 16px;
     vertical-align: middle;
@@ -42,4 +42,24 @@ fieldset.summary ul li label {
 
 fieldset.summary ul li label:after {
     content: ":";
+}
+
+table.queues {
+    clear: both;
+}
+
+table.queues td {
+    vertical-align: middle;
+}
+
+ul.horizontal li {
+    float: left;
+}
+
+.clear {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
 }
