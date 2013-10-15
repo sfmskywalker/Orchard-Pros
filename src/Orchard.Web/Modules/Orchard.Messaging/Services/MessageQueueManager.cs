@@ -201,7 +201,7 @@ namespace Orchard.Messaging.Services {
             if (status != null)
                 query = query.Where(x => x.Status == status.Value);
 
-            query = query.OrderByDescending(x => x.CreatedUtc);
+            query = query.OrderBy(x => x.Priority.Rank).ThenByDescending(x => x.CreatedUtc);
 
             return query;
         }
