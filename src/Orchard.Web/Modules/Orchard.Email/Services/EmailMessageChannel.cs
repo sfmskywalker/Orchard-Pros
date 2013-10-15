@@ -22,8 +22,10 @@ namespace Orchard.Email.Services {
             get { return _smtpClientField.Value; }
         }
 
-        public override void Dispose() {
+        protected override void Dispose(bool disposing) {
+            if (!disposing) return;
             if (!_smtpClientField.IsValueCreated) return;
+
             _smtpClientField.Value.Dispose();
         }
 
