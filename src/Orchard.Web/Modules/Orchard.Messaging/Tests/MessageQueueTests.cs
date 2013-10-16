@@ -53,8 +53,8 @@ namespace Orchard.Messaging.Tests {
         [Test]
         public void DefaultPriorityIsLowestPriority() {
             var manager = _container.Resolve<IMessageQueueManager>();
-            var priorities = manager.CreateDefaultPrioritySet().ToList();
-            var expectedPriority = priorities.OrderByDescending(x => x.Rank).First();
+            var priorities = manager.CreateDefaultPriorities().ToList();
+            var expectedPriority = priorities.OrderByDescending(x => x.Value).First();
             var actualPriority = manager.GetDefaultPriority();
             Assert.That(expectedPriority.Id, Is.EqualTo(actualPriority.Id));
         }

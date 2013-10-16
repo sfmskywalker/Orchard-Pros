@@ -72,7 +72,7 @@ namespace Orchard.Messaging.Forms {
         private IEnumerable<SelectListItem> GetPriorities() {
             var priorities = _messageQueueManager.GetPriorities().ToList();
             if (!priorities.Any())
-                priorities = _messageQueueManager.CreateDefaultPrioritySet().ToList();
+                priorities = _messageQueueManager.CreateDefaultPriorities().ToList();
             return priorities.Select(x => new SelectListItem { Text = x.DisplayText, Value = x.Id.ToString(CultureInfo.InvariantCulture) });
         }
 

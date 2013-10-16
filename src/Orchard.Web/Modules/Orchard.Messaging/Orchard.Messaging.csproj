@@ -65,7 +65,9 @@
     <Compile Include="Controllers\AdminQueueController.cs" />
     <Compile Include="Controllers\AdminMessageController.cs" />
     <Compile Include="Controllers\AdminPriorityController.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Forms\MessageForms.cs" />
+    <Compile Include="ViewModels\MessagePriorityViewModel.cs" />
     <Compile Include="ViewModels\MessageQueueViewModel.cs" />
     <Compile Include="ViewModels\MessagesFilter.cs" />
     <Compile Include="Drivers\MessageSettingsPartDriver.cs" />
@@ -163,6 +165,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AdminPriority\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AdminPriority\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AdminPriority\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\MessagePriorityViewModel.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

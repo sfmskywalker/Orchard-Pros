@@ -19,13 +19,14 @@ namespace Orchard.Messaging.Services {
         MessagePriority GetPriority(string name);
         IEnumerable<MessagePriority> GetPriorities();
         MessagePriority GetDefaultPriority();
-        IEnumerable<MessagePriority> CreateDefaultPrioritySet();
+        IEnumerable<MessagePriority> CreateDefaultPriorities();
+        void DeletePriority(MessagePriority priority);
         IEnumerable<MessageQueue> GetIdleQueues();
         IEnumerable<QueuedMessage> EnterProcessingStatus(MessageQueue queue);
         void ExitProcessingStatus(MessageQueue queue);
         IEnumerable<MessageQueue> GetQueues();
         int CountMessages(int queueId, QueuedMessageStatus? status = null);
-        IEnumerable<QueuedMessage> GetMessages(int queueId, QueuedMessageStatus? status = null, int startIndex = 0, int pageSize = 10);
+        IQueryable<QueuedMessage> GetMessages(int queueId, QueuedMessageStatus? status = null, int startIndex = 0, int pageSize = 10);
         QueuedMessage GetMessage(int id);
         MessageQueue CreateQueue();
         MessageQueue CreateDefaultQueue();
@@ -33,6 +34,7 @@ namespace Orchard.Messaging.Services {
         IEnumerable<IMessageChannel> GetChannels();
         void Resume(MessageQueue queue);
         void Pause(MessageQueue queue);
+        MessagePriority CreatePriority(string name, string displayText, int rank);
     }
 
     [OrchardFeature("Orchard.Messaging.Queuing")]
@@ -108,6 +110,16 @@ namespace Orchard.Messaging.Services {
             queue.Status = MessageQueueStatus.Paused;
         }
 
+        public MessagePriority CreatePriority(string name, string displayText, int value) {
+            var priority = new MessagePriority {
+                Name = name,
+                DisplayText = displayText,
+                Value = value
+            };
+            _priorityRepository.Create(priority);
+            return priority;
+        }
+
         public IDictionary<string, IMessageChannel> ChannelsDictionary { get; private set; }
 
         public MessageQueue GetDefaultQueue() {
@@ -123,7 +135,7 @@ namespace Orchard.Messaging.Services {
         }
 
         public IEnumerable<MessagePriority> GetPriorities() {
-            return _priorityRepository.Table;
+            return _priorityRepository.Table.Where(x => !x.Archived).OrderBy(x => x.Value).ToList();
         }
 
         public MessageQueue GetQueue(int id) {
@@ -132,25 +144,25 @@ namespace Orchard.Messaging.Services {
         }
 
         public MessagePriority GetDefaultPriority() {
-            return _priorityRepository.Table.OrderByDescending(x => x.Rank).FirstOrDefault() ?? CreateDefaultPrioritySet().First();
+            return _priorityRepository.Table.OrderBy(x => x.Value).FirstOrDefault() ?? CreateDefaultPriorities().First();
         }
 
-        public IEnumerable<MessagePriority> CreateDefaultPrioritySet() {
+        public IEnumerable<MessagePriority> CreateDefaultPriorities() {
             var priorities = new List<MessagePriority> {
                 new MessagePriority {
                     Name = "Low",
                     DisplayText = "Low",
-                    Rank = 3
+                    Value = 1
                 },
                 new MessagePriority {
                     Name = "Normal",
                     DisplayText = "Normal",
-                    Rank = 2
+                    Value = 2
                 },
                 new MessagePriority {
                     Name = "High",
                     DisplayText = "High",
-                    Rank = 1
+                    Value = 3
                 },
             };
 
@@ -159,6 +171,11 @@ namespace Orchard.Messaging.Services {
             }
 
             return priorities;
+        }
+
+        public void DeletePriority(MessagePriority priority) {
+            priority.Archived = true;
+            priority.ArchivedUtc = _clock.UtcNow;
         }
 
         public IEnumerable<MessageQueue> GetIdleQueues() {
@@ -192,8 +209,8 @@ namespace Orchard.Messaging.Services {
             return GetMessagesQuery(queueId, status).Count();
         }
 
-        public IEnumerable<QueuedMessage> GetMessages(int queueId, QueuedMessageStatus? status = null, int startIndex = 0, int pageSize = 10) {
-            return GetMessagesQuery(queueId, status).Skip(startIndex).Take(pageSize).Select(ActivateMessage);
+        public IQueryable<QueuedMessage> GetMessages(int queueId, QueuedMessageStatus? status = null, int startIndex = 0, int pageSize = 10) {
+            return GetMessagesQuery(queueId, status).Skip(startIndex).Take(pageSize).Select(ActivateMessage).AsQueryable();
         }
 
         public QueuedMessage GetMessage(int id) {
@@ -222,7 +239,7 @@ namespace Orchard.Messaging.Services {
             if (status != null)
                 query = query.Where(x => x.Status == status.Value);
 
-            query = query.OrderBy(x => x.Priority.Rank).ThenByDescending(x => x.CreatedUtc);
+            query = query.OrderByDescending(x => x.CreatedUtc);
 
             return query;
         }
@@ -230,6 +247,8 @@ namespace Orchard.Messaging.Services {
         private IEnumerable<QueuedMessage> GetPendingMessages(int queueId) {
             return _messageRepository.Table
                 .Where(x => x.Status == QueuedMessageStatus.Pending && x.QueueId == queueId)
+                .OrderBy(x => x.Priority.Value)
+                .ThenBy(x => x.CreatedUtc)
                 .Select(ActivateMessage)
                 .ToList();
         }

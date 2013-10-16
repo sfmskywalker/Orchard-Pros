@@ -14,10 +14,6 @@ namespace Orchard.Messaging.Models {
 
         [StringLengthMax]
         public virtual string Body { get; set; }
-        public virtual string ShapeName { get; set; }
-
-        [StringLengthMax]
-        public virtual string PropertyBag { get; set; }
 
         public virtual QueuedMessageStatus Status { get; set; }
         public virtual DateTime CreatedUtc { get; set; }

@@ -15,9 +15,11 @@ namespace Orchard.Messaging.Migrations {
         public int Create() {
             SchemaBuilder.CreateTable("MessagePriority", table => table
                 .Column<int>("Id", c => c.Identity().PrimaryKey())
-                .Column<int>("Rank", c => c.NotNull())
+                .Column<int>("Value", c => c.NotNull())
                 .Column<string>("Name", c => c.WithLength(50))
-                .Column<string>("DisplayText", c => c.WithLength(50)));
+                .Column<string>("DisplayText", c => c.WithLength(50))
+                .Column<bool>("Archived", c => c.NotNull())
+                .Column<DateTime>("ArchivedUtc"));
 
             SchemaBuilder.CreateTable("MessageQueueRecord", table => table
                 .Column<int>("Id", c => c.Identity().PrimaryKey())
@@ -36,21 +38,16 @@ namespace Orchard.Messaging.Migrations {
                 .Column<string>("Recipients", c => c.Unlimited())
                 .Column<string>("Subject", c => c.WithLength(2048))
                 .Column<string>("Body", c => c.Unlimited())
-                .Column<string>("ShapeName", c => c.WithLength(100))
-                .Column<string>("PropertyBag", c => c.Unlimited())
                 .Column<string>("Status", c => c.WithLength(50))
                 .Column<DateTime>("CreatedUtc")
                 .Column<DateTime>("StartedUtc")
                 .Column<DateTime>("CompletedUtc")
                 .Column<string>("Result", c => c.Unlimited()));
-            
-            CreateDefaultQueue();
+
+            _messageQueueManager.CreateDefaultQueue();
+            _messageQueueManager.CreateDefaultPriorities();
 
             return 1;
-        }
-
-        private void CreateDefaultQueue() {
-            _messageQueueManager.CreateDefaultQueue();
         }
     }
 }
