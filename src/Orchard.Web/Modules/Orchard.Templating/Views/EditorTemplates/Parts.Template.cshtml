@@ -1,0 +1,14 @@
+﻿@model Orchard.Templating.Models.TemplatePart
+<fieldset>
+    <div>
+        @Html.LabelFor(m => m.Name, T("Name"))
+        @Html.TextBoxFor(m => m.Name, new { @class = "text medium" })
+        <span class="hint">@T("The name of this template, which can be used to reference from code and tokens.")</span>
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Body, T("Template Body"))
+        @Html.TextAreaFor(m => m.Body, new { @class = "text large" })
+        <span class="hint">@T("The Razor template.")</span>
+    </div>
+</fieldset>
+
