@@ -91,12 +91,14 @@
     <Compile Include="Drivers\TemplatePartDriver.cs" />
     <Compile Include="Models\TemplatePart.cs" />
     <Compile Include="Migrations.cs" />
-    <Compile Include="Services\ViewContextFactory.cs" />
     <Compile Include="Services\TemplateService.cs" />
     <Compile Include="Tokens\TemplateTokenProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts.Template.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SampleShape.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

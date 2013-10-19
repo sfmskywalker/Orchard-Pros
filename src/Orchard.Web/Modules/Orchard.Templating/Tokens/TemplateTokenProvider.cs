@@ -20,7 +20,7 @@ namespace Orchard.Templating.Tokens {
                 .Token(t => t.StartsWith("Execute:", StringComparison.OrdinalIgnoreCase) ? t.Substring("Execute:".Length) : null, TokenValue);
         }
 
-        private object TokenValue(string token, string shapeName) {
+        private object TokenValue(string shapeName, string data) {
             return _templateService.ExecuteShape(shapeName);
         }
     }

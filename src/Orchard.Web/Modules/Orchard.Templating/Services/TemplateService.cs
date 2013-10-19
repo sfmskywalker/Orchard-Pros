@@ -1,4 +1,6 @@
-﻿using Orchard.DisplayManagement;
+﻿using System.Web.Mvc;
+using Orchard.DisplayManagement;
+using Orchard.DisplayManagement.Implementation;
 
 namespace Orchard.Templating.Services {
     public interface ITemplateService : IDependency {
@@ -9,12 +11,12 @@ namespace Orchard.Templating.Services {
     public class TemplateService : ITemplateService {
         private readonly IShapeFactory _shapeFactory;
         private readonly IDisplayHelperFactory _displayHelperFactory;
-        private readonly ViewContextFactory _viewContextFactory;
+        private readonly IWorkContextAccessor _workContextAccessor;
 
-        public TemplateService(IShapeFactory shapeFactory, IDisplayHelperFactory displayHelperFactory, ViewContextFactory viewContextFactory) {
+        public TemplateService(IShapeFactory shapeFactory, IDisplayHelperFactory displayHelperFactory, IWorkContextAccessor workContextAccessor) {
             _shapeFactory = shapeFactory;
             _displayHelperFactory = displayHelperFactory;
-            _viewContextFactory = viewContextFactory;
+            _workContextAccessor = workContextAccessor;
         }
 
         public string ExecuteShape(string shapeType) {
@@ -23,9 +25,17 @@ namespace Orchard.Templating.Services {
 
         public string ExecuteShape(string shapeType, INamedEnumerable<object> parameters) {
             var shape = _shapeFactory.Create(shapeType, parameters);
-            var viewContext = _viewContextFactory.Create();
-            var display = _displayHelperFactory.CreateHelper(viewContext, null);
-            return display(shape);
+            var display = _displayHelperFactory.CreateHelper(new ViewContext { HttpContext = _workContextAccessor.GetContext().HttpContext }, new ViewDataContainer());
+            var result = ((DisplayHelper)display).ShapeExecute(shape).ToString();
+            return result;
+        }
+
+        private class ViewDataContainer : IViewDataContainer {
+            public ViewDataDictionary ViewData { get; set; }
+
+            public ViewDataContainer() {
+                ViewData = new ViewDataDictionary();
+            }
         }
     }
 }
