@@ -91,6 +91,7 @@
     <Compile Include="Drivers\TemplatePartDriver.cs" />
     <Compile Include="Models\TemplatePart.cs" />
     <Compile Include="Migrations.cs" />
+    <Compile Include="Services\TemplateBindingStrategy.cs" />
     <Compile Include="Services\TemplateService.cs" />
     <Compile Include="Tokens\TemplateTokenProvider.cs" />
   </ItemGroup>
