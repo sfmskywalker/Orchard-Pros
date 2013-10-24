@@ -160,7 +160,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Azure", "Orchard.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Messaging.Tests", "Orchard.Web\Modules\Orchard.Messaging\Tests\Orchard.Messaging.Tests.csproj", "{2B4E039D-EDEB-43DD-8F5A-C640035906A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Templates", "Orchard.Web\Modules\Orchard.Templating\Orchard.Templates.csproj", "{10AB3CE2-A720-467F-9EC8-EBB4BAC9A1C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Templates", "Orchard.Web\Modules\Orchard.Templates\Orchard.Templates.csproj", "{10AB3CE2-A720-467F-9EC8-EBB4BAC9A1C9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Templating.Tests", "Orchard.Web\Modules\Orchard.Templating\Tests\Orchard.Templating.Tests\Orchard.Templating.Tests.csproj", "{8961613C-0ADD-4DF3-945B-CAE47987CAFD}"
 EndProject
