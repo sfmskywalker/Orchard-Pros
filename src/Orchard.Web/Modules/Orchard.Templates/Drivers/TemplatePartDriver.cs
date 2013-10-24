@@ -1,8 +1,8 @@
 ﻿using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
-using Orchard.Templating.Models;
+using Orchard.Templates.Models;
 
-namespace Orchard.Templating.Drivers {
+namespace Orchard.Templates.Drivers {
     public class TemplatePartDriver : ContentPartDriver<TemplatePart> {
         protected override DriverResult Editor(TemplatePart part, dynamic shapeHelper) {
             return Editor(part, null, shapeHelper);

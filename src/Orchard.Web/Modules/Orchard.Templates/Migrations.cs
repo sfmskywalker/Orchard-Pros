@@ -2,7 +2,7 @@
 using Orchard.Core.Contents.Extensions;
 using Orchard.Data.Migration;
 
-namespace Orchard.Templating {
+namespace Orchard.Templates {
     public class Migrations : DataMigrationImpl {
         public int Create() {
             SchemaBuilder.CreateTable("TemplatePartRecord", table => table

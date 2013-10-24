@@ -2,7 +2,7 @@
 using Orchard.ContentManagement.Records;
 using Orchard.Data.Conventions;
 
-namespace Orchard.Templating.Models {
+namespace Orchard.Templates.Models {
     public class TemplatePart : ContentPart<TemplatePartRecord> {
         public string Name {
             get { return Record.Name; }

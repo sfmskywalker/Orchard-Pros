@@ -1,8 +1,8 @@
 ﻿using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
-using Orchard.Templating.Models;
+using Orchard.Templates.Models;
 
-namespace Orchard.Templating.Handlers {
+namespace Orchard.Templates.Handlers {
     public class TemplatePartHandler : ContentHandler {
         public TemplatePartHandler(IRepository<TemplatePartRecord> repository) {
             Filters.Add(StorageFilter.For(repository));

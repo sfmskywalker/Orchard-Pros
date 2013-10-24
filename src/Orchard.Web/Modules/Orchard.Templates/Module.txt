@@ -1,4 +1,4 @@
-﻿Name: Orchard.Templating
+﻿Name: Orchard.Templates
 AntiForgery: enabled
 Author: The Orchard Team
 Website: http://orchardproject.net
@@ -6,8 +6,8 @@ Version: 1.0
 OrchardVersion: 1.8
 Description: Provides a Template type that can be used to stre Razor code and used as a shape.
 Features:
-    Orchard.Templating:
-        Name: Templating
+    Orchard.Templates:
+        Name: Templates
         Description: Provides a Template type that represents a Razor template, stored as a content item.
         Category: Content
         Dependencies: Orchard.Tokens

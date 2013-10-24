@@ -6,9 +6,9 @@ using System.Web.Mvc;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
 using Orchard.DisplayManagement.Implementation;
-using Orchard.Templating.Models;
+using Orchard.Templates.Models;
 
-namespace Orchard.Templating.Services {
+namespace Orchard.Templates.Services {
     public interface ITemplateService : IDependency {
         string ExecuteShape(string shapeType);
         string ExecuteShape(string shapeType, INamedEnumerable<object> parameters);

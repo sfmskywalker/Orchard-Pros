@@ -68,9 +68,9 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Orchard.Templating.csproj">
+    <ProjectReference Include="..\..\Orchard.Templates.csproj">
       <Project>{10ab3ce2-a720-467f-9ec8-ebb4bac9a1c9}</Project>
-      <Name>Orchard.Templating</Name>
+      <Name>Orchard.Templates</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

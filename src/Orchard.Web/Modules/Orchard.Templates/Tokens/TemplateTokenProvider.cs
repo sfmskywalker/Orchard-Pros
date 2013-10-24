@@ -1,8 +1,8 @@
 ﻿using System;
-using Orchard.Templating.Services;
+using Orchard.Templates.Services;
 using Orchard.Tokens;
 
-namespace Orchard.Templating.Tokens {
+namespace Orchard.Templates.Tokens {
     public class TemplateTokenProvider : Component, ITokenProvider {
         private readonly ITemplateService _templateService;
 
