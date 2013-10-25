@@ -162,7 +162,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Messaging.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Templates", "Orchard.Web\Modules\Orchard.Templates\Orchard.Templates.csproj", "{10AB3CE2-A720-467F-9EC8-EBB4BAC9A1C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Templating.Tests", "Orchard.Web\Modules\Orchard.Templating\Tests\Orchard.Templating.Tests\Orchard.Templating.Tests.csproj", "{8961613C-0ADD-4DF3-945B-CAE47987CAFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Templates.Tests", "Orchard.Web\Modules\Orchard.Templates\Tests\Orchard.Templates.Tests\Orchard.Templates.Tests.csproj", "{8961613C-0ADD-4DF3-945B-CAE47987CAFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
