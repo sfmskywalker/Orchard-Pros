@@ -11,12 +11,12 @@ using Orchard.DisplayManagement.Descriptors.ShapeAttributeStrategy;
 using Orchard.DisplayManagement.Implementation;
 using Orchard.Environment;
 using Orchard.Environment.Extensions.Models;
-using Orchard.Templating.Services;
+using Orchard.Templates.Services;
 using Orchard.Tests.DisplayManagement;
 using Orchard.Tests.Stubs;
 using Orchard.Tests.Utility;
 
-namespace Orchard.Templating.Tests {
+namespace Orchard.Templates.Tests {
     [TestFixture]
     public class TemplateServiceTests {
         private IContainer _container;
@@ -40,7 +40,7 @@ namespace Orchard.Templating.Tests {
             builder.RegisterInstance(new DefaultDisplayManagerTests.TestWorkContextAccessor(workContext)).As<IWorkContextAccessor>();
             builder.RegisterInstance(new SimpleShapes());
             builder.RegisterInstance(new RouteCollection());
-            builder.RegisterType<TemplateService>().As<ITemplateService>();
+            builder.RegisterType<DefaultTemplateService>().As<ITemplateService>();
             builder.RegisterAutoMocking(MockBehavior.Loose);
 
             _container = builder.Build();
