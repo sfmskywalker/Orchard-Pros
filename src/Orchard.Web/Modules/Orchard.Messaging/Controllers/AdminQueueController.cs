@@ -62,7 +62,7 @@ namespace Orchard.Messaging.Controllers {
         }
 
         public ActionResult Create() {
-            return View();
+            return View(new MessageQueueViewModel());
         }
 
         [HttpPost]
