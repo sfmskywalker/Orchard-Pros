@@ -10,4 +10,4 @@ Features:
         Name: Templates
         Description: Provides a Template type that represents a Razor template, stored as a content item.
         Category: Content
-        Dependencies: Orchard.Tokens
+        Dependencies: Contents, Orchard.Tokens

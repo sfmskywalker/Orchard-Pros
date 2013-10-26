@@ -11,14 +11,13 @@ namespace Orchard.Templates {
                 .Column<string>("Body", c => c.Unlimited()));
 
             ContentDefinitionManager.AlterPartDefinition("ShapePart", part => part
-                .Attachable(false)
+                .Attachable()
                 .WithDescription("Turns a type into a shape provider."));
 
             ContentDefinitionManager.AlterTypeDefinition("Template", type => type
                 .WithPart("CommonPart")
                 .WithPart("IdentityPart")
                 .WithPart("ShapePart")
-                .Creatable()
                 .Draftable());
             return 1;
         }

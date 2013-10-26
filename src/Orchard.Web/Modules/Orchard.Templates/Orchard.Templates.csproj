@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminMenu.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Handlers\ShapePartHandler.cs" />
     <Compile Include="Drivers\ShapePartDriver.cs" />
     <Compile Include="Models\ShapePart.cs" />
@@ -114,6 +115,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SampleShape.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Admin\CreatableTypeList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Admin\List.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
