@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Orchard.ContentManagement;
@@ -15,13 +13,13 @@ namespace Orchard.Templates.Services {
         IEnumerable<TemplatePart> GetTemplates(VersionOptions versionOptions = null);
     }
 
-    public class TemplateService : ITemplateService {
+    public class DefaultTemplateService : ITemplateService {
         private readonly IShapeFactory _shapeFactory;
         private readonly IDisplayHelperFactory _displayHelperFactory;
         private readonly IWorkContextAccessor _workContextAccessor;
         private readonly IContentManager _contentManager;
 
-        public TemplateService(IShapeFactory shapeFactory, IDisplayHelperFactory displayHelperFactory, IWorkContextAccessor workContextAccessor, IContentManager contentManager) {
+        public DefaultTemplateService(IShapeFactory shapeFactory, IDisplayHelperFactory displayHelperFactory, IWorkContextAccessor workContextAccessor, IContentManager contentManager) {
             _shapeFactory = shapeFactory;
             _displayHelperFactory = displayHelperFactory;
             _workContextAccessor = workContextAccessor;

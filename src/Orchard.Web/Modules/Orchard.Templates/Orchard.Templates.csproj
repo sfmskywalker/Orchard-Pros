@@ -100,12 +100,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminMenu.cs" />
     <Compile Include="Handlers\TemplatePartHandler.cs" />
     <Compile Include="Drivers\TemplatePartDriver.cs" />
     <Compile Include="Models\TemplatePart.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Services\TemplateBindingStrategy.cs" />
-    <Compile Include="Services\TemplateService.cs" />
+    <Compile Include="Services\DefaultTemplateService.cs" />
     <Compile Include="Tokens\TemplateTokenProvider.cs" />
   </ItemGroup>
   <ItemGroup>
