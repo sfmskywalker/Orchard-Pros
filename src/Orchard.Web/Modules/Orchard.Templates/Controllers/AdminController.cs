@@ -11,14 +11,12 @@ using Orchard.Core.Contents.ViewModels;
 using Orchard.Data;
 using Orchard.DisplayManagement;
 using Orchard.Localization;
-using Orchard.Logging;
 using Orchard.Mvc.Extensions;
 using Orchard.Settings;
 using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
 
 namespace Orchard.Templates.Controllers {
-    [ValidateInput(false)]
     public class AdminController : Controller {
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
@@ -38,14 +36,12 @@ namespace Orchard.Templates.Controllers {
             _transactionManager = transactionManager;
             _siteService = siteService;
             T = NullLocalizer.Instance;
-            Logger = NullLogger.Instance;
             Shape = shapeFactory;
         }
 
         dynamic Shape { get; set; }
         public IOrchardServices Services { get; private set; }
         public Localizer T { get; set; }
-        public ILogger Logger { get; set; }
 
         public ActionResult List(ListContentsViewModel model, PagerParameters pagerParameters) {
             var pager = new Pager(_siteService.GetSiteSettings(), pagerParameters);
