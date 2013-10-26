@@ -5,19 +5,19 @@ using Orchard.Data.Migration;
 namespace Orchard.Templates {
     public class Migrations : DataMigrationImpl {
         public int Create() {
-            SchemaBuilder.CreateTable("TemplatePartRecord", table => table
+            SchemaBuilder.CreateTable("ShapePartRecord", table => table
                 .ContentPartRecord()
                 .Column<string>("Name", c => c.WithLength(100))
                 .Column<string>("Body", c => c.Unlimited()));
 
-            ContentDefinitionManager.AlterPartDefinition("TemplatePart", part => part
+            ContentDefinitionManager.AlterPartDefinition("ShapePart", part => part
                 .Attachable(false)
-                .WithDescription("Turns a type into a template. Typically used just by the Template content type."));
+                .WithDescription("Turns a type into a shape provider."));
 
             ContentDefinitionManager.AlterTypeDefinition("Template", type => type
                 .WithPart("CommonPart")
                 .WithPart("IdentityPart")
-                .WithPart("TemplatePart")
+                .WithPart("ShapePart")
                 .Creatable()
                 .Draftable());
             return 1;

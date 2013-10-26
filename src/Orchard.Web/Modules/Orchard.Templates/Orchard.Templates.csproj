@@ -101,16 +101,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminMenu.cs" />
-    <Compile Include="Handlers\TemplatePartHandler.cs" />
-    <Compile Include="Drivers\TemplatePartDriver.cs" />
-    <Compile Include="Models\TemplatePart.cs" />
+    <Compile Include="Handlers\ShapePartHandler.cs" />
+    <Compile Include="Drivers\ShapePartDriver.cs" />
+    <Compile Include="Models\ShapePart.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Services\TemplateBindingStrategy.cs" />
     <Compile Include="Services\DefaultTemplateService.cs" />
-    <Compile Include="Tokens\TemplateTokenProvider.cs" />
+    <Compile Include="Tokens\ShapeTokenProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\EditorTemplates\Parts.Template.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts.Shape.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SampleShape.cshtml" />

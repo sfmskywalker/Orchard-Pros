@@ -3,7 +3,7 @@ using Orchard.ContentManagement.Records;
 using Orchard.Data.Conventions;
 
 namespace Orchard.Templates.Models {
-    public class TemplatePart : ContentPart<TemplatePartRecord> {
+    public class ShapePart : ContentPart<ShapePartRecord> {
         public string Name {
             get { return Record.Name; }
             set { Record.Name = value; }
@@ -15,7 +15,7 @@ namespace Orchard.Templates.Models {
         }
     }
 
-    public class TemplatePartRecord : ContentPartRecord {
+    public class ShapePartRecord : ContentPartRecord {
         public virtual string Name { get; set; }
 
         [StringLengthMax]

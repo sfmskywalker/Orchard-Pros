@@ -10,7 +10,7 @@ namespace Orchard.Templates.Services {
     public interface ITemplateService : IDependency {
         string ExecuteShape(string shapeType);
         string ExecuteShape(string shapeType, INamedEnumerable<object> parameters);
-        IEnumerable<TemplatePart> GetTemplates(VersionOptions versionOptions = null);
+        IEnumerable<ShapePart> GetTemplates(VersionOptions versionOptions = null);
     }
 
     public class DefaultTemplateService : ITemplateService {
@@ -37,8 +37,8 @@ namespace Orchard.Templates.Services {
             return result;
         }
 
-        public IEnumerable<TemplatePart> GetTemplates(VersionOptions versionOptions = null) {
-            return _contentManager.Query<TemplatePart>(versionOptions ?? VersionOptions.Published).List().ToList();
+        public IEnumerable<ShapePart> GetTemplates(VersionOptions versionOptions = null) {
+            return _contentManager.Query<ShapePart>(versionOptions ?? VersionOptions.Published).List().ToList();
         }
 
         private class ViewDataContainer : IViewDataContainer {
