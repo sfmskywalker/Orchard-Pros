@@ -72,7 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.txt" />
-    <Content Include="Styles\workflows-activity-sendemail.css" />
+    <Content Include="Styles\workflows-activity-sendemaildeprecated.css" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -107,7 +107,7 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Activity-SendEmail.cshtml" />
+    <Content Include="Views\Activity-SendEmailDeprecated.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\Web.config" />
