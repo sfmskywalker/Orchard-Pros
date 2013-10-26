@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Orchard.Environment.Extensions;
+using Orchard.Email.Services;
 using Orchard.Localization;
 using Orchard.Messaging.Models;
 using Orchard.Messaging.Services;
 using Orchard.Workflows.Models;
 using Orchard.Workflows.Services;
 
-namespace Orchard.Messaging.Activities {
-    [OrchardFeature("Orchard.Messaging.Queuing")]
-    public class MessageActivity : Task {
+namespace Orchard.Email.Activities {
+    public class EmailActivity : Task {
         private readonly IMessageQueueManager _messageQueueManager;
 
-        public MessageActivity(IMessageQueueManager messageQueueManager) {
+        public EmailActivity(IMessageQueueManager messageQueueManager) {
             _messageQueueManager = messageQueueManager;
             T = NullLocalizer.Instance;
         }
@@ -26,7 +25,7 @@ namespace Orchard.Messaging.Activities {
 
         public override string Form {
             get {
-                return "MessageActivity";
+                return "EmailActivity";
             }
         }
 
@@ -35,11 +34,11 @@ namespace Orchard.Messaging.Activities {
         }
 
         public override string Name {
-            get { return "SendMessage"; }
+            get { return "SendEmail"; }
         }
 
         public override LocalizedString Description {
-            get { return T("Sends a message to a specific user."); }
+            get { return T("Sends an email to a specific user."); }
         }
 
         public override IEnumerable<LocalizedString> Execute(WorkflowContext workflowContext, ActivityContext activityContext) {
@@ -47,13 +46,12 @@ namespace Orchard.Messaging.Activities {
             var recipientNames = Split(activityContext.GetState<string>("RecipientName")).ToList();
             var body = activityContext.GetState<string>("Body");
             var subject = activityContext.GetState<string>("Subject");
-            var channelName = activityContext.GetState<string>("Channel");
-            var queueId = activityContext.GetState<int>("Queue");
+            var queueId = activityContext.GetState<int?>("Queue") ?? _messageQueueManager.GetDefaultQueue().Id;
             var priorityId = activityContext.GetState<int>("Priority");
             var recipients = BuildRecipientsList(recipientAddresses, recipientNames);
             var priority = _messageQueueManager.GetPriority(priorityId);
 
-            _messageQueueManager.Send(recipients, channelName, subject, body, priority: priority, queueId: queueId);
+            _messageQueueManager.Send(recipients, EmailMessageChannel.ChannelName, subject, body, priority, queueId);
 
             yield return T("Queued");
         }
