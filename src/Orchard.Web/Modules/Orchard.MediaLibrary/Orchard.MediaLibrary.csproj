@@ -104,7 +104,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
-    <Content Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Module.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -344,7 +344,7 @@
     <Content Include="Views\Parts\MediaLibrary.Navigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\EditorTemplates\Parts.Image.Edit.cshtml" />
+    <Content Include="Views\Fields\MediaLibraryPicker.Summary.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

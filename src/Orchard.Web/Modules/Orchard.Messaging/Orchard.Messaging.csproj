@@ -68,13 +68,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\MessageActivity.cs" />
     <Compile Include="AdminMenu.cs" />
     <Compile Include="Controllers\AdminQueueController.cs" />
     <Compile Include="Controllers\AdminMessageController.cs" />
     <Compile Include="Controllers\AdminPriorityController.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Forms\MessageForms.cs" />
     <Compile Include="ViewModels\MessagePriorityViewModel.cs" />
     <Compile Include="ViewModels\MessageQueueViewModel.cs" />
     <Compile Include="ViewModels\MessagesFilter.cs" />

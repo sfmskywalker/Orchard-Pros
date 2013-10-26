@@ -8,14 +8,21 @@ using Orchard.Messaging.Services;
 using Orchard.Messaging.Models;
 
 namespace Orchard.Email.Services {
-    public class EmailMessageChannel : MessageChannelBase {
+    public interface IEmailMessageChannel : IMessageChannel { }
+
+    public class EmailMessageChannel : MessageChannelBase, IEmailMessageChannel {
         private readonly IOrchardServices _services;
         private readonly Lazy<SmtpClient> _smtpClientField;
+        public const string ChannelName = "Email";
 
         public EmailMessageChannel(IOrchardServices services) {
             _services = services;
             _smtpClientField = new Lazy<SmtpClient>(CreateSmtpClient);
             Logger = NullLogger.Instance;
+        }
+
+        public override string Name {
+            get { return ChannelName; }
         }
 
         private SmtpClient SmtpClient {
@@ -41,7 +48,7 @@ namespace Orchard.Email.Services {
             };
 
             foreach (var recipient in message.Recipients) {
-                mailMessage.To.Add(new MailAddress(recipient.AddressOrAlias, recipient.Name));
+                mailMessage.To.Add(new MailAddress(recipient.AddressOrAlias));
             }
 
             SmtpClient.Send(mailMessage);
@@ -66,4 +73,6 @@ namespace Orchard.Email.Services {
             return smtpClient;
         }
     }
+
+    
 }

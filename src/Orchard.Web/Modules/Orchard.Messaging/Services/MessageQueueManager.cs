@@ -9,10 +9,10 @@ using Orchard.Services;
 
 namespace Orchard.Messaging.Services {
     public interface IMessageQueueManager : IDependency {
-        QueuedMessage Send(MessageRecipient recipient, string channelName, string subject = null, string body = null, string shapeName = null, object propertyBag = null, MessagePriority priority = null, int? queueId = null);
-        QueuedMessage Send(IEnumerable<MessageRecipient> recipients, string channelName, string subject = null, string body = null, string shapeName = null, object propertyBag = null, MessagePriority priority = null, int? queueId = null);
-        QueuedMessage Send(string recipient, string channelName, string subject = null, string body = null, string shapeName = null, object propertyBag = null, MessagePriority priority = null, int? queueId = null);
-        QueuedMessage Send(IEnumerable<string> recipients, string channelName, string subject = null, string body = null, string shapeName = null, object propertyBag = null, MessagePriority priority = null, int? queueId = null);
+        QueuedMessage Send(MessageRecipient recipient, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null);
+        QueuedMessage Send(IEnumerable<MessageRecipient> recipients, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null);
+        QueuedMessage Send(string recipient, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null);
+        QueuedMessage Send(IEnumerable<string> recipients, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null);
         MessageQueue GetQueue(int id);
         MessageQueue GetDefaultQueue();
         MessagePriority GetPriority(int id);
@@ -57,19 +57,19 @@ namespace Orchard.Messaging.Services {
             ChannelsDictionary = channels.ToDictionary(x => x.Name);
         }
 
-        public QueuedMessage Send(MessageRecipient recipient, string channelName, string subject = null, string body = null, string shapeName = null, object propertyBag = null, MessagePriority priority = null, int? queueId = null) {
-            return Send(new[] {recipient}, channelName, subject, body, shapeName, propertyBag, priority, queueId);
+        public QueuedMessage Send(MessageRecipient recipient, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null) {
+            return Send(new[] {recipient}, channelName, subject, body, priority, queueId);
         }
 
-        public QueuedMessage Send(string recipient, string channelName, string subject = null, string body = null, string shapeName = null, object propertyBag = null, MessagePriority priority = null, int? queueId = null) {
-            return Send(new[] { recipient }, channelName, subject, body, shapeName, propertyBag, priority, queueId);
+        public QueuedMessage Send(string recipient, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null) {
+            return Send(new[] { recipient }, channelName, subject, body, priority, queueId);
         }
 
-        public QueuedMessage Send(IEnumerable<string> recipients, string channelName, string subject = null, string body = null, string shapeName = null, object propertyBag = null, MessagePriority priority = null, int? queueId = null) {
-            return Send(recipients.Select(x => new MessageRecipient(x)), channelName, subject, body, shapeName, propertyBag, priority, queueId);
+        public QueuedMessage Send(IEnumerable<string> recipients, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null) {
+            return Send(recipients.Select(x => new MessageRecipient(x)), channelName, subject, body, priority, queueId);
         }
 
-        public QueuedMessage Send(IEnumerable<MessageRecipient> recipients, string channelName, string subject = null, string body = null, string shapeName = null, object propertyBag = null, MessagePriority priority = null, int? queueId = null) {
+        public QueuedMessage Send(IEnumerable<MessageRecipient> recipients, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null) {
             var queue = queueId != null ? GetQueue(queueId.Value) ?? GetDefaultQueue() : GetDefaultQueue();
 
             var message = new QueuedMessageRecord {

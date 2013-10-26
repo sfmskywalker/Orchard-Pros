@@ -7,10 +7,7 @@ namespace Orchard.Messaging.Services {
             Dispose(false);
         }
 
-        public virtual string Name {
-            get { return GetType().Name.Replace("MessageChannel", ""); }
-        }
-
+        public abstract string Name { get; }
         public abstract void Send(QueuedMessage message);
 
         public void Dispose() {

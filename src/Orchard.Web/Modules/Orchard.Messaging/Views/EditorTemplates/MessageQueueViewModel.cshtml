@@ -1,5 +1,6 @@
 ﻿@model Orchard.Messaging.ViewModels.MessageQueueViewModel
 <fieldset>
+    @Html.HiddenFor(m => m.Id)
     <div>
         @Html.LabelFor(m => m.Name)
         @Html.TextBoxFor(m => m.Name, new { @class = "text medium" })

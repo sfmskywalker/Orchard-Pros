@@ -64,7 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\MailActivity.cs" />
+    <Compile Include="Activities\EmailActivity.cs" />
     <Compile Include="Forms\MailForms.cs" />
+    <Compile Include="Forms\EmailForm.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Drivers\SmtpSettingsPartDriver.cs" />
     <Compile Include="Handlers\SmtpSettingsPartHandler.cs" />
@@ -81,6 +83,7 @@
   <ItemGroup>
     <Content Include="Module.txt" />
     <Content Include="Styles\workflows-activity-sendemail.css" />
+    <Content Include="Styles\workflows-activity-sendemaildeprecated.css" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -115,10 +118,13 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Activity-SendEmail.cshtml" />
+    <Content Include="Views\Activity-SendEmailDeprecated.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Activity-SendEmail.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
