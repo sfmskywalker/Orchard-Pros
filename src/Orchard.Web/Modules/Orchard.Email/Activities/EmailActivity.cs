@@ -43,27 +43,16 @@ namespace Orchard.Email.Activities {
 
         public override IEnumerable<LocalizedString> Execute(WorkflowContext workflowContext, ActivityContext activityContext) {
             var recipientAddresses = Split(activityContext.GetState<string>("RecipientAddress")).ToList();
-            var recipientNames = Split(activityContext.GetState<string>("RecipientName")).ToList();
             var body = activityContext.GetState<string>("Body");
             var subject = activityContext.GetState<string>("Subject");
             var queueId = activityContext.GetState<int?>("Queue") ?? _messageQueueManager.GetDefaultQueue().Id;
             var priorityId = activityContext.GetState<int>("Priority");
-            var recipients = BuildRecipientsList(recipientAddresses, recipientNames);
+            var recipients = recipientAddresses.Select(x => new MessageRecipient(x));
             var priority = _messageQueueManager.GetPriority(priorityId);
 
             _messageQueueManager.Send(recipients, EmailMessageChannel.ChannelName, subject, body, priority, queueId);
 
             yield return T("Queued");
-        }
-
-        private static IEnumerable<MessageRecipient> BuildRecipientsList(IEnumerable<string> addresses, IList<string> names) {
-            var i = 0;
-
-            foreach (var address in addresses) {
-                var name = names.Count - 1 >= i ? names[i] : default(string);
-                yield return new MessageRecipient(address, name);
-                i++;
-            }
         }
 
         private static IEnumerable<string> Split(string value) {

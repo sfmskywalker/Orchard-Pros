@@ -48,7 +48,7 @@ namespace Orchard.Email.Services {
             };
 
             foreach (var recipient in message.Recipients) {
-                mailMessage.To.Add(new MailAddress(recipient.AddressOrAlias, recipient.Name));
+                mailMessage.To.Add(new MailAddress(recipient.AddressOrAlias));
             }
 
             SmtpClient.Send(mailMessage);
