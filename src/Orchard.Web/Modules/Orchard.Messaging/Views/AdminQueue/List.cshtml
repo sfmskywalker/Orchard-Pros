@@ -38,7 +38,7 @@ else {
                 <th>@T("Status")</th>
                 <th>@T("Priority")</th>
                 <th>@T("Recipients")</th>
-                <th>@T("Subject")</th>
+                <th>@T("Payload")</th>
                 <th>@T("Created")</th>
                 <th>@T("Started")</th>
                 <th>@T("Completed")</th>
@@ -51,7 +51,7 @@ else {
                     <td><span class="message-status @message.Status.ToString().HtmlClassify()">@message.Status</span></td>
                     <td>@message.Priority.Name</td>
                     <td>@String.Join(", ", message.Recipients).Ellipsize(50)</td>
-                    <td>@message.Subject.Ellipsize(100, "...")</td>
+                    <td>@message.Record.Payload.Ellipsize(100, "...")</td>
                     <td>@message.CreatedUtc</td>
                     <td>@message.StartedUtc</td>
                     <td>@message.CompletedUtc</td>

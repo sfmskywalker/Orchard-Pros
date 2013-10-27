@@ -27,10 +27,6 @@
             <span>@String.Join(", ", message.Recipients)</span>
         </li>
         <li>
-            <label>@T("Subject")</label>
-            <span>@message.Subject</span>
-        </li>
-        <li>
             <label>@T("Created")</label>
             <span>@message.CreatedUtc</span>
         </li>
@@ -43,8 +39,8 @@
             <span>@message.CompletedUtc</span>
         </li>
         <li>
-            <label>@T("Body")</label>
-            <span>@message.Body</span>
+            <label>@T("Payload")</label>
+            <span>@message.Record.Payload</span>
         </li>
     </ul>
 </fieldset>
