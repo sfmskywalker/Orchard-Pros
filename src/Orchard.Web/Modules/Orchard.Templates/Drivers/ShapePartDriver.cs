@@ -32,7 +32,7 @@ namespace Orchard.Templates.Drivers {
                     part.Template = viewModel.Template;
                 }
             }
-            return ContentShape("Parts_Shape_Edit", () => shapeHelper.EditorTemplate(TemplateName: "Parts.Shape", Model: part, Prefix: Prefix));
+            return ContentShape("Parts_Shape_Edit", () => shapeHelper.EditorTemplate(TemplateName: "Parts.Shape", Model: viewModel, Prefix: Prefix));
         }
     }
 }

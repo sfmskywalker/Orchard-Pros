@@ -6,13 +6,13 @@
         <span class="hint">@T("The name of this template, which can be used to reference from code (as when using shape type names) and tokens.")</span>
     </div>
     <div>
-        @Html.LabelFor(m => m.Language, T("Language"))
-        @Html.EditorFor(m => m.Language, Model.AvailableLanguages)
-        <span class="hint">@T("The template language to use.")</span>
-    </div>
-    <div>
         @Html.LabelFor(m => m.Template, T("Template Body"))
         @Html.TextAreaFor(m => m.Template, new { @class = "text large" })
         <span class="hint">@T("The template.")</span>
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Language, T("Language"))
+        @Html.EditorFor(m => m.Language, new { Model.AvailableLanguages })
+        <span class="hint">@T("The template language to use.")</span>
     </div>
 </fieldset>
