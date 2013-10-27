@@ -113,6 +113,8 @@
     <Content Include="Styles\Images\queue-controls.png" />
     <Content Include="Styles\Images\message-status.png" />
     <Content Include="Styles\admin-messaging.css" />
+    <Content Include="Styles\menu.messaging-admin.css" />
+    <Content Include="Styles\Images\menu.messaging.png" />
     <Content Include="Styles\workflows-activity-sendmessage.css" />
     <Content Include="Views\EditorTemplates\Parts\MessageSettings.cshtml" />
   </ItemGroup>
