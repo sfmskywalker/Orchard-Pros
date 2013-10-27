@@ -70,6 +70,7 @@
     <Compile Include="Migrations.cs" />
     <Compile Include="Drivers\SmtpSettingsPartDriver.cs" />
     <Compile Include="Handlers\SmtpSettingsPartHandler.cs" />
+    <Compile Include="Models\EmailMessage.cs" />
     <Compile Include="Models\SmtpSettingsPart.cs" />
     <Compile Include="Models\SmtpSettingsPartRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -40,11 +40,12 @@ namespace Orchard.Email.Services {
             var smtpSettings = _services.WorkContext.CurrentSite.As<SmtpSettingsPart>();
             if (smtpSettings == null || !smtpSettings.IsValid()) return;
 
+            var emailPayload = message.GetPayload<EmailMessage>();
             var mailMessage = new MailMessage {
-                From = new MailAddress(smtpSettings.Address), 
-                Subject = message.Subject, 
-                Body = message.Body, 
-                IsBodyHtml = message.Body != null && message.Body.Contains("<") && message.Body.Contains(">")
+                From = new MailAddress(smtpSettings.Address),
+                Subject = emailPayload.Subject,
+                Body = emailPayload.Body,
+                IsBodyHtml = emailPayload.Body != null && emailPayload.Body.Contains("<") && emailPayload.Body.Contains(">")
             };
 
             foreach (var recipient in message.Recipients) {
@@ -73,6 +74,4 @@ namespace Orchard.Email.Services {
             return smtpClient;
         }
     }
-
-    
 }

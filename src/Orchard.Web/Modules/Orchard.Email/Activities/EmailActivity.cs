@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Orchard.Email.Models;
 using Orchard.Email.Services;
 using Orchard.Localization;
 using Orchard.Messaging.Models;
@@ -49,8 +50,8 @@ namespace Orchard.Email.Activities {
             var priorityId = activityContext.GetState<int>("Priority");
             var recipients = recipientAddresses.Select(x => new MessageRecipient(x));
             var priority = _messageQueueManager.GetPriority(priorityId);
-
-            _messageQueueManager.Send(recipients, EmailMessageChannel.ChannelName, subject, body, priority, queueId);
+            var payload = new EmailMessage(subject, body);
+            _messageQueueManager.Send(recipients, EmailMessageChannel.ChannelName, payload, priority, queueId);
 
             yield return T("Queued");
         }

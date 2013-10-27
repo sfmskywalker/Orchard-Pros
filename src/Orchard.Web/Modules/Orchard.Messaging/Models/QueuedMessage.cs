@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using Orchard.Messaging.Services;
 
 namespace Orchard.Messaging.Models {
@@ -26,16 +27,6 @@ namespace Orchard.Messaging.Models {
         public MessagePriority Priority {
             get { return Record.Priority; }
             set { Record.Priority = value; }
-        }
-
-        public string Subject {
-            get { return Record.Subject; }
-            set { Record.Subject = value; }
-        }
-
-        public string Body {
-            get { return Record.Body; }
-            set { Record.Body = value; }
         }
 
         public QueuedMessageStatus Status {
@@ -74,8 +65,16 @@ namespace Orchard.Messaging.Models {
             get { return RecipientsField.Value; }
         }
 
+        public T GetPayload<T>() {
+            return Record.Payload != null ? JsonConvert.DeserializeObject<T>(Record.Payload) : default(T);
+        }
+
+        public void SetPayload<T>(T value) {
+            Record.Payload = !ReferenceEquals(value, default(T)) ? JsonConvert.SerializeObject(value) : null;
+        }
+
         public override string ToString() {
-            return String.Format("Subject: {0}, Recipients: {1}", Subject, String.Join(", ", Recipients.Select(x => x.ToString())));
+            return String.Format("Recipients: {0}", String.Join(", ", Recipients.Select(x => x.ToString())));
         }
     }
 }

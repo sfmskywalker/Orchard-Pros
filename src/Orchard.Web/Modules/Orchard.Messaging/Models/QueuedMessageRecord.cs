@@ -10,10 +10,9 @@ namespace Orchard.Messaging.Models {
 
         [StringLengthMax]
         public virtual string Recipients { get; set; }
-        public virtual string Subject { get; set; }
 
         [StringLengthMax]
-        public virtual string Body { get; set; }
+        public virtual string Payload { get; set; }
 
         public virtual QueuedMessageStatus Status { get; set; }
         public virtual DateTime CreatedUtc { get; set; }

@@ -9,10 +9,10 @@ using Orchard.Services;
 
 namespace Orchard.Messaging.Services {
     public interface IMessageQueueManager : IDependency {
-        QueuedMessage Send(MessageRecipient recipient, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null);
-        QueuedMessage Send(IEnumerable<MessageRecipient> recipients, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null);
-        QueuedMessage Send(string recipient, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null);
-        QueuedMessage Send(IEnumerable<string> recipients, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null);
+        QueuedMessage Send<T>(MessageRecipient recipient, string channelName, T payload, MessagePriority priority = null, int? queueId = null);
+        QueuedMessage Send<T>(IEnumerable<MessageRecipient> recipients, string channelName, T payload, MessagePriority priority = null, int? queueId = null);
+        QueuedMessage Send<T>(string recipient, string channelName, T payload, MessagePriority priority = null, int? queueId = null);
+        QueuedMessage Send<T>(IEnumerable<string> recipients, string channelName, T payload, MessagePriority priority = null, int? queueId = null);
         MessageQueue GetQueue(int id);
         MessageQueue GetDefaultQueue();
         MessagePriority GetPriority(int id);
@@ -57,24 +57,23 @@ namespace Orchard.Messaging.Services {
             ChannelsDictionary = channels.ToDictionary(x => x.Name);
         }
 
-        public QueuedMessage Send(MessageRecipient recipient, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null) {
-            return Send(new[] {recipient}, channelName, subject, body, priority, queueId);
+        public QueuedMessage Send<T>(MessageRecipient recipient, string channelName, T payload, MessagePriority priority = null, int? queueId = null) {
+            return Send(new[] {recipient}, channelName, payload, priority, queueId);
         }
 
-        public QueuedMessage Send(string recipient, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null) {
-            return Send(new[] { recipient }, channelName, subject, body, priority, queueId);
+        public QueuedMessage Send<T>(string recipient, string channelName, T payload, MessagePriority priority = null, int? queueId = null) {
+            return Send(new[] { recipient }, channelName, payload, priority, queueId);
         }
 
-        public QueuedMessage Send(IEnumerable<string> recipients, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null) {
-            return Send(recipients.Select(x => new MessageRecipient(x)), channelName, subject, body, priority, queueId);
+        public QueuedMessage Send<T>(IEnumerable<string> recipients, string channelName, T payload, MessagePriority priority = null, int? queueId = null) {
+            return Send(recipients.Select(x => new MessageRecipient(x)), channelName, payload, priority, queueId);
         }
 
-        public QueuedMessage Send(IEnumerable<MessageRecipient> recipients, string channelName, string subject = null, string body = null, MessagePriority priority = null, int? queueId = null) {
+        public QueuedMessage Send<T>(IEnumerable<MessageRecipient> recipients, string channelName, T payload, MessagePriority priority = null, int? queueId = null) {
             var queue = queueId != null ? GetQueue(queueId.Value) ?? GetDefaultQueue() : GetDefaultQueue();
 
-            var message = new QueuedMessageRecord {
-                Subject = subject,
-                Body = body,
+            var queuedMessage = new QueuedMessageRecord {
+                Payload = ToJson(payload),
                 Recipients = ToJson(recipients.ToList()),
                 ChannelName = channelName,
                 Priority = priority ?? GetDefaultPriority(),
@@ -83,9 +82,9 @@ namespace Orchard.Messaging.Services {
                 Status = QueuedMessageStatus.Pending
             };
 
-            _messageRepository.Create(message);
+            _messageRepository.Create(queuedMessage);
 
-            return ActivateMessage(message);
+            return ActivateMessage(queuedMessage);
         }
 
         public IMessageChannel GetChannel(string name) {
@@ -280,7 +279,7 @@ namespace Orchard.Messaging.Services {
             return slice - timeElapsed;
         }
 
-        private IEnumerable<MessageRecipient> ParseRecipients(string data) {
+        private static IEnumerable<MessageRecipient> ParseRecipients(string data) {
             return String.IsNullOrWhiteSpace(data) ? Enumerable.Empty<MessageRecipient>() : JsonConvert.DeserializeObject<List<MessageRecipient>>(data);
         }
 
