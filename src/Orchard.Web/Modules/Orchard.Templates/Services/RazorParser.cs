@@ -3,6 +3,8 @@ using System.CodeDom.Compiler;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Web;
+using System.Web.Mvc;
 using System.Web.Razor;
 using Microsoft.CSharp;
 using Orchard.Mvc;
@@ -41,7 +43,10 @@ namespace Orchard.Templates.Services {
             compilerParameters.ReferencedAssemblies.Add("System.dll");
             compilerParameters.ReferencedAssemblies.Add("Microsoft.CSharp.dll");
             compilerParameters.ReferencedAssemblies.Add("System.Core.dll");
+            compilerParameters.ReferencedAssemblies.Add(typeof(HtmlString).Assembly.Location);
+            compilerParameters.ReferencedAssemblies.Add(typeof(ActionResult).Assembly.Location);
             compilerParameters.ReferencedAssemblies.Add(typeof(RazorParser).Assembly.Location);
+            compilerParameters.ReferencedAssemblies.Add(typeof(IDependency).Assembly.Location);
             compilerParameters.GenerateInMemory = true;
 
             var compilerResults = new CSharpCodeProvider().CompileAssemblyFromDom(compilerParameters, unitToCompile);
@@ -50,7 +55,7 @@ namespace Orchard.Templates.Services {
         }
     }
 
-    public abstract class RazorViewBase<TModel> /*: ViewPage<TModel>*/ {
+    public abstract class RazorViewBase<TModel> : Mvc.ViewPage<TModel> {
         private StringBuilder _buffer;
 
         public abstract void Execute();
