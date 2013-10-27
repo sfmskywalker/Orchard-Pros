@@ -48,9 +48,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="RazorEngine">
-      <HintPath>..\..\..\..\lib\razorengine\RazorEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -106,6 +103,9 @@
     <Compile Include="Drivers\ShapePartDriver.cs" />
     <Compile Include="Models\ShapePart.cs" />
     <Compile Include="Migrations.cs" />
+    <Compile Include="Services\RazorParser.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Services\TemplateBindingStrategy.cs" />
     <Compile Include="Services\DefaultTemplateService.cs" />
     <Compile Include="Tokens\ShapeTokenProvider.cs" />
