@@ -16,18 +16,21 @@ namespace Orchard.Messaging {
 
         public void GetNavigation(NavigationBuilder builder) {
             var queues = _messageQueueManager.GetQueues().ToList();
-            builder.Add(T("Messaging"), "5.0", item => {
-                if (queues.Count == 1) {
-                    item.Action("List", "AdminQueue", new {area = "Orchard.Messaging", id = queues.First().Id});
-                    item.LinkToFirstChild(false);
-                }
-                else
-                    item.Action("Index", "AdminQueue", new {area = "Orchard.Messaging"});
-                item.Add(T("Queues"), "1.0", subItem => subItem
-                    .Action("Index", "AdminQueue", new {area = "Orchard.Messaging"}))
-                    .Add(T("Priorities"), "1.1", subItem => subItem
-                    .Action("Index", "AdminPriority", new {area = "Orchard.Messaging"}));
-            });
+            builder
+                .AddImageSet("messaging")
+                .Add(T("Messaging"), "5.0", item => {
+                    if (queues.Count == 1) {
+                        item.Action("List", "AdminQueue", new { area = "Orchard.Messaging", id = queues.First().Id });
+                        item.LinkToFirstChild(false);
+                    }
+                    else {
+                        item.Action("Index", "AdminQueue", new { area = "Orchard.Messaging" });
+                    }
+                    item.Add(T("Queues"), "1.0", subItem => subItem
+                        .Action("Index", "AdminQueue", new { area = "Orchard.Messaging" }))
+                        .Add(T("Priorities"), "1.1", subItem => subItem
+                        .Action("Index", "AdminPriority", new { area = "Orchard.Messaging" }));
+                });
         }
     }
 }
