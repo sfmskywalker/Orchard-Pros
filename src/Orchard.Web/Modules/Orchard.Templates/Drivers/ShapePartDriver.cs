@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.Templates.Helpers;
@@ -8,10 +9,10 @@ using Orchard.Templates.ViewModels;
 
 namespace Orchard.Templates.Drivers {
     public class ShapePartDriver : ContentPartDriver<ShapePart> {
-        private readonly ITemplateService _templateService;
+        private readonly IEnumerable<ITemplateParser> _parsers;
 
-        public ShapePartDriver(ITemplateService templateService) {
-            _templateService = templateService;
+        public ShapePartDriver(IEnumerable<ITemplateParser> parsers) {
+            _parsers = parsers;
         }
 
         protected override DriverResult Editor(ShapePart part, dynamic shapeHelper) {
@@ -23,7 +24,7 @@ namespace Orchard.Templates.Drivers {
                 Name = part.Name,
                 Template = part.Template,
                 Language = part.Language,
-                AvailableLanguages = _templateService.Parsers.Select(x => x.Language).ToArray()
+                AvailableLanguages = _parsers.Select(x => x.Type).Distinct().ToArray()
             };
             if (updater != null) {
                 if (updater.TryUpdateModel(viewModel, Prefix, null, new[] { "AvailableLanguages" })) {

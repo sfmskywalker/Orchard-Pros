@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Web.Mvc;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
@@ -9,37 +8,24 @@ using Orchard.DisplayManagement.Implementation;
 using Orchard.Templates.Models;
 
 namespace Orchard.Templates.Services {
-    public interface ITemplateService : IDependency {
-        IEnumerable<IParser> Parsers { get; }
-        string ExecuteShape(string shapeType);
-        string ExecuteShape(string shapeType, INamedEnumerable<object> parameters);
-        string ParseTemplate<TModel>(string template, string language, TModel model = default(TModel));
-        string ParseTemplate(string template, string language, dynamic model = default(dynamic));
-        IEnumerable<ShapePart> GetTemplates(VersionOptions versionOptions = null);
-    }
-
     public class DefaultTemplateService : ITemplateService {
         private readonly IShapeFactory _shapeFactory;
         private readonly IDisplayHelperFactory _displayHelperFactory;
         private readonly IWorkContextAccessor _workContextAccessor;
         private readonly IContentManager _contentManager;
-        private readonly IEnumerable<IParser> _parsers;
+        private readonly IEnumerable<ITemplateParser> _parsers;
 
         public DefaultTemplateService(
             IShapeFactory shapeFactory, 
             IDisplayHelperFactory displayHelperFactory, 
             IWorkContextAccessor workContextAccessor, 
             IContentManager contentManager, 
-            IEnumerable<IParser> parsers) {
+            IEnumerable<ITemplateParser> parsers) {
             _shapeFactory = shapeFactory;
             _displayHelperFactory = displayHelperFactory;
             _workContextAccessor = workContextAccessor;
             _contentManager = contentManager;
             _parsers = parsers;
-        }
-
-        public IEnumerable<IParser> Parsers {
-            get { return _parsers; }
         }
 
         public string ExecuteShape(string shapeType) {
@@ -53,17 +39,19 @@ namespace Orchard.Templates.Services {
             return result;
         }
 
-        public string ParseTemplate<TModel>(string template, string language, TModel model = default(TModel)) {
-            var parser = _parsers.Single(x => String.Equals(x.Language, language, StringComparison.OrdinalIgnoreCase));
-            return parser.Parse(template, model);
+        public string Parse<TModel>(string template, string language, Action<ITemplateViewBase<TModel>> activator, TModel model = default(TModel))
+        {
+            var parser = _parsers.Single(x => String.Equals(x.Type, language, StringComparison.OrdinalIgnoreCase));
+            return parser.Parse(template, activator, model);
         }
 
-        public string ParseTemplate(string template, string language, dynamic model = null) {
-            return ParseTemplate<dynamic>(template, language, model);
+        public string Parse(string template, string language, Action<ITemplateViewBase<dynamic>> activator, dynamic model = null)
+        {
+            return Parse<dynamic>(template, language, activator, model);
         }
 
         public IEnumerable<ShapePart> GetTemplates(VersionOptions versionOptions = null) {
-            return _contentManager.Query<ShapePart>(versionOptions ?? VersionOptions.Published).List().ToList();
+            return _contentManager.Query<ShapePart>(versionOptions ?? VersionOptions.Published).List();
         }
 
         private class ViewDataContainer : IViewDataContainer {
