@@ -8,7 +8,8 @@ namespace Orchard.Templates {
             SchemaBuilder.CreateTable("ShapePartRecord", table => table
                 .ContentPartRecord()
                 .Column<string>("Name", c => c.WithLength(100))
-                .Column<string>("Body", c => c.Unlimited()));
+                .Column<string>("Language", c => c.WithLength(50))
+                .Column<string>("Template", c => c.Unlimited()));
 
             ContentDefinitionManager.AlterPartDefinition("ShapePart", part => part
                 .Attachable()

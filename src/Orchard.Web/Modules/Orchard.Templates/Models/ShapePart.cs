@@ -9,16 +9,22 @@ namespace Orchard.Templates.Models {
             set { Record.Name = value; }
         }
 
-        public string Body {
-            get { return Record.Body; }
-            set { Record.Body = value; }
+        public string Language {
+            get { return Record.Language; }
+            set { Record.Language = value; }
+        }
+
+        public string Template {
+            get { return Record.Template; }
+            set { Record.Template = value; }
         }
     }
 
     public class ShapePartRecord : ContentPartRecord {
         public virtual string Name { get; set; }
+        public virtual string Language { get; set; }
 
         [StringLengthMax]
-        public virtual string Body { get; set; }
+        public virtual string Template { get; set; }
     }
 }

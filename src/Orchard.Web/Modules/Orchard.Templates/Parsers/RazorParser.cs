@@ -7,19 +7,21 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Razor;
 using Microsoft.CSharp;
-using Orchard.Mvc;
+using Orchard.Templates.Services;
 
-namespace Orchard.Templates.Services {
-    public interface IRazorParser : IDependency {
-        string Parse<TModel>(string razor, TModel model = default(TModel));
-    }
+namespace Orchard.Templates.Parsers {
+    public interface IRazorParser : IParser {}
 
-    public class RazorParser : IRazorParser {
+    public class RazorParser : ParserBase, IRazorParser {
         const string DynamicallyGeneratedClassName = "RazorView";
         const string NamespaceForDynamicClasses = "Orchard.Templates";
         const string DynamicClassFullName = NamespaceForDynamicClasses + "." + DynamicallyGeneratedClassName;
 
-        public string Parse<TModel>(string razor, TModel model = default(TModel)) {
+        public override string Language {
+            get { return "Razor"; }
+        }
+
+        public override string Parse<TModel>(string razor, TModel model = default(TModel)) {
             var language = new CSharpRazorCodeLanguage();
             var host = new RazorEngineHost(language) {
                 DefaultBaseClass = typeof(RazorViewBase<TModel>).FullName,
@@ -38,7 +40,7 @@ namespace Orchard.Templates.Services {
             return templateInstance.GetContent();
         }
 
-        private Assembly CreateCompiledAssemblyFor(CodeCompileUnit unitToCompile) {
+        private static Assembly CreateCompiledAssemblyFor(CodeCompileUnit unitToCompile) {
             var compilerParameters = new CompilerParameters();
             compilerParameters.ReferencedAssemblies.Add("System.dll");
             compilerParameters.ReferencedAssemblies.Add("Microsoft.CSharp.dll");

@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using NUnit.Framework;
+using Orchard.Templates.Parsers;
 using Orchard.Templates.Services;
 
 namespace Orchard.Templates.Tests {
