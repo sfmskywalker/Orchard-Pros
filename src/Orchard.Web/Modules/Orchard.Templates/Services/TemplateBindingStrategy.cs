@@ -1,9 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.UI;
 using Orchard.DisplayManagement.Descriptors;
 using Orchard.DisplayManagement.Implementation;
 using Orchard.Mvc.Spooling;
@@ -11,26 +7,13 @@ using Orchard.Mvc.Spooling;
 namespace Orchard.Templates.Services {
     public class TemplateBindingStrategy : IShapeTableProvider {
         private readonly IWorkContextAccessor _wca;
-        private readonly RouteCollection _routeCollection;
 
-        public TemplateBindingStrategy(
-            IWorkContextAccessor wca,
-            RouteCollection routeCollection) {
+        public TemplateBindingStrategy(IWorkContextAccessor wca) {
             _wca = wca;
-            _routeCollection = routeCollection;
         }
 
         public void Discover(ShapeTableBuilder builder) {
-
-            var workContext = _wca.GetContext();
-            if (workContext != null) {
-                BuildShapes(builder, workContext.Resolve<ITemplateService>(), workContext.Resolve<ITemplateCache>());
-            }
-            else {
-                using (var scope = _wca.CreateWorkContextScope()) {
-                    BuildShapes(builder, scope.Resolve<ITemplateService>(), scope.Resolve<ITemplateCache>());
-                }
-            }
+            ExecuteInWorkContext(context => BuildShapes(builder, context.Resolve<ITemplateService>(), context.Resolve<ITemplateCache>()));
         }
 
         private void BuildShapes(ShapeTableBuilder builder, ITemplateService templatesService, ITemplateCache cache) {
@@ -43,12 +26,12 @@ namespace Orchard.Templates.Services {
                        .BoundAs("Template::" + shapeType,
                                 descriptor => context => {
                                     var template = cache.Get(record.Name);
-                                    return template != null ? PerformInvoke(context, descriptor, record.Language, template) : new HtmlString("");
+                                    return template != null ? PerformInvoke(context, record.Language, template) : new HtmlString("");
                                 });
             }
         }
 
-        private IHtmlString PerformInvoke(DisplayContext displayContext, ShapeDescriptor descriptor, string type, string template) {
+        private IHtmlString PerformInvoke(DisplayContext displayContext, string type, string template) {
             var service = _wca.GetContext().Resolve<ITemplateService>();
             var output = new HtmlStringWriter();
 
@@ -90,6 +73,18 @@ namespace Orchard.Templates.Services {
 
         private static IHtmlString CoerceHtmlString(object invoke) {
             return invoke as IHtmlString ?? (invoke != null ? new HtmlString(invoke.ToString()) : null);
+        }
+
+        private void ExecuteInWorkContext(Action<WorkContext> action) {
+            var workContext = _wca.GetContext();
+            if (workContext != null) {
+                action(workContext);
+            }
+            else {
+                using (var scope = _wca.CreateWorkContextScope()) {
+                    action(scope.WorkContext);
+                }
+            }
         }
     }
 }
