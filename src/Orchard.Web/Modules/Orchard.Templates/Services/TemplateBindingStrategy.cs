@@ -14,7 +14,7 @@ namespace Orchard.Templates.Services {
         private readonly RouteCollection _routeCollection;
 
         public TemplateBindingStrategy(
-            IWorkContextAccessor wca, 
+            IWorkContextAccessor wca,
             RouteCollection routeCollection) {
             _wca = wca;
             _routeCollection = routeCollection;
@@ -23,14 +23,11 @@ namespace Orchard.Templates.Services {
         public void Discover(ShapeTableBuilder builder) {
 
             var workContext = _wca.GetContext();
-            if (workContext != null)
-            {
+            if (workContext != null) {
                 BuildShapes(builder, workContext.Resolve<ITemplateService>(), workContext.Resolve<ITemplateCache>());
             }
-            else
-            {
-                using (var scope = _wca.CreateWorkContextScope())
-                {
+            else {
+                using (var scope = _wca.CreateWorkContextScope()) {
                     BuildShapes(builder, scope.Resolve<ITemplateService>(), scope.Resolve<ITemplateCache>());
                 }
             }
@@ -38,8 +35,7 @@ namespace Orchard.Templates.Services {
 
         private void BuildShapes(ShapeTableBuilder builder, ITemplateService templatesService, ITemplateCache cache) {
             var shapes = templatesService.GetTemplates();
-            foreach (var record in shapes)
-            {
+            foreach (var record in shapes) {
                 cache.Set(record.Name, record.Template);
 
                 var shapeType = AdjustName(record.Name);
@@ -52,8 +48,7 @@ namespace Orchard.Templates.Services {
             }
         }
 
-        private IHtmlString PerformInvoke(DisplayContext displayContext, ShapeDescriptor descriptor, string type, string template)
-        {
+        private IHtmlString PerformInvoke(DisplayContext displayContext, ShapeDescriptor descriptor, string type, string template) {
             var service = _wca.GetContext().Resolve<ITemplateService>();
             var output = new HtmlStringWriter();
 
@@ -65,12 +60,10 @@ namespace Orchard.Templates.Services {
             return output;
         }
 
-        private string AdjustName(string name)
-        {
+        private string AdjustName(string name) {
             var lastDash = name.LastIndexOf('-');
             var lastDot = name.LastIndexOf('.');
-            if (lastDot <= 0 || lastDot < lastDash)
-            {
+            if (lastDot <= 0 || lastDot < lastDash) {
                 name = Adjust(name, null);
                 return name;
             }
@@ -81,23 +74,21 @@ namespace Orchard.Templates.Services {
         }
 
         private static string Adjust(string name, string displayType) {
-            // canonical shape type names must not have - or . to be compatible 
-            // with display and shape api calls)))
+            // Canonical shape type names must not have - or . to be compatible with display and shape api calls.
             var shapeType = name.Replace("--", "__").Replace("-", "__").Replace('.', '_');
 
-            if (string.IsNullOrEmpty(displayType)) {
-                return shapeType.ToLowerInvariant();
+            if (String.IsNullOrEmpty(displayType)) {
+                return shapeType;
             }
             var firstBreakingSeparator = shapeType.IndexOf("__", StringComparison.OrdinalIgnoreCase);
             if (firstBreakingSeparator <= 0) {
-                return (shapeType + "_" + displayType).ToLowerInvariant();
+                return (shapeType + "_" + displayType);
             }
 
-            return (shapeType.Substring(0, firstBreakingSeparator) + "_" + displayType + shapeType.Substring(firstBreakingSeparator)).ToLowerInvariant();
+            return (shapeType.Substring(0, firstBreakingSeparator) + "_" + displayType + shapeType.Substring(firstBreakingSeparator));
         }
 
-        private static IHtmlString CoerceHtmlString(object invoke)
-        {
+        private static IHtmlString CoerceHtmlString(object invoke) {
             return invoke as IHtmlString ?? (invoke != null ? new HtmlString(invoke.ToString()) : null);
         }
     }
