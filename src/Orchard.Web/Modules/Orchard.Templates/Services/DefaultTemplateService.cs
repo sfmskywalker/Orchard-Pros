@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
 using Orchard.DisplayManagement.Implementation;
@@ -34,7 +35,9 @@ namespace Orchard.Templates.Services {
 
         public string ExecuteShape(string shapeType, INamedEnumerable<object> parameters) {
             var shape = _shapeFactory.Create(shapeType, parameters);
-            var display = _displayHelperFactory.CreateHelper(new ViewContext { HttpContext = _workContextAccessor.GetContext().HttpContext }, new ViewDataContainer());
+            var viewContext = new ViewContext {HttpContext = _workContextAccessor.GetContext().HttpContext};
+            viewContext.RouteData.DataTokens["IWorkContextAccessor"] = _workContextAccessor;
+            var display = _displayHelperFactory.CreateHelper(viewContext, new ViewDataContainer());
             var result = ((DisplayHelper)display).ShapeExecute(shape).ToString();
             return result;
         }
