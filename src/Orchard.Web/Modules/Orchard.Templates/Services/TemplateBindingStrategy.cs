@@ -25,25 +25,30 @@ namespace Orchard.Templates.Services {
             var workContext = _wca.GetContext();
             if (workContext != null)
             {
-                BuildShapes(builder, workContext.Resolve<ITemplateService>());
+                BuildShapes(builder, workContext.Resolve<ITemplateService>(), workContext.Resolve<ITemplateCache>());
             }
             else
             {
                 using (var scope = _wca.CreateWorkContextScope())
                 {
-                    BuildShapes(builder, scope.Resolve<ITemplateService>());
+                    BuildShapes(builder, scope.Resolve<ITemplateService>(), scope.Resolve<ITemplateCache>());
                 }
             }
         }
 
-        private void BuildShapes(ShapeTableBuilder builder, ITemplateService templatesService) {
+        private void BuildShapes(ShapeTableBuilder builder, ITemplateService templatesService, ITemplateCache cache) {
             var shapes = templatesService.GetTemplates();
             foreach (var record in shapes)
             {
+                cache.Set(record.Name, record.Template);
+
                 var shapeType = AdjustName(record.Name);
                 builder.Describe(shapeType)
                        .BoundAs("Template::" + shapeType,
-                                descriptor => context => PerformInvoke(context, descriptor, record.Language, record.Template));
+                                descriptor => context => {
+                                    var template = cache.Get(record.Name);
+                                    return template != null ? PerformInvoke(context, descriptor, record.Language, template) : new HtmlString("");
+                                });
             }
         }
 
@@ -55,7 +60,7 @@ namespace Orchard.Templates.Services {
             if (String.IsNullOrEmpty(template))
                 return null;
 
-            output.Write(CoerceHtmlString(service.Parse(template, type, obj => Activate(obj, displayContext, output), displayContext.ViewDataContainer.ViewData.Model)));
+            output.Write(CoerceHtmlString(service.Execute(template, type, displayContext, displayContext.ViewDataContainer.ViewData.Model)));
 
             return output;
         }
@@ -75,33 +80,20 @@ namespace Orchard.Templates.Services {
             return name;
         }
 
-        private static string Adjust(string name, string displayType)
-        {
+        private static string Adjust(string name, string displayType) {
             // canonical shape type names must not have - or . to be compatible 
             // with display and shape api calls)))
             var shapeType = name.Replace("--", "__").Replace("-", "__").Replace('.', '_');
 
-            if (string.IsNullOrEmpty(displayType))
-            {
+            if (string.IsNullOrEmpty(displayType)) {
                 return shapeType.ToLowerInvariant();
             }
             var firstBreakingSeparator = shapeType.IndexOf("__", StringComparison.OrdinalIgnoreCase);
-            if (firstBreakingSeparator <= 0)
-            {
+            if (firstBreakingSeparator <= 0) {
                 return (shapeType + "_" + displayType).ToLowerInvariant();
             }
 
             return (shapeType.Substring(0, firstBreakingSeparator) + "_" + displayType + shapeType.Substring(firstBreakingSeparator)).ToLowerInvariant();
-        }
-
-        private void Activate<TModel>(ITemplateViewBase<TModel> obj, DisplayContext displayContext, TextWriter output)
-        {
-            obj.Writer = new HtmlTextWriter(output);
-            obj.Url = new UrlHelper(displayContext.ViewContext.RequestContext, _routeCollection);
-            obj.Html = new HtmlHelper<TModel>(displayContext.ViewContext, displayContext.ViewDataContainer, _routeCollection);
-            obj.Ajax = new AjaxHelper<TModel>(displayContext.ViewContext, displayContext.ViewDataContainer, _routeCollection);
-            obj.ViewContext = displayContext.ViewContext;
-            obj.InitHelpers();
         }
 
         private static IHtmlString CoerceHtmlString(object invoke)

@@ -10,14 +10,14 @@ namespace Orchard.Templates.Tests {
         [SetUp]
         public void Init() {
             var builder = new ContainerBuilder();
-            builder.RegisterType<RazorTemplateParser>().As<ITemplateParser>();
+            builder.RegisterType<RazorTemplateProcessor>().As<ITemplateProcessor>();
             _container = builder.Build();
         }
 
         [Test]
         public void ParseSomething() {
-            var razorParser = _container.Resolve<ITemplateParser>();
-            var result = razorParser.Parse<dynamic>("@{ int i = 42;} The answer to everything is @i.", null);
+            var razorParser = _container.Resolve<ITemplateProcessor>();
+            var result = razorParser.Process("@{ int i = 42;} The answer to everything is @i.");
             Assert.That(result.Trim(), Is.EqualTo("The answer to everything is 42."));
         }
     }

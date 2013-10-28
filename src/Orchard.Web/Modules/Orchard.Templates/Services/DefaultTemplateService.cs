@@ -13,19 +13,19 @@ namespace Orchard.Templates.Services {
         private readonly IDisplayHelperFactory _displayHelperFactory;
         private readonly IWorkContextAccessor _workContextAccessor;
         private readonly IContentManager _contentManager;
-        private readonly IEnumerable<ITemplateParser> _parsers;
+        private readonly IEnumerable<ITemplateProcessor> _processors;
 
         public DefaultTemplateService(
             IShapeFactory shapeFactory, 
             IDisplayHelperFactory displayHelperFactory, 
             IWorkContextAccessor workContextAccessor, 
             IContentManager contentManager, 
-            IEnumerable<ITemplateParser> parsers) {
+            IEnumerable<ITemplateProcessor> processors) {
             _shapeFactory = shapeFactory;
             _displayHelperFactory = displayHelperFactory;
             _workContextAccessor = workContextAccessor;
             _contentManager = contentManager;
-            _parsers = parsers;
+            _processors = processors;
         }
 
         public string ExecuteShape(string shapeType) {
@@ -39,15 +39,13 @@ namespace Orchard.Templates.Services {
             return result;
         }
 
-        public string Parse<TModel>(string template, string language, Action<ITemplateViewBase<TModel>> activator, TModel model = default(TModel))
-        {
-            var parser = _parsers.Single(x => String.Equals(x.Type, language, StringComparison.OrdinalIgnoreCase));
-            return parser.Parse(template, activator, model);
+        public string Execute<TModel>(string template, string language, TModel model = default(TModel)) {
+            return Execute(template, language, null, model);
         }
 
-        public string Parse(string template, string language, Action<ITemplateViewBase<dynamic>> activator, dynamic model = null)
-        {
-            return Parse<dynamic>(template, language, activator, model);
+        public string Execute<TModel>(string template, string language, DisplayContext context, TModel model = default(TModel)) {
+            var processor = _processors.FirstOrDefault(x => String.Equals(x.Type, language, StringComparison.OrdinalIgnoreCase));
+            return processor != null ? processor.Process(template, context, model) : string.Empty;
         }
 
         public IEnumerable<ShapePart> GetTemplates(VersionOptions versionOptions = null) {

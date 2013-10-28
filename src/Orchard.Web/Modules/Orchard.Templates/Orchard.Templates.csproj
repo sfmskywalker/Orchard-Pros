@@ -159,12 +159,15 @@
     <Compile Include="Drivers\ShapePartDriver.cs" />
     <Compile Include="Models\ShapePart.cs" />
     <Compile Include="Migrations.cs" />
-    <Compile Include="Services\ITemplateParser.cs" />
-    <Compile Include="Services\RazorParser.cs">
+    <Compile Include="Services\ITemplateCache.cs" />
+    <Compile Include="Services\ITemplateProcessor.cs" />
+    <Compile Include="Services\ITemplateBase.cs" />
+    <Compile Include="Services\ITemplateService.cs" />
+    <Compile Include="Services\TemplateProcessorImpl.cs" />
+    <Compile Include="Services\RazorTemplateProcessor.cs" />
+    <Compile Include="Services\RazorTemplate.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Services\ITemplateService.cs" />
-    <Compile Include="Services\ParserBase.cs" />
     <Compile Include="Services\TemplateBindingStrategy.cs" />
     <Compile Include="Services\DefaultTemplateService.cs" />
     <Compile Include="Tokens\ShapeTokenProvider.cs" />
@@ -185,9 +188,7 @@
   <ItemGroup>
     <Content Include="Views\EditorTemplates\TemplateLanguagePicker.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Parsers\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
