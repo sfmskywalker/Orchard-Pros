@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.Data;
@@ -39,7 +40,8 @@ namespace Orchard.Templates.Drivers {
                 AvailableLanguages = _processors.Select(x => x.Type).Distinct().ToArray()
             };
             if (updater != null) {
-                if (updater.TryUpdateModel(viewModel, Prefix, null, new[] { "AvailableLanguages" })) {
+                if(updater.TryUpdateModel(viewModel, Prefix, null, new[] { "AvailableLanguages" })
+                    && ValidateShapeName(viewModel.Name, updater)) {
                     part.Name = viewModel.Name.TrimSafe();
                     part.Language = viewModel.Language;
                     part.Template = viewModel.Template;
@@ -57,6 +59,16 @@ namespace Orchard.Templates.Drivers {
                 }
             }
             return ContentShape("Parts_Shape_Edit", () => shapeHelper.EditorTemplate(TemplateName: "Parts.Shape", Model: viewModel, Prefix: Prefix));
+        }
+
+        private bool ValidateShapeName(string name, IUpdateModel updater) {
+            const string pattern = "^[^0-9][a-zA-Z0-9]+$";
+            if (Regex.IsMatch(name, pattern)) {
+                return true;
+            }
+
+            updater.AddModelError("Name", T("Shape names can only contain alphanumerical and numerical characters."));
+            return false;
         }
     }
 }
