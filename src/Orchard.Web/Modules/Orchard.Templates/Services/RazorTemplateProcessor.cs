@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Razor;
 using System.Web.Routing;
+using System.Web.WebPages;
 using Microsoft.CSharp;
 using Orchard.Caching;
 using Orchard.DisplayManagement.Implementation;
@@ -50,14 +51,11 @@ namespace Orchard.Templates.Services {
             return instance.GetContent();
         }
 
-        private RazorTemplate Compile(string template)
-        {
+        private RazorTemplate Compile(string template) {
             var hash = GetHash(template);
-            return _cache.Get(hash, ctx =>
-            {
+            return _cache.Get(hash, ctx => {
                 var language = new CSharpRazorCodeLanguage();
-                var host = new RazorEngineHost(language)
-                {
+                var host = new RazorEngineHost(language) {
                     DefaultBaseClass = typeof(RazorTemplate).FullName,
                     DefaultClassName = DynamicallyGeneratedClassName,
                     DefaultNamespace = NamespaceForDynamicClasses,
@@ -76,6 +74,7 @@ namespace Orchard.Templates.Services {
                     "System.Web.Mvc.Html",
                     "System.Web.Mvc.Ajax",
                     "System.Web.UI",
+                    "Orchard.ContentManagement",
                     "Orchard.DisplayManagement",
                     "Orchard.DisplayManagement.Shapes",
                     "Orchard.Security.Permissions",
@@ -85,8 +84,7 @@ namespace Orchard.Templates.Services {
                     "Orchard.Mvc.Html"
                 };
 
-                foreach (var n in namespaces)
-                {
+                foreach (var n in namespaces) {
                     host.NamespaceImports.Add(n);
                 }
 
@@ -96,8 +94,7 @@ namespace Orchard.Templates.Services {
                 var razorTemplate = engine.GenerateCode(tr);
                 var compiledAssembly = CreateCompiledAssemblyFor(razorTemplate.GeneratedCode);
 
-                if (compiledAssembly == null)
-                {
+                if (compiledAssembly == null) {
                     return null;
                 }
 
@@ -111,6 +108,7 @@ namespace Orchard.Templates.Services {
             compilerParameters.ReferencedAssemblies.Add("System.Dynamic.dll");
             compilerParameters.ReferencedAssemblies.Add("Microsoft.CSharp.dll");
             compilerParameters.ReferencedAssemblies.Add("System.Core.dll");
+            compilerParameters.ReferencedAssemblies.Add(typeof(WebPage).Assembly.Location);
             compilerParameters.ReferencedAssemblies.Add(typeof(HtmlString).Assembly.Location);
             compilerParameters.ReferencedAssemblies.Add(typeof(ActionResult).Assembly.Location);
             compilerParameters.ReferencedAssemblies.Add(typeof(RazorTemplateProcessor).Assembly.Location);
@@ -125,12 +123,11 @@ namespace Orchard.Templates.Services {
             }
             else {
                 var compiledAssembly = compilerResults.CompiledAssembly;
-                return compiledAssembly;  
+                return compiledAssembly;
             }
         }
 
-        public static string GetHash(string value)
-        {
+        public static string GetHash(string value) {
             var data = Encoding.ASCII.GetBytes(value);
             var hashData = new SHA1Managed().ComputeHash(data);
 
@@ -138,15 +135,14 @@ namespace Orchard.Templates.Services {
         }
 
 
-        private void Activate(ITemplateBase obj, DisplayContext displayContext)
-        {
+        private void Activate(ITemplateBase obj, DisplayContext displayContext) {
             //obj.Writer = new HtmlTextWriter(disp);
             obj.Url = new UrlHelper(displayContext.ViewContext.RequestContext, _routeCollection);
             obj.Html = new HtmlHelper<dynamic>(displayContext.ViewContext, displayContext.ViewDataContainer, _routeCollection);
             obj.Ajax = new AjaxHelper<dynamic>(displayContext.ViewContext, displayContext.ViewDataContainer, _routeCollection);
             obj.ViewContext = displayContext.ViewContext;
             obj.ViewData = displayContext.ViewDataContainer.ViewData;
-            obj.Model = displayContext.Value;
+            obj.ViewData.Model = displayContext.Value;
             obj.InitHelpers();
         }
     }

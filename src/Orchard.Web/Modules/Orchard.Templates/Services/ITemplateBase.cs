@@ -2,9 +2,8 @@
 using System.Web.UI;
 
 namespace Orchard.Templates.Services {
-    public interface ITemplateBase
-    {
-        dynamic Model { get; set; }
+    public interface ITemplateBase {
+        dynamic Model { get; }
         ViewDataDictionary ViewData { get; set; }
         ViewContext ViewContext { get; set; }
         AjaxHelper<dynamic> Ajax { get; set; }

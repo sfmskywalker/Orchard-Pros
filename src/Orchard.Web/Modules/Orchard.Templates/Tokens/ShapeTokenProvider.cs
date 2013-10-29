@@ -1,4 +1,5 @@
 ﻿using System;
+using Orchard.DisplayManagement;
 using Orchard.Templates.Services;
 using Orchard.Tokens;
 
@@ -17,11 +18,12 @@ namespace Orchard.Templates.Tokens {
 
         public void Evaluate(EvaluateContext context) {
             context.For("Shape", "")
-                .Token(t => t.StartsWith("Execute:", StringComparison.OrdinalIgnoreCase) ? t.Substring("Execute:".Length) : null, TokenValue);
+                .Token(t => t.StartsWith("Execute:", StringComparison.OrdinalIgnoreCase) ? t.Substring("Execute:".Length) : null, (shapeName, data) => TokenValue(context, shapeName, data));
         }
 
-        private object TokenValue(string shapeName, string data) {
-            return _templateService.ExecuteShape(shapeName);
+        private object TokenValue(EvaluateContext context, string shapeName, string data) {
+            var parameters = Arguments.From(context.Data.Values, context.Data.Keys);
+            return _templateService.ExecuteShape(shapeName, parameters);
         }
     }
 }
