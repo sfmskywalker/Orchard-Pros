@@ -167,6 +167,7 @@
     <Compile Include="Services\ITemplateProcessor.cs" />
     <Compile Include="Services\ITemplateBase.cs" />
     <Compile Include="Services\ITemplateService.cs" />
+    <Compile Include="Services\StubHttpContext.cs" />
     <Compile Include="Services\TemplateProcessorImpl.cs" />
     <Compile Include="Services\RazorTemplateProcessor.cs" />
     <Compile Include="Services\RazorTemplate.cs">
