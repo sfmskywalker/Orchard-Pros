@@ -1,31 +1,75 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
+using Orchard.Caching;
+using Orchard.ContentManagement;
 using Orchard.DisplayManagement.Descriptors;
 using Orchard.DisplayManagement.Implementation;
+using Orchard.Environment.Extensions;
+using Orchard.Environment.Extensions.Models;
 using Orchard.Mvc.Spooling;
+using Orchard.Settings;
+using Orchard.Themes.Models;
 
 namespace Orchard.Templates.Services {
     public class TemplateBindingStrategy : IShapeTableProvider {
         private readonly IWorkContextAccessor _wca;
+        private readonly ICacheManager _cache;
+        private readonly ISignals _signals;
 
-        public TemplateBindingStrategy(IWorkContextAccessor wca) {
+        public TemplateBindingStrategy(IWorkContextAccessor wca, ICacheManager cache, ISignals signals) {
             _wca = wca;
+            _cache = cache;
+            _signals = signals;
         }
 
         public void Discover(ShapeTableBuilder builder) {
-            ExecuteInWorkContext(context => BuildShapes(builder, context.Resolve<ITemplateService>(), context.Resolve<ITemplateCache>()));
+            EnsureWorkContext(() => BuildShapes(builder));
         }
 
-        private void BuildShapes(ShapeTableBuilder builder, ITemplateService templatesService, ITemplateCache cache) {
-            var shapes = templatesService.GetTemplates();
-            foreach (var record in shapes) {
-                cache.Set(record.Name, record.Template);
+        private void BuildShapes(ShapeTableBuilder builder) {
+            
+            var templateService = _wca.GetContext().Resolve<ITemplateService>();
+            var templateCache = _wca.GetContext().Resolve<ITemplateCache>();
+            var siteService = _wca.GetContext().Resolve<ISiteService>();
+            var extensionManager = _wca.GetContext().Resolve<IExtensionManager>();
 
+            var currentTheme = extensionManager.GetExtension(siteService.GetSiteSettings().As<ThemeSiteSettingsPart>().CurrentThemeName);
+            var themeFeature = currentTheme.Features.FirstOrDefault();
+
+            var hackedDescriptor = new FeatureDescriptor
+            {
+                Category = themeFeature.Category,
+                Dependencies = themeFeature.Dependencies,
+                Description = themeFeature.Description,
+                Extension = themeFeature.Extension,
+                Id = themeFeature.Id,
+                Name = themeFeature.Name,
+                Priority = int.MaxValue
+            };
+
+            var shapes = _cache.Get(
+                DefaultTemplateService.TemplatesSignal, 
+                ctx => {
+                    ctx.Monitor(_signals.When(DefaultTemplateService.TemplatesSignal));
+                    return templateService
+                        .GetTemplates()
+                        .Select(r => new { 
+                            r.Name, 
+                            r.Language, 
+                            r.Template })
+                        .ToList();
+                });
+
+            foreach (var record in shapes) {
+                templateCache.Set(record.Name, record.Template);
                 var shapeType = AdjustName(record.Name);
+
                 builder.Describe(shapeType)
+                       .From(new Feature { Descriptor = hackedDescriptor })
                        .BoundAs("Template::" + shapeType,
                                 descriptor => context => {
-                                    var template = cache.Get(record.Name);
+                                    var template = templateCache.Get(record.Name);
                                     return template != null ? PerformInvoke(context, record.Language, template) : new HtmlString("");
                                 });
             }
@@ -75,14 +119,14 @@ namespace Orchard.Templates.Services {
             return invoke as IHtmlString ?? (invoke != null ? new HtmlString(invoke.ToString()) : null);
         }
 
-        private void ExecuteInWorkContext(Action<WorkContext> action) {
+        private void EnsureWorkContext(Action action) {
             var workContext = _wca.GetContext();
             if (workContext != null) {
-                action(workContext);
+                action();
             }
             else {
-                using (var scope = _wca.CreateWorkContextScope()) {
-                    action(scope.WorkContext);
+                using (_wca.CreateWorkContextScope()) {
+                    action();
                 }
             }
         }

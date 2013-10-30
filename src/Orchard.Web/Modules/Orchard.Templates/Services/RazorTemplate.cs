@@ -2,14 +2,13 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.WebPages;
 using System.Web.WebPages.Instrumentation;
 
 namespace Orchard.Templates.Services {
     public class RazorTemplate : Mvc.ViewPage<dynamic>, ITemplateBase {
-        private StringBuilder _buffer;
-        private TextWriter CurrentWriter { get; set; }
         public virtual void Execute(){}
 
         protected void Write(object value) {
@@ -17,30 +16,28 @@ namespace Orchard.Templates.Services {
         }
 
         protected void WriteLiteral(object value) {
-            _buffer.Append(value);
+            Writer.Write(value);
         }
 
         public string GetContent() {
-            _buffer = new StringBuilder(1024);
-            using (var writer = new StringWriter(_buffer)) {
-                CurrentWriter = writer;
+            var buffer = new StringBuilder(1024);
+            using (var writer = new StringWriter(buffer))
+            {
+                Writer = new HtmlTextWriter(writer);
                 Execute();
-                CurrentWriter = null;
+                Writer = null;
             }
-            return _buffer.ToString();
+            return buffer.ToString();
         }
+
+        public new HtmlTextWriter Writer { get; set; }
 
         dynamic ITemplateBase.Model {
             get { return Model; }
         }
 
-        HtmlTextWriter ITemplateBase.Writer {
-            get { return Writer; } 
-            set { base.Render(value);}
-        }
-
         public virtual void WriteAttribute(string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values) {
-            WriteAttributeTo(CurrentWriter, name, prefix, suffix, values);
+            WriteAttributeTo(Writer, name, prefix, suffix, values);
         }
 
         public virtual void WriteAttributeTo(TextWriter writer, string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values) {
@@ -110,6 +107,18 @@ namespace Orchard.Templates.Services {
             if (value == null) return;
 
             writer.Write(value );
+        }
+
+        public new IDisposable Capture(Action<IHtmlString> callback)
+        {
+            return new CaptureScope(Writer, callback);
+        }
+
+        public new IDisposable Capture(dynamic zone, string position = null)
+        {
+            return new CaptureScope(Writer, html => {
+                zone.Add(html, position);
+            });
         }
     }
 }

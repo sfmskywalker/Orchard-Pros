@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Razor;
 using System.Web.Routing;
+using System.Web.UI;
 using System.Web.WebPages;
 using Microsoft.CSharp;
 using Orchard.Caching;
@@ -53,7 +54,7 @@ namespace Orchard.Templates.Services {
 
         private RazorTemplate Compile(string template) {
             var hash = GetHash(template);
-            return _cache.Get(hash, ctx => {
+            var assembly = _cache.Get(hash, ctx => {
                 var language = new CSharpRazorCodeLanguage();
                 var host = new RazorEngineHost(language) {
                     DefaultBaseClass = typeof(RazorTemplate).FullName,
@@ -98,21 +99,20 @@ namespace Orchard.Templates.Services {
                     return null;
                 }
 
-                return (RazorTemplate)compiledAssembly.CreateInstance(DynamicClassFullName);
+                return compiledAssembly;
             });
+
+            return (RazorTemplate)assembly.CreateInstance(DynamicClassFullName);
         }
 
         private Assembly CreateCompiledAssemblyFor(CodeCompileUnit unitToCompile) {
             var compilerParameters = new CompilerParameters();
-            compilerParameters.ReferencedAssemblies.Add("System.dll");
-            compilerParameters.ReferencedAssemblies.Add("System.Dynamic.dll");
-            compilerParameters.ReferencedAssemblies.Add("Microsoft.CSharp.dll");
-            compilerParameters.ReferencedAssemblies.Add("System.Core.dll");
-            compilerParameters.ReferencedAssemblies.Add(typeof(WebPage).Assembly.Location);
-            compilerParameters.ReferencedAssemblies.Add(typeof(HtmlString).Assembly.Location);
-            compilerParameters.ReferencedAssemblies.Add(typeof(ActionResult).Assembly.Location);
-            compilerParameters.ReferencedAssemblies.Add(typeof(RazorTemplateProcessor).Assembly.Location);
-            compilerParameters.ReferencedAssemblies.Add(typeof(IDependency).Assembly.Location);
+            compilerParameters.ReferencedAssemblies.AddRange(AppDomain.CurrentDomain
+                .GetAssemblies()
+                .Where(a => !a.IsDynamic)
+                .Select(a => a.Location)
+                .ToArray());
+
             compilerParameters.GenerateInMemory = true;
 
             var compilerResults = new CSharpCodeProvider().CompileAssemblyFromDom(compilerParameters, unitToCompile);
@@ -136,7 +136,6 @@ namespace Orchard.Templates.Services {
 
 
         private void Activate(ITemplateBase obj, DisplayContext displayContext) {
-            //obj.Writer = new HtmlTextWriter(disp);
             obj.Url = new UrlHelper(displayContext.ViewContext.RequestContext, _routeCollection);
             obj.Html = new HtmlHelper<dynamic>(displayContext.ViewContext, displayContext.ViewDataContainer, _routeCollection);
             obj.Ajax = new AjaxHelper<dynamic>(displayContext.ViewContext, displayContext.ViewDataContainer, _routeCollection);

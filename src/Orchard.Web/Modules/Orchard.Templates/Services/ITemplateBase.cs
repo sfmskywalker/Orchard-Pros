@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.IO;
+using System.Web.Mvc;
 using System.Web.UI;
 
 namespace Orchard.Templates.Services {
@@ -9,7 +10,6 @@ namespace Orchard.Templates.Services {
         AjaxHelper<dynamic> Ajax { get; set; }
         HtmlHelper<dynamic> Html { get; set; }
         UrlHelper Url { get; set; }
-        HtmlTextWriter Writer { get; set; }
         void InitHelpers();
     }
 }

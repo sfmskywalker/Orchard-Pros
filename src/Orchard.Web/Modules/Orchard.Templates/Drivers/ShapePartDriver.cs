@@ -10,6 +10,7 @@ using Orchard.Templates.Helpers;
 using Orchard.Templates.Models;
 using Orchard.Templates.Services;
 using Orchard.Templates.ViewModels;
+using Orchard.Utility.Extensions;
 
 namespace Orchard.Templates.Drivers {
     public class ShapePartDriver : ContentPartDriver<ShapePart> {
@@ -39,9 +40,10 @@ namespace Orchard.Templates.Drivers {
                 Language = part.Language,
                 AvailableLanguages = _processors.Select(x => x.Type).Distinct().ToArray()
             };
-            if (updater != null) {
-                if(updater.TryUpdateModel(viewModel, Prefix, null, new[] { "AvailableLanguages" })
-                    && ValidateShapeName(viewModel.Name, updater)) {
+
+            if (updater != null 
+                && updater.TryUpdateModel(viewModel, Prefix, null, new[] { "AvailableLanguages" })
+                && ValidateShapeName(viewModel.Name, updater)) {
                     part.Name = viewModel.Name.TrimSafe();
                     part.Language = viewModel.Language;
                     part.Template = viewModel.Template;
@@ -49,25 +51,24 @@ namespace Orchard.Templates.Drivers {
                     try {
                         var processor = _processors.FirstOrDefault(x => String.Equals(x.Type, part.Language, StringComparison.OrdinalIgnoreCase));
                         processor.Verify(part.Template);
-
                         _cache.Set(part.Name, part.Template);
                     }
                     catch (Exception ex) {
                         updater.AddModelError("", T("Template processing error: {0}", ex.Message));
                         _transactions.Cancel();
                     }
-                }
             }
             return ContentShape("Parts_Shape_Edit", () => shapeHelper.EditorTemplate(TemplateName: "Parts.Shape", Model: viewModel, Prefix: Prefix));
         }
 
         private bool ValidateShapeName(string name, IUpdateModel updater) {
-            const string pattern = "^[^0-9][a-zA-Z0-9]+$";
-            if (Regex.IsMatch(name, pattern)) {
+            if (!string.IsNullOrWhiteSpace(name) && 
+                name[0].IsLetter() && 
+                name.All(c => c.IsLetter() || Char.IsDigit(c) || c == '.' || c == '-' )) {
                 return true;
             }
 
-            updater.AddModelError("Name", T("Shape names can only contain alphanumerical and numerical characters."));
+            updater.AddModelError("Name", T("Shape names can only contain alphanumerical, dot (.) or dash (-) characters and have to start with a letter."));
             return false;
         }
     }
