@@ -15,13 +15,17 @@ using System.Web.UI;
 using System.Web.WebPages;
 using Microsoft.CSharp;
 using Orchard.Caching;
+using Orchard.ContentManagement;
 using Orchard.DisplayManagement.Implementation;
 using Orchard.Logging;
+using Orchard.Settings;
+using Orchard.Themes.Models;
 
 namespace Orchard.Templates.Services {
     public class RazorTemplateProcessor : TemplateProcessorImpl {
         private readonly ICacheManager _cache;
         private readonly RouteCollection _routeCollection;
+        private readonly ISiteService _siteService;
         const string DynamicallyGeneratedClassName = "RazorCompiledTemplate";
         const string NamespaceForDynamicClasses = "Orchard.Templates";
         const string DynamicClassFullName = NamespaceForDynamicClasses + "." + DynamicallyGeneratedClassName;
@@ -30,9 +34,10 @@ namespace Orchard.Templates.Services {
             get { return "Razor"; }
         }
 
-        public RazorTemplateProcessor(ICacheManager cache, RouteCollection routeCollection) {
+        public RazorTemplateProcessor(ICacheManager cache, RouteCollection routeCollection, ISiteService siteService) {
             _cache = cache;
             _routeCollection = routeCollection;
+            _siteService = siteService;
             Logger = NullLogger.Instance;
         }
 
@@ -46,7 +51,7 @@ namespace Orchard.Templates.Services {
             var instance = Compile(template);
 
             if (context != null) {
-                Activate(instance, context);
+                Activate(instance, context, model);
             }
 
             return instance.GetContent();
@@ -135,13 +140,15 @@ namespace Orchard.Templates.Services {
         }
 
 
-        private void Activate(ITemplateBase obj, DisplayContext displayContext) {
+        private void Activate(RazorTemplate obj, DisplayContext displayContext, dynamic model) {
+            obj.WebPageContext = new WebPageContext(displayContext.ViewContext.HttpContext, obj, displayContext.Value);
             obj.Url = new UrlHelper(displayContext.ViewContext.RequestContext, _routeCollection);
             obj.Html = new HtmlHelper<dynamic>(displayContext.ViewContext, displayContext.ViewDataContainer, _routeCollection);
             obj.Ajax = new AjaxHelper<dynamic>(displayContext.ViewContext, displayContext.ViewDataContainer, _routeCollection);
             obj.ViewContext = displayContext.ViewContext;
-            obj.ViewData = displayContext.ViewDataContainer.ViewData;
+            ((ITemplateBase)obj).ViewData = displayContext.ViewDataContainer.ViewData;
             obj.ViewData.Model = displayContext.Value;
+            obj.VirtualPath = (model as string) ?? "~/Themes/" + _siteService.GetSiteSettings().As<ThemeSiteSettingsPart>().CurrentThemeName;
             obj.InitHelpers();
         }
     }

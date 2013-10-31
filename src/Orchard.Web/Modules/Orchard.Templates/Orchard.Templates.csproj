@@ -174,9 +174,7 @@
     <Compile Include="Services\StubHttpContext.cs" />
     <Compile Include="Services\TemplateProcessorImpl.cs" />
     <Compile Include="Services\RazorTemplateProcessor.cs" />
-    <Compile Include="Services\RazorTemplate.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Services\RazorTemplate.cs" />
     <Compile Include="Services\TemplateBindingStrategy.cs" />
     <Compile Include="Services\DefaultTemplateService.cs" />
     <Compile Include="Tokens\ShapeTokenProvider.cs" />
