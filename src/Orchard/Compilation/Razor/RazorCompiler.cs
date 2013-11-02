@@ -30,19 +30,23 @@ namespace Orchard.Compilation.Razor {
 
         ILogger Logger { get; set; }
 
-        public RazorTemplateBase CompileRazor(string code, string name, IDictionary<string, object> parameters) {
-            return Compile<RazorTemplateBase>(code, name, parameters);
+        public IRazorTemplateBase<TModel> CompileRazor<TModel>(string code, string name, IDictionary<string, object> parameters) {
+            return (RazorTemplateBase<TModel>)Compile(code, name, typeof(TModel), parameters);
+        }
+
+        public IRazorTemplateBase CompileRazor(string code, string name, Type modelType, IDictionary<string, object> parameters) {
+            return (IRazorTemplateBase)Compile(code, name, modelType, parameters);
         }
 
         public object Compile(string code, IDictionary<string, object> parameters) {
-            return CompileRazor(code, null, parameters);
+            return CompileRazor<RazorTemplateBase<dynamic>>(code, null, parameters);
         }
 
         public T Compile<T>(string code, IDictionary<string, object> parameters) {
-            return Compile<T>(code, null, parameters);
+            return (T) Compile(code, null, null, parameters);
         }
 
-        private T Compile<T>(string code, string name, IDictionary<string, object> parameters) {
+        private object Compile(string code, string name, Type modelType, IDictionary<string, object> parameters) {
             ISignals signals = _wca.GetContext().TryResolve(out signals) ? signals : null;
 
             var cacheKey = name ?? GetHash(code);
@@ -51,9 +55,31 @@ namespace Orchard.Compilation.Razor {
                     ctx.Monitor(signals.When(ForceRecompile));
                 }
 
+                bool useDynamic = true;
+                string modelTypeName = "";
+                var reader = new StringReader(code);
+                var builder = new StringBuilder();
+
+                // A hack to remove any @model directive as it's MVC-specific and compiler does not recognize it.
+                // We should use this information to compile a strongly-typed template in the future
+                string line;
+                while ((line = reader.ReadLine()) != null) {
+                    var internalLine = line.TrimStart(' ', '\t', '\n', '\r');
+                    if (internalLine.StartsWith("@model ")) {
+                        modelTypeName = internalLine.Substring("@model ".Length).Trim();
+                        if(modelTypeName != "dynamic") useDynamic = false;
+
+                        continue;
+                    }
+
+                    builder.AppendLine(line);
+                }
+
+                var baseType = useDynamic ? typeof (RazorTemplateBase) : typeof (RazorTemplateBase<>).MakeGenericType(modelType);
+
                 var language = new CSharpRazorCodeLanguage();
                 var host = new RazorEngineHost(language) {
-                    DefaultBaseClass = typeof(T).FullName,
+                    DefaultBaseClass = baseType.FullName,
                     DefaultClassName = DynamicallyGeneratedClassName,
                     DefaultNamespace = NamespaceForDynamicClasses
                 };
@@ -87,23 +113,12 @@ namespace Orchard.Compilation.Razor {
                 }
 
                 var engine = new RazorTemplateEngine(host);
-                var reader = new StringReader(code);
-                var builder = new StringBuilder();
-
-                // A hack to remove any @model directive as it's MVC-specific and compiler does not recognize it.
-                // We should use this information to compile a strongly-typed template in the future
-                string line;
-                while ((line = reader.ReadLine()) != null) {
-                    if (!line.TrimStart(' ', '\t', '\n', '\r').StartsWith("@model "))
-                        builder.AppendLine(line);
-                }
-
                 var razorTemplate = engine.GenerateCode(new StringReader(builder.ToString()));
                 var compiledAssembly = CreateCompiledAssemblyFor(razorTemplate.GeneratedCode, name);
                 return compiledAssembly;
             });
 
-            return (T)assembly.CreateInstance(DynamicClassFullName);
+            return assembly.CreateInstance(DynamicClassFullName);
         }
 
         public static string GetHash(string value)

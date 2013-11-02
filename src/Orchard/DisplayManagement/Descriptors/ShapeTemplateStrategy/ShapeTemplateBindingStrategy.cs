@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Web.WebPages;
 using Orchard.Caching;
 using Orchard.Compilation.Razor;
 using Orchard.DisplayManagement.Implementation;
+using Orchard.DisplayManagement.Shapes;
 using Orchard.Environment.Descriptor.Models;
 using Orchard.Environment.Extensions;
 using Orchard.Environment.Extensions.Helpers;
@@ -176,8 +178,9 @@ namespace Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy {
             if (String.IsNullOrEmpty(template))
                 return new HtmlString("");
 
-            var compiledTemplate = compiler.CompileRazor(template, harvestShapeInfo.TemplateVirtualPath, new Dictionary<string, object>());
-            output.Write(CoerceHtmlString(ActivateAndRenderTemplate(compiledTemplate, displayContext, harvestShapeInfo.TemplateVirtualPath, _routeCollection)));
+            var compiledTemplate = compiler.CompileRazor(template, harvestShapeInfo.TemplateVirtualPath, displayContext.Value.GetType(), new Dictionary<string, object>());
+            var result = ActivateAndRenderTemplate(compiledTemplate, displayContext, harvestShapeInfo.TemplateVirtualPath, _routeCollection);
+            output.Write(CoerceHtmlString(result));
 
             Logger.Information("Done rendering template file '{0}'", harvestShapeInfo.TemplateVirtualPath);
             return output;
@@ -188,19 +191,16 @@ namespace Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy {
             return invoke as IHtmlString ?? (invoke != null ? new HtmlString(invoke.ToString()) : null);
         }
 
-        private static string ActivateAndRenderTemplate(RazorTemplateBase obj, DisplayContext displayContext, string templateVirtualPath, RouteCollection routes)
+        private static string ActivateAndRenderTemplate(IRazorTemplateBase obj, DisplayContext displayContext, string templateVirtualPath, RouteCollection routes)
         {
             var buffer = new StringBuilder(1024);
             using (var writer = new StringWriter(buffer)) {
                 var htmlWriter = new HtmlTextWriter(writer);
 
                 var shapeViewContext = new ViewContext(displayContext.ViewContext.Controller.ControllerContext, displayContext.ViewContext.View, displayContext.ViewContext.ViewData, displayContext.ViewContext.TempData, htmlWriter);
-                obj.WebPageContext = new WebPageContext(displayContext.ViewContext.HttpContext, obj, displayContext.Value);
-                obj.Url = new UrlHelper(displayContext.ViewContext.RequestContext, routes);
-                obj.Html = new HtmlHelper<dynamic>(shapeViewContext, displayContext.ViewDataContainer, routes);
-                obj.Ajax = new AjaxHelper<dynamic>(shapeViewContext, displayContext.ViewDataContainer, routes);
+                obj.WebPageContext = new WebPageContext(displayContext.ViewContext.HttpContext, obj as WebPageRenderingBase, displayContext.Value);
                 obj.ViewContext = shapeViewContext;
-                obj.ViewData = new ViewDataDictionary<dynamic>(displayContext.ViewDataContainer.ViewData) { Model = displayContext.Value };
+                obj.ViewData = new ViewDataDictionary(displayContext.ViewDataContainer.ViewData) { Model = displayContext.Value };
                 obj.VirtualPath = templateVirtualPath;
                 obj.InitHelpers();
                 obj.Render(htmlWriter);
