@@ -28,25 +28,20 @@ namespace Orchard.Messaging.Services {
         }
 
         private IEnumerable<MessageQueue> GetQueuesToProcess() {
-            var queues = _manager.GetIdleQueues().ToList();
-            var q = from queue in queues
-                    where queue.Status == MessageQueueStatus.Idle
-                    let lastProcessedUtc = queue.EndedUtc.GetValueOrDefault()
-                    let timeSinceLastProcessAction = _clock.UtcNow - lastProcessedUtc
-                    where timeSinceLastProcessAction > queue.UpdateFrequency
-                    select queue;
-            return q;
+            return _manager.GetIdleQueues().ToList();
         }
 
         private void ProcessQueue(MessageQueue queue) {
-            var messages = _manager.EnterProcessingStatus(queue);
+            _manager.EnterProcessingStatus(queue);
+            var messages = _manager.GetPendingMessages(queue.Id);
 
-            foreach (var message in messages.AsParallel()) {
-                ProcessMessage(message);
-                if (!queue.HasAvailableTime)
-                    break;
+            while (messages.Any()) {
+                foreach (var message in messages.AsParallel()) {
+                    ProcessMessage(message);
+                }
+                messages = _manager.GetPendingMessages(queue.Id);
             }
-
+            
             _manager.ExitProcessingStatus(queue);
         }
 

@@ -22,11 +22,12 @@ namespace Orchard.Messaging.Services {
         IEnumerable<MessagePriority> CreateDefaultPriorities();
         void DeletePriority(MessagePriority priority);
         IEnumerable<MessageQueue> GetIdleQueues();
-        IEnumerable<QueuedMessage> EnterProcessingStatus(MessageQueue queue);
+        void EnterProcessingStatus(MessageQueue queue);
         void ExitProcessingStatus(MessageQueue queue);
         IEnumerable<MessageQueue> GetQueues();
         int CountMessages(int queueId, QueuedMessageStatus? status = null);
         IQueryable<QueuedMessage> GetMessages(int queueId, QueuedMessageStatus? status = null, int startIndex = 0, int pageSize = 10);
+        IEnumerable<QueuedMessage> GetPendingMessages(int queueId, int pageSize = 10);
         QueuedMessage GetMessage(int id);
         MessageQueue CreateQueue();
         MessageQueue CreateDefaultQueue();
@@ -181,14 +182,13 @@ namespace Orchard.Messaging.Services {
             return _queueRepository.Table.Where(x => x.Status == MessageQueueStatus.Idle).Select(x => ActivateQueue(x));
         }
 
-        public IEnumerable<QueuedMessage> EnterProcessingStatus(MessageQueue queue) {
+        public void EnterProcessingStatus(MessageQueue queue) {
             if(queue == null) throw new ArgumentNullException("queue");
             if (queue.Status == MessageQueueStatus.Paused) throw new InvalidOperationException("Cannot process a paused queue. Think about it.");
             if (queue.Status == MessageQueueStatus.Processing) throw new InvalidOperationException("Cannot process an already processing queue. What's the point?");
 
             queue.Status = MessageQueueStatus.Processing;
             queue.StartedUtc = _clock.UtcNow;
-            return GetPendingMessages(queue.Id);
         }
 
         public void ExitProcessingStatus(MessageQueue queue) {
@@ -218,9 +218,7 @@ namespace Orchard.Messaging.Services {
 
         public MessageQueue CreateQueue() {
             var record = new MessageQueueRecord {
-                Status = MessageQueueStatus.Idle,
-                TimeSlice = 30,
-                UpdateFrequency = 60
+                Status = MessageQueueStatus.Idle
             };
             _queueRepository.Create(record);
             return ActivateQueue(record);
@@ -243,11 +241,12 @@ namespace Orchard.Messaging.Services {
             return query;
         }
 
-        private IEnumerable<QueuedMessage> GetPendingMessages(int queueId) {
+        public IEnumerable<QueuedMessage> GetPendingMessages(int queueId, int pageSize = 10) {
             return _messageRepository.Table
                 .Where(x => x.Status == QueuedMessageStatus.Pending && x.QueueId == queueId)
                 .OrderBy(x => x.Priority.Value)
                 .ThenBy(x => x.CreatedUtc)
+                .Take(pageSize)
                 .Select(ActivateMessage)
                 .ToList();
         }
@@ -261,22 +260,7 @@ namespace Orchard.Messaging.Services {
         }
 
         private MessageQueue ActivateQueue(MessageQueueRecord record) {
-            var queue = new MessageQueue(record);
-            queue.AvailableTimeFunc = () => CalculateAvailableProcessingTime(queue);
-            queue.HasAvailableTimeFunc = () => queue.AvailableTime > TimeSpan.Zero;
-            queue.CalculateNextRunFunc = () => CalculateNextRun(queue);
-            return queue;
-        }
-
-        private DateTime CalculateNextRun(MessageQueue queue) {
-            var lastRun = queue.EndedUtc != null ? queue.EndedUtc.Value : _clock.UtcNow;
-            return lastRun + queue.UpdateFrequency;
-        }
-
-        private TimeSpan CalculateAvailableProcessingTime(MessageQueue queue) {
-            var timeElapsed = _clock.UtcNow - queue.StartedUtc.GetValueOrDefault();
-            var slice = queue.TimeSlice;
-            return slice - timeElapsed;
+            return new MessageQueue(record);
         }
 
         private static IEnumerable<MessageRecipient> ParseRecipients(string data) {
@@ -287,8 +271,6 @@ namespace Orchard.Messaging.Services {
             var queue = new MessageQueueRecord {
                 Name = "Default",
                 Status = MessageQueueStatus.Idle,
-                TimeSlice = 30,
-                UpdateFrequency = 60,
             };
 
             _queueRepository.Create(queue);

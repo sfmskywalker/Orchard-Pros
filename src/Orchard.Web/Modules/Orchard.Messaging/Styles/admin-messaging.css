@@ -44,6 +44,10 @@ fieldset.summary ul li label:after {
     content: ":";
 }
 
+span.queue-status {
+    margin-right: 1.5em;
+}
+
 table.queues {
     clear: both;
 }

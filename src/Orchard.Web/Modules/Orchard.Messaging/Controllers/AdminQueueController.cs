@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Orchard.Environment.Extensions;
 using Orchard.Localization;
 using Orchard.Messaging.Models;
 using Orchard.Messaging.Services;
 using Orchard.Messaging.ViewModels;
+using Orchard.Mvc;
 using Orchard.UI.Admin;
 using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
@@ -16,10 +16,12 @@ namespace Orchard.Messaging.Controllers {
     public class AdminQueueController : Controller {
         private readonly IMessageQueueManager _messageQueueManager;
         private readonly IOrchardServices _services;
+        private readonly IMessageQueueProcessor _messageQueueProcessor;
 
-        public AdminQueueController(IMessageQueueManager messageQueueManager, IOrchardServices services) {
+        public AdminQueueController(IMessageQueueManager messageQueueManager, IOrchardServices services, IMessageQueueProcessor messageQueueProcessor) {
             _messageQueueManager = messageQueueManager;
             _services = services;
+            _messageQueueProcessor = messageQueueProcessor;
             T = NullLocalizer.Instance;
         }
 
@@ -27,6 +29,10 @@ namespace Orchard.Messaging.Controllers {
 
         public ActionResult Index() {
             var queues = _messageQueueManager.GetQueues().ToList();
+
+            if (queues.Count == 1) {
+                return RedirectToAction("List", new {id = queues.First().Id});
+            }
 
             var queueShapes = queues.Select(x => _services.New.Queue(x)
                 .Pending(_messageQueueManager.CountMessages(x.Id, QueuedMessageStatus.Pending))
@@ -44,8 +50,6 @@ namespace Orchard.Messaging.Controllers {
             var model = new MessageQueueViewModel {
                 Id = queue.Id,
                 Name = queue.Name,
-                UpdateFrequency = queue.UpdateFrequency,
-                TimeSlice = queue.TimeSlice,
                 ReturnUrl = returnUrl
             };
             return View(model);
@@ -94,31 +98,40 @@ namespace Orchard.Messaging.Controllers {
         }
 
         [HttpPost, ActionName("List")]
+        [FormValueRequired("submit.Filter")]
         public ActionResult Filter(int id, QueuedMessageStatus? status) {
             return RedirectToAction("List", new {id, status});
         }
 
-        [HttpPost]
-        public ActionResult Resume(int id) {
+        [HttpPost, ActionName("List")]
+        [FormValueRequired("submit.Resume")]
+        public ActionResult Resume(int id, QueuedMessageStatus? status) {
             var queue = _messageQueueManager.GetQueue(id);
             _messageQueueManager.Resume(queue);
-            _services.Notifier.Information(T("Queue '{0}' has been resumed.", queue.Name));
-            return RedirectToAction("Index");
+            _services.Notifier.Information(T("The queue has been resumed."));
+            return RedirectToAction("List", new { id, status });
         }
 
-        [HttpPost]
-        public ActionResult Pause(int id) {
+        [HttpPost, ActionName("List")]
+        [FormValueRequired("submit.Pause")]
+        public ActionResult Pause(int id, QueuedMessageStatus? status) {
             var queue = _messageQueueManager.GetQueue(id);
             _messageQueueManager.Pause(queue);
-            _services.Notifier.Information(T("Queue '{0}' has been paused.", queue.Name));
-            return RedirectToAction("Index");
+            _services.Notifier.Information(T("The queue has been paused."));
+            return RedirectToAction("List", new { id, status });
+        }
+
+        [HttpPost, ActionName("List")]
+        [FormValueRequired("submit.Process")]
+        public ActionResult Process(int id, QueuedMessageStatus? status) {
+            _messageQueueProcessor.ProcessQueues();
+            _services.Notifier.Information(T("Processing has started."));
+            return RedirectToAction("List", new { id, status });
         }
 
         private MessageQueue CreateOrUpdateQueue(MessageQueueViewModel model) {
             var queue = _messageQueueManager.GetQueue(model.Id) ?? _messageQueueManager.CreateQueue();
             queue.Name = model.Name;
-            queue.UpdateFrequency = model.UpdateFrequency;
-            queue.TimeSlice = model.TimeSlice;
             return queue;
         }
     }
