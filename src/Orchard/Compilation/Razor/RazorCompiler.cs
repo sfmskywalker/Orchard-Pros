@@ -83,7 +83,7 @@ namespace Orchard.Compilation.Razor {
 
                 var namespaces = new List<string> {
                     "System",
-                    "System.Collections.Generic",
+                    "System.IO",
                     "System.Linq",
                     "System.Collections",
                     "System.Collections.Generic",
