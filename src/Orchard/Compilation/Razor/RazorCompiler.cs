@@ -16,15 +16,15 @@ using Orchard.Logging;
 namespace Orchard.Compilation.Razor {
     public class RazorCompiler : IRazorCompiler {
         private readonly ICacheManager _cache;
-        private readonly ISignals _signals;
+        private readonly IWorkContextAccessor _wca;
         const string DynamicallyGeneratedClassName = "RazorTemplate";
         const string NamespaceForDynamicClasses = "Orchard.Framework.Compilation.Razor";
         const string DynamicClassFullName = NamespaceForDynamicClasses + "." + DynamicallyGeneratedClassName;
         private const string ForceRecompile = "Razor.ForceRecompile";
 
-        public RazorCompiler(ICacheManager cache, ISignals signals) {
+        public RazorCompiler(ICacheManager cache, IWorkContextAccessor wca) {
             _cache = cache;
-            _signals = signals;
+            _wca = wca;
             Logger = NullLogger.Instance;
         }
 
@@ -43,9 +43,13 @@ namespace Orchard.Compilation.Razor {
         }
 
         private T Compile<T>(string code, string name, IDictionary<string, object> parameters) {
+            ISignals signals = _wca.GetContext().TryResolve(out signals) ? signals : null;
+
             var cacheKey = name ?? GetHash(code);
             var assembly = _cache.Get(cacheKey, ctx => {
-                ctx.Monitor(_signals.When(ForceRecompile));
+                if (signals != null) {
+                    ctx.Monitor(signals.When(ForceRecompile));
+                }
 
                 var language = new CSharpRazorCodeLanguage();
                 var host = new RazorEngineHost(language) {
