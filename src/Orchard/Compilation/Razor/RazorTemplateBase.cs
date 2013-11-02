@@ -36,7 +36,4 @@ namespace Orchard.Compilation.Razor {
             PopContext();
         }
     }
-
-    public abstract class RazorTemplateBase : RazorTemplateBase<dynamic> {
-    }
 }

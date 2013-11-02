@@ -178,7 +178,7 @@ namespace Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy {
             if (String.IsNullOrEmpty(template))
                 return new HtmlString("");
 
-            var compiledTemplate = compiler.CompileRazor(template, harvestShapeInfo.TemplateVirtualPath, displayContext.Value.GetType(), new Dictionary<string, object>());
+            var compiledTemplate = compiler.CompileRazor(template, harvestShapeInfo.TemplateVirtualPath, new Dictionary<string, object>());
             var result = ActivateAndRenderTemplate(compiledTemplate, displayContext, harvestShapeInfo.TemplateVirtualPath, _routeCollection);
             output.Write(CoerceHtmlString(result));
 

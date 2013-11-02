@@ -12,14 +12,14 @@ using System.Web.Razor.Generator;
 using Microsoft.CSharp;
 using Orchard.Caching;
 using Orchard.Logging;
+using Orchard.Utility.Extensions;
 
 namespace Orchard.Compilation.Razor {
     public class RazorCompiler : IRazorCompiler {
         private readonly ICacheManager _cache;
         private readonly IWorkContextAccessor _wca;
         const string DynamicallyGeneratedClassName = "RazorTemplate";
-        const string NamespaceForDynamicClasses = "Orchard.Framework.Compilation.Razor";
-        const string DynamicClassFullName = NamespaceForDynamicClasses + "." + DynamicallyGeneratedClassName;
+        const string NamespaceForDynamicClasses = "Orchard.Compilation.Razor";
         private const string ForceRecompile = "Razor.ForceRecompile";
 
         public RazorCompiler(ICacheManager cache, IWorkContextAccessor wca) {
@@ -34,8 +34,8 @@ namespace Orchard.Compilation.Razor {
             return (RazorTemplateBase<TModel>)Compile(code, name, typeof(TModel), parameters);
         }
 
-        public IRazorTemplateBase CompileRazor(string code, string name, Type modelType, IDictionary<string, object> parameters) {
-            return (IRazorTemplateBase)Compile(code, name, modelType, parameters);
+        public IRazorTemplateBase CompileRazor(string code, string name, IDictionary<string, object> parameters) {
+            return (IRazorTemplateBase)Compile(code, name, null, parameters);
         }
 
         public object Compile(string code, IDictionary<string, object> parameters) {
@@ -50,13 +50,14 @@ namespace Orchard.Compilation.Razor {
             ISignals signals = _wca.GetContext().TryResolve(out signals) ? signals : null;
 
             var cacheKey = name ?? GetHash(code);
+            var generatedClassName = name != null ? name.Strip(c => !c.IsLetter() && !Char.IsDigit(c)) : DynamicallyGeneratedClassName;
+
             var assembly = _cache.Get(cacheKey, ctx => {
                 if (signals != null) {
                     ctx.Monitor(signals.When(ForceRecompile));
                 }
 
-                bool useDynamic = true;
-                string modelTypeName = "";
+                var modelTypeName = "dynamic";
                 var reader = new StringReader(code);
                 var builder = new StringBuilder();
 
@@ -64,23 +65,19 @@ namespace Orchard.Compilation.Razor {
                 // We should use this information to compile a strongly-typed template in the future
                 string line;
                 while ((line = reader.ReadLine()) != null) {
-                    var internalLine = line.TrimStart(' ', '\t', '\n', '\r');
-                    if (internalLine.StartsWith("@model ")) {
-                        modelTypeName = internalLine.Substring("@model ".Length).Trim();
-                        if(modelTypeName != "dynamic") useDynamic = false;
-
+                    var trimmedLine = line.TrimStart(' ', '\t', '\n', '\r');
+                    if (trimmedLine.StartsWith("@model ")) {
+                        modelTypeName = trimmedLine.Substring("@model ".Length).Trim();
                         continue;
                     }
 
                     builder.AppendLine(line);
                 }
 
-                var baseType = useDynamic ? typeof (RazorTemplateBase) : typeof (RazorTemplateBase<>).MakeGenericType(modelType);
-
                 var language = new CSharpRazorCodeLanguage();
                 var host = new RazorEngineHost(language) {
-                    DefaultBaseClass = baseType.FullName,
-                    DefaultClassName = DynamicallyGeneratedClassName,
+                    DefaultBaseClass = "RazorTemplateBase<" + modelTypeName + ">",
+                    DefaultClassName = generatedClassName,
                     DefaultNamespace = NamespaceForDynamicClasses
                 };
 
@@ -98,6 +95,7 @@ namespace Orchard.Compilation.Razor {
                     "System.Web.Mvc.Ajax",
                     "System.Web.UI",
                     "System.Web.Routing",
+                    "Orchard.Compilation.Razor",
                     "Orchard.ContentManagement",
                     "Orchard.DisplayManagement",
                     "Orchard.DisplayManagement.Shapes",
@@ -118,7 +116,7 @@ namespace Orchard.Compilation.Razor {
                 return compiledAssembly;
             });
 
-            return assembly.CreateInstance(DynamicClassFullName);
+            return assembly.CreateInstance(NamespaceForDynamicClasses + "." + generatedClassName);
         }
 
         public static string GetHash(string value)
