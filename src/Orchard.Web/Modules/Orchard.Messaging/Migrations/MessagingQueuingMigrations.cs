@@ -25,8 +25,6 @@ namespace Orchard.Messaging.Migrations {
                 .Column<int>("Id", c => c.Identity().PrimaryKey())
                 .Column<string>("Name", c => c.WithLength(50))
                 .Column<string>("Status", c => c.WithLength(50))
-                .Column<int>("UpdateFrequency", c => c.NotNull())
-                .Column<int>("TimeSlice", c => c.NotNull())
                 .Column<DateTime>("StartedUtc")
                 .Column<DateTime>("EndedUtc"));
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Orchard.Messaging.ViewModels {
     public class MessageQueueViewModel {
@@ -7,8 +6,6 @@ namespace Orchard.Messaging.ViewModels {
 
         [Required]
         public string Name { get; set; }
-        public TimeSpan UpdateFrequency { get; set; }
-        public TimeSpan TimeSlice { get; set; }
 
         public string ReturnUrl { get; set; }
     }

@@ -2,12 +2,6 @@ using System;
 
 namespace Orchard.Messaging.Models {
     public class MessageQueue {
-        // ReSharper disable InconsistentNaming
-        public Func<TimeSpan> AvailableTimeFunc;
-        public Func<bool> HasAvailableTimeFunc;
-        public Func<DateTime> CalculateNextRunFunc;
-        // ReSharper restore InconsistentNaming
-
         public MessageQueue(MessageQueueRecord record) {
             Record = record;
         }
@@ -36,34 +30,6 @@ namespace Orchard.Messaging.Models {
         public DateTime? EndedUtc {
             get { return Record.EndedUtc; }
             internal set { Record.EndedUtc = value; }
-        }
-
-        /// <summary>
-        /// Update frequency.
-        /// </summary>
-        public TimeSpan UpdateFrequency {
-            get { return TimeSpan.FromSeconds(Record.UpdateFrequency); }
-            set { Record.UpdateFrequency = (int) value.TotalSeconds; }
-        }
-
-        /// <summary>
-        /// The time this queue is given to process messages
-        /// </summary>
-        public TimeSpan TimeSlice {
-            get { return TimeSpan.FromSeconds(Record.TimeSlice); }
-            set { Record.TimeSlice = (int)value.TotalSeconds; }
-        }
-
-        public TimeSpan AvailableTime {
-            get { return AvailableTimeFunc(); }
-        }
-
-        public bool HasAvailableTime {
-            get { return HasAvailableTimeFunc(); }
-        }
-
-        public DateTime NextRun {
-            get { return CalculateNextRunFunc(); }
         }
 
         public override string ToString() {

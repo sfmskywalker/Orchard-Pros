@@ -5,13 +5,20 @@
     var queue = (MessageQueue) Model.Queue;
     var messages = (IEnumerable<QueuedMessage>) Model.Messages;
     var filter = (MessagesFilter) Model.Filter;
-    Layout.Title = T("{0} Queue", queue.Name);
+    Layout.Title = T("Message Queue");
     Style.Include("admin-messaging.css", "admin-messaging.min.css");
 }
-<div class="manage">
-    @Html.ActionLink(T("{0} Queue Properties", queue.Name).ToString(), "Edit", "AdminQueue", new { id = queue.Id, area = "Orchard.Messaging", returnUrl = Request.Url.PathAndQuery }, null)
-</div>
 @using (Html.BeginFormAntiForgeryPost()) {
+<div class="manage">
+    <span class="queue-status @String.Format("{0}", (queue.Status).ToString().HtmlClassify())">@T("Status: {0}", queue.Status)</span>
+    @if (queue.Status == MessageQueueStatus.Paused) {
+        <button type="submit" name="submit.Resume" value="resume" class="button">@T("Resume")</button>
+    }
+    else {
+        <button type="submit" name="submit.Pause" value="pause" class="button grey">@T("Pause")</button>
+        <button type="submit" name="submit.Process" value="process">@T("Process Now")</button>
+    }
+</div>
 <fieldset class="bulk-actions">
     <label for="filterResults" class="bulk-filter">@T("Filter")</label>
     <select id="filterResults" name="status">

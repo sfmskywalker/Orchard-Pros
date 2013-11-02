@@ -26,10 +26,8 @@ namespace Orchard.Messaging {
                     else {
                         item.Action("Index", "AdminQueue", new { area = "Orchard.Messaging" });
                     }
-                    item.Add(T("Queues"), "1.0", subItem => subItem
-                        .Action("Index", "AdminQueue", new { area = "Orchard.Messaging" }))
-                        .Add(T("Priorities"), "1.1", subItem => subItem
-                        .Action("Index", "AdminPriority", new { area = "Orchard.Messaging" }));
+                    item.Add(T("Priorities"), "1.1", subItem => subItem
+                            .Action("Index", "AdminPriority", new { area = "Orchard.Messaging" }));
                 });
         }
     }
