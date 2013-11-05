@@ -1,26 +1,19 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.UI;
-using System.Web.WebPages;
+using System.Web.Mvc.Html;
 using Orchard.Caching;
-using Orchard.Compilation.Razor;
 using Orchard.DisplayManagement.Implementation;
-using Orchard.DisplayManagement.Shapes;
+using Orchard.Environment;
 using Orchard.Environment.Descriptor.Models;
 using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Helpers;
 using Orchard.Environment.Extensions.Models;
 using Orchard.FileSystems.VirtualPath;
 using Orchard.Logging;
-using Orchard.Mvc.Spooling;
+using Orchard.Mvc.ViewEngines.ThemeAwareness;
 using Orchard.Utility.Extensions;
 
 namespace Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy {
@@ -30,14 +23,13 @@ namespace Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy {
         private readonly ICacheManager _cacheManager;
         private readonly IVirtualPathMonitor _virtualPathMonitor;
         private readonly IVirtualPathProvider _virtualPathProvider;
-        private readonly RouteCollection _routeCollection;
         private readonly IEnumerable<IShapeTemplateHarvester> _harvesters;
         private readonly IEnumerable<IShapeTemplateViewEngine> _shapeTemplateViewEngines;
         private readonly IParallelCacheContext _parallelCacheContext;
+        private readonly Work<ILayoutAwareViewEngine> _viewEngine;
         private readonly IWorkContextAccessor _workContextAccessor;
 
         public ShapeTemplateBindingStrategy(
-            RouteCollection routeCollection,
             IEnumerable<IShapeTemplateHarvester> harvesters,
             ShellDescriptor shellDescriptor,
             IExtensionManager extensionManager,
@@ -45,9 +37,10 @@ namespace Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy {
             IVirtualPathMonitor virtualPathMonitor,
             IVirtualPathProvider virtualPathProvider,
             IEnumerable<IShapeTemplateViewEngine> shapeTemplateViewEngines,
-            IParallelCacheContext parallelCacheContext,
+            IParallelCacheContext parallelCacheContext, 
+            Work<ILayoutAwareViewEngine> viewEngine,
             IWorkContextAccessor workContextAccessor) {
-            _routeCollection = routeCollection;
+
             _harvesters = harvesters;
             _shellDescriptor = shellDescriptor;
             _extensionManager = extensionManager;
@@ -56,6 +49,7 @@ namespace Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy {
             _virtualPathProvider = virtualPathProvider;
             _shapeTemplateViewEngines = shapeTemplateViewEngines;
             _parallelCacheContext = parallelCacheContext;
+            _viewEngine = viewEngine;
             _workContextAccessor = workContextAccessor;
             Logger = NullLogger.Instance;
         }
@@ -69,10 +63,6 @@ namespace Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy {
         }
 
         public void Discover(ShapeTableBuilder builder) {
-            EnsureWorkContext(() => DiscoverInternal(builder));
-        }
-
-        private void DiscoverInternal(ShapeTableBuilder builder) {
             Logger.Information("Start discovering shapes");
 
             var harvesterInfos = _harvesters.Select(harvester => new { harvester, subPaths = harvester.SubPaths() });
@@ -124,26 +114,22 @@ namespace Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy {
                 return shapeContexts.Select(shapeContext => new { extensionDescriptor, shapeContext }).ToList();
             }).SelectMany(hits2 => hits2);
 
-            var templateCache = _workContextAccessor.GetContext().Resolve<IRazorTemplateCache>();
+
             foreach (var iter in hits) {
                 // templates are always associated with the namesake feature of module or theme
                 var hit = iter;
                 var featureDescriptors = iter.extensionDescriptor.Features.Where(fd => fd.Id == hit.extensionDescriptor.Id);
-                foreach (var featureDescriptor in featureDescriptors) {
-                    Logger.Debug("Binding {0} as shape [{1}] for feature {2}",
+                foreach (var featureDescriptor in featureDescriptors) {                    
+                    Logger.Debug("Binding {0} as shape [{1}] for feature {2}", 
                         hit.shapeContext.harvestShapeInfo.TemplateVirtualPath,
                         iter.shapeContext.harvestShapeHit.ShapeType,
                         featureDescriptor.Id);
-
-                    // reading contents of each .cshtml file and putting them into the cache
-                    var contents = File.ReadAllText(PathHelpers.GetPhysicalPath(hit.shapeContext.harvestShapeInfo.TemplateVirtualPath));
-                    templateCache.Set(hit.shapeContext.harvestShapeInfo.TemplateVirtualPath, contents);
 
                     builder.Describe(iter.shapeContext.harvestShapeHit.ShapeType)
                         .From(new Feature { Descriptor = featureDescriptor })
                         .BoundAs(
                             hit.shapeContext.harvestShapeInfo.TemplateVirtualPath,
-                            shapeDescriptor => displayContext => Render(displayContext, hit.shapeContext.harvestShapeInfo));
+                            shapeDescriptor => displayContext => Render(shapeDescriptor, displayContext, hit.shapeContext.harvestShapeInfo, hit.shapeContext.harvestShapeHit));
                 }
             }
 
@@ -155,58 +141,48 @@ namespace Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy {
                 _shellDescriptor.Features.Any(sf => sf.Name == fd.Id);
         }
 
-        private void EnsureWorkContext(Action action) {
-            var workContext = _workContextAccessor.GetContext();
-            if (workContext != null) {
-                action();
+        private IHtmlString Render(ShapeDescriptor shapeDescriptor, DisplayContext displayContext, HarvestShapeInfo harvestShapeInfo, HarvestShapeHit harvestShapeHit) {
+            Logger.Information("Rendering template file '{0}'", harvestShapeInfo.TemplateVirtualPath);
+            IHtmlString result;
+
+            if (displayContext.ViewContext.View != null) {
+                var htmlHelper = new HtmlHelper(displayContext.ViewContext, displayContext.ViewDataContainer);
+                result = htmlHelper.Partial(harvestShapeInfo.TemplateVirtualPath, displayContext.Value);
             }
             else {
-                using (_workContextAccessor.CreateWorkContextScope()) {
-                    action();
-                }
+                // If the View is null, it means that the shape is being executed from a non-view origin / where no ViewContext was established by the view engine, but manually.
+                // Manually creating a ViewContext works when working with Shape methods, but not when the shape is implemented as a Razor view template.
+                // Horrible, but it will have to do for now.
+                result = RenderRazorViewToString(harvestShapeInfo.TemplateVirtualPath, displayContext.Value);
             }
-        }
-
-        private IHtmlString Render(DisplayContext displayContext, HarvestShapeInfo harvestShapeInfo) {
-            Logger.Information("Rendering template file '{0}'", harvestShapeInfo.TemplateVirtualPath);
-
-            var output = new HtmlStringWriter();
-            var compiler = _workContextAccessor.GetContext().Resolve<IRazorCompiler>();
-            var templateCache = _workContextAccessor.GetContext().Resolve<IRazorTemplateCache>();
-            var template = templateCache.Get(harvestShapeInfo.TemplateVirtualPath);
-
-            if (String.IsNullOrEmpty(template))
-                return new HtmlString("");
-
-            var compiledTemplate = compiler.CompileRazor(template, harvestShapeInfo.TemplateVirtualPath, new Dictionary<string, object>());
-            var result = ActivateAndRenderTemplate(compiledTemplate, displayContext, harvestShapeInfo.TemplateVirtualPath, _routeCollection);
-            output.Write(CoerceHtmlString(result));
 
             Logger.Information("Done rendering template file '{0}'", harvestShapeInfo.TemplateVirtualPath);
-            return output;
+            return result;
         }
 
-
-        private static IHtmlString CoerceHtmlString(object invoke) {
-            return invoke as IHtmlString ?? (invoke != null ? new HtmlString(invoke.ToString()) : null);
-        }
-
-        private static string ActivateAndRenderTemplate(IRazorTemplateBase obj, DisplayContext displayContext, string templateVirtualPath, RouteCollection routes)
-        {
-            var buffer = new StringBuilder(1024);
-            using (var writer = new StringWriter(buffer)) {
-                var htmlWriter = new HtmlTextWriter(writer);
-
-                var shapeViewContext = new ViewContext(displayContext.ViewContext.Controller.ControllerContext, displayContext.ViewContext.View, displayContext.ViewContext.ViewData, displayContext.ViewContext.TempData, htmlWriter);
-                obj.WebPageContext = new WebPageContext(displayContext.ViewContext.HttpContext, obj as WebPageRenderingBase, displayContext.Value);
-                obj.ViewContext = shapeViewContext;
-                obj.ViewData = new ViewDataDictionary(displayContext.ViewDataContainer.ViewData) { Model = displayContext.Value };
-                obj.VirtualPath = templateVirtualPath;
-                obj.InitHelpers();
-                obj.Render(htmlWriter);
+        private IHtmlString RenderRazorViewToString(string path, object model) {
+            using (var sw = new StringWriter()) {
+                var controllerContext = CreateControllerContext();
+                var viewResult = _viewEngine.Value.FindPartialView(controllerContext, path, false);
+                var viewContext = new ViewContext(controllerContext, viewResult.View, new ViewDataDictionary(model), new TempDataDictionary(), sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(controllerContext, viewResult.View);
+                return new HtmlString(sw.GetStringBuilder().ToString());
             }
-
-            return buffer.ToString();
         }
+
+        private ControllerContext CreateControllerContext() {
+            var controller = new StubController();
+            var httpContext = _workContextAccessor.GetContext().HttpContext;
+            var routeData = httpContext.Request.RequestContext.RouteData;
+
+            if (!routeData.Values.ContainsKey("controller") && !routeData.Values.ContainsKey("Controller"))
+                routeData.Values.Add("controller", controller.GetType().Name.ToLower().Replace("controller", ""));
+
+            controller.ControllerContext = new ControllerContext(httpContext, routeData, controller);
+            return controller.ControllerContext;
+        }
+
+        private class StubController : Controller { }
     }
 }
