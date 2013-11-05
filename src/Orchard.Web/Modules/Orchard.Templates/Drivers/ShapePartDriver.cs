@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using Orchard.Compilation.Razor;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.Data;
@@ -15,14 +15,14 @@ using Orchard.Utility.Extensions;
 namespace Orchard.Templates.Drivers {
     public class ShapePartDriver : ContentPartDriver<ShapePart> {
         private readonly IEnumerable<ITemplateProcessor> _processors;
+        private readonly IRazorTemplateCache _cache;
         private readonly ITemplateService _service;
-        private readonly ITemplateCache _cache;
         private readonly ITransactionManager _transactions;
 
-        public ShapePartDriver(IEnumerable<ITemplateProcessor> processors, ITemplateService service, ITemplateCache cache, ITransactionManager transactions) {
+        public ShapePartDriver(IEnumerable<ITemplateProcessor> processors, IRazorTemplateCache cache, ITemplateService service,ITransactionManager transactions) {
             _processors = processors;
-            _service = service;
             _cache = cache;
+            _service = service;
             _transactions = transactions;
             T = NullLocalizer.Instance;
         }

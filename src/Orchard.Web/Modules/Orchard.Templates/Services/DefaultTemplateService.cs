@@ -54,13 +54,13 @@ namespace Orchard.Templates.Services {
             return result;
         }
 
-        public string Execute<TModel>(string template, string language, TModel model = default(TModel)) {
-            return Execute(template, language, null, model);
+        public string Execute<TModel>(string template, string name, string language, TModel model = default(TModel)) {
+            return Execute(template, name, language, null, model);
         }
 
-        public string Execute<TModel>(string template, string language, DisplayContext context, TModel model = default(TModel)) {
+        public string Execute<TModel>(string template, string name, string language, DisplayContext context, TModel model = default(TModel)) {
             var processor = _processors.FirstOrDefault(x => String.Equals(x.Type, language, StringComparison.OrdinalIgnoreCase));
-            return processor != null ? processor.Process(template, context, model) : string.Empty;
+            return processor != null ? processor.Process(template, name, context, model) : string.Empty;
         }
 
         public IEnumerable<ShapePart> GetTemplates(VersionOptions versionOptions = null) {

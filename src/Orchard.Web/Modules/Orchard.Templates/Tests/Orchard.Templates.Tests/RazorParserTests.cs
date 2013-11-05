@@ -17,7 +17,7 @@ namespace Orchard.Templates.Tests {
         [Test]
         public void ParseSomething() {
             var razorParser = _container.Resolve<ITemplateProcessor>();
-            var result = razorParser.Process("@{ int i = 42;} The answer to everything is @i.");
+            var result = razorParser.Process("@{ int i = 42;} The answer to everything is @i.", "Foo");
             Assert.That(result.Trim(), Is.EqualTo("The answer to everything is 42."));
         }
     }

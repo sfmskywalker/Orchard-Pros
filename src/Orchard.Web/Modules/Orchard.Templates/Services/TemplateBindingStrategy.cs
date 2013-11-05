@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web;
 using Orchard.Caching;
+using Orchard.Compilation.Razor;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement.Descriptors;
 using Orchard.DisplayManagement.Implementation;
@@ -30,7 +31,7 @@ namespace Orchard.Templates.Services {
         private void BuildShapes(ShapeTableBuilder builder) {
             
             var templateService = _wca.GetContext().Resolve<ITemplateService>();
-            var templateCache = _wca.GetContext().Resolve<ITemplateCache>();
+            var templateCache = _wca.GetContext().Resolve<IRazorTemplateCache>();
             var siteService = _wca.GetContext().Resolve<ISiteService>();
             var extensionManager = _wca.GetContext().Resolve<IExtensionManager>();
 
@@ -70,19 +71,20 @@ namespace Orchard.Templates.Services {
                        .BoundAs("Template::" + shapeType,
                                 descriptor => context => {
                                     var template = templateCache.Get(record.Name);
-                                    return template != null ? PerformInvoke(context, record.Language, template) : new HtmlString("");
+                                    return template != null ? PerformInvoke(context, record.Name, record.Language, template) : new HtmlString("");
                                 });
             }
         }
 
-        private IHtmlString PerformInvoke(DisplayContext displayContext, string type, string template) {
+        private IHtmlString PerformInvoke(DisplayContext displayContext, string name, string type, string template)
+        {
             var service = _wca.GetContext().Resolve<ITemplateService>();
             var output = new HtmlStringWriter();
 
             if (String.IsNullOrEmpty(template))
                 return null;
 
-            output.Write(CoerceHtmlString(service.Execute(template, type, displayContext, displayContext.ViewDataContainer.ViewData.Model)));
+            output.Write(CoerceHtmlString(service.Execute(template, name, type, displayContext, displayContext.Value)));
 
             return output;
         }
