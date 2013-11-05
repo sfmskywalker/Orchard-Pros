@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using Autofac;
 using Autofac.Configuration;
 using Orchard.Caching;
+using Orchard.Compilation;
+using Orchard.Compilation.Razor;
 using Orchard.Environment.AutofacUtil;
 using Orchard.Environment.Configuration;
 using Orchard.Environment.Extensions;
@@ -116,6 +118,9 @@ namespace Orchard.Environment {
 
             builder.RegisterType<RunningShellTable>().As<IRunningShellTable>().SingleInstance();
             builder.RegisterType<DefaultOrchardShell>().As<IOrchardShell>().InstancePerMatchingLifetimeScope("shell");
+
+            builder.RegisterType<RazorTemplateCache>().As<IRazorTemplateCache>().SingleInstance();
+            builder.RegisterType<RazorCompiler>().As<IRazorCompiler>().As<ICompiler>().InstancePerDependency();
 
             registrations(builder);
 
