@@ -90,6 +90,7 @@
   <ItemGroup>
     <Content Include="Content\synchronizing.gif" />
     <Content Include="Recipes\blog.recipe.xml" />
+    <Content Include="Recipes\orchardpros.recipe.xml" />
     <Content Include="Recipes\default.recipe.xml" />
     <Content Include="Recipes\core.recipe.xml">
       <SubType>Designer</SubType>
