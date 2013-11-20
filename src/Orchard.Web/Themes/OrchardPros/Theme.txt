@@ -1,4 +1,4 @@
-Name: OrchardPros
+Name: Orchard Pros
 Author: IDeliverable / Design by Jay Tang | Visual Creature
 Website: http://ideliverable.net
 Description: Description for the theme
