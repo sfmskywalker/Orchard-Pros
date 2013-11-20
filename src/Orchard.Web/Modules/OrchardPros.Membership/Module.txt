@@ -8,3 +8,4 @@ Description: Description for the module
 Features:
     OrchardPros.Membership:
         Description: Description for feature OrchardPros.Membership.
+		Dependencies: Orchard.Users, Orchard.Workflows

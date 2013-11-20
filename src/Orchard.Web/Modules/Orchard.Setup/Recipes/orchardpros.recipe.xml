@@ -14,6 +14,8 @@
                    Orchard.jQuery,Orchard.Widgets,Orchard.ContentTypes,
                    Orchard.Scripting,Orchard.Scripting.Lightweight,PackagingServices,Orchard.Packaging,
                    Orchard.Fields,Orchard.OutputCache,Orchard.Workflows,
+                   UrlAlternates,
+                   OrchardPros.Membership, OrchardPros.Tickets, OrchardPros.Community, OrchardPros.Commerce,
                    OrchardPros" />
 
   <Metadata>
