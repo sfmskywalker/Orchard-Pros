@@ -98,7 +98,6 @@
     <Compile Include="ViewModels\CommentCountViewModel.cs" />
     <Compile Include="Models\CommentSettingsPart.cs" />
     <Compile Include="Handlers\CommentSettingsPartHandler.cs" />
-    <Compile Include="Models\CommentSettingsPartRecord.cs" />
     <Compile Include="Handlers\CommentsPartHandler.cs" />
     <Compile Include="Models\CommentsPart.cs" />
     <Compile Include="Permissions.cs" />
@@ -109,7 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.txt" />
-    <Content Include="Release notes.txt" />
     <Content Include="Styles\images\menu.comments.png" />
     <Content Include="Styles\menu.comments-admin.css" />
     <Content Include="Styles\orchard-comments-admin.css" />

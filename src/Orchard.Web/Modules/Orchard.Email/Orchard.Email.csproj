@@ -72,7 +72,6 @@
     <Compile Include="Handlers\SmtpSettingsPartHandler.cs" />
     <Compile Include="Models\EmailMessage.cs" />
     <Compile Include="Models\SmtpSettingsPart.cs" />
-    <Compile Include="Models\SmtpSettingsPartRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\MailActions.cs" />
     <Compile Include="Rules\MailForms.cs" />
