@@ -101,6 +101,22 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Modules\OrchardPros.Commerce\OrchardPros.Commerce.csproj">
+      <Project>{9ccdf301-9ba0-4436-812c-7c901f175f54}</Project>
+      <Name>OrchardPros.Commerce</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Modules\OrchardPros.Community\OrchardPros.Community.csproj">
+      <Project>{cffdc46d-9f68-44ce-88d5-4855f50dd817}</Project>
+      <Name>OrchardPros.Community</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Modules\OrchardPros.Membership\OrchardPros.Membership.csproj">
+      <Project>{a0cd4784-104c-459c-8ec0-9e97b5b4207c}</Project>
+      <Name>OrchardPros.Membership</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Modules\OrchardPros.Tickets\OrchardPros.Tickets.csproj">
+      <Project>{9d6e83e0-f32c-473c-b119-9ca2291c857d}</Project>
+      <Name>OrchardPros.Tickets</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\bootstrap.min.js.map">
