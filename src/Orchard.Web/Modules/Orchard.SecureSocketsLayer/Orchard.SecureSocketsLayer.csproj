@@ -101,7 +101,6 @@
   <ItemGroup>
     <Content Include="web.config" />
   </ItemGroup>
-<<<<<<< HEAD
   <ItemGroup>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -110,8 +109,6 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-=======
->>>>>>> feature/messaging-queue
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
