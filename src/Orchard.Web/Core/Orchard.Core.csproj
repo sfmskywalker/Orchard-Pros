@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Orchard.Core</RootNamespace>
     <AssemblyName>Orchard.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -35,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\..\OrchardBasicCorrectness.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,6 +45,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -51,7 +53,12 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\aspnetmvc\System.Web.Mvc.dll</HintPath>
@@ -136,14 +143,12 @@
     <Compile Include="Navigation\Drivers\ShapeMenuItemPartDriver.cs" />
     <Compile Include="Navigation\Handlers\AdminMenuPartHandler.cs" />
     <Compile Include="Navigation\Handlers\MenuHandler.cs" />
+    <Compile Include="Navigation\Handlers\MenuItemPartHandler.cs" />
     <Compile Include="Navigation\Handlers\MenuWidgetPartHandler.cs" />
-    <Compile Include="Navigation\Handlers\ShapeMenuItemPartHandler.cs" />
     <Compile Include="Navigation\Models\AdminMenuPart.cs" />
     <Compile Include="Navigation\Models\AdminMenuPartRecord.cs" />
-    <Compile Include="Navigation\Models\MenuWidgetPartRecord.cs" />
     <Compile Include="Navigation\Models\MenuWidgetPart.cs" />
     <Compile Include="Navigation\Models\ShapeMenuItemPart.cs" />
-    <Compile Include="Navigation\Models\ShapeMenuItemPartRecord.cs" />
     <Compile Include="Navigation\Services\AdminMenuNavigationProvider.cs" />
     <Compile Include="Navigation\Services\DefaultMenuManager.cs" />
     <Compile Include="Navigation\Services\IMenuManager.cs" />
@@ -195,12 +200,10 @@
     <Compile Include="Navigation\AdminMenu.cs" />
     <Compile Include="Navigation\Controllers\AdminController.cs" />
     <Compile Include="Navigation\Models\MenuItemPart.cs" />
-    <Compile Include="Navigation\Handlers\MenuItemPartHandler.cs" />
     <Compile Include="Navigation\Models\MenuPart.cs" />
     <Compile Include="Navigation\Drivers\MenuPartDriver.cs" />
     <Compile Include="Navigation\Handlers\MenuPartHandler.cs" />
     <Compile Include="Navigation\Permissions.cs" />
-    <Compile Include="Navigation\Models\MenuItemPartRecord.cs" />
     <Compile Include="Navigation\Models\MenuPartRecord.cs" />
     <Compile Include="Navigation\Services\IMenuService.cs" />
     <Compile Include="Navigation\Services\MainMenuService.cs" />
@@ -214,8 +217,6 @@
     <Compile Include="Scheduling\Services\ScheduledTaskExecutor.cs" />
     <Compile Include="Scheduling\Models\Task.cs" />
     <Compile Include="Settings\Commands\SiteSettingsCommands.cs" />
-    <Compile Include="Settings\Models\SiteSettings2Part.cs" />
-    <Compile Include="Settings\Models\SiteSettings2PartRecord.cs" />
     <Compile Include="Settings\ResourceManifest.cs" />
     <Compile Include="Settings\Migrations.cs" />
     <Compile Include="Settings\Drivers\SiteSettingsPartDriver.cs" />
@@ -228,7 +229,6 @@
     <Compile Include="Settings\Metadata\Records\ContentPartFieldDefinitionRecord.cs" />
     <Compile Include="Settings\Metadata\Records\ContentTypeDefinitionRecord.cs" />
     <Compile Include="Settings\Metadata\Records\ContentTypePartDefinitionRecord.cs" />
-    <Compile Include="Settings\Models\SiteSettingsPartRecord.cs" />
     <Compile Include="Settings\State\Records\ShellFeatureStateRecord.cs" />
     <Compile Include="Settings\State\Records\ShellStateRecord.cs" />
     <Compile Include="Settings\State\ShellStateManager.cs" />

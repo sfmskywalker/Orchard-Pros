@@ -56,15 +56,14 @@ namespace Orchard.Blogs.Controllers {
             var list = Shape.List();
             list.AddRange(_blogPostService.Get(blogPart, archive).Select(b => _services.ContentManager.BuildDisplay(b, "Summary")));
 
-            _feedManager.Register(blogPart);
+            _feedManager.Register(blogPart, _services.ContentManager.GetItemMetadata(blogPart).DisplayText);
 
-            dynamic viewModel = Shape.ViewModel()
+            var viewModel = Shape.ViewModel()
                 .ContentItems(list)
                 .Blog(blogPart)
                 .ArchiveData(archive);
 
-            // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
-            return View((object)viewModel);
+            return View(viewModel);
         }
     }
 }

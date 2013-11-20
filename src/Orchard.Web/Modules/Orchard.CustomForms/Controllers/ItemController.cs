@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Web.Mvc;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
@@ -72,14 +71,13 @@ namespace Orchard.CustomForms.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.CreateSubmitPermission(customForm.ContentType), contentItem, T("Cannot create content")))
                 return new HttpUnauthorizedResult();
 
-            dynamic model = _contentManager.BuildEditor(contentItem);
+            var model = _contentManager.BuildEditor(contentItem);
 
             model
                 .ContentItem(form)
                 .ReturnUrl(Url.RouteUrl(_contentManager.GetItemMetadata(form).DisplayRouteValues));
 
-            // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
-            return View((object)model);
+            return View(model);
         }
 
         [HttpPost, ActionName("Create")]
@@ -125,9 +123,7 @@ namespace Orchard.CustomForms.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.CreateSubmitPermission(customForm.ContentType), contentItem, T("Couldn't create content")))
                 return new HttpUnauthorizedResult();
 
-            _contentManager.Create(contentItem, VersionOptions.Draft);
-
-            dynamic model = _contentManager.UpdateEditor(contentItem, this);
+            var model = _contentManager.UpdateEditor(contentItem, this);
             
             if (!ModelState.IsValid) {
                 _transactionManager.Cancel();
@@ -165,10 +161,8 @@ namespace Orchard.CustomForms.Controllers {
             }
 
             // save the submitted form
-            if (!customForm.SaveContentItem) {
-                Services.ContentManager.Remove(contentItem);
-            }
-            else {
+            if (customForm.SaveContentItem) {
+                _contentManager.Create(contentItem);
                 conditionallyPublish(contentItem);
             }
 

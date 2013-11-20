@@ -47,6 +47,11 @@ namespace Orchard.SecureSocketsLayer.Services {
             var actionName = (string) requestContext.RouteData.Values["action"];
             if (actionName == null) return false;
 
+            var settings = GetSettings();
+            if (settings == null || !settings.Enabled) {
+                return false;
+            }
+
             if (actionName.EndsWith("Ssl") || controllerName.EndsWith("Ssl")) {
                 return true;
             }
@@ -73,9 +78,6 @@ namespace Orchard.SecureSocketsLayer.Services {
                     return true;
                 }
             }
-
-            var settings = GetSettings();
-            if (settings == null) return false;
 
             if (settings.SecureEverything) return true;
 
@@ -188,7 +190,7 @@ namespace Orchard.SecureSocketsLayer.Services {
                 : string.Equals(requestPath, pattern, StringComparison.OrdinalIgnoreCase);
         }
 
-        private SslSettings GetSettings() {
+        public SslSettings GetSettings() {
             return _cacheManager.Get("SslSettings",
                 ctx => {
                     ctx.Monitor(_signals.When(SslSettingsPart.CacheKey));
@@ -198,7 +200,8 @@ namespace Orchard.SecureSocketsLayer.Services {
                         CustomEnabled = settingsPart.CustomEnabled,
                         SecureEverything = settingsPart.SecureEverything,
                         SecureHostName = settingsPart.SecureHostName,
-                        InsecureHostName = settingsPart.InsecureHostName
+                        InsecureHostName = settingsPart.InsecureHostName,
+                        Enabled = settingsPart.Enabled
                     };
                 });
         }

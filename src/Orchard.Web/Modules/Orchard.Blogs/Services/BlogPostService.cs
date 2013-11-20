@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using JetBrains.Annotations;
 using Orchard.Blogs.Models;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.Aspects;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Common.Models;
 using Orchard.Data;
-using Orchard.Data.Conventions;
 using Orchard.Tasks.Scheduling;
 
 namespace Orchard.Blogs.Services {
@@ -129,7 +126,6 @@ namespace Orchard.Blogs.Services {
                 _contentManager.Query(versionOptions, "BlogPost")
                 .Join<CommonPartRecord>().Where(
                     cr => cr.Container == blog.Record.ContentItemRecord).OrderByDescending(cr => cr.CreatedUtc)
-                .WithQueryHintsFor("BlogPost")
                     ;
         }
     }
