@@ -1,4 +1,5 @@
-﻿@{
+﻿@using OrchardPros.Membership.Helpers
+@{
     SetMeta(httpEquiv: "X-UA-Compatible", content: "IE=edge,chrome=1");
     SetMeta("viewport", "width=device-width, initial-scale=1.0");
     Style.Include("bootstrap.css", "bootstrap.min.css");
@@ -17,7 +18,7 @@
             </button>
             <a class="navbar-brand" href="#">@T(@WorkContext.CurrentSite.SiteName)</a>
             <ul class="nav navbar-nav">
-                <li><a href="#">Sign Up</a></li>
+                <li><a href="@Url.AccountSignUp()">@T("Sign Up")</a></li>
             </ul>
         </div>
         <div class="navbar-collapse collapse">
