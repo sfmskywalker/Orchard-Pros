@@ -6,12 +6,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DEC90C19-F292-40E4-80B8-2C69C60BA3CB}</ProjectGuid>
+    <ProjectGuid>{CFFDC46D-9F68-44CE-88D5-4855F50DD817}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OrchardPros.Theme</RootNamespace>
-    <AssemblyName>OrchardPros.Theme</AssemblyName>
+    <RootNamespace>OrchardPros.Community</RootNamespace>
+    <AssemblyName>OrchardPros.Community</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <FileUpgradeFlags>
@@ -66,15 +66,14 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
-    <Content Include="Content\Web.config" />
-    <Content Include="Theme.txt" />
-    <Content Include="Theme.png" />
-    <Content Include="Placement.info" />
-    <Folder Include="Content" />
-    <Folder Include="Styles" />
-    <Folder Include="Scripts" />
+    <Content Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Module.txt" />
+    <Folder Include="Properties" />
+    <Folder Include="Controllers" />
     <Folder Include="Views" />
-    <Folder Include="Zones" />
+    <Folder Include="Models" />
+    <Folder Include="Scripts" />
+    <Folder Include="Styles" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">

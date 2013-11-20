@@ -1,0 +1,8 @@
+﻿@{
+    SetMeta(httpEquiv: "X-UA-Compatible", content: "IE=edge,chrome=1");
+    Style.Include("bootstrap.css", "bootstrap.min.css");
+    Style.Include("bootstrap-theme.css", "bootstrap-theme.min.css");
+    Script.Include("bootstrap.js", "bootstrap.min.js").AtFoot();
+}
+@Display(Model.Messages)
+@Display(Model.Content)
