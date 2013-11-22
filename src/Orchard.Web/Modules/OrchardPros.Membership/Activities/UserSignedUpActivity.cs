@@ -1,23 +1,16 @@
 ﻿using System.Collections.Generic;
 using Orchard.Localization;
 using Orchard.Workflows.Models;
-using Orchard.Workflows.Services;
 
 namespace OrchardPros.Membership.Activities {
-    public class AccountCreatedActivity : Event {
-
-        public Localizer T { get; set; }
-
-        public override bool CanStartWorkflow {
-            get { return true; }
-        }
+    public class UserSignedUpActivity : EventBase {
 
         public override string Name {
-            get { return "AccountCreated"; }
+            get { return "UserSignedUp"; }
         }
 
         public override LocalizedString Description {
-            get { return T("New account has been created."); }
+            get { return T("A new user account has been created."); }
         }
 
         public override IEnumerable<LocalizedString> GetPossibleOutcomes(WorkflowContext workflowContext, ActivityContext activityContext) {

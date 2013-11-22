@@ -14,7 +14,7 @@
                    Orchard.jQuery,Orchard.Widgets,Orchard.ContentTypes,
                    Orchard.Scripting,Orchard.Scripting.Lightweight,PackagingServices,Orchard.Packaging,
                    Orchard.Fields,Orchard.OutputCache,Orchard.Workflows,
-                   UrlAlternates,
+                   UrlAlternates, Orchard.ImportExport,
                    OrchardPros.Membership, OrchardPros.Tickets, OrchardPros.Community, OrchardPros.Commerce,
                    OrchardPros" />
 
@@ -36,6 +36,47 @@
   <Settings />
 
   <Migration features="*" />
+  <Workflows>
+    <Workflow Name="User Signed Up" Enabled="true">
+      <Activities>
+        <Activity Id="1" Name="UserSignedUp" Start="true" X="594" Y="338">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="2" Name="Redirect" Start="false" X="637" Y="487">
+          <State>{"Url":"~/OrchardPros.Membership/Account/Created"}</State>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition SourceActivityId="1" SourceEndpoint="Created" DestinationActivityId="2" DestinationEndpoint="" />
+      </Transitions>
+    </Workflow>
+    <Workflow Name="User Signed In" Enabled="true">
+      <Activities>
+        <Activity Id="3" Name="UserSignedIn" Start="true" X="707" Y="252">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="4" Name="Redirect" Start="false" X="589" Y="488">
+          <State>{"Url":"~/OrchardPros.Membership/Account/Dashboard"}</State>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition SourceActivityId="3" SourceEndpoint="Signed In" DestinationActivityId="4" DestinationEndpoint="" />
+      </Transitions>
+    </Workflow>
+    <Workflow Name="User Signed Out" Enabled="true">
+      <Activities>
+        <Activity Id="5" Name="UserSignedOut" Start="true" X="793" Y="267">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="6" Name="Redirect" Start="false" X="811" Y="470">
+          <State>{"Url":"~/"}</State>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition SourceActivityId="5" SourceEndpoint="Signed Out" DestinationActivityId="6" DestinationEndpoint="" />
+      </Transitions>
+    </Workflow>
+  </Workflows>
 
   <Command>
     layer create Default /LayerRule:"true" /Description:"The widgets in this layer are displayed on all pages"

@@ -93,10 +93,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\AccountCreatedActivity.cs" />
+    <Compile Include="Activities\UserSignedOutActivity.cs" />
+    <Compile Include="Activities\UserSignedUpActivity.cs" />
+    <Compile Include="Activities\EventBase.cs" />
+    <Compile Include="Activities\UserSignedInActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Events\UserEventHandler.cs" />
     <Compile Include="Helpers\UrlExtensions.cs" />
-    <Compile Include="ViewModels\SignupFormViewModel.cs" />
+    <Compile Include="ViewModels\SignInViewModel.cs" />
+    <Compile Include="ViewModels\SignUpViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -105,10 +110,19 @@
     <Content Include="Views\Account\SignUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SignUpForm.cshtml" />
+    <Content Include="Views\SignUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\Created.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\SignIn.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SignIn.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Dashboard.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

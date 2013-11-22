@@ -92,7 +92,6 @@
     <Compile Include="Models\MessageQueueStatus.cs" />
     <Compile Include="Models\QueuedMessageRecord.cs" />
     <Compile Include="Models\MessageSettingsPart.cs" />
-    <Compile Include="Models\MessageSettingsPartRecord.cs" />
     <Compile Include="Models\QueuedMessageStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MessageQueueManager.cs" />

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace OrchardPros.Membership.ViewModels {
-    public class SignupFormViewModel {
+    public class SignUpViewModel {
         [Required]
         public string EmailAddress { get; set; }
 
