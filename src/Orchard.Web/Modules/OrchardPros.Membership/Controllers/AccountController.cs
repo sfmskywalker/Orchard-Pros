@@ -1,4 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using NGM.OpenAuthentication.Models;
+using NGM.OpenAuthentication.Services;
+using NGM.OpenAuthentication.Services.Clients;
 using Orchard.DisplayManagement;
 using Orchard.Localization;
 using Orchard.Mvc.Extensions;
@@ -17,6 +22,8 @@ namespace OrchardPros.Membership.Controllers {
         private readonly IUserService _userService;
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserEventHandler _userEventHandler;
+        private readonly IEnumerable<IExternalAuthenticationClient> _openAuthClients;
+        private readonly IOrchardOpenAuthClientProvider _orchardOpenAuthClientProvider;
 
         public AccountController(
             IShapeFactory shapeFactory, 
@@ -24,7 +31,9 @@ namespace OrchardPros.Membership.Controllers {
             IMembershipService membershipService, 
             IUserService userService, 
             IAuthenticationService authenticationService,
-            IUserEventHandler userEventHandler) {
+            IUserEventHandler userEventHandler, 
+            IEnumerable<IExternalAuthenticationClient> openAuthClients,
+            IOrchardOpenAuthClientProvider orchardOpenAuthClientProvider) {
 
             New = shapeFactory;
             T = NullLocalizer.Instance;
@@ -33,6 +42,8 @@ namespace OrchardPros.Membership.Controllers {
             _userService = userService;
             _authenticationService = authenticationService;
             _userEventHandler = userEventHandler;
+            _openAuthClients = openAuthClients;
+            _orchardOpenAuthClientProvider = orchardOpenAuthClientProvider;
         }
 
         public Localizer T { get; set; }
@@ -41,7 +52,9 @@ namespace OrchardPros.Membership.Controllers {
         [AllowAnonymous]
         public ActionResult SignUp() {
             var formViewModel = new SignUpViewModel();
-            var viewModel = New.ViewModel().SignUp(New.SignUp(Model: formViewModel));
+            var viewModel = New.ViewModel(
+                SignUp: New.SignUp(Model: formViewModel),
+                OAuthLogin: New.OAuthLogin(Providers: GetOAuthProviders().ToList()));
             return View(viewModel);
         }
 
@@ -54,7 +67,9 @@ namespace OrchardPros.Membership.Controllers {
             }
             
             if (!ModelState.IsValid) {
-                var viewModel = New.ViewModel().SignUp(New.SignUp(Model: model));
+                var viewModel = New.ViewModel(
+                    SignUp: New.SignUp(Model: model),
+                    OAuthLogin: New.OAuthLogin(Providers: GetOAuthProviders().ToList()));
                 return View(viewModel);
             }
             
@@ -69,7 +84,9 @@ namespace OrchardPros.Membership.Controllers {
         [AllowAnonymous]
         public ActionResult SignIn() {
             var formViewModel = new SignInViewModel();
-            var viewModel = New.ViewModel().SignIn(New.Sign(ModelState: formViewModel));
+            var viewModel = New.ViewModel(
+                SignIn: New.SignIn(ModelState: formViewModel),
+                OAuthLogin: New.OAuthLogin(Providers: GetOAuthProviders().ToList()));
             return View(viewModel);
         }
 
@@ -85,7 +102,9 @@ namespace OrchardPros.Membership.Controllers {
                 }
             }
             if (!ModelState.IsValid) {
-                var viewModel = New.ViewModel().SignIn(New.SignIn(ModelState: model));
+                var viewModel = New.ViewModel(
+                    SignIn: New.SignIn(ModelState: model),
+                    OAuthLogin: New.OAuthLogin(Providers: GetOAuthProviders().ToList()));
                 return View(viewModel);
             }
 
@@ -104,6 +123,10 @@ namespace OrchardPros.Membership.Controllers {
 
         public ActionResult Dashboard() {
             return View();
+        }
+
+        private IEnumerable<OrchardAuthenticationClientData> GetOAuthProviders() {
+            return _openAuthClients.Select(x => _orchardOpenAuthClientProvider.GetClientData(x.ProviderName)).Where(x => x != null);
         }
     }
 }

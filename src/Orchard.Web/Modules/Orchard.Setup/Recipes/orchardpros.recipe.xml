@@ -15,6 +15,7 @@
                    Orchard.Scripting,Orchard.Scripting.Lightweight,PackagingServices,Orchard.Packaging,
                    Orchard.Fields,Orchard.OutputCache,Orchard.Workflows,
                    UrlAlternates, Orchard.ImportExport,
+                   NGM.OpenAuthentication,
                    OrchardPros.Membership, OrchardPros.Tickets, OrchardPros.Community, OrchardPros.Commerce,
                    OrchardPros" />
 
@@ -33,7 +34,14 @@
     </Parts>
   </Metadata>
 
-  <Settings />
+  <Settings>
+    <SiteSettingsPart PageTitleSeparator=" - " SiteName="Orchard Pros" SiteSalt="1f8757683b674a5eb38a0b2dec50727b" SuperUser="admin" SiteCulture="en-US" PageSize="0" SiteTimeZone="W. Europe Standard Time" BaseUrl="http://localhost:30322" />
+    <RegistrationSettingsPart UsersCanRegister="true" UsersMustValidateEmail="false" ValidateEmailRegisteredWebsite="" ValidateEmailContactEMail="" UsersAreModerated="false" NotifyModeration="false" NotificationsRecipients="" EnableLostPassword="true" />
+    <OpenAuthenticationSettingsPart AutoRegistrationEnabled="true" />
+    <CacheSettingsPart DefaultCacheDuration="0" DefaultMaxAge="0" ApplyCulture="false" DebugMode="false" />
+    <ThemeSiteSettingsPart CurrentThemeName="OrchardPros" />
+    <WebSearchSettingsPart />
+  </Settings>
 
   <Migration features="*" />
   <Workflows>

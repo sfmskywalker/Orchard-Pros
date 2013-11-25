@@ -3,3 +3,4 @@ Author: IDeliverable / Design by Jay Tang | Visual Creature
 Website: http://ideliverable.net
 Description: Description for the theme
 Version: 1.0
+Zones: Content, Navigation

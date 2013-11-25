@@ -12,6 +12,7 @@
             <ul class="nav navbar-nav">
                 @if (WorkContext.CurrentUser == null) {
                     <li><a href="@Url.AccountSignUp()">@T("Sign Up")</a></li>
+                    <li><a href="@Url.AccountSignIn()">@T("Sign In")</a></li>
                 }
                 else {
                     <li><a href="@Url.AccountSignOut()">@T("Sign Out")</a></li>

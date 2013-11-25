@@ -1,0 +1,18 @@
+﻿@using NGM.OpenAuthentication.Extensions
+@using NGM.OpenAuthentication.Models
+@{
+    var returnUrl = Request.QueryString["ReturnUrl"];
+    var providers = (IEnumerable<OrchardAuthenticationClientData>) Model.Providers;
+}
+@using (Html.BeginFormAntiForgeryPost(Url.OpenAuthLogOn(returnUrl))) {
+<fieldset class="login-form group">
+    <legend>@T("Login with another service")</legend>
+    <ul class="list-unstyled">
+        @foreach (var provider in providers) {
+            <li>            
+                <button class="primaryAction" type="submit" name="providerName" value="@provider.ProviderName" title="@T("Log in using your {0} account", provider.DisplayName)">@provider.DisplayName</button>
+            </li>
+        }
+    </ul>
+</fieldset>
+}
