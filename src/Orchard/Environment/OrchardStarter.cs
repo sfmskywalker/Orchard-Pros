@@ -9,8 +9,7 @@ using System.Web.Mvc;
 using Autofac;
 using Autofac.Configuration;
 using Orchard.Caching;
-using Orchard.Compilation;
-using Orchard.Compilation.Razor;
+using Orchard.Data;
 using Orchard.Environment.AutofacUtil;
 using Orchard.Environment.Configuration;
 using Orchard.Environment.Extensions;
@@ -121,12 +120,9 @@ namespace Orchard.Environment {
 
             builder.RegisterType<RunningShellTable>().As<IRunningShellTable>().SingleInstance();
             builder.RegisterType<DefaultOrchardShell>().As<IOrchardShell>().InstancePerMatchingLifetimeScope("shell");
-
-            builder.RegisterType<RazorTemplateCache>().As<IRazorTemplateCache>().SingleInstance();
-            builder.RegisterType<RazorCompiler>().As<IRazorCompiler>().As<ICompiler>().InstancePerDependency();
+            builder.RegisterType<SessionConfigurationCache>().As<ISessionConfigurationCache>().InstancePerMatchingLifetimeScope("shell");
 
             registrations(builder);
-
 
             var autofacSection = ConfigurationManager.GetSection(ConfigurationSettingsReaderConstants.DefaultSectionName);
             if (autofacSection != null)
@@ -139,7 +135,6 @@ namespace Orchard.Environment {
             var optionalComponentsConfig = HostingEnvironment.MapPath("~/Config/HostComponents.config");
             if (File.Exists(optionalComponentsConfig))
                 builder.RegisterModule(new HostComponentsConfigModule(optionalComponentsConfig));
-
 
             var container = builder.Build();
 
