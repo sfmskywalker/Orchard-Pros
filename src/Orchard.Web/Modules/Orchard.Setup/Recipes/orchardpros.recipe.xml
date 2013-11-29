@@ -15,8 +15,8 @@
                    Orchard.Scripting,Orchard.Scripting.Lightweight,PackagingServices,Orchard.Packaging,
                    Orchard.Fields,Orchard.OutputCache,Orchard.Workflows,
                    UrlAlternates, Orchard.ImportExport,
-                   NGM.OpenAuthentication,
-                   OrchardPros.Membership, OrchardPros.Tickets, OrchardPros.Community, OrchardPros.Commerce,
+                   NGM.OpenAuthentication.Workflows,
+                   OrchardPros.Membership, OrchardPros.Tickets, OrchardPros.Community, OrchardPros.Commerce, OrchardPros.Careers,
                    OrchardPros" />
 
   <Metadata>

@@ -1,0 +1,6 @@
+﻿@{
+    var months = (IList<int>)ViewBag.Months;
+    var currentValue = (ViewData.TemplateInfo.FormattedModelValue as int?);
+    var options = months.Select(x => new SelectListItem {Text = x.ToString(), Value = x.ToString(), Selected = x == currentValue});
+}
+@Html.DropDownList("", options, T("Month"))

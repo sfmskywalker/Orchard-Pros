@@ -1,4 +1,4 @@
-﻿Name: OrchardPros.Careers
+﻿Name: OrchardPros Careers
 AntiForgery: enabled
 Author: The Orchard Team
 Website: http://orchardproject.net
@@ -8,3 +8,5 @@ Description: Description for the module
 Features:
     OrchardPros.Careers:
         Description: Description for feature OrchardPros.Careers.
+        Dependencies: Orchard.Users
+        Category: Orchard Pros
