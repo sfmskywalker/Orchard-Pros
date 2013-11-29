@@ -86,7 +86,7 @@ namespace OrchardPros.Careers.Controllers {
             return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });
         }
 
-        private void Update(Position position, PositionViewModel viewModel) {
+        private static void Update(Position position, PositionViewModel viewModel) {
             position.CompanyName = viewModel.CompanyName.TrimSafe();
             position.Description = viewModel.Description.TrimSafe();
             position.IsCurrentPosition = viewModel.IsCurrentPosition;
@@ -114,11 +114,11 @@ namespace OrchardPros.Careers.Controllers {
         private IList<int> GetYears() {
             var currentYear = _clock.UtcNow.Year;
             const int range = 100;
-            return Enumerable.Range(currentYear - range, range).Reverse().ToList();
+            return Enumerable.Range(currentYear - range, range + 1).Reverse().ToList();
         }
 
-        private IList<int> GetMonths() {
-            return Enumerable.Range(1, 31).ToList();
+        private static IList<int> GetMonths() {
+            return Enumerable.Range(1, 12).ToList();
         }
     }
 }

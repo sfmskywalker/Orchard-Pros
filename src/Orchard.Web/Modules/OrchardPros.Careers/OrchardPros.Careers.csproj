@@ -88,8 +88,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\SkillController.cs" />
     <Compile Include="Controllers\PositionController.cs" />
+    <Compile Include="Services\ISkillManager.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
+    <Compile Include="Models\Skill.cs" />
+    <Compile Include="Services\SkillManager.cs" />
+    <Compile Include="ViewModels\SkillViewModel.cs" />
     <Compile Include="ViewModels\PositionViewModel.cs" />
     <Compile Include="Helpers\PositionExtensions.cs" />
     <Compile Include="Handlers\ProfessionalProfilePartHandler.cs" />
@@ -120,6 +125,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Position\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Skill\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Skill\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Rating.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

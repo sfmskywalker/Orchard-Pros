@@ -22,6 +22,12 @@ namespace OrchardPros.Careers {
                 .Column<bool>("IsArchived")
                 .Column<DateTime>("ArchivedUtc"));
 
+            SchemaBuilder.CreateTable("Skill", table => table
+                .Column<int>("Id", c => c.PrimaryKey().Identity())
+                .Column<int>("ProfileId")
+                .Column<string>("Name", c => c.WithLength(64))
+                .Column<int>("Rating", c => c.NotNull()));
+
             ContentDefinitionManager.AlterPartDefinition("ProfessionalProfilePart", part => part
                 .WithDescription("Stores professional background information about a user"));
 

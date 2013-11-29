@@ -3,4 +3,4 @@
     var currentValue = (ViewData.TemplateInfo.FormattedModelValue as int?);
     var options = years.Select(x => new SelectListItem {Text = x.ToString(), Value = x.ToString(), Selected = x == currentValue});
 }
-@Html.DropDownList("", options, T("Year"))
+@Html.DropDownList("", options, T("Year").ToString())
