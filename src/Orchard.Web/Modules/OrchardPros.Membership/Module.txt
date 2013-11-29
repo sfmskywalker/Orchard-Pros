@@ -1,11 +1,12 @@
-﻿Name: OrchardPros.Membership
+﻿Name: OrchardPros Membership
 AntiForgery: enabled
-Author: The Orchard Team
-Website: http://orchardproject.net
+Author: IDeliverable
+Website: http://ideliverable.com
 Version: 1.0
-OrchardVersion: 1.0
-Description: Description for the module
+OrchardVersion: 1.8
+Description: Provides Orchard Pros membership services.
 Features:
     OrchardPros.Membership:
-        Description: Description for feature OrchardPros.Membership.
-		Dependencies: Orchard.Users, Orchard.Workflows
+        Description: Provides Orchard Pros membership services.
+        Dependencies: Orchard.Users, Orchard.Workflows, Orchard.MediaLibrary
+        Category: Orchard Pros

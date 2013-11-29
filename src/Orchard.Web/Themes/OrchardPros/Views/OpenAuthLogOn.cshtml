@@ -1,15 +1,10 @@
 ﻿@using NGM.OpenAuthentication.Extensions
 @using NGM.OpenAuthentication.Models
 @using Orchard.ContentManagement
-@using DotNetOpenAuth.AspNet
-@using Orchard.Utility.Extensions
-
 @{
     var userCanRegister = WorkContext.CurrentSite.As<Orchard.Users.Models.RegistrationSettingsPart>().UsersCanRegister;
     var enableLostPassword = WorkContext.CurrentSite.As<Orchard.Users.Models.RegistrationSettingsPart>().EnableLostPassword;
-
     var clientsData = (List<OrchardAuthenticationClientData>) Model.ClientsData;
-    
     var userName = Request.QueryString["UserName"];
     var externalLoginData = Request.QueryString["ExternalLoginData"];
     var returnUrl = Request.QueryString["ReturnUrl"];

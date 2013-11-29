@@ -1,0 +1,28 @@
+﻿@model OrchardPros.Membership.Models.UserProfilePart
+<fieldset>
+    <legend>@T("Profile")</legend>
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName)
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "text medium" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.MiddleName)
+        @Html.TextBoxFor(m => m.MiddleName, new { @class = "text small" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName)
+        @Html.TextBoxFor(m => m.LastName, new { @class = "text medium" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Level)
+        @Html.TextBoxFor(m => m.Level, new { @class = "text small" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.AvatarType)
+        @Html.EditorFor(m => m.AvatarType, "AvatarTypeSelector")
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Bio)
+        @Html.TextAreaFor(m => m.Bio, new { @class = "text large" })
+    </div>
+</fieldset>

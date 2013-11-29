@@ -1,0 +1,11 @@
+﻿@using OrchardPros.Membership.Models
+@{
+    var avatarTypes = new[] {AvatarType.LocalStorage, AvatarType.Gravatar};
+    var currentValue = (ViewData.TemplateInfo.FormattedModelValue as AvatarType?) ?? AvatarType.LocalStorage;
+    var options = avatarTypes.Select(x => new SelectListItem {Text = x.ToString(), Value = x.ToString(), Selected = x == currentValue});
+}
+<ul>
+    @foreach (var option in options) {
+        <li><label><input type="radio" name="@Html.Name("")" value="@option.Value" @if(option.Selected){<text>checked="checked"</text>} /> @T(option.Text)</label></li>
+    }
+</ul>
