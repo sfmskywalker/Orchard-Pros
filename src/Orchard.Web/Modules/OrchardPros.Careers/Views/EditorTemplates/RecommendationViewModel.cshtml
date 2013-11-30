@@ -1,0 +1,24 @@
+﻿@model OrchardPros.Careers.ViewModels.RecommendationViewModel
+<fieldset>
+    <div class="form-group">
+        @Html.LabelFor(m => m.RecommendingUserName, T("Recommended By"))
+        @Html.TextBoxFor(m => m.RecommendingUserName, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.RecommendingUserName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Text, T("Text"))
+        @Html.TextAreaFor(m => m.Text, new { @class = "text large" })
+        @Html.ValidationMessageFor(m => m.Text)
+    </div>
+    <div class="form-group">
+        <div class="checkbox-and-label">
+            @Html.CheckBoxFor(m => m.Approved)
+            @Html.LabelFor(m => m.Approved, T("Approved").ToString(), new { @class = "forcheckbox" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CreatedUtc, T("Created"))
+        @Html.EditorFor(m => m.CreatedUtc)
+        @Html.ValidationMessageFor(m => m.CreatedUtc)
+    </div>
+</fieldset>

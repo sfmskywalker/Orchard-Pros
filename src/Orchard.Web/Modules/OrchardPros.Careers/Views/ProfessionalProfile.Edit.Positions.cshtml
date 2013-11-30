@@ -1,0 +1,39 @@
+﻿@using OrchardPros.Careers.Helpers
+@using OrchardPros.Careers.Models
+@{
+    var profile = (ProfessionalProfilePart) Model.Profile;
+    var positions = (IList<Position>)Model.Positions;
+}
+<fieldset>
+    <legend>@T("Experience")</legend>
+    <table class="items">
+        <thead>
+            <tr>
+                <th>@T("Id")</th>
+                <th>@("Company")</th>
+                <th>@("Title")</th>
+                <th>@("Location")</th>
+                <th>@("Start")</th>
+                <th>@("End")</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var position in positions) {
+                <tr>
+                    <td>@position.Id</td>
+                    <td>@position.CompanyName</td>
+                    <td>@position.Title</td>
+                    <td>@position.Location</td>
+                    <td>@position.Start()</td>
+                    <td>@position.End()</td>
+                    <td>
+                        @Html.ActionLink(T("Edit").ToString(), "Edit", "Position", new { position.Id, area = "OrchardPros.Careers" }, null) @T(" |")
+                        @Html.ActionLink(T("Delete").ToString(), "Delete", "Position", new { position.Id, area = "OrchardPros.Careers" }, new { itemprop = "UnsafeUrl RemoveUrl" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.ActionLink(T("Add Position").ToString(), "Create", "Position", new { profile.Id, area = "OrchardPros.Careers" }, new { @class = "button" })
+</fieldset>

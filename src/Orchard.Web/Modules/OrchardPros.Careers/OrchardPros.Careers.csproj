@@ -86,10 +86,20 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Users\Orchard.Users.csproj">
+      <Project>{79aed36e-abd0-4747-93d3-8722b042454b}</Project>
+      <Name>Orchard.Users</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\RecommendationController.cs" />
     <Compile Include="Controllers\SkillController.cs" />
     <Compile Include="Controllers\PositionController.cs" />
+    <Compile Include="ViewModels\RecommendationEx.cs" />
+    <Compile Include="ViewModels\RecommendationViewModel.cs" />
+    <Compile Include="Services\IRecommendationManager.cs" />
+    <Compile Include="Services\RecommendationManager.cs" />
+    <Compile Include="Models\Recommendation.cs" />
     <Compile Include="Services\ISkillManager.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Models\Skill.cs" />
@@ -134,6 +144,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Rating.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ProfessionalProfile.Edit.Positions.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ProfessionalProfile.Edit.Skills.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ProfessionalProfile.Edit.Recommendations.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Recommendation\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Recommendation\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\RecommendationViewModel.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

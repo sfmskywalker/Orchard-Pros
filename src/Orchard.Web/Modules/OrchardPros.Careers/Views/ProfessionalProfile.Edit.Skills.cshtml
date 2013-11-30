@@ -1,0 +1,32 @@
+﻿@using OrchardPros.Careers.Models
+@{
+    var profile = (ProfessionalProfilePart) Model.Profile;
+    var skills = (IList<Skill>)Model.Skills;
+}
+<fieldset>
+    <legend>@T("Skills")</legend>
+    <table class="items">
+        <thead>
+            <tr>
+                <th>@T("Id")</th>
+                <th>@("Name")</th>
+                <th>@("Rating")</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var skill in skills) {
+                <tr>
+                    <td>@skill.Id</td>
+                    <td>@skill.Name</td>
+                    <td>@skill.Rating</td>
+                    <td>
+                        @Html.ActionLink(T("Edit").ToString(), "Edit", "Skill", new { skill.Id, area = "OrchardPros.Careers" }, null) @T(" |")
+                        @Html.ActionLink(T("Delete").ToString(), "Delete", "Skill", new { skill.Id, area = "OrchardPros.Careers" }, new { itemprop = "UnsafeUrl RemoveUrl" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.ActionLink(T("Add Skill").ToString(), "Create", "Skill", new { profile.Id, area = "OrchardPros.Careers" }, new { @class = "button" })
+</fieldset>

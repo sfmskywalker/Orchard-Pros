@@ -28,6 +28,14 @@ namespace OrchardPros.Careers {
                 .Column<string>("Name", c => c.WithLength(64))
                 .Column<int>("Rating", c => c.NotNull()));
 
+            SchemaBuilder.CreateTable("Recommendation", table => table
+                .Column<int>("Id", c => c.PrimaryKey().Identity())
+                .Column<int>("ProfileId")
+                .Column<int>("RecommendingProfileId")
+                .Column<string>("Text", c => c.Unlimited())
+                .Column<bool>("Approved", c => c.NotNull())
+                .Column<DateTime>("CreatedUtc"));
+
             ContentDefinitionManager.AlterPartDefinition("ProfessionalProfilePart", part => part
                 .WithDescription("Stores professional background information about a user"));
 
