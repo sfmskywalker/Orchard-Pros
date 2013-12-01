@@ -70,7 +70,6 @@
     <Content Include="Placement.info">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
@@ -92,9 +91,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ExperienceController.cs" />
     <Compile Include="Controllers\RecommendationController.cs" />
     <Compile Include="Controllers\SkillController.cs" />
     <Compile Include="Controllers\PositionController.cs" />
+    <Compile Include="Services\ExperienceManager.cs" />
+    <Compile Include="Services\IExperienceManager.cs" />
+    <Compile Include="Models\Experience.cs" />
+    <Compile Include="ViewModels\ExperienceViewModel.cs" />
     <Compile Include="ViewModels\RecommendationEx.cs" />
     <Compile Include="ViewModels\RecommendationViewModel.cs" />
     <Compile Include="Services\IRecommendationManager.cs" />
@@ -162,6 +166,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\RecommendationViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ProfessionalProfile.Edit.Experience.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Experience\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Experience\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\ExperienceViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\PositionPicker.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

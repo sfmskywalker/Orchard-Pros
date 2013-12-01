@@ -1,0 +1,17 @@
+﻿@model OrchardPros.Careers.ViewModels.ExperienceViewModel
+<fieldset>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PositionId, T("Position"))
+        @Html.EditorFor(m => m.PositionId, new { Positions = Model.AvailablePositions })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description, T("Text"))
+        @Html.TextAreaFor(m => m.Description, new { @class = "text large" })
+        @Html.ValidationMessageFor(m => m.Description)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CreatedUtc, T("Created"))
+        @Html.EditorFor(m => m.CreatedUtc)
+        @Html.ValidationMessageFor(m => m.CreatedUtc)
+    </div>
+</fieldset>

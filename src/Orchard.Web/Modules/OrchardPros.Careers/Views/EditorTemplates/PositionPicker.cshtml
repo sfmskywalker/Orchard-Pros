@@ -1,0 +1,7 @@
+﻿@using OrchardPros.Careers.Models
+@{
+    var positions = (IList<Position>)ViewBag.Positions;
+    var currentValue = (ViewData.TemplateInfo.FormattedModelValue as int?);
+    var options = positions.Select(x => new SelectListItem {Text = x.CompanyName.ToString(), Value = x.Id.ToString(), Selected = x.Id == currentValue});
+}
+@Html.DropDownList("", options, T("Other").ToString())

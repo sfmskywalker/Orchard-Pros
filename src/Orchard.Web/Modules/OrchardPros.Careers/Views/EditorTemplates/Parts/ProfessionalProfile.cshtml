@@ -1,6 +1,6 @@
 ﻿@{
     Script.Require("ShapesBase");
 }
-@Display(Model.Positions)
-@Display(Model.Skills)
-@Display(Model.Recommendations)
+@foreach (var shape in Model) {
+    @Display(shape)
+}

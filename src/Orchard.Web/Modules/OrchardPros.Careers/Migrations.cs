@@ -36,6 +36,13 @@ namespace OrchardPros.Careers {
                 .Column<bool>("Approved", c => c.NotNull())
                 .Column<DateTime>("CreatedUtc"));
 
+            SchemaBuilder.CreateTable("Experience", table => table
+                .Column<int>("Id", c => c.PrimaryKey().Identity())
+                .Column<int>("ProfileId")
+                .Column<int>("Position_Id")
+                .Column<string>("Description", c => c.Unlimited())
+                .Column<DateTime>("CreatedUtc"));
+
             ContentDefinitionManager.AlterPartDefinition("ProfessionalProfilePart", part => part
                 .WithDescription("Stores professional background information about a user"));
 

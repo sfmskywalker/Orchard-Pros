@@ -7,8 +7,11 @@ using OrchardPros.Careers.Services;
 namespace OrchardPros.Careers.Drivers {
     public class ProfessionalProfilePartDriver : ContentPartDriver<ProfessionalProfilePart> {
         private readonly IRecommendationManager _recommendationManager;
-        public ProfessionalProfilePartDriver(IRecommendationManager recommendationManager) {
+        private readonly IExperienceManager _experienceManager;
+
+        public ProfessionalProfilePartDriver(IRecommendationManager recommendationManager, IExperienceManager experienceManager) {
             _recommendationManager = recommendationManager;
+            _experienceManager = experienceManager;
         }
 
         protected override DriverResult Display(ProfessionalProfilePart part, string displayType, dynamic shapeHelper) {
@@ -17,12 +20,11 @@ namespace OrchardPros.Careers.Drivers {
 
         protected override DriverResult Editor(ProfessionalProfilePart part, dynamic shapeHelper) {
             return ContentShape("Parts_ProfessionalProfile_Edit", () => {
-                var viewModel = shapeHelper.ViewModel(
-                    Model: part,
-                    Positions: shapeHelper.ProfessionalProfile_Edit_Positions(Profile: part, Positions: part.Positions.ToList()),
-                    Skills: shapeHelper.ProfessionalProfile_Edit_Skills(Profile: part, Skills: part.Skills.ToList()),
-                    Recommendations: shapeHelper.ProfessionalProfile_Edit_Recommendations(Profile: part, Recommendations: _recommendationManager.FetchEx(part.Id).ToList()));
-
+                var viewModel = shapeHelper.ViewModel(Model: part);
+                viewModel.Add(shapeHelper.ProfessionalProfile_Edit_Positions(Profile: part, Positions: part.Positions.ToList()));
+                viewModel.Add(shapeHelper.ProfessionalProfile_Edit_Skills(Profile: part, Skills: part.Skills.ToList()));
+                viewModel.Add(shapeHelper.ProfessionalProfile_Edit_Recommendations(Profile: part, Recommendations: _recommendationManager.FetchEx(part.Id).ToList()));
+                viewModel.Add(shapeHelper.ProfessionalProfile_Edit_Experience(Profile: part, Experience: _experienceManager.Fetch(part.Id).ToList()));
                 return shapeHelper.EditorTemplate(TemplateName: "Parts/ProfessionalProfile", Model: viewModel, Prefix: Prefix);
             });
         }
