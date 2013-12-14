@@ -1,6 +1,23 @@
-﻿@{
+﻿@using Orchard.Utility.Extensions
+@{
+    Style.Require("jQueryUI_Orchard");
+    Style.Include("admin-tabs.css", "admin-tabs.min.css");
+    Script.Require("jQueryUI_Tabs");
     Script.Require("ShapesBase");
+    Script.Include("tabify.js");
 }
-@foreach (var shape in Model) {
-    @Display(shape)
-}
+<div class="tabs" data-tabs>
+    <ul>
+        @foreach (var shape in Model) {
+            var shapeTypeName = (string)shape.Metadata.Type;
+            <li><a href="#@shapeTypeName.HtmlClassify()">@shape.TabText</a></li>
+        }
+    </ul>
+
+    @foreach (var shape in Model) {
+        var shapeTypeName = (string)shape.Metadata.Type;
+        <div id="@shapeTypeName.HtmlClassify()">
+            @Display(shape)
+        </div>
+    }
+</div>
