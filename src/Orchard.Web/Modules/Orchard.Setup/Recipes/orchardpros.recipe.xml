@@ -84,6 +84,45 @@
         <Transition SourceActivityId="5" SourceEndpoint="Signed Out" DestinationActivityId="6" DestinationEndpoint="" />
       </Transitions>
     </Workflow>
+    <Workflow Name="Open Authentication" Enabled="true">
+      <Activities>
+        <Activity Id="74" Name="OAuthVerify" Start="true" X="733" Y="299">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="75" Name="Notify" Start="false" X="651" Y="493">
+          <State>{"Notification":"Error","Message":"Your authentication request failed."}</State>
+        </Activity>
+        <Activity Id="76" Name="OAuthSignIn" Start="false" X="885" Y="479">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="77" Name="Notify" Start="false" X="936" Y="676">
+          <State>{"Notification":"Information","Message":"You have been logged using your {0} account."}</State>
+        </Activity>
+        <Activity Id="78" Name="OAuthCreateOrAssociateUser" Start="false" X="1234" Y="308">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="79" Name="Notify" Start="false" X="1151" Y="513">
+          <State>{"Notification":"Information","Message":"Your {0} account has been attached to your local account."}</State>
+        </Activity>
+        <Activity Id="80" Name="Redirect" Start="false" X="1181" Y="667">
+          <State>{"Url":"~/"}</State>
+        </Activity>
+        <Activity Id="81" Name="Notify" Start="false" X="1427" Y="540">
+          <State>{"Notification":"Information","Message":"You have been logged in using your {0} account. We have created a local account for you with the name '{1}'"}</State>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition SourceActivityId="74" SourceEndpoint="Failed" DestinationActivityId="75" DestinationEndpoint="" />
+        <Transition SourceActivityId="74" SourceEndpoint="AssociationFound" DestinationActivityId="76" DestinationEndpoint="" />
+        <Transition SourceActivityId="76" SourceEndpoint="Failed" DestinationActivityId="75" DestinationEndpoint="" />
+        <Transition SourceActivityId="76" SourceEndpoint="Success" DestinationActivityId="77" DestinationEndpoint="" />
+        <Transition SourceActivityId="74" SourceEndpoint="AssociationNotFound" DestinationActivityId="78" DestinationEndpoint="" />
+        <Transition SourceActivityId="79" SourceEndpoint="Done" DestinationActivityId="80" DestinationEndpoint="" />
+        <Transition SourceActivityId="78" SourceEndpoint="CurrentUserAssociated" DestinationActivityId="79" DestinationEndpoint="" />
+        <Transition SourceActivityId="81" SourceEndpoint="Done" DestinationActivityId="80" DestinationEndpoint="" />
+        <Transition SourceActivityId="78" SourceEndpoint="NewUserAssociated" DestinationActivityId="81" DestinationEndpoint="" />
+      </Transitions>
+    </Workflow>
   </Workflows>
 
   <Command>
