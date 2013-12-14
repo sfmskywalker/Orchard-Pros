@@ -70,7 +70,14 @@
     <Content Include="Placement.info">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Scripts\tabify.js" />
     <Content Include="Scripts\Web.config" />
+    <Content Include="Styles\admin-tabs.css">
+      <DependentUpon>admin-tabs.less</DependentUpon>
+    </Content>
+    <Content Include="Styles\admin-tabs.min.css">
+      <DependentUpon>admin-tabs.less</DependentUpon>
+    </Content>
     <Content Include="Styles\Web.config" />
     <Content Include="Properties\AssemblyInfo.cs" />
     <Content Include="Module.txt" />
@@ -185,6 +192,7 @@
     <Content Include="Web.Config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Styles\admin-tabs.less" />
     <None Include="Web.Debug.Config">
       <DependentUpon>Web.Config</DependentUpon>
     </None>
