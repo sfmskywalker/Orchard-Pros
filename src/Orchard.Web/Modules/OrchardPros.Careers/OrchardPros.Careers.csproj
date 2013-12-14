@@ -70,7 +70,6 @@
     <Content Include="Placement.info">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
     <Content Include="Properties\AssemblyInfo.cs" />
@@ -181,6 +180,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\PositionPicker.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.Config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web.Debug.Config">
+      <DependentUpon>Web.Config</DependentUpon>
+    </None>
+    <None Include="Web.Release.Config">
+      <DependentUpon>Web.Config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
