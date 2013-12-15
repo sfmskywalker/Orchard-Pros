@@ -3,16 +3,20 @@ using FluentNHibernate.Cfg;
 using NHibernate.Cfg;
 using Orchard.Data;
 using Orchard.Utility;
+using OrchardPros.Tickets.Models;
 
 namespace OrchardPros.Tickets.Mappings {
     public class PersistenceConfiguration : ISessionConfigurationEvents {
-        public void Building(Configuration cfg) {}
+        public void Building(Configuration cfg) {
+        }
 
         public void Created(FluentConfiguration cfg, AutoPersistenceModel defaultModel) {
-            cfg.Mappings(x => x.FluentMappings
-                .Add<VoteMap>()
-                .Add<ReplyMap>()
-                .Add<AttachmentMap>());
+            defaultModel.Override<Vote>(mapping => mapping.References(x => x.Reply, "VoteId"));
+            defaultModel.Override<Reply>(mapping => {
+                mapping.References(x => x.Ticket, "TicketId");
+                mapping.References(x => x.ParentReply, "ParentReplyId");
+            });
+            defaultModel.Override<Attachment>(mapping => mapping.References(x => x.Ticket, "TicketId"));
         }
 
         public void Prepared(FluentConfiguration cfg) {}

@@ -6,7 +6,7 @@ namespace OrchardPros.Tickets {
         public int Create() {
             SchemaBuilder.CreateTable("Ticket", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
-                .Column<int>("OwnerId", c => c.NotNull())
+                .Column<int>("UserId", c => c.NotNull())
                 .Column<string>("Title", c => c.WithLength(256).NotNull())
                 .Column<string>("Description", c => c.Unlimited().NotNull())
                 .Column<string>("Type", c => c.WithLength(32).NotNull())

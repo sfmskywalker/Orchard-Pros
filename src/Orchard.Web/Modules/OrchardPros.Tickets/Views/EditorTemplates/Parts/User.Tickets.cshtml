@@ -1,0 +1,50 @@
+﻿@using Orchard.Users.Models
+@{
+    var userPart = (UserPart)Model.UserPart;
+    var tickets = (IEnumerable<dynamic>) Model.Tickets;
+}
+<fieldset>
+    <legend>@T("Tickets")</legend>
+    <table class="items">
+        <thead>
+            <tr>
+                <th>@T("ID")</th>
+                <th>@("User")</th>
+                <th>@("Type")</th>
+                <th>@("Category")</th>
+                <th>@("Tags")</th>
+                <th>@("Bounty")</th>
+                <th>@("Deadline")</th>
+                <th>@("EXP")</th>
+                <th>@("Created")</th>
+                <th>@("Last Modified")</th>
+                <th>@("Solved")</th>
+                <th>@("Answer ID")</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in tickets) {
+                <tr>
+                    <td>@ticket.Id</td>
+                    <td>@ticket.UserName</td>
+                    <td>@ticket.Type</td>
+                    <td>@ticket.CategoryName</td>
+                    <td>@ticket.Tags</td>
+                    <td>@(ticket.Bounty != null ? ticket.Bounty.Value.ToString("c") : "")</td>
+                    <td>@ticket.Deadline</td>
+                    <td>@ticket.ExperiencePoints</td>
+                    <td>@ticket.CreatedUtc</td>
+                    <td>@ticket.LastModifiedUtc</td>
+                    <td>@ticket.SolvedUtc</td>
+                    <td>@ticket.AnwerId</td>
+                    <td>
+                        @Html.ActionLink(T("Edit").ToString(), "Edit", "Ticket", new { ticket.Id, Area = "OrchardPros.Tickets" }, null) @T(" |")
+                        @Html.ActionLink(T("Delete").ToString(), "Delete", "Ticket", new { ticket.Id, Area = "OrchardPros.Tickets" }, new { itemprop = "UnsafeUrl RemoveUrl" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.ActionLink(T("Add").ToString(), "Create", "Ticket", new { userPart.Id, Area = "OrchardPros.Tickets" }, new { @class = "button" })
+</fieldset>

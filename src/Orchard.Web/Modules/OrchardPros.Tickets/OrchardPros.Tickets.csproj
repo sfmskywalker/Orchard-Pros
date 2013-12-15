@@ -91,11 +91,14 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Users\Orchard.Users.csproj">
+      <Project>{79aed36e-abd0-4747-93d3-8722b042454b}</Project>
+      <Name>Orchard.Users</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mappings\AttachmentMap.cs" />
-    <Compile Include="Mappings\ReplyMap.cs" />
-    <Compile Include="Mappings\VoteMap.cs" />
+    <Compile Include="Services\ITicketService.cs" />
+    <Compile Include="Drivers\UserPartDriver.cs" />
     <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\Reply.cs" />
     <Compile Include="Models\Ticket.cs" />
@@ -103,8 +106,17 @@
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\Vote.cs" />
     <Compile Include="Mappings\PersistenceConfiguration.cs" />
+    <Compile Include="Services\TicketService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Placement.info">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts\User.Tickets.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

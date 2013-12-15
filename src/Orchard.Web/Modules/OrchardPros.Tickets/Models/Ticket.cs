@@ -7,7 +7,7 @@ namespace OrchardPros.Tickets.Models {
     public class Ticket {
         public virtual int Id { get; set; }
 
-        public virtual int OwnerId { get; set; }
+        public virtual int UserId { get; set; }
 
         [StringLength(256)]
         public virtual string Title { get; set; }
