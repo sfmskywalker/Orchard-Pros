@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.ConstrainedExecution;
 using Orchard.Data.Conventions;
 
 namespace OrchardPros.Tickets.Models {
@@ -31,8 +30,8 @@ namespace OrchardPros.Tickets.Models {
         public virtual DateTime CreatedUtc { get; set; }
         public virtual DateTime LastModifiedUtc { get; set; }
 
-        public virtual bool Solved { get; set; }
         public virtual DateTime? SolvedUtc { get; set; }
         public virtual int? AnswerId { get; set; }
+        public virtual DateTime? ArchivedUtc { get; set; }
     }
 }

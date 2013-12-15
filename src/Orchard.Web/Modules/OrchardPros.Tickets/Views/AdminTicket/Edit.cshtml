@@ -1,0 +1,15 @@
+﻿@using Orchard.ContentManagement
+@using Orchard.Security
+@model OrchardPros.Tickets.ViewModels.TicketViewModel
+@{
+    var user = Model.User.As<IUser>();
+    Layout.Title = @T("Edit Ticket for {0}", user.UserName);
+}
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.ValidationSummary()
+    @Html.EditorForModel()
+    <fieldset>
+        <button class="primaryAction" type="submit" name="submit.Save" value="submit.Save">@T("Save")</button>
+        @Html.ActionLink(T("Cancel").ToString(), "Edit", "Admin", new { Model.User.Id, Area = "Orchard.Users" }, new { @class = "button" })
+    </fieldset>
+}

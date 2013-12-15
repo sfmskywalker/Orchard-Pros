@@ -7,8 +7,6 @@ using OrchardPros.Tickets.Models;
 
 namespace OrchardPros.Tickets.Mappings {
     public class PersistenceConfiguration : ISessionConfigurationEvents {
-        public void Building(Configuration cfg) {
-        }
 
         public void Created(FluentConfiguration cfg, AutoPersistenceModel defaultModel) {
             defaultModel.Override<Vote>(mapping => mapping.References(x => x.Reply, "VoteId"));
@@ -19,7 +17,8 @@ namespace OrchardPros.Tickets.Mappings {
             defaultModel.Override<Attachment>(mapping => mapping.References(x => x.Ticket, "TicketId"));
         }
 
-        public void Prepared(FluentConfiguration cfg) {}
+        public void Building(Configuration cfg) { }
+        public void Prepared(FluentConfiguration cfg) { }
         public void Finished(Configuration cfg) {}
         public void ComputingHash(Hash hash) {}
     }

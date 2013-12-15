@@ -20,11 +20,6 @@ namespace OrchardPros.Membership.Models {
             set { this.Store(x => x.MiddleName, value); }
         }
 
-        public int Level {
-            get { return this.Retrieve(x => x.Level); }
-            set { this.Store(x => x.Level, value); }
-        }
-
         public string Bio {
             get { return this.Retrieve(x => x.Bio); }
             set { this.Store(x => x.Bio, value); }

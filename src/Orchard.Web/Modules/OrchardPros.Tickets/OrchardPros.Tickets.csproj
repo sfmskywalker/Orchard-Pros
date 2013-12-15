@@ -91,12 +91,25 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Taxonomies\Orchard.Taxonomies.csproj">
+      <Project>{e649ea64-d213-461b-87f7-d67035801443}</Project>
+      <Name>Orchard.Taxonomies</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Users\Orchard.Users.csproj">
       <Project>{79aed36e-abd0-4747-93d3-8722b042454b}</Project>
       <Name>Orchard.Users</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AdminTicketController.cs" />
+    <Compile Include="Drivers\ExpertPartDriver.cs" />
+    <Compile Include="Handlers\CategoryTermPartHandler.cs" />
+    <Compile Include="Signals.cs" />
+    <Compile Include="Models\ExpertPart.cs" />
+    <Compile Include="Services\ExperienceCalculator.cs" />
+    <Compile Include="Services\IExperienceCalculator.cs" />
+    <Compile Include="ViewModels\TicketRow.cs" />
+    <Compile Include="ViewModels\TicketViewModel.cs" />
     <Compile Include="Services\ITicketService.cs" />
     <Compile Include="Drivers\UserPartDriver.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -113,9 +126,26 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\AdminTicket\Create.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts\User.Tickets.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\TicketViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\TermPicker.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\TicketTypePicker.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts\Expert.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AdminTicket\Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

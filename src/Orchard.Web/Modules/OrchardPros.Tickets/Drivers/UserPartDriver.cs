@@ -6,6 +6,7 @@ using Orchard.Core.Title.Models;
 using Orchard.Data;
 using Orchard.Users.Models;
 using OrchardPros.Tickets.Services;
+using OrchardPros.Tickets.ViewModels;
 
 namespace OrchardPros.Tickets.Drivers {
     public class UserPartDriver : ContentPartDriver<UserPart> {
@@ -22,7 +23,7 @@ namespace OrchardPros.Tickets.Drivers {
         protected override DriverResult Editor(UserPart part, dynamic shapeHelper) {
             return ContentShape("Parts_User_Tickets", () => shapeHelper.EditorTemplate(
                 TemplateName: "Parts/User.Tickets",
-                Model: shapeHelper.ViewModel(UserPart: part, Tickets: GetTicketsDataShape(part.Id, shapeHelper).ToArray()),
+                Model: shapeHelper.ViewModel(UserPart: part, Tickets: GetTicketsDataShape(part.Id).ToArray()),
                 Prefix: Prefix));
         }
 
@@ -30,31 +31,30 @@ namespace OrchardPros.Tickets.Drivers {
             return Editor(part, shapeHelper);
         }
 
-        private IEnumerable<dynamic> GetTicketsDataShape(int userId, dynamic shapeHelper) {
+        private IEnumerable<TicketRow> GetTicketsDataShape(int userId) {
+            var categoryDictionary = _ticketService.GetCategoryDictionary();
             return from ticket in _ticketService.GetTicketsFor(userId)
-                from user in _userRepository.Table
-                where user.Id == ticket.Id
-                from categoryTitle in _titleRepository.Table
-                where categoryTitle.Id == ticket.CategoryId
-                select shapeHelper.Ticket(
-                    Id: ticket.Id,
-                    UserId: user.Id,
-                    UserName: user.UserName,
-                    CategoryId: categoryTitle.Id,
-                    CategoryName: categoryTitle.Title,
-                    Description: ticket.Description,
-                    Type: ticket.Type,
-                    Title: ticket.Title,
-                    Tags: ticket.Tags,
-                    Bounty: ticket.Bounty,
-                    DeadlineUtc: ticket.DeadlineUtc,
-                    ExperiencePoints: ticket.ExperiencePoints,
-                    CreatedUtc: ticket.CreatedUtc,
-                    LastModifiedUtc: ticket.LastModifiedUtc,
-                    Solved: ticket.Solved,
-                    SolvedUtc: ticket.SolvedUtc,
-                    AnswerId: ticket.AnswerId);
-
+                   from user in _userRepository.Table
+                   where user.Id == ticket.UserId
+                   let category = categoryDictionary[ticket.CategoryId]
+                   select new TicketRow {
+                       Id = ticket.Id,
+                       UserId = user.Id,
+                       UserName = user.UserName,
+                       CategoryId = ticket.CategoryId,
+                       CategoryName = category,
+                       Description = ticket.Description,
+                       Type = ticket.Type,
+                       Title = ticket.Title,
+                       Tags = ticket.Tags,
+                       Bounty = ticket.Bounty,
+                       DeadlineUtc = ticket.DeadlineUtc,
+                       ExperiencePoints = ticket.ExperiencePoints,
+                       CreatedUtc = ticket.CreatedUtc,
+                       LastModifiedUtc = ticket.LastModifiedUtc,
+                       SolvedUtc = ticket.SolvedUtc,
+                       AnswerId = ticket.AnswerId
+                   };
         }
     }
 }

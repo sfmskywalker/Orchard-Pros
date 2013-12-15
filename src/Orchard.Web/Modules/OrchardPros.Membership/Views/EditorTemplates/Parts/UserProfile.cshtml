@@ -14,10 +14,6 @@
         @Html.TextBoxFor(m => m.LastName, new { @class = "text medium" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Level, T("Level"))
-        @Html.TextBoxFor(m => m.Level, new { @class = "text small" })
-    </div>
-    <div class="form-group">
         @Html.LabelFor(m => m.AvatarType, T("Avatar Type"))
         @Html.EditorFor(m => m.AvatarType, "AvatarTypeSelector")
     </div>

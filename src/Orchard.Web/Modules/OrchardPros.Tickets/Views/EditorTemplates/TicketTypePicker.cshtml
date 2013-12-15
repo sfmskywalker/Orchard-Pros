@@ -1,0 +1,7 @@
+﻿@using OrchardPros.Tickets.Models
+@{
+    var types = (TicketType[])Enum.GetValues(typeof(TicketType));
+    var selectedValue = ViewData.TemplateInfo.FormattedModelValue as TicketType?;
+    var options = types.Select(x => new SelectListItem {Text = x.ToString(), Value = x.ToString(), Selected = x == selectedValue});
+}
+@Html.DropDownList("", options, "(Choose a Type)")

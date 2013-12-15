@@ -1,0 +1,7 @@
+﻿@using Orchard.Taxonomies.Models
+@{
+    var terms = (IEnumerable<TermPart>) ViewBag.Terms;
+    var selectedValue = ViewData.TemplateInfo.FormattedModelValue as int?;
+    var options = terms.Select(x => new SelectListItem {Text = x.Name, Value = x.Id.ToString(), Selected = x.Id == selectedValue});
+}
+@Html.DropDownList("", options, "(Choose a Category)")

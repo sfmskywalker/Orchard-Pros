@@ -1,7 +1,8 @@
 ﻿@using Orchard.Users.Models
+@using OrchardPros.Tickets.ViewModels
 @{
     var userPart = (UserPart)Model.UserPart;
-    var tickets = (IEnumerable<dynamic>) Model.Tickets;
+    var tickets = (IEnumerable<TicketRow>) Model.Tickets;
 }
 <fieldset>
     <legend>@T("Tickets")</legend>
@@ -32,19 +33,19 @@
                     <td>@ticket.CategoryName</td>
                     <td>@ticket.Tags</td>
                     <td>@(ticket.Bounty != null ? ticket.Bounty.Value.ToString("c") : "")</td>
-                    <td>@ticket.Deadline</td>
+                    <td>@ticket.DeadlineUtc</td>
                     <td>@ticket.ExperiencePoints</td>
                     <td>@ticket.CreatedUtc</td>
                     <td>@ticket.LastModifiedUtc</td>
                     <td>@ticket.SolvedUtc</td>
-                    <td>@ticket.AnwerId</td>
+                    <td>@ticket.AnswerId</td>
                     <td>
-                        @Html.ActionLink(T("Edit").ToString(), "Edit", "Ticket", new { ticket.Id, Area = "OrchardPros.Tickets" }, null) @T(" |")
-                        @Html.ActionLink(T("Delete").ToString(), "Delete", "Ticket", new { ticket.Id, Area = "OrchardPros.Tickets" }, new { itemprop = "UnsafeUrl RemoveUrl" })
+                        @Html.ActionLink(T("Edit").ToString(), "Edit", "AdminTicket", new { ticket.Id, Area = "OrchardPros.Tickets" }, null) @T(" |")
+                        @Html.ActionLink(T("Delete").ToString(), "Delete", "AdminTicket", new { ticket.Id, Area = "OrchardPros.Tickets" }, new { itemprop = "UnsafeUrl RemoveUrl" })
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    @Html.ActionLink(T("Add").ToString(), "Create", "Ticket", new { userPart.Id, Area = "OrchardPros.Tickets" }, new { @class = "button" })
+    @Html.ActionLink(T("Add").ToString(), "Create", "AdminTicket", new { userPart.Id, Area = "OrchardPros.Tickets" }, new { @class = "button" })
 </fieldset>

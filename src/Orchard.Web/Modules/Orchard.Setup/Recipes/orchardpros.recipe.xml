@@ -21,6 +21,12 @@
 
   <Metadata>
     <Types>
+      <CategoryTerm Taxonomy="Category" DisplayName="Category Term">
+        <TermPart />
+        <TitlePart />
+        <AutoroutePart AutorouteSettings.AllowCustomPattern="true" AutorouteSettings.AutomaticAdjustmentOnEdit="false" AutorouteSettings.PatternDefinitions="[{Name:'Taxonomy and Title', Pattern: '{Content.Container.Path}/{Content.Slug}', Description: 'my-taxonomy/my-term/sub-term'}]" AutorouteSettings.DefaultPatternIndex="0" />
+        <CommonPart />
+      </CategoryTerm>
       <Page ContentTypeSettings.Draftable="True" TypeIndexing.Indexes="Search">
         <TagsPart />
         <LocalizationPart />
@@ -33,6 +39,33 @@
       <BodyPart BodyPartSettings.FlavorDefault="markdown" />
     </Parts>
   </Metadata>
+
+  <Data>
+    <Taxonomy Id="/alias=category" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-15T13:31:48.9469273Z" PublishedUtc="2013-12-15T13:31:48.9689273Z" ModifiedUtc="2013-12-15T13:31:48.9469273Z" />
+      <AutoroutePart Alias="category" UseCustomPattern="false" />
+      <TitlePart Title="Category" />
+      <TaxonomyPart TermTypeName="CategoryTerm" />
+    </Taxonomy>
+    <CategoryTerm Id="/alias=category\/category-1" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2013-12-15T13:32:01.7961683Z" PublishedUtc="2013-12-15T13:32:01.9391763Z" ModifiedUtc="2013-12-15T13:32:01.8071786Z" />
+      <AutoroutePart Alias="category/category-1" UseCustomPattern="false" />
+      <TitlePart Title="Category 1" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=category" Path="" />
+    </CategoryTerm>
+    <CategoryTerm Id="/alias=category\/category-2" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2013-12-15T13:32:07.8900143Z" PublishedUtc="2013-12-15T13:32:07.9360023Z" ModifiedUtc="2013-12-15T13:32:07.8910121Z" />
+      <AutoroutePart Alias="category/category-2" UseCustomPattern="false" />
+      <TitlePart Title="Category 2" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=category" Path="" />
+    </CategoryTerm>
+    <CategoryTerm Id="/alias=category\/category-3" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2013-12-15T13:32:16.0438425Z" PublishedUtc="2013-12-15T13:32:16.0928095Z" ModifiedUtc="2013-12-15T13:32:16.0458417Z" />
+      <AutoroutePart Alias="category/category-3" UseCustomPattern="false" />
+      <TitlePart Title="Category 3" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=category" Path="" />
+    </CategoryTerm>
+  </Data>
 
   <Settings>
     <SiteSettingsPart PageTitleSeparator=" - " SiteName="Orchard Pros" SiteSalt="1f8757683b674a5eb38a0b2dec50727b" SuperUser="admin" SiteCulture="en-US" PageSize="0" SiteTimeZone="W. Europe Standard Time" BaseUrl="http://localhost:30322" />

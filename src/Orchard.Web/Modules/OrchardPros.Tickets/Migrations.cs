@@ -1,4 +1,6 @@
 ﻿using System;
+using Orchard.ContentManagement.MetaData;
+using Orchard.Core.Contents.Extensions;
 using Orchard.Data.Migration;
 
 namespace OrchardPros.Tickets {
@@ -17,9 +19,9 @@ namespace OrchardPros.Tickets {
                 .Column<int>("ExperiencePoints", c => c.NotNull())
                 .Column<DateTime>("CreatedUtc", c => c.NotNull())
                 .Column<DateTime>("LastModifiedUtc", c => c.Nullable())
-                .Column<bool>("Solved", c => c.NotNull())
                 .Column<DateTime>("SolvedUtc", c => c.Nullable())
-                .Column<int>("AnswerId", c => c.Nullable()));
+                .Column<int>("AnswerId", c => c.Nullable())
+                .Column<DateTime>("ArchivedUtc", c => c.Nullable()));
 
             SchemaBuilder.CreateTable("Attachment", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
@@ -48,6 +50,14 @@ namespace OrchardPros.Tickets {
             SchemaBuilder.CreateForeignKey("FK_Replies_Ticket", "Reply", new[] {"TicketId"}, "Ticket", new[] {"Id"});
             SchemaBuilder.CreateForeignKey("FK_Replies_Reply", "Reply", new[] { "ParentReplyId" }, "Reply", new[] { "Id" });
             SchemaBuilder.CreateForeignKey("FK_Votes_Reply", "Vote", new[] { "ReplyId" }, "Reply", new[] { "Id" });
+
+            ContentDefinitionManager.AlterPartDefinition("ExpertPart", part => part
+                .Attachable(false)
+                .WithDescription("Stores expert information about a user, such as level and experience points"));
+
+            ContentDefinitionManager.AlterTypeDefinition("User", type => type
+                .WithPart("ExpertPart"));
+
             return 1;
         }
     }
