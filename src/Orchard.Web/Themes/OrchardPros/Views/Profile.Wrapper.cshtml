@@ -1,0 +1,15 @@
+﻿@{
+    Layout.Jumbotron.Add(New.Profile_Jumbotron());
+    Layout.AsideFirst.Add(New.Profile_Aside());
+}
+<section>
+    <div class="sorter">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="@Url.Action("Index", "Profile", new { area = "OrchardPros.Membership" })">@T("Profile")</a></li>
+            <li><a href="@Url.Action("TicketsCreated", "Profile", new { area = "OrchardPros.Membership" })">@T("Tickets Created")</a></li>
+            <li><a href="@Url.Action("TicketsFollowed", "Profile", new { area = "OrchardPros.Membership" })">@T("Tickets Followed")</a></li>
+            <li><a href="@Url.Action("Settings", "Profile", new { area = "OrchardPros.Membership" })">@T("Settings")</a></li>
+        </ul>
+    </div>
+    @DisplayChildren(Model)
+</section>

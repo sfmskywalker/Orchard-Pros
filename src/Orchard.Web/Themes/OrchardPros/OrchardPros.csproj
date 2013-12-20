@@ -124,6 +124,10 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Modules\OrchardPros.Careers\OrchardPros.Careers.csproj">
+      <Project>{3f168f27-6012-4402-93d1-e77f6ffdd627}</Project>
+      <Name>OrchardPros.Careers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Modules\OrchardPros.Commerce\OrchardPros.Commerce.csproj">
       <Project>{9ccdf301-9ba0-4436-812c-7c901f175f54}</Project>
       <Name>OrchardPros.Commerce</Name>
@@ -192,6 +196,33 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Parts.Title.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Jumbotron-HomePage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Widget-Jumbotron.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Profile.Wrapper.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Profile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Profile.Jumbotron.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Profile.Aside.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Profile.Settings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Profile.TicketsCreated.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Profile.TicketsFollowed.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,4 +1,5 @@
 ﻿@using Orchard.Utility.Extensions
+@model OrchardPros.Careers.ViewModels.ProfessionalProfileViewModel
 @{
     Style.Require("jQueryUI_Orchard");
     Style.Include("admin-tabs.css", "admin-tabs.min.css");
@@ -6,15 +7,26 @@
     Script.Require("ShapesBase");
     Script.Include("tabify.js");
 }
+<fieldset>
+    <legend>@T("Professional")</legend>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Title, T("Title"))
+        @Html.TextBoxFor(m => m.Title, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Location, @T("Location"))
+        @Html.TextBoxFor(m => m.Location, new { @class = "text large" })
+    </div>
+</fieldset>
 <div class="tabs" data-tabs>
     <ul>
-        @foreach (var shape in Model) {
+        @foreach (var shape in Model.Tabs) {
             var shapeTypeName = (string)shape.Metadata.Type;
             <li><a href="#@shapeTypeName.HtmlClassify()">@shape.TabText</a></li>
         }
     </ul>
 
-    @foreach (var shape in Model) {
+    @foreach (var shape in Model.Tabs) {
         var shapeTypeName = (string)shape.Metadata.Type;
         <div id="@shapeTypeName.HtmlClassify()">
             @Display(shape)

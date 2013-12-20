@@ -101,6 +101,7 @@
     <Compile Include="Controllers\RecommendationController.cs" />
     <Compile Include="Controllers\SkillController.cs" />
     <Compile Include="Controllers\PositionController.cs" />
+    <Compile Include="ViewModels\ProfessionalProfileViewModel.cs" />
     <Compile Include="Services\ExperienceManager.cs" />
     <Compile Include="Services\IExperienceManager.cs" />
     <Compile Include="Models\Experience.cs" />

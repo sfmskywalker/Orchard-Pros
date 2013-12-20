@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.CodeDom
+@{
     Style.Include("bootstrap.css", "bootstrap.min.css");
     Style.Include("theme.css", "theme.min.css");
     Script.Require("jQuery").AtFoot();
@@ -9,11 +10,15 @@
 }
 @functions {
     string ContentZoneClass() {
-        return Model.Aside == null ? "col-md-12" : "col-md-8";
+        return Model.AsideFirst == null && Model.AsideSecond == null ? "col-md-12" : Model.AsideFirst != null && Model.AsideSecond != null ? "col-md-5" : "col-md-8";
     }
 
-    string AsideZoneClass() {
-        return Model.Content  == null ? "col-md-12" : "col-md-4";
+    string AsideSecondZoneClass() {
+        return Model.Content == null && Model.AsideFirst == null ? "col-md-12" : Model.Content != null && Model.AsideFirst != null ? "col-md-3" : "col-md-4";
+    }
+
+    string AsideFirstZoneClass() {
+        return Model.Content == null && Model.AsideSecond == null ? "col-md-12" : "col-md-4";
     }
 }
 @Display.SiteBar()
@@ -29,17 +34,25 @@
         @Display(Model.Jumbotron)
     }
 
-    @if (Model.Content != null || Model.Aside) {
+    @if (Model.Content != null || Model.AsideFirst != null || Model.AsideSecond != null) {
         <div class="row">
+            @if (Model.AsideFirst != null) {
+                <div class="@AsideFirstZoneClass()">
+                    @Display(Model.AsideFirst)
+                </div>
+            }
+
             @if (Model.Content != null) {
                 <div class="@ContentZoneClass()">
                     @Display(Model.Content)
                 </div>
             }
-
-            <div class="@AsideZoneClass()">
-                @Display(Model.Aside)
-            </div>
+            
+            @if (Model.AsideSecond != null) {
+                <div class="@AsideSecondZoneClass()">
+                    @Display(Model.AsideSecond)
+                </div>
+            }
         </div>
     }
 </div>
