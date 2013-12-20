@@ -1,0 +1,17 @@
+﻿@using Orchard.Utility.Extensions;
+@{
+    if (Model.Title != null) {
+        Layout.Title = Model.Title;
+    }
+
+    var contentTypeClassName = ((string)Model.ContentItem.ContentType).HtmlClassify();
+    
+    Model.Classes.Add("content-item");    
+    Model.Classes.Add(contentTypeClassName);
+    
+    var tag = Tag(Model, "section");
+}
+@tag.StartElement
+    @Display(Model.Header)
+    @Display(Model.Content)
+@tag.EndElement

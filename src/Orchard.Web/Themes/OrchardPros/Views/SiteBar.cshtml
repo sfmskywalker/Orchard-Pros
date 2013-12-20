@@ -1,0 +1,38 @@
+﻿@{
+    var isAuthenticated = WorkContext.CurrentUser != null;
+}
+<!-- Sitebar -->
+<nav class="sitebar orchard" role="navigation">
+    <div class="container">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Orchard Network <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            @if (!isAuthenticated) {
+                <li><a href="@Url.Action("SignIn", "Account", new {area = "OrchardPros.Membership"})">@T("Signin")</a></li>
+                <li><a href="@Url.Action("SignUp", "Account", new {area = "OrchardPros.Membership"})">@T("Register")</a></li>
+            }
+            else {
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="~/themes/orchardpros/images/temp-profile.png" alt="Profile image" class="profile-img-s"> Username <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Tickets created</a></li>
+                        <li><a href="#">Tickets followed</a></li>
+                        <li><a href="#">Settings</a></li>
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
+</nav> <!-- /.sitebar -->

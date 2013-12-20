@@ -1,19 +1,46 @@
 ﻿@{
-    SetMeta(httpEquiv: "X-UA-Compatible", content: "IE=edge,chrome=1");
-    SetMeta("viewport", "width=device-width, initial-scale=1.0");
     Style.Include("bootstrap.css", "bootstrap.min.css");
-    Style.Include("bootstrap-theme.css", "bootstrap-theme.min.css");
+    Style.Include("theme.css", "theme.min.css");
     Script.Require("jQuery").AtFoot();
+    Script.Include("html5shiv.js").Define(x => x.SetCdn("https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js")).UseCdn().UseCondition("if lt IE 9").AtHead();
+    Script.Include("respond.min.js").Define(x => x.SetCdn("https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js")).UseCdn().UseCondition("if lt IE 9").AtHead();
+    Script.Include("jquery.js").Define(x => x.SetCdn("https://code.jquery.com/jquery.js")).UseCdn().AtFoot();
     Script.Include("bootstrap.js", "bootstrap.min.js").AtFoot();
 }
-@Display.Header()
+@functions {
+    string ContentZoneClass() {
+        return Model.Aside == null ? "col-md-12" : "col-md-8";
+    }
 
-<div class="jumbotron">
-    <div class="container">
-        <h1>@WorkContext.CurrentSite.SiteName</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
-    </div>
+    string AsideZoneClass() {
+        return Model.Content  == null ? "col-md-12" : "col-md-4";
+    }
+}
+@Display.SiteBar()
+@Display.NavBar()
+<div class="container">
+    @if (Model.Title != null) {
+        <div class="header">
+            <h1>@Model.Title</h1>
+        </div>
+    }
+    
+    @if (Model.Jumbotron != null) {
+        @Display(Model.Jumbotron)
+    }
+
+    @if (Model.Content != null || Model.Aside) {
+        <div class="row">
+            @if (Model.Content != null) {
+                <div class="@ContentZoneClass()">
+                    @Display(Model.Content)
+                </div>
+            }
+
+            <div class="@AsideZoneClass()">
+                @Display(Model.Aside)
+            </div>
+        </div>
+    }
 </div>
-
-@Display.Main()
+@Display.Footer()

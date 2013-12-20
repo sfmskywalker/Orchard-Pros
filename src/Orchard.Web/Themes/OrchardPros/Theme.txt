@@ -1,6 +1,6 @@
 Name: Orchard Pros
 Author: IDeliverable / Design by Jay Tang | Visual Creature
 Website: http://ideliverable.net
-Description: Description for the theme
+Description: Orchard Pros
 Version: 1.0
-Zones: Content, Navigation
+Zones: Navigation, Jumbotron, Content, Aside
