@@ -102,6 +102,8 @@
     <Compile Include="Common\Drivers\CommonPartDriver.cs" />
     <Compile Include="Common\Drivers\TextFieldDriver.cs" />
     <Compile Include="Containers\Drivers\ContainerWidgetPartDriver.cs" />
+    <Compile Include="Containers\Extensions\ContentDefinitionManagerExtensions.cs" />
+    <Compile Include="Containers\Handlers\ContainerWidgetPartHandler.cs" />
     <Compile Include="Containers\Drivers\CustomPropertiesDriver.cs" />
     <Compile Include="Containers\Extensions\ContentQueryExtensions.cs" />
     <Compile Include="Containers\Handlers\ContainablePartHandler.cs" />
@@ -113,11 +115,16 @@
     <Compile Include="Common\Fields\TextField.cs" />
     <Compile Include="Containers\Models\ContainerWidgetPart.cs" />
     <Compile Include="Containers\Models\CustomPropertiesPart.cs" />
-    <Compile Include="Containers\Models\OrderByDirection.cs" />
+    <Compile Include="Containers\Services\ContainerService.cs" />
+    <Compile Include="Containers\Services\ListViewProvider.cs" />
+    <Compile Include="Containers\Services\ListViewService.cs" />
+    <Compile Include="Containers\Services\Randomizer.cs" />
     <Compile Include="Containers\Settings\ContainerSettings.cs" />
+    <Compile Include="Containers\Settings\ContainableSettings.cs" />
     <Compile Include="Containers\ViewModels\ContainableViewModel.cs" />
     <Compile Include="Containers\ViewModels\ContainerWidgetViewModel.cs" />
     <Compile Include="Containers\ViewModels\ContainerViewModel.cs" />
+    <Compile Include="Containers\ViewModels\ContainerTypePartSettingsViewModel.cs" />
     <Compile Include="Contents\ControlWrapper.cs" />
     <Compile Include="Contents\Security\AuthorizationEventHandler.cs" />
     <Compile Include="Common\Services\BbcodeFilter.cs" />
@@ -341,12 +348,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Settings\Views\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Common\Views\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Common\Views\Parts.Common.Body.cshtml" />
     <Content Include="Common\Views\EditorTemplates\Parts.Common.Body.cshtml" />
     <Content Include="Common\Views\Parts.Common.Owner.Edit.cshtml" />
@@ -359,19 +360,15 @@
     <Content Include="Dashboard\Views\Admin\Index.cshtml" />
     <Content Include="Navigation\Views\Admin\Index.cshtml" />
     <Content Include="Navigation\Views\EditorTemplates\Parts.Navigation.Menu.Edit.cshtml" />
-    <Content Include="Navigation\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Common\Views\Parts.Common.Body.Summary.cshtml" />
-    <Content Include="Dashboard\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Containers\Services\" />
+    <Folder Include="Views\Gamma\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Contents\Views\Web.config" />
-    <Content Include="Reports\Views\Web.config" />
     <Content Include="Contents\Views\Content.cshtml" />
     <Content Include="Contents\Views\Content.SummaryAdmin.cshtml" />
     <Content Include="Shapes\Views\Document.cshtml" />
@@ -380,7 +377,6 @@
     <Content Include="Shapes\Views\Layout.cshtml" />
     <Content Include="Shapes\Views\Menu.cshtml" />
     <Content Include="Shapes\Views\MenuItem.cshtml" />
-    <Content Include="Shapes\Views\Web.config" />
     <Content Include="Common\Placement.info" />
     <Content Include="Common\Views\Parts.Common.Metadata.Summary.cshtml" />
     <Content Include="Contents\Placement.info">
@@ -404,7 +400,7 @@
     <Content Include="Containers\Views\EditorTemplates\ContainerWidget.cshtml" />
     <Content Include="Containers\Views\EditorTemplates\Container.cshtml" />
     <Content Include="Containers\Views\DefinitionTemplates\ContainerPartSettings.cshtml" />
-    <Content Include="Containers\Views\DefinitionTemplates\ContainerTypePartSettings.cshtml" />
+    <Content Include="Containers\Views\DefinitionTemplates\ContainerTypePartSettingsViewModel.cshtml" />
     <Content Include="Containers\Views\EditorTemplates\Containable.cshtml" />
     <Content Include="Containers\Views\Parts.ContainerWidget.cshtml" />
     <Content Include="Containers\Views\EditorTemplates\CustomProperties.cshtml" />
@@ -474,9 +470,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Title\Views\Parts.Title_SummaryAdmin.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Title\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Shapes\Views\ErrorPage.cshtml" />
@@ -554,6 +547,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contents\Views\Item\Preview.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Containers\Views\EditorTemplates\ListViewPicker.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Containers\Views\DefinitionTemplates\ContainableTypePartSettings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

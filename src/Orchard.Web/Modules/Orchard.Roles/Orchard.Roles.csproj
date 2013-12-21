@@ -69,6 +69,7 @@
     <Compile Include="Activities\IsInRoleActivity.cs" />
     <Compile Include="Activities\UserTaskActivity.cs" />
     <Compile Include="AdminMenu.cs" />
+    <Compile Include="Commands\RoleCommands.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Drivers\UserTaskDriver.cs" />
     <Compile Include="Forms\SelectRolesForms.cs" />
@@ -107,7 +108,6 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Roles.UserRoles.cshtml" />
     <Content Include="Content\Site.css" />
-    <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
