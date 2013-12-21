@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Orchard.ContentManagement
+@using OrchardPros.Membership.Helpers
+@using OrchardPros.Membership.Models
+@{
     var isAuthenticated = WorkContext.CurrentUser != null;
 }
 <!-- Sitebar -->
@@ -21,9 +24,10 @@
                 <li><a href="@Url.Action("SignUp", "Account", new {area = "OrchardPros.Membership"})">@T("Register")</a></li>
             }
             else {
+                var profilePart = WorkContext.CurrentUser.As<UserProfilePart>();
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="~/themes/orchardpros/images/temp-profile.png" alt="Profile image" class="profile-img-s"> @WorkContext.CurrentUser.UserName <b class="caret"></b>
+                        <img src="@Url.AvatarUrl(profilePart, this, 32)" alt="Profile image" class="profile-img-s"> @WorkContext.CurrentUser.UserName <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="@Url.Action("Index", "Profile", new { area = "OrchardPros.Membership" })">@T("Profile")</a></li>

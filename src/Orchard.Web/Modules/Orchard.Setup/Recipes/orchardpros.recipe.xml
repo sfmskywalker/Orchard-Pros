@@ -80,9 +80,10 @@
       <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2013-12-20T14:41:22.1036314Z" PublishedUtc="2013-12-20T14:41:22.1636354Z" ModifiedUtc="2013-12-20T14:41:22.2136385Z" />
       <WidgetPart Title="Jumbotron" Position="1" Zone="Jumbotron" RenderTitle="false" Name="" />
     </ShapeWidget>
-    <User Id="/User.UserName=lightning" Status="Published">
-      <UserPart Email="sipke@orchardpros.com" EmailStatus="Approved" HashAlgorithm="SHA1" NormalizedUserName="lightning" Password="Y2SFFbW9VLIKcE5swgdoMNywFZI=" PasswordFormat="Hashed" PasswordSalt="Ems5sdEvbk5tkFG8GMhdsw==" RegistrationStatus="Approved" UserName="lightning" />
-      <UserRolesPart Roles="Admin" />
+    <User Id="/User.UserName=snow" Status="Published">
+      <MediaLibraryPickerField.Avatar ContentItems="/Identifier=5b76ff5ab622433cb15c9e17392dd983" />
+      <UserPart Email="sipkeschoorstra@hotmail.com" EmailStatus="Approved" HashAlgorithm="SHA1" NormalizedUserName="snow" Password="Y2SFFbW9VLIKcE5swgdoMNywFZI=" PasswordFormat="Hashed" PasswordSalt="Ems5sdEvbk5tkFG8GMhdsw==" RegistrationStatus="Approved" UserName="snow" />
+      <UserRolesPart Roles="Administrator" />
       <ProfessionalProfilePart>
         <Positions>
           <Position LocalId="1" CompanyName="IDeliverable" Title="Orchard Expert" Location="Rotterdam" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2013" PeriodStartMonth="11">Doing Orchard development &amp; consultancy.</Position>
@@ -98,10 +99,15 @@
           <Experience LocalPositionId="2" CreatedUtc="2013-12-21T11:29:40">Did a lot of cool projects here.</Experience>
         </Experiences>
         <Recommendations>
-          <Recommendation RecommendingUserId="/User.UserName=lightning" Approved="true" CreatedUtc="2013-12-20T23:33:55">This guy is awesome.</Recommendation>
-          <Recommendation RecommendingUserId="/User.UserName=lightning" Approved="false" CreatedUtc="2013-12-20T23:34:17">This guy SUCKS!!</Recommendation>
+          <Recommendation RecommendingUserId="/User.UserName=snow" Approved="true" CreatedUtc="2013-12-20T23:33:55">This guy is awesome.</Recommendation>
+          <Recommendation RecommendingUserId="/User.UserName=snow" Approved="false" CreatedUtc="2013-12-20T23:34:17">This guy SUCKS!!</Recommendation>
         </Recommendations>
       </ProfessionalProfilePart>
+      <UserProfilePart FirstName="Sipke" MiddleName="" LastName="Schoorstra" AvatarType="LocalStorage" CreatedUtc="0001-01-01T00:00:00Z">
+        I grew up in Bergen, Noord-Holland with my 8 bit NES and later my self-earned 16 bit SNES by being a paperboy. Inspired by games like Mario, Zelda, Mystic Quest &amp; Secret Of Mana, I knew that I wanted to create games myself and started drawing heroes, dragons, elves and trees (I should mention girls as well). But I wanted more, so at some point I sold my game consoles and bought a PC with Klik &amp; Play and Macromedia Director and learned to script, which provided me with a great preparation for the multimedia study I started the year after. During this period I moved on to C++ and DirectX which gave me the confidence that I could actually become a programmer. At some point a company invited me to work for them and that’s how I got into the Internet of things. Since then, I’ve worked for a variety of companies building a vast range of .NET applications, including for the web, desktop, servers, and embedded systems. In 2003 I started as a freelancer and developed a new CMS along the way to serve my clients. During that time I found out how hard it is to maintain and evolve a CMS all by yourself, so at some point I started looking for an open source CMS. Being in love with MVC, I was content when I found out about Oxite, but mesmerized when I found out about Orchard.
+        In my spare time, I enjoy reading, blogging, jogging, working on personal projects and dreaming about my next killer RPG.
+      </UserProfilePart>
+      <ExpertPart Level="80" ExperiencePoints="364000" Rating="1" />
     </User>
   </Data>
 

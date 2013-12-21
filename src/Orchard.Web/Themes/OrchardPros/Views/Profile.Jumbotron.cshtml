@@ -1,3 +1,11 @@
-﻿<div class="jumbotron account">
-    <img src="~/themes/orchardpros/images/temp-profile.png" alt="Username" class="profile-img-l">
+﻿@using Orchard.ContentManagement
+@using Orchard.Security
+@using OrchardPros.Membership.Helpers
+@using OrchardPros.Membership.Models
+@{
+    var user = (IUser) Model.User;
+    var profilePart = user.As<UserProfilePart>();
+}
+<div class="jumbotron account">
+    <img src="@Url.AvatarUrl(profilePart, this, 140)" alt="@user.UserName" class="profile-img-l">
 </div>

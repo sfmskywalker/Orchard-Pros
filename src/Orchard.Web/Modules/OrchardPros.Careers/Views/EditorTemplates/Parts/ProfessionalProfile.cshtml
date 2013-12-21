@@ -7,17 +7,6 @@
     Script.Require("ShapesBase");
     Script.Include("tabify.js");
 }
-<fieldset>
-    <legend>@T("Professional")</legend>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Title, T("Title"))
-        @Html.TextBoxFor(m => m.Title, new { @class = "text large" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Location, @T("Location"))
-        @Html.TextBoxFor(m => m.Location, new { @class = "text large" })
-    </div>
-</fieldset>
 <div class="tabs" data-tabs>
     <ul>
         @foreach (var shape in Model.Tabs) {

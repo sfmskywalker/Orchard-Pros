@@ -4,3 +4,4 @@ Website: http://ideliverable.net
 Description: Orchard Pros
 Version: 1.0
 Zones: Navigation, Jumbotron, Content, AsideFirst, AsideSecond
+Dependencies: OrchardPros.Membership, OrchardPros.Careers, OrchardPros.Community, OrchardPros.Tickets, OrchardPros.Commerce
