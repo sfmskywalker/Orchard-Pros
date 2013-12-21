@@ -4,7 +4,7 @@ using Orchard.Data.Conventions;
 namespace OrchardPros.Careers.Models {
     public class Position {
         public virtual int Id { get; set; }
-        public virtual int ProfileId { get; set; }
+        public virtual int UserId { get; set; }
         public virtual string CompanyName { get; set; }
         public virtual string Title { get; set; }
         public virtual string Location { get; set; }

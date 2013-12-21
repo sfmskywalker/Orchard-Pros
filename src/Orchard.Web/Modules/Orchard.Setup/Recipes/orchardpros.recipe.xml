@@ -80,6 +80,29 @@
       <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2013-12-20T14:41:22.1036314Z" PublishedUtc="2013-12-20T14:41:22.1636354Z" ModifiedUtc="2013-12-20T14:41:22.2136385Z" />
       <WidgetPart Title="Jumbotron" Position="1" Zone="Jumbotron" RenderTitle="false" Name="" />
     </ShapeWidget>
+    <User Id="/User.UserName=lightning" Status="Published">
+      <UserPart Email="sipke@orchardpros.com" EmailStatus="Approved" HashAlgorithm="SHA1" NormalizedUserName="lightning" Password="Y2SFFbW9VLIKcE5swgdoMNywFZI=" PasswordFormat="Hashed" PasswordSalt="Ems5sdEvbk5tkFG8GMhdsw==" RegistrationStatus="Approved" UserName="lightning" />
+      <UserRolesPart Roles="Admin" />
+      <ProfessionalProfilePart>
+        <Positions>
+          <Position LocalId="1" CompanyName="IDeliverable" Title="Orchard Expert" Location="Rotterdam" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2013" PeriodStartMonth="11">Doing Orchard development &amp; consultancy.</Position>
+          <Position LocalId="2" CompanyName="Skywalker Software Development" Title="Founder" Location="Rotterdam" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2011" PeriodStartMonth="6">Freelance Orchard Developer.</Position>
+        </Positions>
+        <Skills>
+          <Skill Name="Orchard" Rating="9" />
+          <Skill Name="C#" Rating="9" />
+          <Skill Name="ASP.NET MVC" Rating="9" />
+        </Skills>
+        <Experiences>
+          <Experience LocalPositionId="1" CreatedUtc="2013-12-21T11:29:16">I've done some cool projects here.</Experience>
+          <Experience LocalPositionId="2" CreatedUtc="2013-12-21T11:29:40">Did a lot of cool projects here.</Experience>
+        </Experiences>
+        <Recommendations>
+          <Recommendation RecommendingUserId="/User.UserName=lightning" Approved="true" CreatedUtc="2013-12-20T23:33:55">This guy is awesome.</Recommendation>
+          <Recommendation RecommendingUserId="/User.UserName=lightning" Approved="false" CreatedUtc="2013-12-20T23:34:17">This guy SUCKS!!</Recommendation>
+        </Recommendations>
+      </ProfessionalProfilePart>
+    </User>
   </Data>
 
   <Settings>

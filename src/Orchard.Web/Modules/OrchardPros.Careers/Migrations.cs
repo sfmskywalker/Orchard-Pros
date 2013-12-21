@@ -9,7 +9,7 @@ namespace OrchardPros.Careers {
         public int Create() {
             SchemaBuilder.CreateTable("Position", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
-                .Column<int>("ProfileId")
+                .Column<int>("UserId")
                 .Column<string>("CompanyName", c => c.WithLength(64))
                 .Column<string>("Title", c => c.WithLength(64))
                 .Column<string>("Location", c => c.WithLength(64))
@@ -24,22 +24,22 @@ namespace OrchardPros.Careers {
 
             SchemaBuilder.CreateTable("Skill", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
-                .Column<int>("ProfileId")
+                .Column<int>("UserId")
                 .Column<string>("Name", c => c.WithLength(64))
                 .Column<int>("Rating", c => c.NotNull()));
 
             SchemaBuilder.CreateTable("Recommendation", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
-                .Column<int>("ProfileId")
-                .Column<int>("RecommendingProfileId")
+                .Column<int>("UserId")
+                .Column<int>("RecommendingUserId")
                 .Column<string>("Text", c => c.Unlimited())
                 .Column<bool>("Approved", c => c.NotNull())
                 .Column<DateTime>("CreatedUtc"));
 
             SchemaBuilder.CreateTable("Experience", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
-                .Column<int>("ProfileId")
-                .Column<int>("Position_Id")
+                .Column<int>("UserId")
+                .Column<int>("PositionId")
                 .Column<string>("Description", c => c.Unlimited())
                 .Column<DateTime>("CreatedUtc"));
 

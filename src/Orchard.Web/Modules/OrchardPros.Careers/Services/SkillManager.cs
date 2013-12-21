@@ -11,17 +11,17 @@ namespace OrchardPros.Careers.Services {
             _skillRepository = skillRepository;
         }
 
-        public IEnumerable<Skill> Fetch(int profileId) {
-            return _skillRepository.Fetch(x => x.ProfileId == profileId);
+        public IEnumerable<Skill> Fetch(int userId) {
+            return _skillRepository.Fetch(x => x.UserId == userId);
         }
 
         public Skill Get(int id) {
             return _skillRepository.Get(id);
         }
 
-        public Skill Create(int profileId, Action<Skill> initialize) {
+        public Skill Create(int userId, Action<Skill> initialize) {
             var skill = new Skill {
-                ProfileId = profileId
+                UserId = userId
             };
             if (initialize != null)
                 initialize(skill);

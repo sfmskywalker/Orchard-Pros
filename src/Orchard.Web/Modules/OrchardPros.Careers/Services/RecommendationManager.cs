@@ -20,20 +20,20 @@ namespace OrchardPros.Careers.Services {
         }
 
         public IEnumerable<Recommendation> Fetch(int profileId) {
-            return _recommendationRepository.Fetch(x => x.ProfileId == profileId);
+            return _recommendationRepository.Fetch(x => x.UserId == profileId);
         }
 
         public IEnumerable<RecommendationEx> FetchEx(int profileId) {
             return from recommendation in _recommendationRepository.Table
-                where recommendation.ProfileId == profileId
+                where recommendation.UserId == profileId
                 from user in _userRepository.Table
                 where user.Id == profileId
                    select new RecommendationEx {
                     Approved = recommendation.Approved,
                     CreatedUtc = recommendation.CreatedUtc,
-                    ProfileId = recommendation.ProfileId,
+                    UserId = recommendation.UserId,
                     Id = recommendation.Id,
-                    RecommendingProfileId = recommendation.RecommendingProfileId,
+                    RecommendingUserId = recommendation.RecommendingUserId,
                     RecommendingUser = user,
                     Text = recommendation.Text
                 };
@@ -41,7 +41,7 @@ namespace OrchardPros.Careers.Services {
 
         public Recommendation Create(int profileId, Action<Recommendation> initialize = null) {
             var recommendation = new Recommendation {
-                ProfileId = profileId,
+                UserId = profileId,
                 CreatedUtc = _clock.UtcNow
             };
             if (initialize != null)

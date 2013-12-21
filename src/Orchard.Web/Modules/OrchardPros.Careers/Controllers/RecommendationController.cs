@@ -57,9 +57,9 @@ namespace OrchardPros.Careers.Controllers {
 
         public ActionResult Edit(int id) {
             var recommendation = _recommendationManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(recommendation.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(recommendation.UserId);
             var viewModel = CreateViewModel(profile, x => {
-                var recommendingUser = recommendation.RecommendingProfileId != null ? _contentManager.Get<IUser>(recommendation.RecommendingProfileId.Value) : default(IUser);
+                var recommendingUser = _contentManager.Get<IUser>(recommendation.RecommendingUserId);
                 x.Approved = recommendation.Approved;
                 x.CreatedUtc = recommendation.CreatedUtc;
                 x.RecommendingUserName = recommendingUser != null ? recommendingUser.UserName : null;
@@ -72,7 +72,7 @@ namespace OrchardPros.Careers.Controllers {
         public ActionResult Edit(int id, RecommendationViewModel viewModel) {
             var recommendingUser = ValidateRecommendingUser(viewModel);
             var recommendation = _recommendationManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(recommendation.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(recommendation.UserId);
 
             if (!ModelState.IsValid) {
                 return View(InitializeViewModel(viewModel, profile));
@@ -85,7 +85,7 @@ namespace OrchardPros.Careers.Controllers {
         [HttpPost]
         public ActionResult Delete(int id) {
             var recommendation = _recommendationManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(recommendation.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(recommendation.UserId);
             _recommendationManager.Delete(recommendation);
             _notifier.Information(T("That Recommendation has been deleted."));
             return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });
@@ -94,7 +94,7 @@ namespace OrchardPros.Careers.Controllers {
         [HttpPost]
         public ActionResult Approve(int id) {
             var recommendation = _recommendationManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(recommendation.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(recommendation.UserId);
             _recommendationManager.Approve(recommendation);
             _notifier.Information(T("That Recommendation has been approved."));
             return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });
@@ -113,7 +113,7 @@ namespace OrchardPros.Careers.Controllers {
             recommendation.Text = viewModel.Text.TrimSafe();
             recommendation.CreatedUtc = viewModel.CreatedUtc;
             recommendation.Approved = viewModel.Approved;
-            recommendation.RecommendingProfileId = recommendingProfileId;
+            recommendation.RecommendingUserId = recommendingProfileId;
         }
 
         private static RecommendationViewModel CreateViewModel(ProfessionalProfilePart profile, Action<RecommendationViewModel> initialize = null) {

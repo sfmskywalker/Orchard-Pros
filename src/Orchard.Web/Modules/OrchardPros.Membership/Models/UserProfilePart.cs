@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Orchard.ContentManagement;
 using Orchard.MediaLibrary.Fields;
+using Orchard.Security;
 using OrchardPros.Membership.Helpers;
 
 namespace OrchardPros.Membership.Models {
@@ -35,6 +37,17 @@ namespace OrchardPros.Membership.Models {
         public AvatarType AvatarType {
             get { return this.Retrieve(x => x.AvatarType); }
             set { this.Store(x => x.AvatarType, value); }
+        }
+
+        public string FullName {
+            get { return String.Format("{0} {1}", FirstName, String.IsNullOrWhiteSpace(MiddleName) ? LastName : MiddleName + " " + LastName); }
+        }
+
+        public string DisplayName {
+            get {
+                var fullName = FullName;
+                return String.IsNullOrWhiteSpace(fullName) ? this.As<IUser>().UserName : fullName;
+            }
         }
     }
 }

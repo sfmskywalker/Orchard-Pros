@@ -7,7 +7,7 @@ namespace OrchardPros.Careers.Services {
     public interface IPositionManager : IDependency {
         IEnumerable<Position> Fetch(int userId);
         Position Get(int id);
-        Position Create(int profileId, Action<Position> initialize = null);
+        Position Create(int userId, Action<Position> initialize = null);
         void Archive(Position position);
     }
 }

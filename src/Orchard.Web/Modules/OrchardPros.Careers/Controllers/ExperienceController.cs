@@ -58,7 +58,7 @@ namespace OrchardPros.Careers.Controllers {
 
         public ActionResult Edit(int id) {
             var experience = _experienceManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(experience.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(experience.UserId);
             var viewModel = CreateViewModel(profile, x => {
                 x.CreatedUtc = experience.CreatedUtc;
                 x.Description = experience.Description;
@@ -70,7 +70,7 @@ namespace OrchardPros.Careers.Controllers {
         [HttpPost]
         public ActionResult Edit(int id, ExperienceViewModel viewModel) {
             var experience = _experienceManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(experience.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(experience.UserId);
 
             if (!ModelState.IsValid) {
                 return View(InitializeViewModel(viewModel, profile));
@@ -83,7 +83,7 @@ namespace OrchardPros.Careers.Controllers {
         [HttpPost]
         public ActionResult Delete(int id) {
             var experience = _experienceManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(experience.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(experience.UserId);
             _experienceManager.Delete(experience);
             _notifier.Information(T("That Experience has been deleted."));
             return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });

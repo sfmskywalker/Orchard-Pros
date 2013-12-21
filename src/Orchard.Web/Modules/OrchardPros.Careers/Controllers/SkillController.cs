@@ -44,7 +44,7 @@ namespace OrchardPros.Careers.Controllers {
 
         public ActionResult Edit(int id) {
             var skill = _skillManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(skill.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(skill.UserId);
             var viewModel = CreateViewModel(profile, x => {
                 x.Name = skill.Name;
                 x.Rating = skill.Rating;
@@ -55,7 +55,7 @@ namespace OrchardPros.Careers.Controllers {
         [HttpPost]
         public ActionResult Edit(int id, SkillViewModel viewModel) {
             var skill = _skillManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(skill.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(skill.UserId);
 
             if (!ModelState.IsValid) {
                 return View(InitializeViewModel(viewModel, profile));
@@ -68,7 +68,7 @@ namespace OrchardPros.Careers.Controllers {
         [HttpPost]
         public ActionResult Delete(int id) {
             var skill = _skillManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(skill.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(skill.UserId);
             _skillManager.Delete(skill);
             _notifier.Information(T("Your Skill has been deleted."));
             return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });

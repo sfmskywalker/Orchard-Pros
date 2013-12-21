@@ -42,16 +42,16 @@ namespace OrchardPros.Membership.Controllers {
 
         public ActionResult Index(string id = null) {
             var user = String.IsNullOrWhiteSpace(id) ? _services.WorkContext.CurrentUser : _membershipService.GetUser(id);
-            var profileShape = Wrap(New.Profile(User: user));
+            var profileShape = Wrap(New.Profile(User: user, IsCurrentUser: _services.WorkContext.CurrentUser.Id == user.Id), user);
             return new ShapeResult(this, profileShape);
         }
 
-        public ActionResult TicketsCreated(string id = null) {
+        public ActionResult TicketsCreated() {
             var ticketsCreated = Wrap(New.Profile_TicketsCreated());
             return new ShapeResult(this, ticketsCreated);
         }
 
-        public ActionResult TicketsFollowed(string id = null) {
+        public ActionResult TicketsFollowed() {
             var ticketsFollowed = Wrap(New.Profile_TicketsFollowed());
             return new ShapeResult(this, ticketsFollowed);
         }
@@ -61,12 +61,13 @@ namespace OrchardPros.Membership.Controllers {
             return new ShapeResult(this, settings);
         }
 
-        private dynamic Wrap(dynamic shape) {
+        private dynamic Wrap(dynamic shape, IUser user = null) {
             if (Request.IsAjaxRequest())
                 return shape;
 
             var wrapper = New.Profile_Wrapper();
             wrapper.Add(shape);
+            wrapper.User = user ?? _services.WorkContext.CurrentUser;
             return wrapper;
         }
     }

@@ -12,11 +12,11 @@ namespace OrchardPros.Careers.Services {
         }
 
         public IEnumerable<Experience> Fetch(int profileId) {
-            return _experienceRepository.Fetch(x => x.ProfileId == profileId);
+            return _experienceRepository.Fetch(x => x.UserId == profileId);
         }
 
-        public Experience Create(int profileId, Action<Experience> initialize = null) {
-            var experience = new Experience {ProfileId = profileId};
+        public Experience Create(int userId, Action<Experience> initialize = null) {
+            var experience = new Experience {UserId = userId};
             if (initialize != null)
                 initialize(experience);
             _experienceRepository.Create(experience);

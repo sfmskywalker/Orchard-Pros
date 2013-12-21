@@ -5,9 +5,9 @@ using OrchardPros.Careers.Models;
 
 namespace OrchardPros.Careers.Services {
     public interface ISkillManager : IDependency {
-        IEnumerable<Skill> Fetch(int profileId);
+        IEnumerable<Skill> Fetch(int userId);
         Skill Get(int id);
-        Skill Create(int profileId, Action<Skill> initialize);
+        Skill Create(int userId, Action<Skill> initialize);
         void Delete(Skill skill);
     }
 }

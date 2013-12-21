@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using OrchardPros.Careers.Models;
 
 namespace OrchardPros.Careers.Helpers {
@@ -10,6 +12,14 @@ namespace OrchardPros.Careers.Helpers {
 
         public static string End(this Position position) {
             return position.IsCurrentPosition ? "Current" : Date(position.PeriodEndYear, position.PeriodEndMonth);
+        }
+
+        public static Position Current(this IEnumerable<Position> positions) {
+            return positions
+                .OrderByDescending(x => x.IsCurrentPosition)
+                .ThenByDescending(x => x.PeriodStartYear.GetValueOrDefault())
+                .ThenByDescending(x => x.PeriodStartMonth.GetValueOrDefault())
+                .FirstOrDefault();
         }
 
         private static string Date(int? year, int? month) {

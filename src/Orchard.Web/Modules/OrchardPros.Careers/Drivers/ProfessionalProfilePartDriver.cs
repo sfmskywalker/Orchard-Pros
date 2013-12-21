@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
+using Orchard.ContentManagement.Handlers;
 using Orchard.Localization;
-using OrchardPros.Careers.Helpers;
+using Orchard.Security;
 using OrchardPros.Careers.Models;
 using OrchardPros.Careers.Services;
 using OrchardPros.Careers.ViewModels;
@@ -11,10 +15,22 @@ namespace OrchardPros.Careers.Drivers {
     public class ProfessionalProfilePartDriver : ContentPartDriver<ProfessionalProfilePart> {
         private readonly IRecommendationManager _recommendationManager;
         private readonly IExperienceManager _experienceManager;
+        private readonly IContentManager _contentManager;
+        private readonly IPositionManager _positionManager;
+        private readonly ISkillManager _skillManager;
 
-        public ProfessionalProfilePartDriver(IRecommendationManager recommendationManager, IExperienceManager experienceManager) {
+        public ProfessionalProfilePartDriver(
+            IRecommendationManager recommendationManager, 
+            IExperienceManager experienceManager, 
+            IContentManager contentManager, 
+            IPositionManager positionManager, 
+            ISkillManager skillManager) {
+
             _recommendationManager = recommendationManager;
             _experienceManager = experienceManager;
+            _contentManager = contentManager;
+            _positionManager = positionManager;
+            _skillManager = skillManager;
             T = NullLocalizer.Instance;
         }
 
@@ -31,8 +47,6 @@ namespace OrchardPros.Careers.Drivers {
         protected override DriverResult Editor(ProfessionalProfilePart part, IUpdateModel updater, dynamic shapeHelper) {
             return ContentShape("Parts_ProfessionalProfile_Edit", () => {
                 var viewModel = new ProfessionalProfileViewModel {
-                    Title = part.Title,
-                    Location = part.Location,
                     Tabs = shapeHelper.Tabs()
                 };
                 viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Positions(TabText: T("Positions"), Profile: part, Positions: part.Positions.ToList()));
@@ -40,15 +54,162 @@ namespace OrchardPros.Careers.Drivers {
                 viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Recommendations(TabText: T("Recommendations"), Profile: part, Recommendations: _recommendationManager.FetchEx(part.Id).ToList()));
                 viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Experience(TabText: T("Experience"), Profile: part, Experience: _experienceManager.Fetch(part.Id).ToList()));
 
-                if (updater != null) {
-                    if (updater.TryUpdateModel(viewModel, Prefix, null, new[] {"Tabs"})) {
-                        part.Title = viewModel.Title.TrimSafe();
-                        part.Location = viewModel.Location.TrimSafe();
-                    }
-                }
-
                 return shapeHelper.EditorTemplate(TemplateName: "Parts/ProfessionalProfile", Model: viewModel, Prefix: Prefix);
             });
+        }
+
+        protected override void Exporting(ProfessionalProfilePart part, ExportContentContext context) {
+            var partElement = context.Element(part.PartDefinition.Name);
+            partElement.Add(CreatePositionsElement(part));
+            partElement.Add(CreateSkillsElement(part));
+            partElement.Add(CreateExperiencesElement(part));
+            partElement.Add(CreateRecommendationsElement(part));
+        }
+
+        protected override void Importing(ProfessionalProfilePart part, ImportContentContext context) {
+            var partElement = context.Data.Element(part.PartDefinition.Name);
+            var positionsDictionary = ImportPositions(part, partElement);
+            ImportRecommendations(part, partElement, context);
+            ImportSkills(part, partElement);
+            ImportExperiences(part, partElement, positionsDictionary);
+        }
+
+        private void ImportExperiences(ProfessionalProfilePart part, XElement partElement, IDictionary<int, Position> positionsDictionary) {
+            var experiencesElement = partElement.Element("Experiences");
+
+            if (experiencesElement != null) {
+                foreach (var experienceElement in experiencesElement.Elements("Experience")) {
+                    var element = experienceElement;
+                    _experienceManager.Create(part.Id, e => {
+                        e.CreatedUtc = element.Attr<DateTime>("CreatedUtc");
+                        e.Description = element.Value;
+                        e.Position = positionsDictionary[element.Attr<int>("LocalPositionId")];
+                    });
+                }
+            }
+        }
+
+        private void ImportSkills(ProfessionalProfilePart part, XElement partElement) {
+            var skillsElement = partElement.Element("Skills");
+
+            if (skillsElement != null) {
+                foreach (var skillElement in skillsElement.Elements("Skill")) {
+                    var element = skillElement;
+                    _skillManager.Create(part.Id, s => {
+                        s.Name = element.Attr<string>("Name");
+                        s.Rating = element.Attr<int>("Rating");
+                    });
+                }
+            }
+        }
+
+        private void ImportRecommendations(ProfessionalProfilePart part, XElement partElement, ImportContentContext context) {
+            var recommendationsElement = partElement.Element("Recommendations");
+
+            if (recommendationsElement == null)
+                return;
+
+            foreach (var recommendationElement in recommendationsElement.Elements("Recommendation")) {
+                var element = recommendationElement;
+                _recommendationManager.Create(part.Id, r => {
+                    r.Approved = element.Attr<bool>("Approved");
+                    r.CreatedUtc = element.Attr<DateTime>("CreatedUtc");
+                    r.RecommendingUserId = context.GetItemFromSession(element.Attr<string>("RecommendingUserId")).Id;
+                    r.Text = element.Value;
+                });
+            }
+        }
+
+        private IDictionary<int, Position> ImportPositions(ProfessionalProfilePart part, XElement partElement) {
+            var positionsElement = partElement.Element("Positions");
+            var dictionary = new Dictionary<int, Position>();
+
+            if (positionsElement != null) {
+                foreach (var positionElement in positionsElement.Elements("Position")) {
+                    var localId = positionElement.Attr<int>("LocalId");
+                    var element = positionElement;
+                    var position = _positionManager.Create(part.Id, p => {
+                        p.ArchivedUtc = element.Attr<DateTime?>("ArchivedUtc");
+                        p.CompanyName = element.Attr<string>("CompanyName");
+                        p.Description = element.Val<string>();
+                        p.IsArchived = element.Attr<bool>("IsArchived");
+                        p.IsCurrentPosition = element.Attr<bool>("IsCurrentPosition");
+                        p.Location = element.Attr<string>("Location");
+                        p.PeriodEndMonth = element.Attr<int?>("PeriodEndMonth");
+                        p.PeriodEndYear = element.Attr<int?>("PeriodEndYear");
+                        p.PeriodStartYear = element.Attr<int?>("PeriodStartYear");
+                        p.PeriodStartMonth = element.Attr<int?>("PeriodStartMonth");
+                        p.Title = element.Attr<string>("Title");
+                    });
+                    dictionary.Add(localId, position);
+                }
+            }
+            return dictionary;
+        }
+
+        private XElement CreateRecommendationsElement(ProfessionalProfilePart part) {
+            var recommendingUserIds = part.Recommendations.Select(x => x.RecommendingUserId).Distinct().ToArray();
+            var recommendingUsers = _contentManager.GetMany<IUser>(recommendingUserIds, VersionOptions.Latest, QueryHints.Empty).ToDictionary(x => x.Id);
+            return new XElement("Recommendations",
+                part.Recommendations.Select(recommendation =>
+                    new XElement("Recommendation",
+                        new XAttribute("RecommendingUserId", _contentManager.GetItemMetadata(recommendingUsers[recommendation.RecommendingUserId]).Identity),
+                        new XAttribute("Approved", recommendation.Approved),
+                        new XAttribute("CreatedUtc", recommendation.CreatedUtc),
+                        new XText(recommendation.Text))));
+        }
+
+        private XElement CreateExperiencesElement(ProfessionalProfilePart part) {
+            return new XElement("Experiences", 
+                part.Experience.Select(experience => 
+                    new XElement("Experience",
+                        new XAttribute("LocalPositionId", experience.Position.Id),
+                        new XAttribute("CreatedUtc", experience.CreatedUtc),
+                        new XText(experience.Description))));
+        }
+
+        private XElement CreateSkillsElement(ProfessionalProfilePart part) {
+            return new XElement("Skills", 
+                part.Skills.Select(skill => 
+                    new XElement("Skill", 
+                        new XAttribute("Name", skill.Name), 
+                        new XAttribute("Rating", skill.Rating))));
+        }
+
+        private static XElement CreatePositionsElement(ProfessionalProfilePart part) {
+            var positionsElement = new XElement("Positions");
+
+            foreach (var position in part.Positions) {
+                var positionElement = new XElement("Position");
+
+                positionsElement.Add(positionElement);
+                positionElement.Add(new XAttribute("LocalId", position.Id));
+                positionElement.Add(new XAttribute("CompanyName", position.CompanyName));
+                positionElement.Add(new XAttribute("Title", position.Title));
+                positionElement.Add(new XAttribute("Location", position.Location));
+                positionElement.Add(new XAttribute("IsCurrentPosition", position.IsCurrentPosition));
+                positionElement.Add(new XAttribute("IsArchived", position.IsArchived));
+
+                if(position.ArchivedUtc != null)
+                    positionElement.Add(new XAttribute("ArchivedUtc", position.ArchivedUtc));
+
+                if (position.PeriodStartYear != null)
+                    positionElement.Add(new XAttribute("PeriodStartYear", position.PeriodStartYear));
+
+                if (position.PeriodStartMonth != null)
+                    positionElement.Add(new XAttribute("PeriodStartMonth", position.PeriodStartMonth));
+
+                if (position.PeriodEndYear != null)
+                    positionElement.Add(new XAttribute("PeriodEndYear", position.PeriodEndYear));
+
+                if (position.PeriodEndMonth != null)
+                    positionElement.Add(new XAttribute("PeriodEndMonth", position.PeriodEndMonth));
+
+                if(!String.IsNullOrWhiteSpace(position.Description))
+                    positionElement.Value = position.Description;
+            }
+
+            return positionsElement;
         }
     }
 }

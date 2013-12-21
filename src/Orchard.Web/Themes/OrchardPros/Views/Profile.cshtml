@@ -2,16 +2,25 @@
 @using Orchard.Security
 @using OrchardPros.Careers.Helpers
 @using OrchardPros.Careers.Models
+@using OrchardPros.Careers.ViewModels
 @using OrchardPros.Membership.Models
 @{
     var user = (IUser) Model.User;
     var userProfilePart = user.As<UserProfilePart>();
     var professionalProfilePart = user.As<ProfessionalProfilePart>();
+    var currentPosition = professionalProfilePart.Positions.Current();
+    var recommendations = (IList<RecommendationEx>)Model.Recommendations;
+    var filteredRecommendations = (bool) Model.IsCurrentUser ? recommendations : recommendations.Where(x => x.Approved).ToArray();
 }
 <article class="profile-title">
     <h2>Title</h2>
-    <h4>@professionalProfilePart.Title</h4>
-    <p class="small">@professionalProfilePart.Location</p>
+    @if (currentPosition == null) {
+        <p>@T("No current or past positions have been specified.")</p>
+    }
+    else {
+        <h4>@currentPosition.Title</h4>
+        <p class="small">@currentPosition.Location</p>
+    }
 </article>
 <article class="profile-summary">
     <h2>@T("Summary")</h2>
@@ -49,13 +58,13 @@
 </article>
 <article class="profile-recommendations">
     <h2>@T("Recommendations")</h2>
-    @if (!professionalProfilePart.Recommendations.Any()) {
+    @if (!filteredRecommendations.Any()) {
         <p>@T("No recommendations were given yet.")</p>
     }
     else {
-        foreach (var recommendation in professionalProfilePart.Recommendations) {
+        foreach (var recommendation in filteredRecommendations) {
             <div class="media">
-                <a href="#" class="pull-left"><img src="~/themes/orchardpros/images/temp-profile.png" alt="@recommendation.RecommendingProfileId" class="profile-img-s media-object"></a>
+                <a href="#" class="pull-left"><img src="~/themes/orchardpros/images/temp-profile.png" alt="@recommendation.RecommendingUser.UserName" class="profile-img-s media-object"></a>
                 <div class="media-body">
                     <p><span class="dropcap">&nbsp;</span>@recommendation.Text</p>
                 </div>

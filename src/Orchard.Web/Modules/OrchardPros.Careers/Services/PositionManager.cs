@@ -15,16 +15,16 @@ namespace OrchardPros.Careers.Services {
         }
 
         public IEnumerable<Position> Fetch(int userId) {
-            return _positionRepository.Fetch(x => x.ProfileId == userId && !x.IsArchived);
+            return _positionRepository.Fetch(x => x.UserId == userId && !x.IsArchived);
         }
 
         public Position Get(int id) {
             return _positionRepository.Get(id);
         }
 
-        public Position Create(int profileId, Action<Position> initialize = null) {
+        public Position Create(int userId, Action<Position> initialize = null) {
             var position = new Position {
-                ProfileId = profileId
+                UserId = userId
             };
             if (initialize != null)
                 initialize(position);

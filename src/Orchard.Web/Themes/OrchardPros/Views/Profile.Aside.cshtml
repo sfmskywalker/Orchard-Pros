@@ -1,12 +1,21 @@
-﻿<aside>
+﻿@using Orchard.ContentManagement
+@using Orchard.Security
+@using OrchardPros.Membership.Models
+@using OrchardPros.Tickets.Models
+@{
+    var user = (IUser) Model.User;
+    var profilePart = user.As<UserProfilePart>();
+    var expertPart = user.As<ExpertPart>();
+}
+<aside>
     <div class="panel panel-default idplate">
         <div class="panel-heading">
-            <h3 class="panel-title">Info</h3>
+            <h3 class="panel-title">@T("Info")</h3>
         </div>
         <div class="panel-body">
             <ul class="expert-info">
-                <li class="name"><a href="#">Expert name</a></li>
-                <li class="title">Lv.00 Title</li>
+                <li class="name"><a href="#">@profilePart.DisplayName</a></li>
+                <li class="title">@T("Lv. {0:d2} {1}", expertPart.Level, expertPart.RankName)</li>
                 <li class="rating">
                     <span class="glyphicon glyphicon-star"></span>
                     <span class="glyphicon glyphicon-star"></span>
@@ -15,7 +24,7 @@
                     <span class="glyphicon glyphicon-star"></span>
                 </li>
                 <li class="experience">
-                    <p>10000 EXP</p>
+                    <p>@T("{0} EXP", expertPart.ExperiencePoints)</p>
                 </li>
             </ul>
         </div>

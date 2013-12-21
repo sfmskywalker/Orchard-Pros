@@ -49,7 +49,7 @@ namespace OrchardPros.Careers.Controllers {
 
         public ActionResult Edit(int id) {
             var position = _positionManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(position.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(position.UserId);
             var viewModel = CreateViewModel(profile, x => {
                 x.CompanyName = position.CompanyName;
                 x.Description = position.Description;
@@ -67,7 +67,7 @@ namespace OrchardPros.Careers.Controllers {
         [HttpPost]
         public ActionResult Edit(int id, PositionViewModel viewModel) {
             var position = _positionManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(position.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(position.UserId);
 
             if (!ModelState.IsValid) {
                 return View(InitializeViewModel(viewModel, profile));
@@ -80,7 +80,7 @@ namespace OrchardPros.Careers.Controllers {
         [HttpPost]
         public ActionResult Delete(int id) {
             var position = _positionManager.Get(id);
-            var profile = _contentManager.Get<ProfessionalProfilePart>(position.ProfileId);
+            var profile = _contentManager.Get<ProfessionalProfilePart>(position.UserId);
             _positionManager.Archive(position);
             _notifier.Information(T("Your Position has been deleted."));
             return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });

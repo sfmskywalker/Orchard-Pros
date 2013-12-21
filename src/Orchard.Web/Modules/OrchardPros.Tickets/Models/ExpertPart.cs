@@ -11,5 +11,14 @@ namespace OrchardPros.Tickets.Models {
             get { return this.Retrieve(x => x.ExperiencePoints); }
             set { this.Store(x => x.ExperiencePoints, value); }
         }
+
+        public int Rating {
+            get { return this.Retrieve(x => x.Rating); }
+            set { this.Store(x => x.Rating, value); }
+        }
+
+        public string RankName {
+            get { return "Rookie"; }
+        }
     }
 }
