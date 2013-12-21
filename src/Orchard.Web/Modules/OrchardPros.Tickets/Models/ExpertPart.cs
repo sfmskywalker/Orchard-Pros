@@ -13,7 +13,7 @@ namespace OrchardPros.Tickets.Models {
         }
 
         public int Rating {
-            get { return this.Retrieve(x => x.Rating); }
+            get { return this.Retrieve(x => x.Rating, 1); }
             set { this.Store(x => x.Rating, value); }
         }
 

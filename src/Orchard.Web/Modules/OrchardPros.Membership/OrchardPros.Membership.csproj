@@ -116,6 +116,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Drivers\UserProfilePartDriver.cs" />
     <Compile Include="Events\UserEventHandler.cs" />
+    <Compile Include="Handlers\UserEventHandler.cs" />
     <Compile Include="Helpers\ContentExtensions.cs" />
     <Compile Include="Helpers\UrlExtensions.cs" />
     <Compile Include="Models\AvatarType.cs" />
@@ -151,9 +152,7 @@
   <ItemGroup>
     <Content Include="Views\EditorTemplates\AvatarTypeSelector.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handlers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\UserProfile.cshtml" />
   </ItemGroup>

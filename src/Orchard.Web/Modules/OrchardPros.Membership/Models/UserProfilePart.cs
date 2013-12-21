@@ -39,6 +39,16 @@ namespace OrchardPros.Membership.Models {
             set { this.Store(x => x.AvatarType, value); }
         }
 
+        public DateTime CreatedUtc {
+            get { return this.Retrieve(x => x.CreatedUtc); }
+            set { this.Store(x => x.CreatedUtc, value); }
+        }
+
+        public DateTime? LastLoggedInUtc {
+            get { return this.Retrieve(x => x.LastLoggedInUtc); }
+            set { this.Store(x => x.LastLoggedInUtc, value); }
+        }
+
         public string FullName {
             get { return String.Format("{0} {1}", FirstName, String.IsNullOrWhiteSpace(MiddleName) ? LastName : MiddleName + " " + LastName); }
         }
