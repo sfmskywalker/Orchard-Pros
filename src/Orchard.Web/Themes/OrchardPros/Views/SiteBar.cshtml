@@ -1,4 +1,5 @@
 ﻿@using Orchard.ContentManagement
+@using Orchard.Security
 @using OrchardPros.Membership.Helpers
 @using OrchardPros.Membership.Models
 @{
@@ -30,6 +31,9 @@
                         <img src="@Url.AvatarUrl(profilePart, this, 32)" alt="Profile image" class="profile-img-s"> @WorkContext.CurrentUser.UserName <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
+                        @if (AuthorizedFor(StandardPermissions.AccessAdminPanel)) {
+                            <li><a href="@Url.Action("Index", "Admin", new { area = "Dashboard" })">@T("Dashboard")</a></li>
+                        }
                         <li><a href="@Url.Action("Index", "Profile", new { area = "OrchardPros.Membership" })">@T("Profile")</a></li>
                         <li><a href="#">Tickets created</a></li>
                         <li><a href="#">Tickets followed</a></li>

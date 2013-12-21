@@ -50,6 +50,26 @@
   </Metadata>
 
   <Data>
+    <Layer Id="/Layer.LayerName=Default" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-21T16:12:00.7614462Z" PublishedUtc="2013-12-21T16:12:00.7834462Z" ModifiedUtc="2013-12-21T16:12:00.7614462Z" />
+      <LayerPart Name="Default" Description="The widgets in this layer are displayed on all pages" LayerRule="true" />
+    </Layer>
+    <Layer Id="/Layer.LayerName=Authenticated" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-21T16:12:00.797447Z" PublishedUtc="2013-12-21T16:12:00.8054323Z" ModifiedUtc="2013-12-21T16:12:00.797447Z" />
+      <LayerPart Name="Authenticated" Description="The widgets in this layer are displayed when the user is authenticated" LayerRule="authenticated" />
+    </Layer>
+    <Layer Id="/Layer.LayerName=Anonymous" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-21T16:12:00.8174479Z" PublishedUtc="2013-12-21T16:12:00.8294564Z" ModifiedUtc="2013-12-21T16:12:00.8174479Z" />
+      <LayerPart Name="Anonymous" Description="The widgets in this layer are displayed when the user is anonymous" LayerRule="not authenticated" />
+    </Layer>
+    <Layer Id="/Layer.LayerName=Disabled" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-21T16:12:00.8454501Z" PublishedUtc="2013-12-21T16:12:00.8514367Z" ModifiedUtc="2013-12-21T16:12:00.8454501Z" />
+      <LayerPart Name="Disabled" Description="The widgets in this layer are never displayed" LayerRule="false" />
+    </Layer>
+    <Layer Id="/Layer.LayerName=TheHomepage" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-21T16:12:00.8644349Z" PublishedUtc="2013-12-21T16:12:00.8714528Z" ModifiedUtc="2013-12-21T16:12:00.8644349Z" />
+      <LayerPart Name="TheHomepage" Description="The widgets in this layer are displayed on the home page" LayerRule="url '~/'" />
+    </Layer>
     <Taxonomy Id="/alias=category" Status="Published">
       <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-15T13:31:48.9469273Z" PublishedUtc="2013-12-15T13:31:48.9689273Z" ModifiedUtc="2013-12-15T13:31:48.9469273Z" />
       <AutoroutePart Alias="category" UseCustomPattern="false" />
@@ -203,11 +223,6 @@
   </Workflows>
 
   <Command>
-    layer create Default /LayerRule:"true" /Description:"The widgets in this layer are displayed on all pages"
-    layer create Authenticated /LayerRule:"authenticated" /Description:"The widgets in this layer are displayed when the user is authenticated"
-    layer create Anonymous /LayerRule:"not authenticated" /Description:"The widgets in this layer are displayed when the user is anonymous"
-    layer create Disabled /LayerRule:"false" /Description:"The widgets in this layer are never displayed"
-    layer create TheHomepage /LayerRule:"url '~/'" /Description:"The widgets in this layer are displayed on the home page"
     site setting set baseurl
     menu create /MenuName:"Main Menu"
     page create /Slug:"welcome-to-orchard-pros" /Title:"Welcome to Orchard Pros!" /Path:"welcome-to-orchard-pros" /Homepage:true /Publish:true /UseWelcomeText:true
