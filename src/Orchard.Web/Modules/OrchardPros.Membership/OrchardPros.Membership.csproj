@@ -128,6 +128,16 @@
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Activities\EventBase.cs" />
     <Compile Include="Activities\UserSignedInActivity.cs" />
+    <Compile Include="Services\INotificationSettingsManager.cs" />
+    <Compile Include="Helpers\StringExtensions.cs" />
+    <Compile Include="Models\NotificationSetting.cs" />
+    <Compile Include="Services\AccountServices.cs" />
+    <Compile Include="Services\INotificationSettingsProvider.cs" />
+    <Compile Include="Services\IAccountServices.cs" />
+    <Compile Include="Models\NotificationSettingDescriptor.cs" />
+    <Compile Include="Services\NewsletterNotificationSettingsProvider.cs" />
+    <Compile Include="Services\NotificationSettingsManager.cs" />
+    <Compile Include="ViewModels\AccountSettingsViewModel.cs" />
     <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -143,6 +153,7 @@
     <Compile Include="Services\IOpenAuthServices.cs" />
     <Compile Include="Services\OpenAuthServices.cs" />
     <Compile Include="Shapes.cs" />
+    <Compile Include="ViewModels\NotificationSettingViewModel.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
   </ItemGroup>

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.FieldStorage.InfosetStorage;
 using Orchard.MediaLibrary.Fields;
 using Orchard.Security;
 using OrchardPros.Membership.Helpers;
@@ -37,6 +40,29 @@ namespace OrchardPros.Membership.Models {
         public AvatarType AvatarType {
             get { return this.Retrieve(x => x.AvatarType); }
             set { this.Store(x => x.AvatarType, value); }
+        }
+
+        public IEnumerable<NotificationSetting> NotificationSettings {
+            get {
+                var infoSet = this.As<InfosetPart>().Infoset;
+                var notificationSettingsElement = infoSet.Element.Element("NotificationSettings") ?? new XElement("NotificationSettings");
+                var notificationElements = notificationSettingsElement.Elements("Notification");
+                return notificationElements.Select(x => new NotificationSetting {Name = x.Attr<string>("Name")});
+            }
+            set {
+                var infoSet = this.As<InfosetPart>().Infoset;
+                var notificationSettingsElement = infoSet.Element.Element("NotificationSettings");
+
+                if (notificationSettingsElement != null) {
+                    notificationSettingsElement.Remove();
+                }
+
+                if (value == null)
+                    return;
+
+                notificationSettingsElement = new XElement("NotificationSettings", value.Select(x => new XElement("Notification", new XAttribute("Name", x.Name))));
+                infoSet.Element.Add(notificationSettingsElement);
+            }
         }
 
         public DateTime CreatedUtc {

@@ -99,11 +99,16 @@
       <Project>{79aed36e-abd0-4747-93d3-8722b042454b}</Project>
       <Name>Orchard.Users</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OrchardPros.Membership\OrchardPros.Membership.csproj">
+      <Project>{a0cd4784-104c-459c-8ec0-9e97b5b4207c}</Project>
+      <Name>OrchardPros.Membership</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AdminTicketController.cs" />
     <Compile Include="Drivers\ExpertPartDriver.cs" />
     <Compile Include="Handlers\CategoryTermPartHandler.cs" />
+    <Compile Include="Services\TicketNotificationSettingsProvider.cs" />
     <Compile Include="Signals.cs" />
     <Compile Include="Models\ExpertPart.cs" />
     <Compile Include="Services\ExperienceCalculator.cs" />
