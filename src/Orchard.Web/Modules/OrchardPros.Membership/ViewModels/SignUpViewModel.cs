@@ -3,7 +3,7 @@
 namespace OrchardPros.Membership.ViewModels {
     public class SignUpViewModel {
         [Required]
-        public string EmailAddress { get; set; }
+        public string Email { get; set; }
 
         [Required]
         public string UserName { get; set; }
@@ -13,5 +13,7 @@ namespace OrchardPros.Membership.ViewModels {
 
         [Compare("Password", ErrorMessage = "The two passwords don't match. Please try again.")]
         public string PasswordRepeat { get; set; }
+
+        public bool TermsAccepted { get; set; }
     }
 }

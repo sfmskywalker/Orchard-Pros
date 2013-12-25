@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using NGM.OpenAuthentication.Models;
-using NGM.OpenAuthentication.Services;
-using NGM.OpenAuthentication.Services.Clients;
+﻿using System.Web.Mvc;
+using NGM.OpenAuthentication.Mvc;
 using Orchard.DisplayManagement;
 using Orchard.Localization;
 using Orchard.Mvc.Extensions;
@@ -11,39 +7,29 @@ using Orchard.Security;
 using Orchard.Themes;
 using Orchard.Users.Events;
 using Orchard.Users.Services;
-using Orchard.Workflows.Services;
 using OrchardPros.Membership.ViewModels;
 
 namespace OrchardPros.Membership.Controllers {
     [Themed, Authorize]
     public class AccountController : Controller {
-        private readonly IWorkflowManager _workFlowManager;
         private readonly IMembershipService _membershipService;
         private readonly IUserService _userService;
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserEventHandler _userEventHandler;
-        private readonly IEnumerable<IExternalAuthenticationClient> _openAuthClients;
-        private readonly IOrchardOpenAuthClientProvider _orchardOpenAuthClientProvider;
 
         public AccountController(
-            IShapeFactory shapeFactory, 
-            IWorkflowManager workFlowManager, 
+            IShapeFactory shapeFactory,
             IMembershipService membershipService, 
             IUserService userService, 
             IAuthenticationService authenticationService,
-            IUserEventHandler userEventHandler, 
-            IEnumerable<IExternalAuthenticationClient> openAuthClients,
-            IOrchardOpenAuthClientProvider orchardOpenAuthClientProvider) {
+            IUserEventHandler userEventHandler) {
 
             New = shapeFactory;
             T = NullLocalizer.Instance;
-            _workFlowManager = workFlowManager;
             _membershipService = membershipService;
             _userService = userService;
             _authenticationService = authenticationService;
             _userEventHandler = userEventHandler;
-            _openAuthClients = openAuthClients;
-            _orchardOpenAuthClientProvider = orchardOpenAuthClientProvider;
         }
 
         public Localizer T { get; set; }
@@ -52,28 +38,24 @@ namespace OrchardPros.Membership.Controllers {
         [AllowAnonymous]
         public ActionResult SignUp() {
             var formViewModel = new SignUpViewModel();
-            var viewModel = New.ViewModel(
-                SignUp: New.SignUp(Model: formViewModel),
-                OAuthLogin: New.OAuthLogin(Providers: GetOAuthProviders().ToList()));
+            var viewModel = New.ViewModel(SignUp: New.SignUp(Model: formViewModel));
             return View(viewModel);
         }
 
         [HttpPost, AllowAnonymous]
         public ActionResult SignUp(SignUpViewModel model) {
             if (ModelState.IsValid) {
-                if (!_userService.VerifyUserUnicity(model.UserName, model.EmailAddress)) {
+                if (!_userService.VerifyUserUnicity(model.UserName, model.Email)) {
                     ModelState.AddModelError("UserName", T("The specified username and/or email address are already in use. Please retry with a different username and/or email address"));
                 }
             }
             
             if (!ModelState.IsValid) {
-                var viewModel = New.ViewModel(
-                    SignUp: New.SignUp(Model: model),
-                    OAuthLogin: New.OAuthLogin(Providers: GetOAuthProviders().ToList()));
+                var viewModel = New.SignUp(Model: model);
                 return View(viewModel);
             }
             
-            _membershipService.CreateUser(new CreateUserParams(model.UserName, model.Password, model.EmailAddress, null, null, false));
+            _membershipService.CreateUser(new CreateUserParams(model.UserName, model.Password, model.Email, null, null, false));
             return Response.IsRequestBeingRedirected ? (ActionResult) new EmptyResult() : RedirectToAction("Created");
         }
 
@@ -83,28 +65,22 @@ namespace OrchardPros.Membership.Controllers {
 
         [AllowAnonymous]
         public ActionResult SignIn() {
-            var formViewModel = new SignInViewModel();
-            var viewModel = New.ViewModel(
-                SignIn: New.SignIn(ModelState: formViewModel),
-                OAuthLogin: New.OAuthLogin(Providers: GetOAuthProviders().ToList()));
-            return View(viewModel);
+            return View(New.SignIn());
         }
 
         [HttpPost, AllowAnonymous]
-        public ActionResult SignIn(SignInViewModel model) {
+        public ActionResult SignIn(string userNameOrEmail, string password) {
             IUser user = null;
 
             if (ModelState.IsValid) {
-                user = _membershipService.ValidateUser(model.UserNameOrEmailAddress, model.Password);
+                user = _membershipService.ValidateUser(userNameOrEmail, password);
 
                 if (user == null) {
                     ModelState.AddModelError("_FORM", T("The username or e-mail or password provided is incorrect."));
                 }
             }
             if (!ModelState.IsValid) {
-                var viewModel = New.ViewModel(
-                    SignIn: New.SignIn(ModelState: model),
-                    OAuthLogin: New.OAuthLogin(Providers: GetOAuthProviders().ToList()));
+                var viewModel = New.ViewModel(SignIn: New.SignIn());
                 return View(viewModel);
             }
 
@@ -123,10 +99,6 @@ namespace OrchardPros.Membership.Controllers {
 
         public ActionResult Dashboard() {
             return View();
-        }
-
-        private IEnumerable<OrchardAuthenticationClientData> GetOAuthProviders() {
-            return _openAuthClients.Select(x => _orchardOpenAuthClientProvider.GetClientData(x.ProviderName)).Where(x => x != null);
         }
     }
 }

@@ -1,25 +1,30 @@
 ﻿@using OrchardPros.Membership.ViewModels
-@{
-    var model = (SignUpViewModel) Model.Model;
-}
 @Html.ValidationSummary()
 @using (Html.BeginFormAntiForgeryPost()) {
     <fieldset>
         <div class="form-group">
-            @Html.LabelFor(m => model.EmailAddress, T("Email Address"))
-            @Html.TextBoxFor(m => model.EmailAddress, new { @class = "form-control", placeholder = T("Enter email").ToString() })
+            <label for="sign-up-username">@T("Username")</label>
+            <input type="text" class="form-control" id="sign-up-username" name="userName">
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => model.UserName, T("User Name"))
-            @Html.TextBoxFor(m => model.UserName, new { @class = "form-control", placeholder = T("Enter user name").ToString() })
+            <label for="sign-up-email">@T("E-mail")</label>
+            <input type="email" class="form-control" id="sign-up-email" name="email">
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => model.Password, T("Password"))
-            @Html.PasswordFor(m => model.Password, new { @class = "form-control", placeholder = T("Enter password").ToString() })
+            <label for="sign-up-password">@T("Password")</label>
+            <input type="password" class="form-control" id="sign-up-password" name="password">
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => model.PasswordRepeat, T("Repeat Password"))
-            @Html.PasswordFor(m => model.PasswordRepeat, new { @class = "form-control", placeholder = T("Repeat your password").ToString() })
+            <label for="sign-up-password2">@T("Repeat password")</label>
+            <input type="password" class="form-control" id="sign-up-password2" name="passwordRepeat">
+        </div>
+        <div class="form-group">
+            <div class="checkbox pull-left">
+                <label>
+                    <input type="checkbox" class="pull-left">
+                    <p class="small">@T("I have read and agree to the <a href=\"{0}\" target=\"_blank\">Terms of Service</a>.", "#")</p>
+                </label>
+            </div>
         </div>
         <div>
             <button type="submit" class="btn btn-primary btn-lg">@T("Sign Up")</button>

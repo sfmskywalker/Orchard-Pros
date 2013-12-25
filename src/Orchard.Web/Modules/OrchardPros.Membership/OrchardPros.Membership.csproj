@@ -123,10 +123,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\SignIn.cs" />
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Activities\EventBase.cs" />
     <Compile Include="Activities\UserSignedInActivity.cs" />
+    <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Drivers\UserProfilePartDriver.cs" />
@@ -138,6 +140,9 @@
     <Compile Include="Models\AvatarType.cs" />
     <Compile Include="Models\UserProfilePart.cs" />
     <Compile Include="Migrations.cs" />
+    <Compile Include="Services\IOpenAuthServices.cs" />
+    <Compile Include="Services\OpenAuthServices.cs" />
+    <Compile Include="Shapes.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
   </ItemGroup>
@@ -168,7 +173,6 @@
   <ItemGroup>
     <Content Include="Views\EditorTemplates\AvatarTypeSelector.cshtml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\UserProfile.cshtml" />
   </ItemGroup>

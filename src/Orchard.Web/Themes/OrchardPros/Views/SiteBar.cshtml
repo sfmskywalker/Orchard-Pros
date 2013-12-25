@@ -35,9 +35,9 @@
                             <li><a href="@Url.Action("Index", "Admin", new { area = "Dashboard" })">@T("Dashboard")</a></li>
                         }
                         <li><a href="@Url.Action("Index", "Profile", new { area = "OrchardPros.Membership" })">@T("Profile")</a></li>
-                        <li><a href="#">Tickets created</a></li>
-                        <li><a href="#">Tickets followed</a></li>
-                        <li><a href="#">Settings</a></li>
+                        <li><a href="@Url.Action("TicketsCreated", "Profile", new { area = "OrchardPros.Membership" })">@T("Tickets Created")</a></li>
+                        <li><a href="@Url.Action("TicketsFollowed", "Profile", new { area = "OrchardPros.Membership" })">@T("Tickets Followed")</a></li>
+                        <li><a href="@Url.Action("Settings", "Profile", new { area = "OrchardPros.Membership" })">@T("Settings")</a></li>
                         <li><a href="@Url.Action("Signout", "Account", new { area = "OrchardPros.Membership" })">@T("Sign out")</a></li>
                     </ul>
                 </li>

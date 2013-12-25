@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /* Theme styling for Orchard Pros */
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,700,300);
@@ -40,13 +40,13 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 .sign-in-up form.sign-in, .sign-in-up form.sign-up { position:relative; }
 .sign-in-up form.sign-in { padding-right:20px; border-right:1px solid #333; }
 .sign-in-up form.sign-up { left:-15px; }
-.sign-in-up ul.social-oath { list-style:none; padding:0px; }
-.sign-in-up ul.social-oath li { float:left; margin-right:5px; width:29px; height:29px; }
-.sign-in-up ul.social-oath li.facebook { background:url(../images/social-facebook.png) no-repeat center center; }
-.sign-in-up ul.social-oath li.twitter { background:url(../images/social-twitter.png) no-repeat center center; }
-.sign-in-up ul.social-oath li.openid { background:url(../images/social-openid.png) no-repeat center center; }
-.sign-in-up ul.social-oath li a { width:100%; height:100%; text-decoration:none; display:block; }
-.sign-in-up ul.social-oath li a:hover { background:#fff; opacity:0.2; }
+.sign-in-up ul.social-oauth { list-style:none; padding:0px; }
+.sign-in-up ul.social-oauth li { float:left; margin-right:5px; width:29px; height:29px; }
+.sign-in-up ul.social-oauth li.facebook { background:url(../images/social-facebook.png) no-repeat center center; }
+.sign-in-up ul.social-oauth li.twitter { background:url(../images/social-twitter.png) no-repeat center center; }
+.sign-in-up ul.social-oauth li.openid { background:url(../images/social-openid.png) no-repeat center center; }
+.sign-in-up ul.social-oauth li a { width:100%; height:100%; text-decoration:none; display:block; }
+.sign-in-up ul.social-oauth li a:hover { background:#fff; opacity:0.2; }
 
 /* Jumbotron */
 .jumbotron { background:url(../images/jumbotron.jpg) no-repeat center top; width:100%; padding:0px; float:left; clear:both; position:relative; }
@@ -55,6 +55,7 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 .jumbotron .form-group { margin-bottom:5px; }
 .jumbotron input { margin-bottom:0.5em; }
 
+.jumbotron.home { min-height: 322px; }
 .jumbotron.account { background:#eee; height:300px; }
 .jumbotron.account img { position:absolute; left:40px; bottom:40px; }
 

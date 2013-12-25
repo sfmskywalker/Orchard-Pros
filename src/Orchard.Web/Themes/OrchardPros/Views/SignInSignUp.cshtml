@@ -1,0 +1,57 @@
+﻿<section class="half-size center-block">
+    @Html.ValidationSummary()
+    <div class="sign-in-up row">
+        <div class="col-md-6">
+            @using (Html.BeginFormAntiForgeryPost(Url.Action("SignIn", "Account", new { Area = "OrchardPros.Membership" }), FormMethod.Post, new { role = "form", @class = "sign-in" })) {
+                <h3>@T("Sign In")</h3>
+                <div class="form-group">
+                    <label for="sign-in-username">@T("User Name or Email Address")</label>
+                    <input type="text" class="form-control" id="sign-in-username" name="userNameOrEmail" placeholder="@T("Username or email")">
+                </div>
+                <div class="form-group">
+                    <label for="sign-in-password">@T("Password")</label>
+                    <input type="password" class="form-control" id="sign-in-password" name="password" placeholder="@T("Password")">
+                    <p class="small"><a href="#">@T("Forgot your password?")</a></p>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default btn-submit">@T("Sign in")</button>
+                </div>
+                <div class="form-group">
+                    @Display.OAuthLogin()
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            @using (Html.BeginFormAntiForgeryPost(Url.Action("SignUp", "Account", new { Area = "OrchardPros.Membership" }), FormMethod.Post, new { role = "form", @class = "sign-up" })) {
+                <h3>@T("Sign Up")</h3>
+                <div class="form-group">
+                    <label for="sign-up-username">@T("Username")</label>
+                    <input type="text" class="form-control" id="sign-up-username" name="userName">
+                </div>
+                <div class="form-group">
+                    <label for="sign-up-email">@T("E-mail")</label>
+                    <input type="email" class="form-control" id="sign-up-email" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="sign-up-password">@T("Password")</label>
+                    <input type="password" class="form-control" id="sign-up-password" name="password">
+                </div>
+                <div class="form-group">
+                    <label for="sign-up-password2">@T("Repeat password")</label>
+                    <input type="password" class="form-control" id="sign-up-password2" name="passwordRepeat">
+                </div>
+                <div class="form-group">
+                    <div class="checkbox pull-left">
+                        <label>
+                            <input type="checkbox" name="termsAccepted" value="true" class="pull-left">
+                            <p class="small">@T("I have read and agree to the <a href=\"{0}\" target=\"_blank\">Terms of Service</a>.", "#")</p>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-create-account">@T("Create account")</button>
+                </div>
+            }
+        </div>
+    </div> <!-- /.sign-in-up -->
+</section>

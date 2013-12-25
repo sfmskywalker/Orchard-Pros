@@ -1,40 +1,38 @@
-﻿<div class="jumbotron">
-    <h1>Time to level up.</h1>
-    <div class="sign-in-up row">
-        <div class="col-md-6">
-            <form role="form" class="sign-in">
-                <h3>Sign In</h3>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="sign-in-username" placeholder="Username">
-                </div>
-                <div class="form-group">
-                    <input type="email" class="form-control" id="sign-in-password" placeholder="Password">
-                    <p class="small"><a href="#">Forgot your password?</a></p>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-default btn-submit">Sign in</button>
-                </div>
-                <div class="form-group">
-                    <p class="small">Or sign in using:</p>
-                    <ul class="social-oath">
-                        <li class="facebook"><a href="#">&nbsp;</a></li>
-                        <li class="twitter"><a href="#">&nbsp;</a></li>
-                        <li class="openid"><a href="#">&nbsp;</a></li>
-                    </ul>
-                </div>
-            </form>
+﻿<div class="jumbotron home">
+    <h1>@T("Time to level up.")</h1>
+    @if (WorkContext.CurrentUser == null) {
+        <div class="sign-in-up row">
+            <div class="col-md-6">
+                @using (Html.BeginFormAntiForgeryPost(Url.Action("SignIn", "Account", new {area = "OrchardPros.Membership"}), FormMethod.Post, new {role = "form", @class = "sign-in"})) {
+                    <h3>@T("Sign In")</h3>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="sign-in-username" placeholder="Username" name="UserNameOrEmail">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="sign-in-password" placeholder="Password" name="Password">
+                        <p class="small"><a href="#">@T("Forgot your password?")</a></p>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default btn-submit">@T("Sign in")</button>
+                    </div>
+                    <div class="form-group">
+                        @Display.OAuthLogin()
+                    </div>
+                }
+            </div>
+            <div class="col-md-6">
+                <form role="form" class="sign-up">
+                    <h3>Sign Up</h3>
+                    <p>
+                        @T("Not a member yet?")<br>
+                        @T("Sign up and get started!")
+                    </p>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-create-account">@T("Create account")</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="col-md-6">
-            <form role="form" class="sign-up">
-                <h3>Sign Up</h3>
-                <p>
-                    Not a member yet?<br>
-                    Sign up and get started!
-                </p>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-create-account">Create account</button>
-                </div>
-            </form>
-        </div>
-    </div> <!-- /.sign-in-up -->
+        <!-- /.sign-in-up -->
+    }
 </div>

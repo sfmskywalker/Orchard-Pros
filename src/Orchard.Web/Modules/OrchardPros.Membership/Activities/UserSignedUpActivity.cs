@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
+using Orchard.ContentManagement;
 using Orchard.Localization;
+using Orchard.Security;
 using Orchard.Workflows.Models;
 
 namespace OrchardPros.Membership.Activities {
     public class UserSignedUpActivity : EventBase {
 
+        public const string ActivityName = "UserSignedUp";
+
         public override string Name {
-            get { return "UserSignedUp"; }
+            get { return ActivityName; }
         }
 
         public override LocalizedString Description {
@@ -18,6 +22,7 @@ namespace OrchardPros.Membership.Activities {
         }
 
         public override IEnumerable<LocalizedString> Execute(WorkflowContext workflowContext, ActivityContext activityContext) {
+            workflowContext.SetState("UserName", workflowContext.Content.As<IUser>().UserName);
             yield return T("Created");
         }
 

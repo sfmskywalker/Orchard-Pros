@@ -1,0 +1,17 @@
+﻿@using NGM.OpenAuthentication.Models
+@using Orchard.Utility.Extensions
+@{
+    Script.Require("ShapesBase");
+    var providers = (IEnumerable<OrchardAuthenticationClientData>)Model.Providers;
+}
+<p class="small">@T("Or sign in using:")</p>
+<ul class="social-oauth">
+    @foreach (var provider in providers) {
+        <li class="@provider.ProviderName.HtmlClassify()">
+            <a href="@Url.Action("SignIn", "OAuth", new { Id = provider.ProviderName, Area = "OrchardPros.Membership" })">&nbsp;</a>
+        </li>
+    }
+    @*<li class="facebook"><a href="#">&nbsp;</a></li>
+    <li class="twitter"><a href="#">&nbsp;</a></li>
+    <li class="openid"><a href="#">&nbsp;</a></li>*@
+</ul>

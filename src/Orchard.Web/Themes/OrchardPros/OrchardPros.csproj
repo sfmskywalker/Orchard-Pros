@@ -161,7 +161,7 @@
     <Content Include="Views\NavBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\OpenAuthLogOn.cshtml" />
+    <Content Include="Views\OAuthLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fonts\glyphicons-halflings-regular.eot" />
@@ -226,6 +226,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Profile.TicketsFollowed.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SignInSignUp.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SignUp.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros.Membership\Account\SignIn.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros.Membership\Account\SignUp.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Orchard.Users\Account\AccessDenied.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OpenAuthLogOn.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

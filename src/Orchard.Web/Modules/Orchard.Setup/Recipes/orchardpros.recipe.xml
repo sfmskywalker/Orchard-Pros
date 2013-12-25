@@ -144,15 +144,19 @@
   <Workflows>
     <Workflow Name="User Signed Up" Enabled="true">
       <Activities>
-        <Activity Id="1" Name="UserSignedUp" Start="true" X="594" Y="338">
+        <Activity Id="17" Name="UserSignedUp" Start="true" X="594" Y="338">
           <State>{}</State>
         </Activity>
-        <Activity Id="2" Name="Redirect" Start="false" X="637" Y="487">
+        <Activity Id="18" Name="Redirect" Start="false" X="501" Y="629">
           <State>{"Url":"~/OrchardPros.Membership/Account/Created"}</State>
+        </Activity>
+        <Activity Id="19" Name="SignIn" Start="false" X="626" Y="483">
+          <State>{}</State>
         </Activity>
       </Activities>
       <Transitions>
-        <Transition SourceActivityId="1" SourceEndpoint="Created" DestinationActivityId="2" DestinationEndpoint="" />
+        <Transition SourceActivityId="17" SourceEndpoint="Created" DestinationActivityId="19" DestinationEndpoint="" />
+        <Transition SourceActivityId="19" SourceEndpoint="Done" DestinationActivityId="18" DestinationEndpoint="" />
       </Transitions>
     </Workflow>
     <Workflow Name="User Signed In" Enabled="true">

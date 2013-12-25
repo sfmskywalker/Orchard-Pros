@@ -1,0 +1,28 @@
+﻿@using OrchardPros.Membership.ViewModels
+@{
+    var model = (SignUpViewModel) Model.Model;
+}
+@Html.ValidationSummary()
+@using (Html.BeginFormAntiForgeryPost()) {
+    <fieldset>
+        <div class="form-group">
+            @Html.LabelFor(m => model.Email, T("Email Address"))
+            @Html.TextBoxFor(m => model.Email, new { @class = "form-control", placeholder = T("Enter email").ToString() })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => model.UserName, T("User Name"))
+            @Html.TextBoxFor(m => model.UserName, new { @class = "form-control", placeholder = T("Enter user name").ToString() })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => model.Password, T("Password"))
+            @Html.PasswordFor(m => model.Password, new { @class = "form-control", placeholder = T("Enter password").ToString() })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => model.PasswordRepeat, T("Repeat Password"))
+            @Html.PasswordFor(m => model.PasswordRepeat, new { @class = "form-control", placeholder = T("Repeat your password").ToString() })
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary btn-lg">@T("Sign Up")</button>
+        </div>
+    </fieldset>
+}
