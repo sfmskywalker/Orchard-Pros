@@ -4,6 +4,7 @@ using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Localization;
 using Orchard.Services;
+using Orchard.Themes;
 using Orchard.UI.Admin;
 using Orchard.UI.Notify;
 using OrchardPros.Tickets.Models;
@@ -11,7 +12,7 @@ using OrchardPros.Tickets.Services;
 using OrchardPros.Tickets.ViewModels;
 
 namespace OrchardPros.Tickets.Controllers {
-    [Admin]
+    [Authorize, Themed]
     public class TicketController : Controller {
         private readonly INotifier _notifier;
         private readonly ITicketService _ticketService;
@@ -49,7 +50,7 @@ namespace OrchardPros.Tickets.Controllers {
             var ticket = _ticketService.Create(user, model.Title, model.Description, model.Type, t => {
                 t.Bounty = model.Bounty;
                 t.DeadlineUtc = model.DeadlineUtc.Value;
-                t.ExperiencePoints = model.ExperiencePoints;
+                t.ExperiencePoints = _ticketService.CalculateExperience(CurrentUser);
                 t.Tags = model.Tags;
             });
 
@@ -60,6 +61,7 @@ namespace OrchardPros.Tickets.Controllers {
         public ActionResult Edit(int id) {
             var ticket = _ticketService.GetTicket(id);
             var model = SetupEditViewModel(new TicketViewModel {
+                Id = id,
                 Bounty = ticket.Bounty,
                 Categories = ticket.Categories.Select(x => x.CategoryId).ToArray(),
                 CreatedUtc = ticket.CreatedUtc,
@@ -83,10 +85,8 @@ namespace OrchardPros.Tickets.Controllers {
             }
 
             ticket.Bounty = model.Bounty;
-            ticket.CreatedUtc = model.CreatedUtc.Value;
             ticket.DeadlineUtc = model.DeadlineUtc.Value;
             ticket.Description = model.Description;
-            ticket.ExperiencePoints = model.ExperiencePoints;
             ticket.LastModifiedUtc = _clock.UtcNow;
             ticket.Tags = model.Tags;
             ticket.Title = model.Title;
@@ -95,6 +95,16 @@ namespace OrchardPros.Tickets.Controllers {
 
             _notifier.Information(T("Your ticket has been updated."));
             return RedirectToAction("Details", new { ticket.Id });
+        }
+
+        public ActionResult Details(int id) {
+            var ticket = _ticketService.GetTicket(id);
+
+            if(ticket == null)
+                return new HttpNotFoundResult();
+
+            var shape = _services.New.ViewModel(Ticket: ticket);
+            return View(shape);
         }
 
         private TicketViewModel SetupCreateViewModel(TicketViewModel model) {

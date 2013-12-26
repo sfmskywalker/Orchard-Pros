@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <button type="button" class="btn btn-default btn-create-ticket">Create ticket</button>
+                    <a href="@Url.Action("Create", "Ticket", new { Area = "OrchardPros.Tickets" })" class="btn btn-default btn-create-ticket">@T("Create ticket")</a>
                 </li>
                 <li><a href="#">Tickets</a></li>
                 <li><a href="#">Categories</a></li>

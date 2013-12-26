@@ -1,0 +1,10 @@
+﻿@{
+    var ticketDetails = New.Ticket_Details(Ticket: Model.Ticket);
+    var ticketAside = New.Ticket_Aside(Ticket: Model.Ticket);
+    var ticketReplies = New.Ticket_Replies(ticketAside: Model.Ticket);
+
+    Layout.Title = @T("Ticket");
+    Layout.Content.Add(ticketDetails);
+    Layout.AsideSecond.Add(ticketAside);
+    Layout.AfterContent.Add(ticketReplies);
+}

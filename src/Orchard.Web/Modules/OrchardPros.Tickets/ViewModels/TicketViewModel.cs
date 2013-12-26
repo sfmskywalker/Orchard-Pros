@@ -6,6 +6,7 @@ using OrchardPros.Tickets.Models;
 
 namespace OrchardPros.Tickets.ViewModels {
     public class TicketViewModel {
+        public int? Id { get; set; }
         [Required, MaxLength(256)]
         public string Title { get; set; }
 
@@ -22,7 +23,6 @@ namespace OrchardPros.Tickets.ViewModels {
         public decimal? Bounty { get; set; }
         public int ExperiencePoints { get; set; }
         
-        [Required]
         public DateTime? CreatedUtc { get; set; }
 
         [Required]
