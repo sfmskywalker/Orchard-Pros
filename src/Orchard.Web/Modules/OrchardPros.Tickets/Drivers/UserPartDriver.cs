@@ -1,8 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
-using Orchard.Core.Title.Models;
 using Orchard.Data;
 using Orchard.Users.Models;
 using OrchardPros.Tickets.Services;
@@ -12,12 +12,10 @@ namespace OrchardPros.Tickets.Drivers {
     public class UserPartDriver : ContentPartDriver<UserPart> {
         private readonly ITicketService _ticketService;
         private readonly IRepository<UserPartRecord> _userRepository;
-        private readonly IRepository<TitlePartRecord> _titleRepository;
 
-        public UserPartDriver(ITicketService ticketService, IRepository<UserPartRecord> userRepository, IRepository<TitlePartRecord> titleRepository) {
+        public UserPartDriver(ITicketService ticketService, IRepository<UserPartRecord> userRepository) {
             _ticketService = ticketService;
             _userRepository = userRepository;
-            _titleRepository = titleRepository;
         }
 
         protected override DriverResult Editor(UserPart part, dynamic shapeHelper) {
@@ -36,13 +34,11 @@ namespace OrchardPros.Tickets.Drivers {
             return from ticket in _ticketService.GetTicketsFor(userId)
                    from user in _userRepository.Table
                    where user.Id == ticket.UserId
-                   let category = categoryDictionary[ticket.CategoryId]
                    select new TicketRow {
                        Id = ticket.Id,
                        UserId = user.Id,
                        UserName = user.UserName,
-                       CategoryId = ticket.CategoryId,
-                       CategoryName = category,
+                       Categories = String.Join(", ", ticket.Categories.Where(x => categoryDictionary.ContainsKey(x.CategoryId)).Select(x => categoryDictionary[x.CategoryId])),
                        Description = ticket.Description,
                        Type = ticket.Type,
                        Title = ticket.Title,

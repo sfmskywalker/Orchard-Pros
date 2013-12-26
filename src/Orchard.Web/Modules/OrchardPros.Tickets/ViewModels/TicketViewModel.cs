@@ -15,8 +15,8 @@ namespace OrchardPros.Tickets.ViewModels {
         [Required]
         public string Description { get; set; }
 
-        [Required, UIHint("TermPicker")]
-        public int? CategoryId { get; set; }
+        [Required, UIHint("TermsPicker")]
+        public IList<int> Categories { get; set; }
 
         public string Tags { get; set; }
         public decimal? Bounty { get; set; }

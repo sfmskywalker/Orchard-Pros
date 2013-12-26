@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Web.Mvc;
+using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Localization;
-using Orchard.Security;
 using Orchard.Services;
 using Orchard.UI.Admin;
 using Orchard.UI.Notify;
@@ -12,34 +12,37 @@ using OrchardPros.Tickets.ViewModels;
 
 namespace OrchardPros.Tickets.Controllers {
     [Admin]
-    public class AdminTicketController : Controller {
-        private readonly IContentManager _contentManager;
+    public class TicketController : Controller {
         private readonly INotifier _notifier;
         private readonly ITicketService _ticketService;
         private readonly IClock _clock;
+        private readonly IOrchardServices _services;
 
-        public AdminTicketController(IContentManager contentManager, INotifier notifier, ITicketService ticketService, IClock clock) {
-            _contentManager = contentManager;
-            _notifier = notifier;
+        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services) {
+            _notifier = services.Notifier;
             _ticketService = ticketService;
             _clock = clock;
+            _services = services;
             T = NullLocalizer.Instance;
         }
 
         public Localizer T { get; set; }
 
-        public ActionResult Create(int id) {
-            var user = _contentManager.Get<ExpertPart>(id);
-            var model = SetupCreateViewModel(new TicketViewModel(), user);
+        private ExpertPart CurrentUser {
+            get { return _services.WorkContext.CurrentUser.As<ExpertPart>(); }
+        }
+
+        public ActionResult Create() {
+            var model = SetupCreateViewModel(new TicketViewModel());
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Create(int id, TicketViewModel model) {
-            var user = _contentManager.Get<ExpertPart>(id);
+        public ActionResult Create(TicketViewModel model) {
+            var user = CurrentUser;
 
             if (!ModelState.IsValid) {
-                SetupCreateViewModel(model, user);
+                SetupCreateViewModel(model);
                 return View(model);
             }
 
@@ -49,15 +52,13 @@ namespace OrchardPros.Tickets.Controllers {
                 t.ExperiencePoints = model.ExperiencePoints;
                 t.Tags = model.Tags;
             });
-            
-            _ticketService.AssignCategories(ticket, model.Categories);
-            _notifier.Information(T("Ticket created for user {0}", user.As<IUser>().UserName));
-            return RedirectToAction("Edit", "Admin", new { user.Id, Area = "Orchard.Users" });
+
+            _notifier.Information(T("Your ticket has been created."));
+            return RedirectToAction("Details", new { ticket.Id });
         }
 
         public ActionResult Edit(int id) {
             var ticket = _ticketService.GetTicket(id);
-            var user = _contentManager.Get<ExpertPart>(ticket.UserId);
             var model = SetupEditViewModel(new TicketViewModel {
                 Bounty = ticket.Bounty,
                 Categories = ticket.Categories.Select(x => x.CategoryId).ToArray(),
@@ -68,17 +69,16 @@ namespace OrchardPros.Tickets.Controllers {
                 Tags = ticket.Tags,
                 Title = ticket.Title,
                 Type = ticket.Type
-            }, user);
+            });
             return View(model);
         }
 
         [HttpPost]
         public ActionResult Edit(int id, TicketViewModel model) {
             var ticket = _ticketService.GetTicket(id);
-            var user = _contentManager.Get<ExpertPart>(ticket.UserId);
 
             if (!ModelState.IsValid) {
-                SetupEditViewModel(model, user);
+                SetupEditViewModel(model);
                 return View(model);
             }
 
@@ -93,30 +93,21 @@ namespace OrchardPros.Tickets.Controllers {
             ticket.Type = model.Type;
             _ticketService.AssignCategories(ticket, model.Categories);
 
-            _notifier.Information(T("Ticket {0} updated for user {1}", id, user.As<IUser>().UserName));
-            return RedirectToAction("Edit", "Admin", new { user.Id, Area = "Orchard.Users" });
+            _notifier.Information(T("Your ticket has been updated."));
+            return RedirectToAction("Details", new { ticket.Id });
         }
 
-        public ActionResult Delete(int id) {
-            var ticket = _ticketService.GetTicket(id);
-            var user = _contentManager.Get<IUser>(ticket.UserId);
-            _ticketService.Archive(ticket);
-
-            _notifier.Information(T("Ticket removed for user {0}", user.UserName));
-            return RedirectToAction("Edit", "Admin", new { user.Id, Area = "Orchard.Users" });
-        }
-
-        private TicketViewModel SetupCreateViewModel(TicketViewModel model, ExpertPart user) {
-            model.ExperiencePoints = _ticketService.CalculateExperience(user);
-            model.User = user;
+        private TicketViewModel SetupCreateViewModel(TicketViewModel model) {
+            model.ExperiencePoints = _ticketService.CalculateExperience(CurrentUser);
             model.CategoryTerms = _ticketService.GetCategories().ToArray();
             model.CreatedUtc = _clock.UtcNow;
             model.DeadlineUtc = _clock.UtcNow.AddDays(7);
+            model.User = CurrentUser;
             return model;
         }
 
-        private TicketViewModel SetupEditViewModel(TicketViewModel model, ExpertPart user) {
-            model.User = user;
+        private TicketViewModel SetupEditViewModel(TicketViewModel model) {
+            model.User = CurrentUser;
             model.CategoryTerms = _ticketService.GetCategories().ToArray();
             return model;
         }

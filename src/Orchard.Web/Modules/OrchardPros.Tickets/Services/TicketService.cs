@@ -18,6 +18,7 @@ namespace OrchardPros.Tickets.Services {
         private readonly IExperienceCalculator _experienceCalculator;
         private readonly ICacheManager _cache;
         private readonly ISignals _signals;
+        private readonly IRepository<TicketCategory> _ticketCategoryRepository;
 
         public TicketService(
             IRepository<Ticket> ticketRepository, 
@@ -26,7 +27,8 @@ namespace OrchardPros.Tickets.Services {
             IClock clock, 
             IExperienceCalculator experienceCalculator, 
             ICacheManager cache, 
-            ISignals signals) {
+            ISignals signals, 
+            IRepository<TicketCategory> ticketCategoryRepository) {
 
             _ticketRepository = ticketRepository;
             _taxonomyService = taxonomyService;
@@ -35,6 +37,7 @@ namespace OrchardPros.Tickets.Services {
             _experienceCalculator = experienceCalculator;
             _cache = cache;
             _signals = signals;
+            _ticketCategoryRepository = ticketCategoryRepository;
         }
 
         public IEnumerable<Ticket> GetTicketsFor(int userId) {
@@ -50,12 +53,11 @@ namespace OrchardPros.Tickets.Services {
             return _taxonomyService.GetTerms(categoryTaxonomy.Id);
         }
 
-        public Ticket Create(ExpertPart user, int categoryId, string title, string description, TicketType type = TicketType.Question, Action<Ticket> initialize = null) {
+        public Ticket Create(ExpertPart user, string title, string description, TicketType type = TicketType.Question, Action<Ticket> initialize = null) {
             var ticket = new Ticket {
                 UserId = user.Id,
                 Title = title,
                 Description = description,
-                CategoryId = categoryId,
                 CreatedUtc = _clock.UtcNow,
                 LastModifiedUtc = _clock.UtcNow
             };
@@ -84,6 +86,25 @@ namespace OrchardPros.Tickets.Services {
 
         public void Archive(Ticket ticket) {
             ticket.ArchivedUtc = _clock.UtcNow;
+        }
+
+        public IList<TicketCategory> AssignCategories(Ticket ticket, IEnumerable<int> categoryIds) {
+            var categoryList = categoryIds.ToArray();
+
+            // Delete current categories
+            foreach (var category in ticket.Categories.Where(x => !categoryList.Contains(x.CategoryId)).ToArray()) {
+                ticket.Categories.Remove(category);
+                _ticketCategoryRepository.Delete(category);
+            }
+
+            // Add new categories
+            var existingCategoryIds = ticket.Categories.Select(x => x.CategoryId).ToArray();
+            foreach (var categoryId in categoryList.Where(x => !existingCategoryIds.Contains(x))) {
+                var category = new TicketCategory {Ticket = ticket, CategoryId = categoryId};
+                _ticketCategoryRepository.Create(category);
+                ticket.Categories.Add(category);
+            }
+            return ticket.Categories;
         }
     }
 }

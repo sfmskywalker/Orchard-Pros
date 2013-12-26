@@ -16,9 +16,8 @@
         @Html.ValidationMessageFor(m => m.Description)
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.CategoryId, T("Category"))
-        @Html.EditorFor(m => m.CategoryId, new { Terms = Model.CategoryTerms })
-        @Html.ValidationMessageFor(m => m.CategoryId)
+        @Html.LabelFor(m => m.Categories, T("Categories"))
+        @Html.EditorFor(m => m.Categories, new { Terms = Model.CategoryTerms })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Tags, T("Tags"))

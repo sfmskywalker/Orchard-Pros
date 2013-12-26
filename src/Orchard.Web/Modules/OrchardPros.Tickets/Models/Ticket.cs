@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Orchard.Data.Conventions;
 
 namespace OrchardPros.Tickets.Models {
     public class Ticket {
+        public Ticket() {
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
+            Categories = new List<TicketCategory>();
+        }
+
         public virtual int Id { get; set; }
 
         public virtual int UserId { get; set; }
@@ -16,7 +22,7 @@ namespace OrchardPros.Tickets.Models {
 
         public virtual TicketType Type { get; set; }
 
-        public virtual int CategoryId { get; set; }
+        public virtual IList<TicketCategory> Categories { get; set; }
         
         [StringLengthMax]
         public virtual string Tags { get; set; }

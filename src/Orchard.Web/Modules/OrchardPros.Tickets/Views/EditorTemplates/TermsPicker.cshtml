@@ -1,0 +1,16 @@
+﻿@using Orchard.Taxonomies.Models
+@{
+    var terms = (IEnumerable<TermPart>) ViewBag.Terms;
+    var selectedValues = ViewData.TemplateInfo.FormattedModelValue as IList<int> ?? new List<int>(0);
+    var options = terms.Select(x => new SelectListItem {Text = x.Name, Value = x.Id.ToString(), Selected = selectedValues.Contains(x.Id)});
+}
+<ul>
+    @foreach (var option in options) {
+        <li>
+            <label>
+                <input type="checkbox" name="@Html.Name("")" value="@option.Value" @if(option.Selected){<text>checked="checked"</text>}/>
+                @T(option.Text)
+            </label>
+        </li>
+    }
+</ul>
