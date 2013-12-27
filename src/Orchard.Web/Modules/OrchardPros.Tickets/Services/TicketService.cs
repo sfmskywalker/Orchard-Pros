@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using NHibernate.Criterion;
 using Orchard.Caching;
 using Orchard.ContentManagement;
 using Orchard.Data;
@@ -10,6 +11,8 @@ using Orchard.FileSystems.Media;
 using Orchard.Services;
 using Orchard.Taxonomies.Models;
 using Orchard.Taxonomies.Services;
+using Orchard.Users.Models;
+using OrchardPros.Tickets.Helpers;
 using OrchardPros.Tickets.Models;
 
 namespace OrchardPros.Tickets.Services {
@@ -155,17 +158,53 @@ namespace OrchardPros.Tickets.Services {
             }
         }
 
-        public IEnumerable<Ticket> GetTickets(int? page = null, int? pageSize = null) {
+        public IEnumerable<TicketSummary> GetSummarizedTickets(int? skip = null, int? take = null) {
             var session = _sessionLocator.For(typeof (Ticket));
             IEnumerable<Ticket> query;
+            var baseQuery = session.QueryOver<Ticket>().Fetch(x => x.Categories).Eager.Fetch(x => x.Replies).Eager;
 
-            if (page != null && pageSize != null)
-                query = session.QueryOver<Ticket>().Fetch(x => x.Categories).Eager.Skip(page.Value).Take(pageSize.Value).Future();
+            if (skip != null && take != null)
+                query = baseQuery.Skip(skip.Value).Take(take.Value).Future();
             else {
-                query = session.QueryOver<Ticket>().Fetch(x => x.Categories).Eager.Future();
+                query = baseQuery.Future();
             }
 
-            return query;
+            var tickets = query.ToArray();
+            var categoryDictionary = GetCategoryDictionary();
+            var userIds = new List<int>();
+
+            foreach (var ticket in tickets) {
+                userIds.Add(ticket.UserId);
+                var lastReply = ticket.Replies.LastOrDefault();
+                if(lastReply != null)
+                    userIds.Add(lastReply.UserId);
+            }
+
+            userIds = userIds.Distinct().ToList();
+            var userDictionary = session.QueryOver<UserPartRecord>().WhereRestrictionOn(x => x.Id).IsIn(userIds).Future().ToDictionary(x => x.Id, x => x.UserName);
+
+            return tickets.Select(ticket => new TicketSummary {
+                Id = ticket.Id,
+                Bounty = ticket.Bounty,
+                Categories = ticket.Categories.ToDictionary(x => x.CategoryId, x => categoryDictionary[x.CategoryId]),
+                CreatedUtc = ticket.CreatedUtc,
+                DeadlineUtc = ticket.DeadlineUtc,
+                TimeLeft = ticket.TimeLeft(),
+                ExperiencePoints = ticket.ExperiencePoints,
+                LastModifiedUtc = ticket.LastModifiedUtc,
+                SolvedUtc = ticket.SolvedUtc,
+                Tags = ticket.Tags().ToArray(),
+                Title = ticket.Title,
+                Type = ticket.Type,
+                UserId = ticket.UserId,
+                UserName = userDictionary[ticket.UserId],
+                ViewCount = ticket.ViewCount,
+                Replies = ticket.Replies.Select(x => new ReplySummary {
+                    CreatedUtc = x.CreatedUtc,
+                    UserId = x.UserId,
+                    UserName = userDictionary[x.UserId]
+                }).ToArray()
+            });
         }
     }
 }

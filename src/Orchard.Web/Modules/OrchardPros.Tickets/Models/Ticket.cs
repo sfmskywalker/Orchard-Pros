@@ -44,5 +44,6 @@ namespace OrchardPros.Tickets.Models {
         public virtual int? AnswerId { get; set; }
         public virtual DateTime? ArchivedUtc { get; set; }
         public virtual IList<Attachment> Attachments { get; set; }
+        public virtual IList<Reply> Replies { get; set; }
     }
 }

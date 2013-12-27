@@ -12,6 +12,7 @@ namespace OrchardPros.Tickets.Mappings {
             defaultModel.Override<Ticket>(mapping => {
                 mapping.HasMany(x => x.Categories).KeyColumn("TicketId");
                 mapping.HasMany(x => x.Attachments).KeyColumn("TicketId");
+                mapping.HasMany(x => x.Replies).KeyColumn("TicketId");
             });
             defaultModel.Override<TicketCategory>(mapping => mapping.References(x => x.Ticket, "TicketId"));
             defaultModel.Override<Vote>(mapping => mapping.References(x => x.Reply, "VoteId"));

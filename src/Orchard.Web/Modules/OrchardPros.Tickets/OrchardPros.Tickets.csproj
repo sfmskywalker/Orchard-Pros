@@ -111,6 +111,8 @@
     <Compile Include="Drivers\ExpertPartDriver.cs" />
     <Compile Include="Helpers\TicketHelpers.cs" />
     <Compile Include="Handlers\CategoryTermPartHandler.cs" />
+    <Compile Include="Models\ReplySummary.cs" />
+    <Compile Include="Models\TicketSummary.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Models\TicketCategory.cs" />
     <Compile Include="Services\TicketNotificationSettingsProvider.cs" />

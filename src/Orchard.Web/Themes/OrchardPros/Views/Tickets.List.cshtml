@@ -1,8 +1,6 @@
-﻿@using OrchardPros.Tickets.Helpers
-@using OrchardPros.Tickets.Models
+﻿@using OrchardPros.Tickets.Models
 @{
-    var tickets = (IList<Ticket>)Model.Tickets;
-    var categoryDictionary = (IDictionary<int, string>)Model.CategoryDictionary;
+    var tickets = (IList<TicketSummary>)Model.Tickets;
 }
 <section>
     <div class="sorter">
@@ -27,16 +25,17 @@
     else {
         <!-- Ticket posts -->
         foreach (var ticket in tickets) {
-            var timeLeft = ticket.TimeLeft();
+            var lastReply = ticket.Replies.LastOrDefault();
+            var lastReplyDate = lastReply != null ? lastReply.CreatedUtc : ticket.LastModifiedUtc;
+            var lastReplyUserName = lastReply != null ? lastReply.UserName : ticket.UserName;
             <article class="ticket-post">
                 <div class="ticket-summary">
                     <h2><a href="@Url.Action("Details", "Ticket", new { ticket.Id, Area = "OrchardPros.Tickets" })">@ticket.Title</a></h2>
                     @foreach (var category in ticket.Categories) {
-                        var categoryName = categoryDictionary[category.CategoryId];
-                        <a href="#" class="category-link">@categoryName</a>
+                        <a href="#" class="category-link">@category.Value</a>
                     }
                     <div class="tags">
-                        @foreach (var tag in ticket.Tags()) {
+                        @foreach (var tag in ticket.Tags) {
                             <a href="#"><span class="label label-default">@tag</span></a>
                         }
                     </div>
@@ -44,14 +43,14 @@
                 <div class="ticket-status">
                     <ul>
                         <li class="votes positive"><span class="number">0</span><span class="type">votes</span></li>
-                        <li class="views"><span class="number">8</span><span class="type">views</span></li>
-                        <li class="replies solved"><span class="number">2</span><span class="type">replies</span></li>
+                        <li class="views"><span class="number">@ticket.ViewCount</span><span class="type">@T("views")</span></li>
+                        <li class="replies solved"><span class="number">@ticket.Replies.Count</span><span class="type">@T("replies")</span></li>
                     </ul>
                 </div>
                 <div class="ticket-info">
                     <span class="ticket-expiration">
-                        @if (timeLeft > TimeSpan.Zero) {
-                            @T("Expires {0}d {1}h {2}m", timeLeft.Days, timeLeft.Hours, timeLeft.Minutes)
+                        @if (ticket.TimeLeft > TimeSpan.Zero) {
+                            @T("Expires {0}d {1}h {2}m", ticket.TimeLeft.Days, ticket.TimeLeft.Hours, ticket.TimeLeft.Minutes)
                         }
                         else {
                             @T("Expired on {0}", ticket.DeadlineUtc)
@@ -63,7 +62,7 @@
                             @T("Bounty: {0:c}", ticket.Bounty)
                         </span>
                     }
-                    <span class="ticket-timestamp">50 mins ago by<span class="author"><a href="#">Username</a></span></span>
+                    <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: lastReplyDate))<span class="author"><a href="#">@lastReplyUserName</a></span></span>
                 </div>
             </article>
         }

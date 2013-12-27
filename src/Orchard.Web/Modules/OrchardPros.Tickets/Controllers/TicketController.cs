@@ -39,7 +39,7 @@ namespace OrchardPros.Tickets.Controllers {
 
         public ActionResult Index(PagerParameters pagerParameters) {
             var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
-            var tickets = _ticketService.GetTickets(pager.Page, pager.PageSize).ToArray();
+            var tickets = _ticketService.GetSummarizedTickets(pager.GetStartIndex(), pager.PageSize).ToArray();
             var categoryDictionary = _ticketService.GetCategoryDictionary();
             var viewModel = _services.New.ViewModel(
                 Tickets_List: _services.New.Tickets_List(Tickets: tickets, CategoryDictionary: categoryDictionary),
@@ -68,6 +68,7 @@ namespace OrchardPros.Tickets.Controllers {
                 t.Tags = model.Tags;
             });
 
+            _ticketService.AssignCategories(ticket, model.Categories);
             _ticketService.AssociateAttachments(ticket, model.UploadedFileNames, model.OriginalFileNames);
 
             _notifier.Information(T("Your ticket has been created."));
