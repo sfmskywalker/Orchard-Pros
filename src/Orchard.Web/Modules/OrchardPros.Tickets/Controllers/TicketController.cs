@@ -40,8 +40,9 @@ namespace OrchardPros.Tickets.Controllers {
         public ActionResult Index(PagerParameters pagerParameters) {
             var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
             var tickets = _ticketService.GetTickets(pager.Page, pager.PageSize).ToArray();
+            var categoryDictionary = _ticketService.GetCategoryDictionary();
             var viewModel = _services.New.ViewModel(
-                Tickets_List: _services.New.Tickets_List(Tickets: tickets),
+                Tickets_List: _services.New.Tickets_List(Tickets: tickets, CategoryDictionary: categoryDictionary),
                 Tickets_List_Filter: _services.New.Tickets_List_Filter());
             return View(viewModel);
         }

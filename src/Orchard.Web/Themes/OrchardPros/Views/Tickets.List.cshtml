@@ -1,6 +1,8 @@
-﻿@using OrchardPros.Tickets.Models
+﻿@using OrchardPros.Tickets.Helpers
+@using OrchardPros.Tickets.Models
 @{
-    var tickets = (IList<Ticket>) Model.Tickets;
+    var tickets = (IList<Ticket>)Model.Tickets;
+    var categoryDictionary = (IDictionary<int, string>)Model.CategoryDictionary;
 }
 <section>
     <div class="sorter">
@@ -18,22 +20,25 @@
             <span>per page</span>
         </div>
     </div>
-    
+
     @if (!tickets.Any()) {
         <p>@T("There are no tickets to be displayed in the current view.")</p>
     }
     else {
         <!-- Ticket posts -->
         foreach (var ticket in tickets) {
-            var categories = ticket.Categories.ToArray();
+            var timeLeft = ticket.TimeLeft();
             <article class="ticket-post">
                 <div class="ticket-summary">
                     <h2><a href="@Url.Action("Details", "Ticket", new { ticket.Id, Area = "OrchardPros.Tickets" })">@ticket.Title</a></h2>
-                    <a href="#" class="category-link">Category</a>
+                    @foreach (var category in ticket.Categories) {
+                        var categoryName = categoryDictionary[category.CategoryId];
+                        <a href="#" class="category-link">@categoryName</a>
+                    }
                     <div class="tags">
-                        <a href="#"><span class="label label-default">Default</span></a>
-                        <a href="#"><span class="label label-default">Default</span></a>
-                        <a href="#"><span class="label label-default">Default</span></a>
+                        @foreach (var tag in ticket.Tags()) {
+                            <a href="#"><span class="label label-default">@tag</span></a>
+                        }
                     </div>
                 </div>
                 <div class="ticket-status">
@@ -44,9 +49,20 @@
                     </ul>
                 </div>
                 <div class="ticket-info">
-                    <span class="ticket-expiration">Expires 2d 5h 30m</span>
-                    <span class="ticket-bounty">Bounty: $100</span>
-                    <span class="ticket-exp">EXP: 50</span>
+                    <span class="ticket-expiration">
+                        @if (timeLeft > TimeSpan.Zero) {
+                            @T("Expires {0}d {1}h {2}m", timeLeft.Days, timeLeft.Hours, timeLeft.Minutes)
+                        }
+                        else {
+                            @T("Expired on {0}", ticket.DeadlineUtc)
+                        }
+                    </span>
+                    <span class="ticket-exp">@T("EXP: {0}", ticket.ExperiencePoints)</span>
+                    @if (ticket.Bounty != null) {
+                        <span class="ticket-bounty">
+                            @T("Bounty: {0:c}", ticket.Bounty)
+                        </span>
+                    }
                     <span class="ticket-timestamp">50 mins ago by<span class="author"><a href="#">Username</a></span></span>
                 </div>
             </article>

@@ -6,8 +6,10 @@ using Orchard.Data.Conventions;
 namespace OrchardPros.Tickets.Models {
     public class Ticket {
         public Ticket() {
-            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Categories = new List<TicketCategory>();
+            Attachments = new List<Attachment>();
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         public virtual int Id { get; set; }
@@ -33,11 +35,14 @@ namespace OrchardPros.Tickets.Models {
 
         public virtual int ExperiencePoints { get; set; }
 
+        public virtual int ViewCount { get; set; }
+
         public virtual DateTime CreatedUtc { get; set; }
         public virtual DateTime LastModifiedUtc { get; set; }
 
         public virtual DateTime? SolvedUtc { get; set; }
         public virtual int? AnswerId { get; set; }
         public virtual DateTime? ArchivedUtc { get; set; }
+        public virtual IList<Attachment> Attachments { get; set; }
     }
 }

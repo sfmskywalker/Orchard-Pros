@@ -16,6 +16,7 @@ namespace OrchardPros.Tickets {
                 .Column<decimal>("Bounty", c => c.Nullable())
                 .Column<DateTime>("DeadlineUtc", c => c.NotNull())
                 .Column<int>("ExperiencePoints", c => c.NotNull())
+                .Column<int>("ViewCount", c => c.NotNull())
                 .Column<DateTime>("CreatedUtc", c => c.NotNull())
                 .Column<DateTime>("LastModifiedUtc", c => c.Nullable())
                 .Column<DateTime>("SolvedUtc", c => c.Nullable())

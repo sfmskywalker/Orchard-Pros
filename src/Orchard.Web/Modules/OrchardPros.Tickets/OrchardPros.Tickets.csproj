@@ -109,6 +109,7 @@
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Controllers\AdminTicketController.cs" />
     <Compile Include="Drivers\ExpertPartDriver.cs" />
+    <Compile Include="Helpers\TicketHelpers.cs" />
     <Compile Include="Handlers\CategoryTermPartHandler.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Models\TicketCategory.cs" />

@@ -23,6 +23,8 @@ namespace OrchardPros.Tickets.Services {
         private readonly ISignals _signals;
         private readonly IRepository<TicketCategory> _ticketCategoryRepository;
         private readonly IStorageProvider _storageProvider;
+        private readonly ISessionLocator _sessionLocator;
+        private readonly IRepository<Attachment> _attachmentRepository;
 
         public TicketService(
             IRepository<Ticket> ticketRepository, 
@@ -33,7 +35,9 @@ namespace OrchardPros.Tickets.Services {
             ICacheManager cache, 
             ISignals signals, 
             IRepository<TicketCategory> ticketCategoryRepository,
-            IStorageProvider storageProvider) {
+            IStorageProvider storageProvider, 
+            ISessionLocator sessionLocator, 
+            IRepository<Attachment> attachmentRepository) {
 
             _ticketRepository = ticketRepository;
             _taxonomyService = taxonomyService;
@@ -44,6 +48,8 @@ namespace OrchardPros.Tickets.Services {
             _signals = signals;
             _ticketCategoryRepository = ticketCategoryRepository;
             _storageProvider = storageProvider;
+            _sessionLocator = sessionLocator;
+            _attachmentRepository = attachmentRepository;
         }
 
         public IEnumerable<Ticket> GetTicketsFor(int userId) {
@@ -123,6 +129,9 @@ namespace OrchardPros.Tickets.Services {
         }
 
         public void AssociateAttachments(Ticket ticket, IEnumerable<string> uploadedFileNames, IEnumerable<string> originalFileNames) {
+            if (uploadedFileNames == null || originalFileNames == null)
+                return;
+
             var tempFolderPath = "_Attachments/_Temp";
             var ticketFolderPath = String.Format("_Attachments/{0:0000000}", ticket.Id);
             var uploadedFiles = uploadedFileNames.ToArray();
@@ -131,18 +140,30 @@ namespace OrchardPros.Tickets.Services {
             _storageProvider.TryCreateFolder(ticketFolderPath);
 
             for (var i = 0; i < uploadedFiles.Length; i++) {
-                var uploadedFileName = tempFolderPath + "/"  + uploadedFiles[i];
-                var originalFileName = ticketFolderPath + "/" + Path.GetFileName(originalFiles[i]);
+                var uploadedFilePath = tempFolderPath + "/"  + uploadedFiles[i];
+                var originalFileName = Path.GetFileName(originalFiles[i]);
+                var originalFilePath = ticketFolderPath + "/" + originalFileName;
+                var attachment = new Attachment {
+                    Ticket = ticket,
+                    CreatedUtc = _clock.UtcNow,
+                    FileName = originalFileName
+                };
 
-                _storageProvider.RenameFile(uploadedFileName, originalFileName);
+                _attachmentRepository.Create(attachment);
+                ticket.Attachments.Add(attachment);
+                _storageProvider.RenameFile(uploadedFilePath, originalFilePath);
             }
         }
 
         public IEnumerable<Ticket> GetTickets(int? page = null, int? pageSize = null) {
-            var query = _ticketRepository.Table;
+            var session = _sessionLocator.For(typeof (Ticket));
+            IEnumerable<Ticket> query;
 
             if (page != null && pageSize != null)
-                query = query.Skip(page.Value).Take(pageSize.Value);
+                query = session.QueryOver<Ticket>().Fetch(x => x.Categories).Eager.Skip(page.Value).Take(pageSize.Value).Future();
+            else {
+                query = session.QueryOver<Ticket>().Fetch(x => x.Categories).Eager.Future();
+            }
 
             return query;
         }
