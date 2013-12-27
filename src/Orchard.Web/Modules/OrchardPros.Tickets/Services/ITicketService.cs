@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Web;
 using Orchard;
 using Orchard.Taxonomies.Models;
 using OrchardPros.Tickets.Models;
@@ -14,5 +15,7 @@ namespace OrchardPros.Tickets.Services {
         IDictionary<int, string> GetCategoryDictionary();
         void Archive(Ticket ticket);
         IList<TicketCategory> AssignCategories(Ticket ticket, IEnumerable<int> categoryIds);
+        string UploadAttachment(HttpPostedFileBase file);
+        void AssociateAttachments(Ticket ticket, IEnumerable<string> uploadedFileNames, IEnumerable<string> originalFileNames);
     }
 }

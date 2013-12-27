@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web;
 using Orchard.Caching;
 using Orchard.ContentManagement;
 using Orchard.Data;
+using Orchard.FileSystems.Media;
 using Orchard.Services;
 using Orchard.Taxonomies.Models;
 using Orchard.Taxonomies.Services;
@@ -19,6 +22,7 @@ namespace OrchardPros.Tickets.Services {
         private readonly ICacheManager _cache;
         private readonly ISignals _signals;
         private readonly IRepository<TicketCategory> _ticketCategoryRepository;
+        private readonly IStorageProvider _storageProvider;
 
         public TicketService(
             IRepository<Ticket> ticketRepository, 
@@ -28,7 +32,8 @@ namespace OrchardPros.Tickets.Services {
             IExperienceCalculator experienceCalculator, 
             ICacheManager cache, 
             ISignals signals, 
-            IRepository<TicketCategory> ticketCategoryRepository) {
+            IRepository<TicketCategory> ticketCategoryRepository,
+            IStorageProvider storageProvider) {
 
             _ticketRepository = ticketRepository;
             _taxonomyService = taxonomyService;
@@ -38,6 +43,7 @@ namespace OrchardPros.Tickets.Services {
             _cache = cache;
             _signals = signals;
             _ticketCategoryRepository = ticketCategoryRepository;
+            _storageProvider = storageProvider;
         }
 
         public IEnumerable<Ticket> GetTicketsFor(int userId) {
@@ -89,7 +95,7 @@ namespace OrchardPros.Tickets.Services {
         }
 
         public IList<TicketCategory> AssignCategories(Ticket ticket, IEnumerable<int> categoryIds) {
-            var categoryList = categoryIds.ToArray();
+            var categoryList = (categoryIds ?? Enumerable.Empty<int>()).ToArray();
 
             // Delete current categories
             foreach (var category in ticket.Categories.Where(x => !categoryList.Contains(x.CategoryId)).ToArray()) {
@@ -105,6 +111,31 @@ namespace OrchardPros.Tickets.Services {
                 ticket.Categories.Add(category);
             }
             return ticket.Categories;
+        }
+
+        public string UploadAttachment(HttpPostedFileBase file) {
+            var tempFolderPath = "_Attachments/_Temp";
+            var extension = Path.GetExtension(file.FileName);
+            var temporaryFileName = String.Format("{0}{1}", Guid.NewGuid(), extension);
+            var path = tempFolderPath + "/" + temporaryFileName;
+            _storageProvider.SaveStream(path, file.InputStream);
+            return temporaryFileName;
+        }
+
+        public void AssociateAttachments(Ticket ticket, IEnumerable<string> uploadedFileNames, IEnumerable<string> originalFileNames) {
+            var tempFolderPath = "_Attachments/_Temp";
+            var ticketFolderPath = String.Format("_Attachments/{0:0000000}", ticket.Id);
+            var uploadedFiles = uploadedFileNames.ToArray();
+            var originalFiles = originalFileNames.ToArray();
+
+            _storageProvider.TryCreateFolder(ticketFolderPath);
+
+            for (var i = 0; i < uploadedFiles.Length; i++) {
+                var uploadedFileName = tempFolderPath + "/"  + uploadedFiles[i];
+                var originalFileName = ticketFolderPath + "/" + Path.GetFileName(originalFiles[i]);
+
+                _storageProvider.RenameFile(uploadedFileName, originalFileName);
+            }
         }
     }
 }

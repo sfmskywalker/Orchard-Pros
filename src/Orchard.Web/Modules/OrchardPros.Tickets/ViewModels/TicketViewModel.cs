@@ -16,7 +16,7 @@ namespace OrchardPros.Tickets.ViewModels {
         [Required]
         public string Description { get; set; }
 
-        [Required, UIHint("TermsPicker")]
+        [UIHint("TermsPicker")]
         public IList<int> Categories { get; set; }
 
         public string Tags { get; set; }
@@ -30,5 +30,7 @@ namespace OrchardPros.Tickets.ViewModels {
 
         public ExpertPart User { get; set; }
         public IEnumerable<TermPart> CategoryTerms { get; set; }
+        public IList<string> UploadedFileNames { get; set; }
+        public IList<string> OriginalFileNames { get; set; }
     }
 }

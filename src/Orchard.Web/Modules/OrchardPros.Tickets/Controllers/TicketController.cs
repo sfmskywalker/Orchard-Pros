@@ -2,6 +2,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.FileSystems.Media;
 using Orchard.Localization;
 using Orchard.Services;
 using Orchard.Themes;
@@ -18,12 +19,14 @@ namespace OrchardPros.Tickets.Controllers {
         private readonly ITicketService _ticketService;
         private readonly IClock _clock;
         private readonly IOrchardServices _services;
+        private readonly IStorageProvider _storageProvider;
 
-        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services) {
+        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services, IStorageProvider storageProvider) {
             _notifier = services.Notifier;
             _ticketService = ticketService;
             _clock = clock;
             _services = services;
+            _storageProvider = storageProvider;
             T = NullLocalizer.Instance;
         }
 
@@ -53,6 +56,8 @@ namespace OrchardPros.Tickets.Controllers {
                 t.ExperiencePoints = _ticketService.CalculateExperience(CurrentUser);
                 t.Tags = model.Tags;
             });
+
+            _ticketService.AssociateAttachments(ticket, model.UploadedFileNames, model.OriginalFileNames);
 
             _notifier.Information(T("Your ticket has been created."));
             return RedirectToAction("Details", new { ticket.Id });
@@ -91,7 +96,9 @@ namespace OrchardPros.Tickets.Controllers {
             ticket.Tags = model.Tags;
             ticket.Title = model.Title;
             ticket.Type = model.Type;
+
             _ticketService.AssignCategories(ticket, model.Categories);
+            _ticketService.AssociateAttachments(ticket, model.UploadedFileNames, model.OriginalFileNames);
 
             _notifier.Information(T("Your ticket has been updated."));
             return RedirectToAction("Details", new { ticket.Id });
@@ -105,6 +112,16 @@ namespace OrchardPros.Tickets.Controllers {
 
             var shape = _services.New.ViewModel(Ticket: ticket);
             return View(shape);
+        }
+
+        [HttpPost]
+        public JsonResult Upload() {
+            var file = Request.Files[0];
+            var temporaryFileName = _ticketService.UploadAttachment(file);
+
+            return Json(new {
+                uploadedFileName = temporaryFileName
+            });
         }
 
         private TicketViewModel SetupCreateViewModel(TicketViewModel model) {
