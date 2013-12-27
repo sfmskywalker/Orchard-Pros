@@ -116,6 +116,7 @@
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Models\TicketCategory.cs" />
     <Compile Include="Services\TicketNotificationSettingsProvider.cs" />
+    <Compile Include="Models\TicketsCriteria.cs" />
     <Compile Include="Signals.cs" />
     <Compile Include="Models\ExpertPart.cs" />
     <Compile Include="Services\ExperienceCalculator.cs" />

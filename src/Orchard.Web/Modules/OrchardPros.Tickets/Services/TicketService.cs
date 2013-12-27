@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using NHibernate.Criterion;
+using NHibernate.Linq;
+using NHibernate.Transform;
 using Orchard.Caching;
 using Orchard.ContentManagement;
 using Orchard.Data;
@@ -158,29 +160,33 @@ namespace OrchardPros.Tickets.Services {
             }
         }
 
-        public IEnumerable<TicketSummary> GetSummarizedTickets(int? skip = null, int? take = null) {
+        public IEnumerable<TicketSummary> GetSummarizedTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest) {
             var session = _sessionLocator.For(typeof (Ticket));
-            IEnumerable<Ticket> query;
             var baseQuery = session.QueryOver<Ticket>().Fetch(x => x.Categories).Eager.Fetch(x => x.Replies).Eager;
-
-            if (skip != null && take != null)
-                query = baseQuery.Skip(skip.Value).Take(take.Value).Future();
-            else {
-                query = baseQuery.Future();
-            }
-
-            var tickets = query.ToArray();
             var categoryDictionary = GetCategoryDictionary();
-            var userIds = new List<int>();
 
-            foreach (var ticket in tickets) {
-                userIds.Add(ticket.UserId);
-                var lastReply = ticket.Replies.LastOrDefault();
-                if(lastReply != null)
-                    userIds.Add(lastReply.UserId);
+            switch (criteria) {
+                case TicketsCriteria.Unsolved:
+                    baseQuery = baseQuery.Where(x => x.SolvedUtc == null).OrderBy(x => x.CreatedUtc).Desc;
+                    break;
+                case TicketsCriteria.Popular:
+                    baseQuery = baseQuery.OrderBy(x => x.ViewCount).Desc.ThenBy(x => x.CreatedUtc).Desc;
+                    break;
+                case TicketsCriteria.Deadline:
+                    baseQuery = baseQuery.OrderBy(x => x.DeadlineUtc).Asc;
+                    break;
+                case TicketsCriteria.Bounty:
+                    baseQuery = baseQuery.WhereNot(x => x.Bounty == null).OrderBy(x => x.Bounty).Desc;
+                    break;
+                default:
+                    baseQuery = baseQuery.OrderBy(x => x.CreatedUtc).Desc;
+                    break;
             }
 
-            userIds = userIds.Distinct().ToList();
+            baseQuery.RootCriteria.SetResultTransformer(new DistinctRootEntityResultTransformer());
+            var query = skip != null && take != null ? baseQuery.Skip(skip.Value).Take(take.Value).Future() : baseQuery.Future();
+            var tickets = query.ToArray();
+            var userIds = CollectUserIds(tickets).ToArray();
             var userDictionary = session.QueryOver<UserPartRecord>().WhereRestrictionOn(x => x.Id).IsIn(userIds).Future().ToDictionary(x => x.Id, x => x.UserName);
 
             return tickets.Select(ticket => new TicketSummary {
@@ -205,6 +211,15 @@ namespace OrchardPros.Tickets.Services {
                     UserName = userDictionary[x.UserId]
                 }).ToArray()
             });
+        }
+
+        private static IEnumerable<int> CollectUserIds(IEnumerable<Ticket> tickets) {
+            foreach (var ticket in tickets) {
+                yield return ticket.UserId;
+                var lastReply = ticket.Replies.LastOrDefault();
+                if (lastReply != null)
+                    yield return lastReply.UserId;
+            }
         }
     }
 }

@@ -2,11 +2,9 @@ using System.Linq;
 using System.Web.Mvc;
 using Orchard;
 using Orchard.ContentManagement;
-using Orchard.FileSystems.Media;
 using Orchard.Localization;
 using Orchard.Services;
 using Orchard.Themes;
-using Orchard.UI.Admin;
 using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
 using OrchardPros.Tickets.Models;
@@ -20,14 +18,12 @@ namespace OrchardPros.Tickets.Controllers {
         private readonly ITicketService _ticketService;
         private readonly IClock _clock;
         private readonly IOrchardServices _services;
-        private readonly IStorageProvider _storageProvider;
 
-        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services, IStorageProvider storageProvider) {
+        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services) {
             _notifier = services.Notifier;
             _ticketService = ticketService;
             _clock = clock;
             _services = services;
-            _storageProvider = storageProvider;
             T = NullLocalizer.Instance;
         }
 
@@ -37,9 +33,9 @@ namespace OrchardPros.Tickets.Controllers {
             get { return _services.WorkContext.CurrentUser.As<ExpertPart>(); }
         }
 
-        public ActionResult Index(PagerParameters pagerParameters) {
+        public ActionResult Index(PagerParameters pagerParameters, TicketsCriteria criteria = TicketsCriteria.Latest) {
             var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
-            var tickets = _ticketService.GetSummarizedTickets(pager.GetStartIndex(), pager.PageSize).ToArray();
+            var tickets = _ticketService.GetSummarizedTickets(pager.GetStartIndex(), pager.PageSize, criteria).ToArray();
             var categoryDictionary = _ticketService.GetCategoryDictionary();
             var viewModel = _services.New.ViewModel(
                 Tickets_List: _services.New.Tickets_List(Tickets: tickets, CategoryDictionary: categoryDictionary),

@@ -44,7 +44,7 @@
                     <ul>
                         <li class="votes positive"><span class="number">0</span><span class="type">votes</span></li>
                         <li class="views"><span class="number">@ticket.ViewCount</span><span class="type">@T("views")</span></li>
-                        <li class="replies solved"><span class="number">@ticket.Replies.Count</span><span class="type">@T("replies")</span></li>
+                        <li class="replies @if(ticket.SolvedUtc != null){<text>solved</text>}"><span class="number">@ticket.Replies.Count</span><span class="type">@T("replies")</span></li>
                     </ul>
                 </div>
                 <div class="ticket-info">
