@@ -17,5 +17,6 @@ namespace OrchardPros.Tickets.Services {
         IList<TicketCategory> AssignCategories(Ticket ticket, IEnumerable<int> categoryIds);
         string UploadAttachment(HttpPostedFileBase file);
         void AssociateAttachments(Ticket ticket, IEnumerable<string> uploadedFileNames, IEnumerable<string> originalFileNames);
+        IEnumerable<Ticket> GetTickets(int? page = null, int? pageSize = null);
     }
 }

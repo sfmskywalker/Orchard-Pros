@@ -1,0 +1,75 @@
+﻿@using OrchardPros.Tickets.Models
+@{
+    var tickets = (IList<Ticket>) Model.Tickets;
+}
+<section>
+    <div class="sorter">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">Latest</a></li>
+            <li><a href="#">Unsolved</a></li>
+            <li><a href="#">Popular</a></li>
+            <li><a href="#">Deadline</a></li>
+            <li><a href="#">Bounty</a></li>
+        </ul>
+        <div class="btn-group btn-group-sm filter-results">
+            <button type="button" class="btn btn-default">15</button>
+            <button type="button" class="btn btn-default">30</button>
+            <button type="button" class="btn btn-default">50</button>
+            <span>per page</span>
+        </div>
+    </div>
+    
+    @if (!tickets.Any()) {
+        <p>@T("There are no tickets to be displayed in the current view.")</p>
+    }
+    else {
+        <!-- Ticket posts -->
+        foreach (var ticket in tickets) {
+            var categories = ticket.Categories.ToArray();
+            <article class="ticket-post">
+                <div class="ticket-summary">
+                    <h2><a href="@Url.Action("Details", "Ticket", new { ticket.Id, Area = "OrchardPros.Tickets" })">@ticket.Title</a></h2>
+                    <a href="#" class="category-link">Category</a>
+                    <div class="tags">
+                        <a href="#"><span class="label label-default">Default</span></a>
+                        <a href="#"><span class="label label-default">Default</span></a>
+                        <a href="#"><span class="label label-default">Default</span></a>
+                    </div>
+                </div>
+                <div class="ticket-status">
+                    <ul>
+                        <li class="votes positive"><span class="number">0</span><span class="type">votes</span></li>
+                        <li class="views"><span class="number">8</span><span class="type">views</span></li>
+                        <li class="replies solved"><span class="number">2</span><span class="type">replies</span></li>
+                    </ul>
+                </div>
+                <div class="ticket-info">
+                    <span class="ticket-expiration">Expires 2d 5h 30m</span>
+                    <span class="ticket-bounty">Bounty: $100</span>
+                    <span class="ticket-exp">EXP: 50</span>
+                    <span class="ticket-timestamp">50 mins ago by<span class="author"><a href="#">Username</a></span></span>
+                </div>
+            </article>
+        }
+    }
+    <!-- /Ticket posts -->
+    <div class="sorter bottom">
+        <ul class="pagination pagination-sm">
+            <li class="disabled"><a href="#">&laquo;</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li class="disabled"><a href="#">...</a></li>
+            <li><a href="#">20</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+        <div class="btn-group btn-group-sm filter-results">
+            <button type="button" class="btn btn-default">15</button>
+            <button type="button" class="btn btn-default">30</button>
+            <button type="button" class="btn btn-default">50</button>
+            <span>per page</span>
+        </div>
+    </div>
+</section>

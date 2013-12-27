@@ -137,5 +137,14 @@ namespace OrchardPros.Tickets.Services {
                 _storageProvider.RenameFile(uploadedFileName, originalFileName);
             }
         }
+
+        public IEnumerable<Ticket> GetTickets(int? page = null, int? pageSize = null) {
+            var query = _ticketRepository.Table;
+
+            if (page != null && pageSize != null)
+                query = query.Skip(page.Value).Take(pageSize.Value);
+
+            return query;
+        }
     }
 }

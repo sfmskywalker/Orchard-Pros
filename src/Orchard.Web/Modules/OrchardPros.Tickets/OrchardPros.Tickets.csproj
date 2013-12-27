@@ -168,6 +168,15 @@
   <ItemGroup>
     <Content Include="Views\Ticket\Details.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Ticket\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Tickets.List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Tickets.List.Filter.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

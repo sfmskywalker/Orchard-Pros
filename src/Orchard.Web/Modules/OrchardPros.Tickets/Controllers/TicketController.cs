@@ -7,6 +7,7 @@ using Orchard.Localization;
 using Orchard.Services;
 using Orchard.Themes;
 using Orchard.UI.Admin;
+using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
 using OrchardPros.Tickets.Models;
 using OrchardPros.Tickets.Services;
@@ -34,6 +35,15 @@ namespace OrchardPros.Tickets.Controllers {
 
         private ExpertPart CurrentUser {
             get { return _services.WorkContext.CurrentUser.As<ExpertPart>(); }
+        }
+
+        public ActionResult Index(PagerParameters pagerParameters) {
+            var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
+            var tickets = _ticketService.GetTickets(pager.Page, pager.PageSize).ToArray();
+            var viewModel = _services.New.ViewModel(
+                Tickets_List: _services.New.Tickets_List(Tickets: tickets),
+                Tickets_List_Filter: _services.New.Tickets_List_Filter());
+            return View(viewModel);
         }
 
         public ActionResult Create() {

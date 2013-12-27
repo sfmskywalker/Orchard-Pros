@@ -272,6 +272,15 @@
   <ItemGroup>
     <Content Include="Views\Ticket.Replies.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros.Tickets\Ticket\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Tickets.List.Filter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Tickets.List.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
