@@ -1,15 +1,23 @@
 ﻿@using OrchardPros.Tickets.Models
 @{
     var tickets = (IList<TicketSummary>)Model.Tickets;
+    var criteria = (TicketsCriteria)Model.Criteria;
+    var tabs = new List<SelectListItem> {
+        new SelectListItem {Text = T("Latest").ToString(), Value = TicketsCriteria.Latest.ToString(), Selected = criteria == TicketsCriteria.Latest},
+        new SelectListItem {Text = T("Unsolved").ToString(), Value = TicketsCriteria.Unsolved.ToString(), Selected = criteria == TicketsCriteria.Unsolved},
+        new SelectListItem {Text = T("Popular").ToString(), Value = TicketsCriteria.Popular.ToString(), Selected = criteria == TicketsCriteria.Popular},
+        new SelectListItem {Text = T("Deadline").ToString(), Value = TicketsCriteria.Deadline.ToString(), Selected = criteria == TicketsCriteria.Deadline},
+        new SelectListItem {Text = T("Bounty").ToString(), Value = TicketsCriteria.Bounty.ToString(), Selected = criteria == TicketsCriteria.Bounty}
+    };
 }
 <section>
     <div class="sorter">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#">Latest</a></li>
-            <li><a href="#">Unsolved</a></li>
-            <li><a href="#">Popular</a></li>
-            <li><a href="#">Deadline</a></li>
-            <li><a href="#">Bounty</a></li>
+            @foreach (var tab in tabs) {
+                <li @if (tab.Selected) { <text> class="active" </text>  }>
+                    <a href="@Url.Action("Index", "Ticket", new { Criteria = tab.Value, Area = "OrchardPros.Tickets" })">@tab.Text</a>
+                </li>
+            }
         </ul>
         <div class="btn-group btn-group-sm filter-results">
             <button type="button" class="btn btn-default">15</button>
