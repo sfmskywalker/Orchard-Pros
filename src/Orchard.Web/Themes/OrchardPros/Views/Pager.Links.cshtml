@@ -1,26 +1,19 @@
 ﻿@{
-    int Page = Model.Page;
-    int PageSize = Model.PageSize;
-    double TotalItemCount = Model.TotalItemCount;
-    int? Quantity = Model.Quantity;
-    string PagerId = Model.PagerId;
-
-    var currentPage = Page;
+    int page = Model.Page;
+    int pageSize = Model.PageSize;
+    double totalItemCount = Model.TotalItemCount;
+    string pagerId = Model.PagerId;
+    var currentPage = page;
     if (currentPage < 1) {
         currentPage = 1;
     }
 
-    var pageSize = PageSize;
     if (pageSize < 1) {
         pageSize = WorkContext.CurrentSite.PageSize;
     }
 
-    var numberOfPagesToShow = Quantity ?? 0;
-    if (Quantity == null || Quantity < 0) {
-        numberOfPagesToShow = 7;
-    }
-
-    var totalPageCount = (int)Math.Ceiling(TotalItemCount / pageSize);
+    const int numberOfPagesToShow = 7;
+    var totalPageCount = (int)Math.Ceiling(totalItemCount / pageSize);
     var routeData = new RouteValueDictionary(Html.ViewContext.RouteData.Values);
     var queryString = Request.QueryString;
     if (queryString != null) {
@@ -29,35 +22,16 @@
         }
     }
 
-    // specific cross-requests route data can be passed to the shape directly (e.g., Orchard.Users)
-    var shapeRoute = (object)Model.RouteData;
-
-    if (shapeRoute != null) {
-        var shapeRouteData = shapeRoute as RouteValueDictionary;
-        if (shapeRouteData == null) {
-            var route = shapeRoute as RouteData;
-            if (route != null) {
-                shapeRouteData = (route).Values;
-            }
-        }
-
-        if (shapeRouteData != null) {
-            foreach (var rd in shapeRouteData) {
-                routeData[rd.Key] = rd.Value;
-            }
-        }
-    }
-
-    int firstPage = Math.Max(1, Page - (numberOfPagesToShow / 2));
-    int lastPage = Math.Min(totalPageCount, Page + numberOfPagesToShow / 2);
-    var pageKey = String.IsNullOrEmpty(PagerId) ? "page" : PagerId;
+    int firstPage = Math.Max(1, page - (numberOfPagesToShow / 2));
+    int lastPage = Math.Min(totalPageCount, page + numberOfPagesToShow / 2);
+    var pageKey = String.IsNullOrEmpty(pagerId) ? "page" : pagerId;
 }
 <ul class="pagination pagination-sm">
-    <li @if (Page <= 1) { <text> class="disabled" </text>     }>
+    <li @if (page <= 1) { <text> class="disabled" </text>     }>
         @{if (currentPage > 1) { // also to keep from having "page=1" in the query string
             routeData[pageKey] = currentPage - 1;
         }}
-        @if (Page <= 1) {
+        @if (page <= 1) {
             <span>&laquo;</span>
         }
         else {
@@ -84,8 +58,8 @@
     @if (lastPage < totalPageCount && numberOfPagesToShow > 0) {
         <li><span>@T("...")</span></li>
     }
-    <li @if (Page >= totalPageCount) { <text> class="disabled" </text>      }>
-        @{routeData[pageKey] = Page + 1;}
+    <li @if (page >= totalPageCount) { <text> class="disabled" </text>      }>
+        @{routeData[pageKey] = page + 1;}
         <a href="@Url.Action((string)routeData["action"], (string)routeData["controller"], routeData)">&raquo;</a>
     </li>
 </ul>
