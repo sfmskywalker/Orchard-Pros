@@ -1,7 +1,8 @@
 ﻿@using OrchardPros.Tickets.Models
 @{
-    var tickets = (IList<TicketSummary>)Model.Tickets;
+    var tickets = (IPagedList<TicketSummary>)Model.Tickets;
     var criteria = (TicketsCriteria)Model.Criteria;
+    var pager = Model.Pager;
     var tabs = new List<SelectListItem> {
         new SelectListItem {Text = T("Latest").ToString(), Value = TicketsCriteria.Latest.ToString(), Selected = criteria == TicketsCriteria.Latest},
         new SelectListItem {Text = T("Unsolved").ToString(), Value = TicketsCriteria.Unsolved.ToString(), Selected = criteria == TicketsCriteria.Unsolved},
@@ -9,22 +10,29 @@
         new SelectListItem {Text = T("Deadline").ToString(), Value = TicketsCriteria.Deadline.ToString(), Selected = criteria == TicketsCriteria.Deadline},
         new SelectListItem {Text = T("Bounty").ToString(), Value = TicketsCriteria.Bounty.ToString(), Selected = criteria == TicketsCriteria.Bounty}
     };
+
+}
+@helper PageSizes() {
+    var criteria = (TicketsCriteria)Model.Criteria;
+    var pager = Model.Pager;
+    var pageSizes = new[] { 15, 30, 50 };
+    <div class="btn-group btn-group-sm filter-results">    
+        @foreach (var pageSize in pageSizes) {
+            <a href="@Url.Action("Index", "Ticket", new { criteria, pageSize })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
+        }
+        <span>@T("per page")</span>
+    </div>
 }
 <section>
     <div class="sorter">
         <ul class="nav nav-tabs">
             @foreach (var tab in tabs) {
-                <li @if (tab.Selected) { <text> class="active" </text>  }>
-                    <a href="@Url.Action("Index", "Ticket", new { Criteria = tab.Value, Area = "OrchardPros.Tickets" })">@tab.Text</a>
+                <li @if (tab.Selected) { <text> class="active" </text>   }>
+                    <a href="@Url.Action("Index", "Ticket", new { Criteria = tab.Value, Page = (int)pager.Page, PageSize = (int)pager.PageSize, Area = "OrchardPros.Tickets" })">@tab.Text</a>
                 </li>
             }
         </ul>
-        <div class="btn-group btn-group-sm filter-results">
-            <button type="button" class="btn btn-default">15</button>
-            <button type="button" class="btn btn-default">30</button>
-            <button type="button" class="btn btn-default">50</button>
-            <span>per page</span>
-        </div>
+        @PageSizes()
     </div>
 
     @if (!tickets.Any()) {
@@ -77,7 +85,7 @@
     }
     <!-- /Ticket posts -->
     <div class="sorter bottom">
-        <ul class="pagination pagination-sm">
+        @*<ul class="pagination pagination-sm">
             <li class="disabled"><a href="#">&laquo;</a></li>
             <li class="active"><a href="#">1</a></li>
             <li><a href="#">2</a></li>
@@ -87,12 +95,8 @@
             <li class="disabled"><a href="#">...</a></li>
             <li><a href="#">20</a></li>
             <li><a href="#">&raquo;</a></li>
-        </ul>
-        <div class="btn-group btn-group-sm filter-results">
-            <button type="button" class="btn btn-default">15</button>
-            <button type="button" class="btn btn-default">30</button>
-            <button type="button" class="btn btn-default">50</button>
-            <span>per page</span>
-        </div>
+        </ul>*@
+        @Display(pager)
+        @PageSizes()
     </div>
 </section>

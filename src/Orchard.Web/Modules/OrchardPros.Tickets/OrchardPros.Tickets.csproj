@@ -109,12 +109,16 @@
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Controllers\AdminTicketController.cs" />
     <Compile Include="Drivers\ExpertPartDriver.cs" />
+    <Compile Include="Helpers\PagerHelpers.cs" />
+    <Compile Include="Helpers\EnumerableHelpers.cs" />
     <Compile Include="Helpers\TicketHelpers.cs" />
     <Compile Include="Handlers\CategoryTermPartHandler.cs" />
+    <Compile Include="Models\PagedList.cs" />
     <Compile Include="Models\ReplySummary.cs" />
     <Compile Include="Models\TicketSummary.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Models\TicketCategory.cs" />
+    <Compile Include="Models\IPagedList.cs" />
     <Compile Include="Services\TicketNotificationSettingsProvider.cs" />
     <Compile Include="Models\TicketsCriteria.cs" />
     <Compile Include="Signals.cs" />

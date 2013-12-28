@@ -160,10 +160,12 @@ namespace OrchardPros.Tickets.Services {
             }
         }
 
-        public IEnumerable<TicketSummary> GetSummarizedTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest) {
+        public IPagedList<TicketSummary> GetSummarizedTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest) {
             var session = _sessionLocator.For(typeof (Ticket));
-            var baseQuery = session.QueryOver<Ticket>().Fetch(x => x.Categories).Eager.Fetch(x => x.Replies).Eager;
+            var baseQuery = session.QueryOver<Ticket>();
             var categoryDictionary = GetCategoryDictionary();
+            
+            baseQuery.RootCriteria.SetResultTransformer(new DistinctRootEntityResultTransformer());
 
             switch (criteria) {
                 case TicketsCriteria.Unsolved:
@@ -183,9 +185,11 @@ namespace OrchardPros.Tickets.Services {
                     break;
             }
 
-            baseQuery.RootCriteria.SetResultTransformer(new DistinctRootEntityResultTransformer());
-            var query = skip != null && take != null ? baseQuery.Skip(skip.Value).Take(take.Value).Future() : baseQuery.Future();
-            var tickets = query.ToArray();
+            //var ticketsQuery = baseQuery.Fetch(x => x.Categories).Eager.Fetch(x => x.Replies).Eager;
+            var ticketsQuery = baseQuery;
+            var pagedQuery = skip != null && take != null ? ticketsQuery.Skip(skip.Value).Take(take.Value) : baseQuery;
+            var tickets = pagedQuery.Future().ToArray();
+            var totalCount = skip == null || take == null ? tickets.Length : baseQuery.RowCount();
             var userIds = CollectUserIds(tickets).ToArray();
             var userDictionary = session.QueryOver<UserPartRecord>().WhereRestrictionOn(x => x.Id).IsIn(userIds).Future().ToDictionary(x => x.Id, x => x.UserName);
 
@@ -210,7 +214,7 @@ namespace OrchardPros.Tickets.Services {
                     UserId = x.UserId,
                     UserName = userDictionary[x.UserId]
                 }).ToArray()
-            });
+            }).ToPagedList(totalCount);
         }
 
         private static IEnumerable<int> CollectUserIds(IEnumerable<Ticket> tickets) {
