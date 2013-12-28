@@ -15,7 +15,7 @@
 @helper PageSizes() {
     var criteria = (TicketsCriteria)Model.Criteria;
     var pager = Model.Pager;
-    var pageSizes = new[] { 15, 30, 50 };
+    var pageSizes = new[] { 10, 20, 50 };
     <div class="btn-group btn-group-sm filter-results">    
         @foreach (var pageSize in pageSizes) {
             <a href="@Url.Action("Index", "Ticket", new { criteria, pageSize })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
 using NHibernate.Transform;
@@ -185,7 +186,6 @@ namespace OrchardPros.Tickets.Services {
                     break;
             }
 
-            //var ticketsQuery = baseQuery.Fetch(x => x.Categories).Eager.Fetch(x => x.Replies).Eager;
             var ticketsQuery = baseQuery;
             var pagedQuery = skip != null && take != null ? ticketsQuery.Skip(skip.Value).Take(take.Value) : baseQuery;
             var tickets = pagedQuery.Future().ToArray();

@@ -49,7 +49,7 @@
     }
 
     int firstPage = Math.Max(1, Page - (numberOfPagesToShow / 2));
-    int lastPage = Math.Min(totalPageCount, Page + (int)(numberOfPagesToShow / 2));
+    int lastPage = Math.Min(totalPageCount, Page + numberOfPagesToShow / 2);
     var pageKey = String.IsNullOrEmpty(PagerId) ? "page" : PagerId;
 }
 <ul class="pagination pagination-sm">
