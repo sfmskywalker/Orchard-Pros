@@ -17,7 +17,7 @@ namespace OrchardPros.Tickets {
                 .Column<int>("ExperiencePoints", c => c.NotNull())
                 .Column<int>("ViewCount", c => c.NotNull())
                 .Column<DateTime>("CreatedUtc", c => c.NotNull())
-                .Column<DateTime>("LastModifiedUtc", c => c.Nullable())
+                .Column<DateTime>("ModifiedUtc", c => c.Nullable())
                 .Column<DateTime>("SolvedUtc", c => c.Nullable())
                 .Column<int>("AnswerId", c => c.Nullable())
                 .Column<DateTime>("ArchivedUtc", c => c.Nullable()));
@@ -46,6 +46,7 @@ namespace OrchardPros.Tickets {
                 .Column<int>("UserId", c => c.NotNull())
                 .Column<string>("Body", c => c.Unlimited())
                 .Column<DateTime>("CreatedUtc", c => c.NotNull())
+                .Column<DateTime>("ModifiedUtc", c => c.NotNull())
                 .Column<int>("Votes", c => c.NotNull()));
 
             SchemaBuilder.CreateTable("Vote", table => table

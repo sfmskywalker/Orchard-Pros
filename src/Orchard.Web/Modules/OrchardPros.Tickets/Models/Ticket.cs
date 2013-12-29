@@ -38,7 +38,7 @@ namespace OrchardPros.Tickets.Models {
         public virtual int ViewCount { get; set; }
 
         public virtual DateTime CreatedUtc { get; set; }
-        public virtual DateTime LastModifiedUtc { get; set; }
+        public virtual DateTime ModifiedUtc { get; set; }
 
         public virtual DateTime? SolvedUtc { get; set; }
         public virtual int? AnswerId { get; set; }

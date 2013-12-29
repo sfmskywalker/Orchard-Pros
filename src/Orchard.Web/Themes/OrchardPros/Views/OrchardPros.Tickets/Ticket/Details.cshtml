@@ -1,6 +1,6 @@
 ﻿@{
-    var ticketDetails = New.Ticket_Details(Ticket: Model.Ticket);
-    var ticketAside = New.Ticket_Aside(Ticket: Model.Ticket);
+    var ticketDetails = New.Ticket_Details(Ticket: Model.Ticket, User: Model.User);
+    var ticketAside = New.Ticket_Aside(Ticket: Model.Ticket, User: Model.User, LastModifier: Model.LastModifier, Categories: Model.Categories, Tags: Model.Tags);
     var ticketReplies = New.Ticket_Replies(ticketAside: Model.Ticket);
 
     Layout.Title = @T("Ticket");

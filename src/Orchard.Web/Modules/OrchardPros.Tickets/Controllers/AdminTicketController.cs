@@ -88,7 +88,7 @@ namespace OrchardPros.Tickets.Controllers {
             ticket.DeadlineUtc = model.DeadlineUtc.Value;
             ticket.Description = model.Description;
             ticket.ExperiencePoints = model.ExperiencePoints;
-            ticket.LastModifiedUtc = _clock.UtcNow;
+            ticket.ModifiedUtc = _clock.UtcNow;
             ticket.Title = model.Title;
             ticket.Type = model.Type;
             

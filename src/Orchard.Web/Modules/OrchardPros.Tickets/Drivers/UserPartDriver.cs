@@ -48,7 +48,7 @@ namespace OrchardPros.Tickets.Drivers {
                        DeadlineUtc = ticket.DeadlineUtc,
                        ExperiencePoints = ticket.ExperiencePoints,
                        CreatedUtc = ticket.CreatedUtc,
-                       LastModifiedUtc = ticket.LastModifiedUtc,
+                       LastModifiedUtc = ticket.ModifiedUtc,
                        SolvedUtc = ticket.SolvedUtc,
                        AnswerId = ticket.AnswerId
                    };

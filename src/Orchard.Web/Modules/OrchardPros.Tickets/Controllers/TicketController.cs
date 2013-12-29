@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Localization;
+using Orchard.Security;
 using Orchard.Services;
 using Orchard.Themes;
 using Orchard.UI.Navigation;
@@ -19,12 +20,14 @@ namespace OrchardPros.Tickets.Controllers {
         private readonly ITicketService _ticketService;
         private readonly IClock _clock;
         private readonly IOrchardServices _services;
+        private readonly IContentManager _contentManager;
 
-        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services) {
+        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services, IContentManager contentManager) {
             _notifier = services.Notifier;
             _ticketService = ticketService;
             _clock = clock;
             _services = services;
+            _contentManager = contentManager;
             T = NullLocalizer.Instance;
         }
 
@@ -110,7 +113,7 @@ namespace OrchardPros.Tickets.Controllers {
             ticket.Bounty = model.Bounty;
             ticket.DeadlineUtc = model.DeadlineUtc.Value;
             ticket.Description = model.Description;
-            ticket.LastModifiedUtc = _clock.UtcNow;
+            ticket.ModifiedUtc = _clock.UtcNow;
             ticket.Title = model.Title;
             ticket.Type = model.Type;
 
@@ -128,7 +131,15 @@ namespace OrchardPros.Tickets.Controllers {
             if(ticket == null)
                 return new HttpNotFoundResult();
 
-            var shape = _services.New.ViewModel(Ticket: ticket);
+            ticket.ViewCount++;
+            var user = _contentManager.Get<IUser>(ticket.UserId);
+            var lastModifier = ticket.LastModifier(_contentManager);
+            var shape = _services.New.ViewModel(
+                Ticket: ticket,
+                User: user,
+                LastModifier: lastModifier,
+                Categories: ticket.CategoriesDictionary(_ticketService.GetCategoryDictionary()),
+                Tags: ticket.TagsDictionary(_ticketService.GetTagDictionary()));
             return View(shape);
         }
 

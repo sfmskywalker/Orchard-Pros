@@ -81,7 +81,7 @@ namespace OrchardPros.Tickets.Services {
                 Title = title,
                 Description = description,
                 CreatedUtc = _clock.UtcNow,
-                LastModifiedUtc = _clock.UtcNow
+                ModifiedUtc = _clock.UtcNow
             };
 
             if (initialize != null)
@@ -225,13 +225,13 @@ namespace OrchardPros.Tickets.Services {
             return tickets.Select(ticket => new TicketSummary {
                 Id = ticket.Id,
                 Bounty = ticket.Bounty,
-                Categories = ticket.Categories.Sanitize(categoryDictionary).ToDictionary(x => x.CategoryId, x => categoryDictionary[x.CategoryId]),
-                Tags = ticket.Tags.Sanitize(tagDictionary).ToDictionary(x => x.TagId, x => tagDictionary[x.TagId]),
+                Categories = ticket.CategoriesDictionary(categoryDictionary),
+                Tags = ticket.TagsDictionary(tagDictionary),
                 CreatedUtc = ticket.CreatedUtc,
                 DeadlineUtc = ticket.DeadlineUtc,
                 TimeLeft = ticket.TimeLeft(),
                 ExperiencePoints = ticket.ExperiencePoints,
-                LastModifiedUtc = ticket.LastModifiedUtc,
+                LastModifiedUtc = ticket.ModifiedUtc,
                 SolvedUtc = ticket.SolvedUtc,
                 Title = ticket.Title,
                 Type = ticket.Type,
@@ -240,6 +240,7 @@ namespace OrchardPros.Tickets.Services {
                 ViewCount = ticket.ViewCount,
                 Replies = ticket.Replies.Select(x => new ReplySummary {
                     CreatedUtc = x.CreatedUtc,
+                    ModifiedUtc = x.ModifiedUtc,
                     UserId = x.UserId,
                     UserName = userDictionary[x.UserId]
                 }).ToArray()

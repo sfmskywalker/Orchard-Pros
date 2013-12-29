@@ -1,4 +1,5 @@
-﻿@using OrchardPros.Tickets.Models
+﻿@using OrchardPros.Tickets.Helpers
+@using OrchardPros.Tickets.Models
 @{
     var tickets = (IPagedList<TicketSummary>)Model.Tickets;
     var criteria = (TicketsCriteria)Model.Criteria;
@@ -67,12 +68,7 @@
                 </div>
                 <div class="ticket-info">
                     <span class="ticket-expiration">
-                        @if (ticket.TimeLeft > TimeSpan.Zero) {
-                            @T("Expires {0}d {1}h {2}m", ticket.TimeLeft.Days, ticket.TimeLeft.Hours, ticket.TimeLeft.Minutes)
-                        }
-                        else {
-                            @T("Expired on {0}", ticket.DeadlineUtc)
-                        }
+                        @ticket.GetExpirationText(T)
                     </span>
                     <span class="ticket-exp">@T("EXP: {0}", ticket.ExperiencePoints)</span>
                     @if (ticket.Bounty != null) {

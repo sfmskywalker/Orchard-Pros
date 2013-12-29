@@ -12,6 +12,7 @@ namespace OrchardPros.Tickets.Models {
         public virtual string Body { get; set; }
 
         public virtual DateTime CreatedUtc { get; set; }
+        public virtual DateTime ModifiedUtc { get; set; }
         public virtual int Votes { get; set; }
     }
 }

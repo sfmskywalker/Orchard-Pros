@@ -1,14 +1,19 @@
-﻿<section>
+﻿@using Orchard.Security
+@using OrchardPros.Tickets.Helpers
+@using OrchardPros.Tickets.Models
+@{
+    var ticket = (Ticket) Model.Ticket;
+    var user = (IUser) Model.User;
+}
+<section>
     <article>
-        <h2>Post title</h2>
-        <p>Lorem ipsum dolor sit amet, cu sit utroque graecis deterruisset, sed in vitae nostrud commune, brute postea eum at. Ut hinc detraxit deseruisse nam, cu per sale latine persecuti. Sea sint mundi in, te sit brute falli eleifend, ne luptatum persecuti vel. Ut qui possit vituperatoribus, aliquip luptatum consetetur vis ei. Ad vidit phaedrum oportere his, civibus epicurei ocurreret vis ne.</p>
-        <pre>Decore reprehendunt ea ius, no dico ullum voluptatibus pro. Ne ullum partem vocent eam. Ea legere rationibus quo, sea prompta adolescens in, hinc docendi eu mei. Id deleniti periculis est. Has soleat graeco eligendi eu, ei veri assum pri. Et illud referrentur mei, pri ceteros commune temporibus no, et causae alterum quo. Mei ei reformidans vituperatoribus, aeque tritani eos id, ad nam graece ancillae invenire.</pre>
-        <p>Ei eum eruditi similique. Eos eu minim salutandi, his purto quodsi fabellas ut. Eum quas albucius id, ne dolores forensibus duo. Vim cu nostro torquatos, has adhuc abhorreant ne. Id ludus salutatus urbanitas mel, has eu fierent suscipit, pri case exerci definitiones id. Quo dicam exerci verear in. Minim persius scripserit id his, eum harum praesent no, ius id nisl putent. Ei persius dolores dignissim qui. Mucius verear viderer has no, pri quem minim detracto ne. Lobortis recteque adversarium eum ne. Mutat equidem dolorem ea duo. Veri signiferumque est ei, ad iuvaret pertinacia instructior eum. Cu his primis fabellas democritum, quis melius scribentur eos in, pro diceret senserit gloriatur ne. Duo et quot natum instructior. Vix in nostrud voluptaria efficiendi, omnes probatus liberavisse eum cu.</p>
+        <h2>@T(ticket.Title)</h2>
+        @ticket.Description
     </article>
     <div class="sorter bottom">
         <a href="#">Follow ticket</a>
         <a href="#">Reply</a>
         <a href="#">Share</a>
-        <span class="ticket-timestamp">50 mins ago by<span class="author"><a href="#">Username</a></span></span>
+        <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc()))<a href="#" class="author">@user.UserName</a></span>
     </div>
 </section>

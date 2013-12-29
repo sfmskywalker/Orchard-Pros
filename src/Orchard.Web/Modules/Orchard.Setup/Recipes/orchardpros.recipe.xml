@@ -162,7 +162,7 @@
   </Data>
 
   <Settings>
-    <SiteSettingsPart PageTitleSeparator=" - " SiteName="Orchard Pros" SiteSalt="1f8757683b674a5eb38a0b2dec50727b" SuperUser="admin" SiteCulture="en-US" PageSize="0" SiteTimeZone="W. Europe Standard Time" BaseUrl="http://localhost:30322" />
+    <SiteSettingsPart PageTitleSeparator=" - " SiteName="Orchard Pros" SiteSalt="1f8757683b674a5eb38a0b2dec50727b" SuperUser="admin" SiteCulture="en-US" PageSize="10" SiteTimeZone="W. Europe Standard Time" BaseUrl="http://localhost:30356" />
     <RegistrationSettingsPart UsersCanRegister="true" UsersMustValidateEmail="false" ValidateEmailRegisteredWebsite="" ValidateEmailContactEMail="" UsersAreModerated="false" NotifyModeration="false" NotificationsRecipients="" EnableLostPassword="true" />
     <OpenAuthenticationSettingsPart AutoRegistrationEnabled="true" />
     <CacheSettingsPart DefaultCacheDuration="0" DefaultMaxAge="0" ApplyCulture="false" DebugMode="false" />
