@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Orchard.Data.Conventions;
 
 namespace OrchardPros.Tickets.Models {
     public class TicketSummary {
         public TicketSummary() {
             Categories = new Dictionary<int, string>();
-            Tags = new List<string>();
+            Tags = new Dictionary<int, string>();
         }
         public int Id { get; set; }
         public int UserId { get; set; }
@@ -14,9 +13,7 @@ namespace OrchardPros.Tickets.Models {
         public string Title { get; set; }
         public TicketType Type { get; set; }
         public IDictionary<int, string> Categories { get; set; }
-        
-        [StringLengthMax]
-        public IList<string> Tags { get; set; }
+        public IDictionary<int, string> Tags { get; set; }
         public decimal? Bounty { get; set; }
         public DateTime DeadlineUtc { get; set; }
         public int ExperiencePoints { get; set; }

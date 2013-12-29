@@ -6,6 +6,7 @@ using Orchard.Security;
 using Orchard.Services;
 using Orchard.UI.Admin;
 using Orchard.UI.Notify;
+using OrchardPros.Tickets.Helpers;
 using OrchardPros.Tickets.Models;
 using OrchardPros.Tickets.Services;
 using OrchardPros.Tickets.ViewModels;
@@ -47,10 +48,10 @@ namespace OrchardPros.Tickets.Controllers {
                 t.Bounty = model.Bounty;
                 t.DeadlineUtc = model.DeadlineUtc.Value;
                 t.ExperiencePoints = model.ExperiencePoints;
-                t.Tags = model.Tags;
             });
             
             _ticketService.AssignCategories(ticket, model.Categories);
+            _ticketService.AssignTags(ticket, model.Tags);
             _notifier.Information(T("Ticket created for user {0}", user.As<IUser>().UserName));
             return RedirectToAction("Edit", "Admin", new { user.Id, Area = "Orchard.Users" });
         }
@@ -61,11 +62,11 @@ namespace OrchardPros.Tickets.Controllers {
             var model = SetupEditViewModel(new TicketViewModel {
                 Bounty = ticket.Bounty,
                 Categories = ticket.Categories.Select(x => x.CategoryId).ToArray(),
+                Tags = _ticketService.GetTagsFor(ticket).ToDelimitedString(),
                 CreatedUtc = ticket.CreatedUtc,
                 DeadlineUtc = ticket.DeadlineUtc,
                 Description = ticket.Description,
                 ExperiencePoints = ticket.ExperiencePoints,
-                Tags = ticket.Tags,
                 Title = ticket.Title,
                 Type = ticket.Type
             }, user);
@@ -88,10 +89,11 @@ namespace OrchardPros.Tickets.Controllers {
             ticket.Description = model.Description;
             ticket.ExperiencePoints = model.ExperiencePoints;
             ticket.LastModifiedUtc = _clock.UtcNow;
-            ticket.Tags = model.Tags;
             ticket.Title = model.Title;
             ticket.Type = model.Type;
+            
             _ticketService.AssignCategories(ticket, model.Categories);
+            _ticketService.AssignTags(ticket, model.Tags);
 
             _notifier.Information(T("Ticket {0} updated for user {1}", id, user.As<IUser>().UserName));
             return RedirectToAction("Edit", "Admin", new { user.Id, Area = "Orchard.Users" });

@@ -21,8 +21,7 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Tags, T("Tags"))
-        @Html.TextBoxFor(m => m.Tags, new { @class = "text large" })
-        @Html.ValidationMessageFor(m => m.Tags)
+        @Html.EditorFor(m => m.Tags, new { TermsSourceUrl = Url.Action("SearchTags", "Ticket", new { Area = "OrchardPros.Tickets" }) })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Bounty, T("Bounty"))

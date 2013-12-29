@@ -31,6 +31,7 @@ namespace OrchardPros.Tickets.Drivers {
 
         private IEnumerable<TicketRow> GetTicketsDataShape(int userId) {
             var categoryDictionary = _ticketService.GetCategoryDictionary();
+            var tagDictionary = _ticketService.GetTagDictionary();
             return from ticket in _ticketService.GetTicketsFor(userId)
                    from user in _userRepository.Table
                    where user.Id == ticket.UserId
@@ -42,7 +43,7 @@ namespace OrchardPros.Tickets.Drivers {
                        Description = ticket.Description,
                        Type = ticket.Type,
                        Title = ticket.Title,
-                       Tags = ticket.Tags,
+                       Tags = String.Join(", ", ticket.Tags.Where(x => tagDictionary.ContainsKey(x.TagId)).Select(x => tagDictionary[x.TagId])),
                        Bounty = ticket.Bounty,
                        DeadlineUtc = ticket.DeadlineUtc,
                        ExperiencePoints = ticket.ExperiencePoints,

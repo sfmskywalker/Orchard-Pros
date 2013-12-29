@@ -1,0 +1,6 @@
+﻿@using Orchard.Taxonomies.Models
+@{
+    var termsSourceUrl = (string) ViewBag.TermsSourceUrl;
+    var selectedValues = ViewData.TemplateInfo.FormattedModelValue as string;
+}
+@Html.TextBox("", selectedValues, new { @class = "text large" })

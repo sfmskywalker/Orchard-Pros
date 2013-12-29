@@ -106,6 +106,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Controllers\AdminTicketController.cs" />
     <Compile Include="Drivers\ExpertPartDriver.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Models\PagedList.cs" />
     <Compile Include="Models\ReplySummary.cs" />
     <Compile Include="Models\TicketSummary.cs" />
+    <Compile Include="Models\TicketTag.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Models\TicketCategory.cs" />
     <Compile Include="Models\IPagedList.cs" />
@@ -184,6 +186,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Tickets.List.Filter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\TermsAutocomplete.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

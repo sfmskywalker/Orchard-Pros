@@ -8,15 +8,19 @@ namespace OrchardPros.Tickets.Handlers {
 
         public CategoryTermPartHandler(ISignals signals) {
             _signals = signals;
-            OnUpdated<TermPart>(ClearCategoryDictionaryCache);
-            OnRemoved<TermPart>(ClearCategoryDictionaryCache);
+            OnUpdated<TermPart>(ClearTermsDictionaryCache);
+            OnRemoved<TermPart>(ClearTermsDictionaryCache);
         }
 
-        private void ClearCategoryDictionaryCache(ContentContextBase context, TermPart part) {
-            if (part.ContentItem.ContentType != "CategoryTerm")
-                return;
-
-            _signals.Trigger(Signals.CategoryDictionary);
+        private void ClearTermsDictionaryCache(ContentContextBase context, TermPart part) {
+            switch (part.ContentItem.ContentType) {
+                case "CategoryTerm":
+                    _signals.Trigger(Signals.CategoryDictionary);
+                    break;
+                case "TagTerm":
+                    _signals.Trigger(Signals.TagDictionary);
+                    break;
+            }
         }
     }
 }

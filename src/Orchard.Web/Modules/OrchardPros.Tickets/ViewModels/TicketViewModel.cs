@@ -19,6 +19,7 @@ namespace OrchardPros.Tickets.ViewModels {
         [UIHint("TermsPicker")]
         public IList<int> Categories { get; set; }
 
+        [UIHint("TermsAutocomplete")]
         public string Tags { get; set; }
         public decimal? Bounty { get; set; }
         public int ExperiencePoints { get; set; }
@@ -30,6 +31,7 @@ namespace OrchardPros.Tickets.ViewModels {
 
         public ExpertPart User { get; set; }
         public IEnumerable<TermPart> CategoryTerms { get; set; }
+        public IEnumerable<TermPart> TagTerms { get; set; }
         public IList<string> UploadedFileNames { get; set; }
         public IList<string> OriginalFileNames { get; set; }
     }

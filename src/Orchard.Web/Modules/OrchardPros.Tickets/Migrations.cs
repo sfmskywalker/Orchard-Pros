@@ -12,7 +12,6 @@ namespace OrchardPros.Tickets {
                 .Column<string>("Title", c => c.WithLength(256).NotNull())
                 .Column<string>("Description", c => c.Unlimited().NotNull())
                 .Column<string>("Type", c => c.WithLength(32).NotNull())
-                .Column<string>("Tags", c => c.Unlimited())
                 .Column<decimal>("Bounty", c => c.Nullable())
                 .Column<DateTime>("DeadlineUtc", c => c.NotNull())
                 .Column<int>("ExperiencePoints", c => c.NotNull())
@@ -27,6 +26,11 @@ namespace OrchardPros.Tickets {
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
                 .Column<int>("TicketId")
                 .Column<int>("CategoryId"));
+
+            SchemaBuilder.CreateTable("TicketTag", table => table
+                .Column<int>("Id", c => c.PrimaryKey().Identity())
+                .Column<int>("TicketId")
+                .Column<int>("TagId"));
 
             SchemaBuilder.CreateTable("Attachment", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())

@@ -8,6 +8,7 @@ namespace OrchardPros.Tickets.Models {
         public Ticket() {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Categories = new List<TicketCategory>();
+            Tags = new List<TicketTag>();
             Attachments = new List<Attachment>();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
@@ -25,9 +26,8 @@ namespace OrchardPros.Tickets.Models {
         public virtual TicketType Type { get; set; }
 
         public virtual IList<TicketCategory> Categories { get; set; }
-        
-        [StringLengthMax]
-        public virtual string Tags { get; set; }
+
+        public virtual IList<TicketTag> Tags { get; set; }
 
         public virtual decimal? Bounty { get; set; }
 

@@ -11,10 +11,12 @@ namespace OrchardPros.Tickets.Mappings {
         public void Created(FluentConfiguration cfg, AutoPersistenceModel defaultModel) {
             defaultModel.Override<Ticket>(mapping => {
                 mapping.HasMany(x => x.Categories).KeyColumn("TicketId");
+                mapping.HasMany(x => x.Tags).KeyColumn("TicketId");
                 mapping.HasMany(x => x.Attachments).KeyColumn("TicketId");
                 mapping.HasMany(x => x.Replies).KeyColumn("TicketId");
             });
             defaultModel.Override<TicketCategory>(mapping => mapping.References(x => x.Ticket, "TicketId"));
+            defaultModel.Override<TicketTag>(mapping => mapping.References(x => x.Ticket, "TicketId"));
             defaultModel.Override<Vote>(mapping => mapping.References(x => x.Reply, "VoteId"));
             defaultModel.Override<Reply>(mapping => {
                 mapping.References(x => x.Ticket, "TicketId");

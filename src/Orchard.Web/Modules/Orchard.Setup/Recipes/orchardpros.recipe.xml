@@ -27,6 +27,12 @@
         <AutoroutePart AutorouteSettings.AllowCustomPattern="true" AutorouteSettings.AutomaticAdjustmentOnEdit="false" AutorouteSettings.PatternDefinitions="[{Name:'Taxonomy and Title', Pattern: '{Content.Container.Path}/{Content.Slug}', Description: 'my-taxonomy/my-term/sub-term'}]" AutorouteSettings.DefaultPatternIndex="0" />
         <CommonPart />
       </CategoryTerm>
+      <TagTerm Taxonomy="Tag" DisplayName="Tag Term">
+        <TermPart />
+        <TitlePart />
+        <AutoroutePart AutorouteSettings.AllowCustomPattern="true" AutorouteSettings.AutomaticAdjustmentOnEdit="false" AutorouteSettings.PatternDefinitions="[{Name:'Taxonomy and Title', Pattern: '{Content.Container.Path}/{Content.Slug}', Description: 'my-taxonomy/my-term/sub-term'}]" AutorouteSettings.DefaultPatternIndex="0" />
+        <CommonPart />
+      </TagTerm>
       <Page ContentTypeSettings.Draftable="True" TypeIndexing.Indexes="Search">
         <TagsPart />
         <LocalizationPart />
@@ -76,6 +82,12 @@
       <TitlePart Title="Category" />
       <TaxonomyPart TermTypeName="CategoryTerm" />
     </Taxonomy>
+    <Taxonomy Id="/alias=tag" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-15T13:31:48.9469273Z" PublishedUtc="2013-12-15T13:31:48.9689273Z" ModifiedUtc="2013-12-15T13:31:48.9469273Z" />
+      <AutoroutePart Alias="tag" UseCustomPattern="false" />
+      <TitlePart Title="Tag" />
+      <TaxonomyPart TermTypeName="TagTerm" />
+    </Taxonomy>
     <CategoryTerm Id="/alias=category\/category-1" Status="Published">
       <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2013-12-15T13:32:01.7961683Z" PublishedUtc="2013-12-15T13:32:01.9391763Z" ModifiedUtc="2013-12-15T13:32:01.8071786Z" />
       <AutoroutePart Alias="category/category-1" UseCustomPattern="false" />
@@ -94,6 +106,24 @@
       <TitlePart Title="Category 3" />
       <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=category" Path="" />
     </CategoryTerm>
+    <TagTerm Id="/alias=tag\/tag1" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=tag" CreatedUtc="2013-12-15T13:32:16.0438425Z" PublishedUtc="2013-12-15T13:32:16.0928095Z" ModifiedUtc="2013-12-15T13:32:16.0458417Z" />
+      <AutoroutePart Alias="tag/tag1" UseCustomPattern="false" />
+      <TitlePart Title="tag1" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=tag" Path="" />
+    </TagTerm>
+    <TagTerm Id="/alias=tag\/tag2" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=tag" CreatedUtc="2013-12-15T13:32:16.0438425Z" PublishedUtc="2013-12-15T13:32:16.0928095Z" ModifiedUtc="2013-12-15T13:32:16.0458417Z" />
+      <AutoroutePart Alias="tag/tag2" UseCustomPattern="false" />
+      <TitlePart Title="tag2" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=tag" Path="" />
+    </TagTerm>
+    <TagTerm Id="/alias=tag\/tag3" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=tag" CreatedUtc="2013-12-15T13:32:16.0438425Z" PublishedUtc="2013-12-15T13:32:16.0928095Z" ModifiedUtc="2013-12-15T13:32:16.0458417Z" />
+      <AutoroutePart Alias="tag/tag3" UseCustomPattern="false" />
+      <TitlePart Title="tag3" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=tag" Path="" />
+    </TagTerm>
     <ShapeWidget Id="/Identifier=807b333934e24bdfb1e20b47891b37d0" Status="Published">
       <TextField.ShapeName Text="Jumbotron__HomePage" />
       <IdentityPart Identifier="807b333934e24bdfb1e20b47891b37d0" />

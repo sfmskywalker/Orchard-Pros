@@ -100,6 +100,9 @@
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\less-1.5.0.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\select2-initialization.js" />
+    <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Styles\bootstrap-theme.css" />
     <Content Include="Styles\bootstrap-theme.min.css">
       <DependentUpon>bootstrap-theme.css</DependentUpon>
@@ -109,6 +112,11 @@
     <Content Include="Styles\bootstrap.min.css">
       <DependentUpon>bootstrap.css</DependentUpon>
     </Content>
+    <Content Include="Styles\select2-bootstrap.css" />
+    <Content Include="Images\select2-spinner.gif" />
+    <Content Include="Styles\select2.css" />
+    <Content Include="Images\select2.png" />
+    <Content Include="Images\select2x2.png" />
     <Content Include="Styles\theme.css" />
     <Content Include="Styles\theme.min.css">
       <DependentUpon>theme.css</DependentUpon>

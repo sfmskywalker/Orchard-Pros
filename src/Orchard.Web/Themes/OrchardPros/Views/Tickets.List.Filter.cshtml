@@ -1,22 +1,26 @@
-﻿<aside>
+﻿@using Orchard.Taxonomies.Models
+@using OrchardPros.Tickets.Models
+@{
+    var categories = (IList<TermPart>)Model.Categories;
+    var categoryId = (int?) Model.CategoryId;
+    var criteria = (TicketsCriteria) Model.Criteria;
+    var page = (int)Model.Pager.Page;
+    var pageSize = (int)Model.Pager.PageSize;
+}
+<aside>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Categories</h3>
+            <h3 class="panel-title">@T("Categories")</h3>
         </div>
         <div class="panel-body">
             <ul class="list-categories">
-                <li><a href="#">Category entry</a></li>
-                <li><a href="#">Category entry</a></li>
-                <li><a href="#">Category entry</a></li>
-                <li><a href="#">Category entry</a></li>
-                <li><a href="#">Category entry</a></li>
-                <li><a href="#">Category entry</a></li>
-                <li><a href="#">Category entry</a></li>
-                <li><a href="#">Category entry</a></li>
+                @foreach (var category in categories) {
+                    <li @if(categoryId == category.Id){<text>class="active"</text>}><a href="@Url.Action("Index", "Ticket", new { area = "OrchardPros.Tickets", criteria, page, pageSize, categoryId = category.Id })">@category.Name</a></li>
+                }
             </ul>
         </div>
     </div> <!-- /.panel -->
-    <div class="block filters">
+    @*<div class="block filters">
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 Filter
@@ -28,29 +32,7 @@
                 <li><a href="#">Filter option</a></li>
             </ul>
         </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                Filter
-                <div class="caret-container"><span class="caret"></span></div>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Filter option</a></li>
-                <li><a href="#">Filter option</a></li>
-                <li><a href="#">Filter option</a></li>
-            </ul>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                Filter
-                <div class="caret-container"><span class="caret"></span></div>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Filter option</a></li>
-                <li><a href="#">Filter option</a></li>
-                <li><a href="#">Filter option</a></li>
-            </ul>
-        </div>
-    </div> <!-- /.filters -->
+    </div>*@ <!-- /.filters -->
     <div class="block tagcloud">
         <h3>Popular tags</h3>
         <a href="#"><span class="label label-default">Default</span></a>

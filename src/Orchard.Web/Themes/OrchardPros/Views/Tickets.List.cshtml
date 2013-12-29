@@ -2,6 +2,7 @@
 @{
     var tickets = (IPagedList<TicketSummary>)Model.Tickets;
     var criteria = (TicketsCriteria)Model.Criteria;
+    var categoryId = (int?) Model.CategoryId;
     var pager = Model.Pager;
     var tabs = new List<SelectListItem> {
         new SelectListItem {Text = T("Latest").ToString(), Value = TicketsCriteria.Latest.ToString(), Selected = criteria == TicketsCriteria.Latest},
@@ -14,11 +15,12 @@
 }
 @helper PageSizes() {
     var criteria = (TicketsCriteria)Model.Criteria;
+    var categoryId = (int?)Model.CategoryId;
     var pager = Model.Pager;
     var pageSizes = new[] { 10, 20, 50 };
     <div class="btn-group btn-group-sm filter-results">    
         @foreach (var pageSize in pageSizes) {
-            <a href="@Url.Action("Index", "Ticket", new { criteria, pageSize })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
+            <a href="@Url.Action("Index", "Ticket", new { criteria, pageSize, categoryId })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
         }
         <span>@T("per page")</span>
     </div>
@@ -28,7 +30,7 @@
         <ul class="nav nav-tabs">
             @foreach (var tab in tabs) {
                 <li @if (tab.Selected) { <text> class="active" </text>   }>
-                    <a href="@Url.Action("Index", "Ticket", new { Criteria = tab.Value, Page = (int)pager.Page, PageSize = (int)pager.PageSize, Area = "OrchardPros.Tickets" })">@tab.Text</a>
+                    <a href="@Url.Action("Index", "Ticket", new { Criteria = tab.Value, pager.Page, pager.PageSize, categoryId, Area = "OrchardPros.Tickets" })">@tab.Text</a>
                 </li>
             }
         </ul>
@@ -51,7 +53,7 @@
                         <a href="#" class="category-link">@category.Value</a>
                     }
                     <div class="tags">
-                        @foreach (var tag in ticket.Tags) {
+                        @foreach (var tag in ticket.Tags.Values) {
                             <a href="#"><span class="label label-default">@tag</span></a>
                         }
                     </div>
@@ -85,17 +87,6 @@
     }
     <!-- /Ticket posts -->
     <div class="sorter bottom">
-        @*<ul class="pagination pagination-sm">
-            <li class="disabled"><a href="#">&laquo;</a></li>
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li class="disabled"><a href="#">...</a></li>
-            <li><a href="#">20</a></li>
-            <li><a href="#">&raquo;</a></li>
-        </ul>*@
         @Display(pager)
         @PageSizes()
     </div>
