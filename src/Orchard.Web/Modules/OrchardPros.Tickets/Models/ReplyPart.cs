@@ -16,8 +16,8 @@ namespace OrchardPros.Tickets.Models {
         }
 
         public IUser User {
-            get { return this.As<CommonPart>().Record.OwnerId; }
-            set { this.As<TitlePart>().Title = value; }
+            get { return this.As<CommonPart>().Owner; }
+            set { this.As<CommonPart>().Owner = value; }
         }
     }
 }

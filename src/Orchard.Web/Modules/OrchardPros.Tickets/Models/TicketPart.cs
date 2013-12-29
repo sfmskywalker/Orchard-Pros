@@ -5,10 +5,16 @@ using Orchard.Core.Common.Models;
 using Orchard.Core.Common.Utilities;
 using Orchard.Core.Title.Models;
 using Orchard.Security;
+using Orchard.Taxonomies.Models;
 
 namespace OrchardPros.Tickets.Models {
     public class TicketPart: ContentPart<TicketPartRecord> {
         internal LazyField<IEnumerable<ReplyPart>> RepliesField = new LazyField<IEnumerable<ReplyPart>>();
+        internal LazyField<IEnumerable<TermPart>> CategoriesField = new LazyField<IEnumerable<TermPart>>();
+        internal LazyField<IEnumerable<TermPart>> TagsField = new LazyField<IEnumerable<TermPart>>();
+        internal LazyField<DateTime?> LastModifiedUtcField = new LazyField<DateTime?>();
+        internal LazyField<IUser> LastModifierField = new LazyField<IUser>();
+        internal Func<TimeSpan> RemainingTimeFunc;
 
         public TicketType Type {
             get { return Retrieve(x => x.Type); }
@@ -57,6 +63,26 @@ namespace OrchardPros.Tickets.Models {
 
         public IEnumerable<ReplyPart> Replies {
             get { return RepliesField.Value; }
+        }
+
+        public TimeSpan RemainingTime {
+            get { return RemainingTimeFunc != null ? RemainingTimeFunc() : TimeSpan.Zero; }
+        }
+
+        public IEnumerable<TermPart> Categories {
+            get { return CategoriesField.Value; }
+        }
+
+        public IEnumerable<TermPart> Tags {
+            get { return TagsField.Value; }
+        }
+
+        public DateTime? LastModifiedUtc {
+            get { return LastModifiedUtcField.Value; }
+        }
+
+        public IUser LastModifier {
+            get { return LastModifierField.Value; }
         }
     }
 }

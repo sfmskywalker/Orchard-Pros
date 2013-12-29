@@ -24,6 +24,10 @@ namespace OrchardPros.Tickets {
                 .ContentPartRecord()
                 .Column<int>("ViewCount"));
 
+            ContentDefinitionManager.AlterPartDefinition("StatisticsPart", part => part
+                .Attachable()
+                .WithDescription("Stores statistical information about your content, such as view count."));
+
             // Attachment
             ContentDefinitionManager.AlterPartDefinition("AttachmentPart", part => part
                 .Attachable(false)
@@ -75,6 +79,7 @@ namespace OrchardPros.Tickets {
                 .WithPart("TicketPart")
                 .WithPart("AttachmentsHolderPart")
                 .WithPart("CommentsPart")
+                .WithPart("StatisticsPart")
                 .Creatable(false)
                 .Draftable());
 

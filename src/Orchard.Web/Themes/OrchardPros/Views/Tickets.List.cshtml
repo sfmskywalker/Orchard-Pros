@@ -1,7 +1,8 @@
-﻿@using OrchardPros.Tickets.Helpers
+﻿@using Orchard.ContentManagement
+@using OrchardPros.Tickets.Helpers
 @using OrchardPros.Tickets.Models
 @{
-    var tickets = (IPagedList<TicketSummary>)Model.Tickets;
+    var tickets = (IPagedList<TicketPart>)Model.Tickets;
     var criteria = (TicketsCriteria)Model.Criteria;
     var categoryId = (int?) Model.CategoryId;
     var pager = Model.Pager;
@@ -12,7 +13,6 @@
         new SelectListItem {Text = T("Deadline").ToString(), Value = TicketsCriteria.Deadline.ToString(), Selected = criteria == TicketsCriteria.Deadline},
         new SelectListItem {Text = T("Bounty").ToString(), Value = TicketsCriteria.Bounty.ToString(), Selected = criteria == TicketsCriteria.Bounty}
     };
-
 }
 @helper PageSizes() {
     var criteria = (TicketsCriteria)Model.Criteria;
@@ -44,26 +44,24 @@
     else {
         <!-- Ticket posts -->
         foreach (var ticket in tickets) {
-            var lastReply = ticket.Replies.LastOrDefault();
-            var lastReplyDate = lastReply != null ? lastReply.CreatedUtc : ticket.LastModifiedUtc;
-            var lastReplyUserName = lastReply != null ? lastReply.UserName : ticket.UserName;
+            var statisticsPart = ticket.As<StatisticsPart>();
             <article class="ticket-post">
                 <div class="ticket-summary">
-                    <h2><a href="@Url.Action("Details", "Ticket", new { ticket.Id, Area = "OrchardPros.Tickets" })">@ticket.Title</a></h2>
+                    <h2><a href="@Url.ItemDisplayUrl(ticket)">@ticket.Subject</a></h2>
                     @foreach (var category in ticket.Categories) {
-                        <a href="#" class="category-link">@category.Value</a>
+                        <a href="#" class="category-link">@category.Name</a>
                     }
                     <div class="tags">
-                        @foreach (var tag in ticket.Tags.Values) {
-                            <a href="#"><span class="label label-default">@tag</span></a>
+                        @foreach (var tag in ticket.Tags) {
+                            <a href="#"><span class="label label-default">@tag.Name</span></a>
                         }
                     </div>
                 </div>
                 <div class="ticket-status">
                     <ul>
-                        <li class="votes positive"><span class="number">0</span><span class="type">votes</span></li>
-                        <li class="views"><span class="number">@ticket.ViewCount</span><span class="type">@T("views")</span></li>
-                        <li class="replies @if(ticket.SolvedUtc != null){<text>solved</text>}"><span class="number">@ticket.Replies.Count</span><span class="type">@T("replies")</span></li>
+                        <li class="votes positive"><span class="number">0</span><span class="type">@T("votes")</span></li>
+                        <li class="views"><span class="number">@statisticsPart.ViewCount</span><span class="type">@T("views")</span></li>
+                        <li class="replies @if(ticket.SolvedUtc != null){<text>solved</text>}"><span class="number">@ticket.Replies.Count()</span><span class="type">@T("replies")</span></li>
                     </ul>
                 </div>
                 <div class="ticket-info">
@@ -76,7 +74,7 @@
                             @T("Bounty: {0:c}", ticket.Bounty)
                         </span>
                     }
-                    <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: lastReplyDate))<span class="author"><a href="#">@lastReplyUserName</a></span></span>
+                    <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<span class="author"><a href="#">@ticket.LastModifier.UserName</a></span></span>
                 </div>
             </article>
         }

@@ -7,5 +7,9 @@ namespace OrchardPros.Tickets.Models {
             get { return this.Retrieve(x => x.VoteIds); }
             set { this.Store(x => x.VoteIds, value); }
         }
+
+        public int VoteCount {
+            get { return VoteIds.Count; }
+        }
     }
 }

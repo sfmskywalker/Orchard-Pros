@@ -4,10 +4,10 @@ using Orchard.ContentManagement.Records;
 namespace OrchardPros.Tickets.Models {
     public class TicketPartRecord : ContentPartRecord {
         public virtual TicketType Type { get; set; }
-        public decimal? Bounty { get; set; }
-        public DateTime DeadlineUtc { get; set; }
-        public int ExperiencePoints { get; set; }
-        public DateTime? SolvedUtc { get; set; }
-        public int? AnswerId { get; set; }
+        public virtual decimal? Bounty { get; set; }
+        public virtual DateTime DeadlineUtc { get; set; }
+        public virtual int ExperiencePoints { get; set; }
+        public virtual DateTime? SolvedUtc { get; set; }
+        public virtual int? AnswerId { get; set; }
     }
 }

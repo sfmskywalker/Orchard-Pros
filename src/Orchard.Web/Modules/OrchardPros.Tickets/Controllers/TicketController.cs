@@ -3,11 +3,12 @@ using System.Web.Mvc;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Localization;
-using Orchard.Security;
+using Orchard.Mvc.Html;
 using Orchard.Services;
 using Orchard.Themes;
 using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
+using OrchardPros.Membership.Helpers;
 using OrchardPros.Tickets.Helpers;
 using OrchardPros.Tickets.Models;
 using OrchardPros.Tickets.Services;
@@ -20,14 +21,12 @@ namespace OrchardPros.Tickets.Controllers {
         private readonly ITicketService _ticketService;
         private readonly IClock _clock;
         private readonly IOrchardServices _services;
-        private readonly IContentManager _contentManager;
 
-        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services, IContentManager contentManager) {
+        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services) {
             _notifier = services.Notifier;
             _ticketService = ticketService;
             _clock = clock;
             _services = services;
-            _contentManager = contentManager;
             T = NullLocalizer.Instance;
         }
 
@@ -39,7 +38,7 @@ namespace OrchardPros.Tickets.Controllers {
 
         public ActionResult Index(PagerParameters pagerParameters, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null) {
             var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
-            var tickets = _ticketService.GetSummarizedTickets(pager.GetStartIndex(), pager.PageSize, criteria);
+            var tickets = _ticketService.GetTickets(skip: pager.GetStartIndex(), take: pager.PageSize, criteria: criteria);
             var pagerShape = _services.New.Pager(pager).TotalItemCount(tickets.TotalItemCount);
             var viewModel = _services.New.ViewModel(
                 Tickets_List: _services.New.Tickets_List(
@@ -70,7 +69,7 @@ namespace OrchardPros.Tickets.Controllers {
                 return View(model);
             }
 
-            var ticket = _ticketService.Create(user, model.Title, model.Description, model.Type, t => {
+            var ticket = _ticketService.Create(user, model.Subject, model.Body, model.Type, t => {
                 t.Bounty = model.Bounty;
                 t.DeadlineUtc = model.DeadlineUtc.Value;
                 t.ExperiencePoints = _ticketService.CalculateExperience(CurrentUser);
@@ -81,7 +80,7 @@ namespace OrchardPros.Tickets.Controllers {
             _ticketService.AssociateAttachments(ticket, model.UploadedFileNames, model.OriginalFileNames);
 
             _notifier.Information(T("Your ticket has been created."));
-            return RedirectToAction("Details", new { ticket.Id });
+            return Redirect(Url.ItemDisplayUrl(ticket));
         }
 
         public ActionResult Edit(int id) {
@@ -89,13 +88,12 @@ namespace OrchardPros.Tickets.Controllers {
             var model = SetupEditViewModel(new TicketViewModel {
                 Id = id,
                 Bounty = ticket.Bounty,
-                Categories = ticket.Categories.Select(x => x.CategoryId).ToArray(),
-                Tags = _ticketService.GetTagsFor(ticket).ToDelimitedString(),
-                CreatedUtc = ticket.CreatedUtc,
+                Categories = ticket.Categories.Select(x => x.Id).ToArray(),
+                Tags = _ticketService.GetTagsFor(ticket.Id).ToDelimitedString(),
                 DeadlineUtc = ticket.DeadlineUtc,
-                Description = ticket.Description,
+                Body = ticket.Body,
                 ExperiencePoints = ticket.ExperiencePoints,
-                Title = ticket.Title,
+                Subject = ticket.Subject,
                 Type = ticket.Type
             });
             return View(model);
@@ -112,35 +110,17 @@ namespace OrchardPros.Tickets.Controllers {
 
             ticket.Bounty = model.Bounty;
             ticket.DeadlineUtc = model.DeadlineUtc.Value;
-            ticket.Description = model.Description;
-            ticket.ModifiedUtc = _clock.UtcNow;
-            ticket.Title = model.Title;
+            ticket.Body = model.Body.TrimSafe();
+            ticket.Subject = model.Subject;
             ticket.Type = model.Type;
 
             _ticketService.AssignCategories(ticket, model.Categories);
             _ticketService.AssignTags(ticket, model.Tags);
             _ticketService.AssociateAttachments(ticket, model.UploadedFileNames, model.OriginalFileNames);
+            _ticketService.Publish(ticket);
 
             _notifier.Information(T("Your ticket has been updated."));
-            return RedirectToAction("Details", new { ticket.Id });
-        }
-
-        public ActionResult Details(int id) {
-            var ticket = _ticketService.GetTicket(id);
-
-            if(ticket == null)
-                return new HttpNotFoundResult();
-
-            ticket.ViewCount++;
-            var user = _contentManager.Get<IUser>(ticket.UserId);
-            var lastModifier = ticket.LastModifier(_contentManager);
-            var shape = _services.New.ViewModel(
-                Ticket: ticket,
-                User: user,
-                LastModifier: lastModifier,
-                Categories: ticket.CategoriesDictionary(_ticketService.GetCategoryDictionary()),
-                Tags: ticket.TagsDictionary(_ticketService.GetTagDictionary()));
-            return View(shape);
+            return Redirect(Url.ItemDisplayUrl(ticket));
         }
 
         [HttpPost]
@@ -156,7 +136,6 @@ namespace OrchardPros.Tickets.Controllers {
         private TicketViewModel SetupCreateViewModel(TicketViewModel model) {
             model.ExperiencePoints = _ticketService.CalculateExperience(CurrentUser);
             model.CategoryTerms = _ticketService.GetCategories().ToArray();
-            model.CreatedUtc = _clock.UtcNow;
             model.DeadlineUtc = _clock.UtcNow.AddDays(7);
             model.User = CurrentUser;
             return model;

@@ -1,19 +1,17 @@
-﻿@using Orchard.Security
-@using OrchardPros.Tickets.Helpers
-@using OrchardPros.Tickets.Models
+﻿@using OrchardPros.Tickets.Models
 @{
-    var ticket = (Ticket) Model.Ticket;
-    var user = (IUser) Model.User;
+    var ticket = (TicketPart) Model.Ticket;
+    var user = ticket.User;
 }
 <section>
     <article>
-        <h2>@T(ticket.Title)</h2>
-        @ticket.Description
+        <h2>@T(ticket.Subject)</h2>
+        @ticket.Body
     </article>
     <div class="sorter bottom">
         <a href="#">Follow ticket</a>
         <a href="#">Reply</a>
         <a href="#">Share</a>
-        <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc()))<a href="#" class="author">@user.UserName</a></span>
+        <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<a href="#" class="author">@user.UserName</a></span>
     </div>
 </section>

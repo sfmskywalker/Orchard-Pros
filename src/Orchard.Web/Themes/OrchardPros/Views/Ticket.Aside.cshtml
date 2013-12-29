@@ -1,16 +1,20 @@
 ﻿@using Orchard.ContentManagement
+@using Orchard.Core.Common.Models
 @using Orchard.Security
 @using OrchardPros.Membership.Helpers
 @using OrchardPros.Membership.Models
 @using OrchardPros.Tickets.Helpers
 @using OrchardPros.Tickets.Models
 @{
-    var ticket = (Ticket)Model.Ticket;
-    var user = (IUser)Model.User;
+    var ticket = (TicketPart)Model.Ticket;
+    var user = ticket.User;
     var profilePart = user.As<UserProfilePart>();
-    var lastModifier = (IUser) Model.LastModifier;
-    var categories = (IDictionary<int, string>)Model.Categories;
-    var tags = (IDictionary<int, string>)Model.Tags;
+    var commonPart = ticket.As<CommonPart>();
+    var statisticsPart = ticket.As<StatisticsPart>();
+    var attachmentsHolderPart = ticket.As<AttachmentsHolderPart>();
+    var lastModifier = ticket.LastModifier;
+    var categories = ticket.Categories;
+    var tags = ticket.Tags;
 }
 <aside>
     <div class="panel panel-default ticket-details">
@@ -20,24 +24,24 @@
         <div class="panel-body">
             <div class="ticket-info">
                 <a href="#" class="pull-left"><img src="@Url.AvatarUrl(profilePart, this, 64)" class="media-object profile-img-m"></a>
-                <span class="ticket-timestamp">@T("Created {0} by", Display.DateTimeRelative(dateTimeUtc: ticket.CreatedUtc))<span class="author"><a href="#">@user.UserName</a></span></span>
-                <span class="ticket-timestamp">@T("Updated {0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc()))<span class="author"><a href="#">@lastModifier.UserName</a></span></span>
+                <span class="ticket-timestamp">@T("Created {0} by", Display.DateTimeRelative(dateTimeUtc: commonPart.CreatedUtc))<span class="author"><a href="#">@user.UserName</a></span></span>
+                <span class="ticket-timestamp">@T("Updated {0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<span class="author"><a href="#">@lastModifier.UserName</a></span></span>
             </div>
             <div class="ticket-summary">
                 @foreach (var category in categories) {
-                    <a href="#" class="category-link">@category.Value</a>
+                    <a href="#" class="category-link">@category.Name</a>
                 }
                 <div class="tags">
                     @foreach (var tag in tags) {
-                        <a href="#"><span class="label label-default">@tag.Value</span></a>
+                        <a href="#"><span class="label label-default">@tag.Name</span></a>
                     }
                 </div>
             </div>
             <div class="ticket-status">
                 <ul>
                     <li class="votes"><span class="number">0</span><span class="type">@T("votes")</span></li>
-                    <li class="views"><span class="number">@ticket.ViewCount</span><span class="type">@T("views")</span></li>
-                    <li class="replies"><span class="number">@ticket.Replies.Count</span><span class="type">@T("replies")</span></li>
+                    <li class="views"><span class="number">@statisticsPart.ViewCount</span><span class="type">@T("views")</span></li>
+                    <li class="replies"><span class="number">@ticket.Replies.Count()</span><span class="type">@T("replies")</span></li>
                 </ul>
             </div>
         </div> <!-- /.panel -->
@@ -52,7 +56,7 @@
             <div class="ticket-attachments">
                 <h3>@T("Attachments")</h3>
                 <ul>
-                    @foreach (var attachment in ticket.Attachments) {
+                    @foreach (var attachment in attachmentsHolderPart.Attachments) {
                         <li><a href="#"><img src="~/themes/orchardpros/images/file-docx.png" alt="Document">@attachment.FileName</a></li>
                     }
                 </ul>

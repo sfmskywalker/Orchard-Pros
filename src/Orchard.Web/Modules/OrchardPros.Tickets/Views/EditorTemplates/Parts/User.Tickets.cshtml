@@ -1,8 +1,12 @@
-﻿@using Orchard.Users.Models
+﻿@using Orchard.ContentManagement
+@using Orchard.Core.Common.Models
+@using Orchard.Users.Models
+@using OrchardPros.Tickets.Helpers
+@using OrchardPros.Tickets.Models
 @using OrchardPros.Tickets.ViewModels
 @{
     var userPart = (UserPart)Model.UserPart;
-    var tickets = (IEnumerable<TicketRow>) Model.Tickets;
+    var tickets = (IEnumerable<TicketPart>) Model.Tickets;
 }
 <fieldset>
     <legend>@T("Tickets")</legend>
@@ -26,16 +30,17 @@
         </thead>
         <tbody>
             @foreach (var ticket in tickets) {
+                var commonPart = ticket.As<CommonPart>();
                 <tr>
                     <td>@ticket.Id</td>
-                    <td>@ticket.UserName</td>
+                    <td>@ticket.User.UserName</td>
                     <td>@ticket.Type</td>
-                    <td>@ticket.Categories</td>
-                    <td>@ticket.Tags</td>
+                    <td>@ticket.Categories.Select(x => x.Name).Join(", ")</td>
+                    <td>@ticket.Tags.Select(x => x.Name).Join(", ")</td>
                     <td>@(ticket.Bounty != null ? ticket.Bounty.Value.ToString("c") : "")</td>
                     <td>@ticket.DeadlineUtc</td>
                     <td>@ticket.ExperiencePoints</td>
-                    <td>@ticket.CreatedUtc</td>
+                    <td>@commonPart.CreatedUtc</td>
                     <td>@ticket.LastModifiedUtc</td>
                     <td>@ticket.SolvedUtc</td>
                     <td>@ticket.AnswerId</td>

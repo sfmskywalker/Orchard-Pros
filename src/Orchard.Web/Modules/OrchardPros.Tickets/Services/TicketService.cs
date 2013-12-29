@@ -6,13 +6,11 @@ using System.Web;
 using Orchard.Caching;
 using Orchard.ContentManagement;
 using Orchard.Core.Common.Models;
-using Orchard.Data;
 using Orchard.FileSystems.Media;
 using Orchard.Security;
 using Orchard.Services;
 using Orchard.Taxonomies.Models;
 using Orchard.Taxonomies.Services;
-using Orchard.Users.Models;
 using OrchardPros.Tickets.Helpers;
 using OrchardPros.Tickets.Models;
 
@@ -24,7 +22,6 @@ namespace OrchardPros.Tickets.Services {
         private readonly ICacheManager _cache;
         private readonly ISignals _signals;
         private readonly IStorageProvider _storageProvider;
-        private readonly IRepository<UserPartRecord> _userRepository;
         private readonly IClock _clock;
 
         public TicketService(
@@ -34,7 +31,6 @@ namespace OrchardPros.Tickets.Services {
             ICacheManager cache, 
             ISignals signals, 
             IStorageProvider storageProvider, 
-            IRepository<UserPartRecord> userRepository,
             IClock clock) {
 
             _taxonomyService = taxonomyService;
@@ -43,7 +39,6 @@ namespace OrchardPros.Tickets.Services {
             _cache = cache;
             _signals = signals;
             _storageProvider = storageProvider;
-            _userRepository = userRepository;
             _clock = clock;
         }
 
@@ -55,12 +50,16 @@ namespace OrchardPros.Tickets.Services {
             return GetTerms("Category");
         }
 
+        public IEnumerable<TermPart> GetCategoriesFor(int ticketId) {
+            return _taxonomyService.GetTermsForContentItem(ticketId, "Categories");
+        }
+
         public IEnumerable<TermPart> GetTags() {
             return GetTerms("Tag");
         }
 
-        public IEnumerable<TermPart> GetTagsFor(TicketPart ticket) {
-            return _taxonomyService.GetTermsForContentItem(ticket.Id, "Tags");
+        public IEnumerable<TermPart> GetTagsFor(int ticketId) {
+            return _taxonomyService.GetTermsForContentItem(ticketId, "Tags");
         }
 
         public TicketPart Create(ExpertPart user, string subject, string body, TicketType type = TicketType.Question, Action<TicketPart> initialize = null) {
@@ -150,10 +149,8 @@ namespace OrchardPros.Tickets.Services {
             ticket.As<AttachmentsHolderPart>().AttachmentIds = attachmentIds;
         }
 
-        public IPagedList<TicketSummary> GetSummarizedTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest) {
+        public IPagedList<TicketPart> GetTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest) {
             var baseQuery = _contentManager.Query();
-            var categoryDictionary = GetCategoryDictionary();
-            var tagDictionary = GetTagDictionary();
 
             switch (criteria) {
                 case TicketsCriteria.Unsolved:
@@ -177,32 +174,28 @@ namespace OrchardPros.Tickets.Services {
             var pagedQuery = skip != null && take != null ? ticketsQuery.ForPart<TicketPart>().Slice(skip.Value, take.Value) : baseQuery.ForPart<TicketPart>().List();
             var tickets = pagedQuery.ToArray();
             var totalCount = skip == null || take == null ? tickets.Length : baseQuery.Count();
-            var userIds = CollectUserIds(tickets).ToArray();
-            var userDictionary = _userRepository.Table.Where(x => userIds.Contains(x.Id)).ToDictionary(x => x.Id, x => x.UserName);
 
-            return tickets.Select(ticket => new TicketSummary {
-                Id = ticket.Id,
-                Bounty = ticket.Bounty,
-                Categories = ticket.CategoriesDictionary(categoryDictionary),
-                Tags = ticket.TagsDictionary(tagDictionary),
-                CreatedUtc = ticket.CreatedUtc,
-                DeadlineUtc = ticket.DeadlineUtc,
-                TimeLeft = ticket.TimeLeft(),
-                ExperiencePoints = ticket.ExperiencePoints,
-                LastModifiedUtc = ticket.ModifiedUtc,
-                SolvedUtc = ticket.SolvedUtc,
-                Title = ticket.Title,
-                Type = ticket.Type,
-                UserId = ticket.UserId,
-                UserName = userDictionary[ticket.UserId],
-                ViewCount = ticket.ViewCount,
-                Replies = ticket.Replies.Select(x => new ReplySummary {
-                    CreatedUtc = x.CreatedUtc,
-                    ModifiedUtc = x.ModifiedUtc,
-                    UserId = x.UserId,
-                    UserName = userDictionary[x.UserId]
-                }).ToArray()
-            }).ToPagedList(totalCount);
+            return tickets.ToPagedList(totalCount);
+        }
+
+        public DateTime? GetLastModifiedUtcFor(TicketPart ticket) {
+            var lastReply = ticket.Replies.LastOrDefault();
+            var ticketModifiedUtc = ticket.As<CommonPart>().ModifiedUtc ?? DateTime.MinValue;
+            var replyModifiedUtc = (lastReply != null ? lastReply.As<CommonPart>().ModifiedUtc : default(DateTime?)) ?? DateTime.MinValue;
+            var timeStamp = replyModifiedUtc > ticketModifiedUtc ? replyModifiedUtc : ticketModifiedUtc;
+            return timeStamp == DateTime.MinValue ? default(DateTime?) : timeStamp;
+        }
+
+        public IUser GetLastModifierFor(TicketPart ticket) {
+            var lastReply = ticket.Replies.LastOrDefault();
+            var ticketModifiedUtc = ticket.As<CommonPart>().ModifiedUtc ?? DateTime.MinValue;
+            var replyModifiedUtc = (lastReply != null ? lastReply.As<CommonPart>().ModifiedUtc : default(DateTime?)) ?? DateTime.MinValue;
+            var user = (replyModifiedUtc > ticketModifiedUtc) && lastReply != null ? lastReply.User : ticket.User;
+            return user;
+        }
+
+        public void Publish(TicketPart ticket) {
+            _contentManager.Publish(ticket.ContentItem);
         }
 
         private IEnumerable<TermPart> ParseTags(string tags) {
