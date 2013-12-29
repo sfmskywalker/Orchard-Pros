@@ -108,19 +108,31 @@
   <ItemGroup>
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
-    <Compile Include="Controllers\AdminTicketController.cs" />
+    <Compile Include="Drivers\AttachmentPartDriver.cs" />
+    <Compile Include="Drivers\TicketPartDriver.cs" />
+    <Compile Include="Drivers\AttachmentsHolderPartDriver.cs" />
+    <Compile Include="Drivers\StatisticsPartDriver.cs" />
+    <Compile Include="Drivers\VotablePartDriver.cs" />
     <Compile Include="Drivers\ExpertPartDriver.cs" />
+    <Compile Include="Services\IReplyService.cs" />
+    <Compile Include="Handlers\TicketPartHandler.cs" />
+    <Compile Include="Handlers\StatisticsPartHandler.cs" />
     <Compile Include="Helpers\PagerHelpers.cs" />
     <Compile Include="Helpers\EnumerableHelpers.cs" />
     <Compile Include="Helpers\TicketHelpers.cs" />
-    <Compile Include="Handlers\CategoryTermPartHandler.cs" />
+    <Compile Include="Handlers\TermPartHandler.cs" />
+    <Compile Include="Models\AttachmentsHolderPart.cs" />
     <Compile Include="Models\PagedList.cs" />
     <Compile Include="Models\ReplySummary.cs" />
+    <Compile Include="Models\StatisticsPartRecord.cs" />
+    <Compile Include="Models\TicketPartRecord.cs" />
     <Compile Include="Models\TicketSummary.cs" />
-    <Compile Include="Models\TicketTag.cs" />
+    <Compile Include="Models\StatisticsPart.cs" />
+    <Compile Include="Models\VotablePart.cs" />
+    <Compile Include="Models\ReplyPart.cs" />
     <Compile Include="ResourceManifest.cs" />
-    <Compile Include="Models\TicketCategory.cs" />
     <Compile Include="Models\IPagedList.cs" />
+    <Compile Include="Services\ReplyService.cs" />
     <Compile Include="Services\TicketNotificationSettingsProvider.cs" />
     <Compile Include="Models\TicketsCriteria.cs" />
     <Compile Include="Signals.cs" />
@@ -132,8 +144,7 @@
     <Compile Include="Services\ITicketService.cs" />
     <Compile Include="Drivers\UserPartDriver.cs" />
     <Compile Include="Models\Attachment.cs" />
-    <Compile Include="Models\Reply.cs" />
-    <Compile Include="Models\Ticket.cs" />
+    <Compile Include="Models\TicketPart.cs" />
     <Compile Include="Models\TicketType.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\Vote.cs" />
@@ -189,6 +200,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\TermsAutocomplete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts\Ticket.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

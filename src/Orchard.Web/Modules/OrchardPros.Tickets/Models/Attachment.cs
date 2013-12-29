@@ -1,14 +1,15 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using Orchard.ContentManagement;
 
 namespace OrchardPros.Tickets.Models {
-    public class Attachment {
-        public virtual int Id { get; set; }
-        public virtual Ticket Ticket { get; set; }
-        
-        [StringLength(256)]
-        public virtual string FileName { get; set; }
-        public virtual int DownloadCount { get; set; }
-        public virtual DateTime CreatedUtc { get; set; }
+    public class AttachmentPart : ContentPart {
+        public string FileName {
+            get { return this.Retrieve(x => x.FileName); }
+            set { this.Store(x => x.FileName, value); }
+        }
+
+        public int DownloadCount {
+            get { return this.Retrieve(x => x.DownloadCount); }
+            set { this.Store(x => x.DownloadCount, value); }
+        }
     }
 }

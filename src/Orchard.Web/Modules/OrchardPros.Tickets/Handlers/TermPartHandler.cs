@@ -3,10 +3,10 @@ using Orchard.ContentManagement.Handlers;
 using Orchard.Taxonomies.Models;
 
 namespace OrchardPros.Tickets.Handlers {
-    public class CategoryTermPartHandler : ContentHandler {
+    public class TermPartHandler : ContentHandler {
         private readonly ISignals _signals;
 
-        public CategoryTermPartHandler(ISignals signals) {
+        public TermPartHandler(ISignals signals) {
             _signals = signals;
             OnUpdated<TermPart>(ClearTermsDictionaryCache);
             OnRemoved<TermPart>(ClearTermsDictionaryCache);

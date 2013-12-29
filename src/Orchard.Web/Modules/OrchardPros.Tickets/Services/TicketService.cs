@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
-using NHibernate.Transform;
 using Orchard.Caching;
 using Orchard.ContentManagement;
+using Orchard.Core.Common.Models;
 using Orchard.Data;
 using Orchard.FileSystems.Media;
+using Orchard.Security;
 using Orchard.Services;
 using Orchard.Taxonomies.Models;
 using Orchard.Taxonomies.Services;
@@ -17,49 +18,37 @@ using OrchardPros.Tickets.Models;
 
 namespace OrchardPros.Tickets.Services {
     public class TicketService : ITicketService {
-        private readonly IRepository<Ticket> _ticketRepository;
         private readonly ITaxonomyService _taxonomyService;
         private readonly IContentManager _contentManager;
-        private readonly IClock _clock;
         private readonly IExperienceCalculator _experienceCalculator;
         private readonly ICacheManager _cache;
         private readonly ISignals _signals;
-        private readonly IRepository<TicketCategory> _ticketCategoryRepository;
         private readonly IStorageProvider _storageProvider;
-        private readonly ISessionLocator _sessionLocator;
-        private readonly IRepository<Attachment> _attachmentRepository;
-        private readonly IRepository<TicketTag> _ticketTagRepository;
+        private readonly IRepository<UserPartRecord> _userRepository;
+        private readonly IClock _clock;
 
         public TicketService(
-            IRepository<Ticket> ticketRepository, 
             ITaxonomyService taxonomyService, 
-            IContentManager contentManager, 
-            IClock clock, 
+            IContentManager contentManager,
             IExperienceCalculator experienceCalculator, 
             ICacheManager cache, 
             ISignals signals, 
-            IRepository<TicketCategory> ticketCategoryRepository,
             IStorageProvider storageProvider, 
-            ISessionLocator sessionLocator, 
-            IRepository<Attachment> attachmentRepository, 
-            IRepository<TicketTag> ticketTagRepository) {
+            IRepository<UserPartRecord> userRepository,
+            IClock clock) {
 
-            _ticketRepository = ticketRepository;
             _taxonomyService = taxonomyService;
             _contentManager = contentManager;
-            _clock = clock;
             _experienceCalculator = experienceCalculator;
             _cache = cache;
             _signals = signals;
-            _ticketCategoryRepository = ticketCategoryRepository;
             _storageProvider = storageProvider;
-            _sessionLocator = sessionLocator;
-            _attachmentRepository = attachmentRepository;
-            _ticketTagRepository = ticketTagRepository;
+            _userRepository = userRepository;
+            _clock = clock;
         }
 
-        public IEnumerable<Ticket> GetTicketsFor(int userId) {
-            return _ticketRepository.Table.Where(x => x.UserId == userId && x.ArchivedUtc == null);
+        public IEnumerable<TicketPart> GetTicketsFor(int userId) {
+            return _contentManager.Query<CommonPart, CommonPartRecord>().Where(x => x.OwnerId == userId).List<TicketPart>();
         }
 
         public IEnumerable<TermPart> GetCategories() {
@@ -70,33 +59,32 @@ namespace OrchardPros.Tickets.Services {
             return GetTerms("Tag");
         }
 
-        public IEnumerable<TermPart> GetTagsFor(Ticket ticket) {
-            var termIds = ticket.Tags.Select(x => x.TagId).ToArray();
-            return _contentManager.GetMany<TermPart>(termIds, VersionOptions.Latest, QueryHints.Empty);
+        public IEnumerable<TermPart> GetTagsFor(TicketPart ticket) {
+            return _taxonomyService.GetTermsForContentItem(ticket.Id, "Tags");
         }
 
-        public Ticket Create(ExpertPart user, string title, string description, TicketType type = TicketType.Question, Action<Ticket> initialize = null) {
-            var ticket = new Ticket {
-                UserId = user.Id,
-                Title = title,
-                Description = description,
-                CreatedUtc = _clock.UtcNow,
-                ModifiedUtc = _clock.UtcNow
-            };
-
-            if (initialize != null)
-                initialize(ticket);
-
-            _ticketRepository.Create(ticket);
-            return ticket;
+        public TicketPart Create(ExpertPart user, string subject, string body, TicketType type = TicketType.Question, Action<TicketPart> initialize = null) {
+            return _contentManager.Create<TicketPart>("Ticket", VersionOptions.Published, t => {
+                t.User = user.As<IUser>();
+                t.Subject = subject;
+                t.Body = body;
+                
+                if (initialize != null)
+                    initialize(t);
+            });
         }
 
         public int CalculateExperience(ExpertPart user) {
             return _experienceCalculator.CalculateForTicket(user);
         }
 
-        public Ticket GetTicket(int id) {
-            return _ticketRepository.Get(id);
+        public TimeSpan GetRemainingTimeFor(TicketPart ticket) {
+            var timeSpan = ticket.DeadlineUtc - _clock.UtcNow;
+            return timeSpan.Ticks < 0 ? TimeSpan.Zero : timeSpan;
+        }
+
+        public TicketPart GetTicket(int id) {
+            return _contentManager.Get<TicketPart>(id);
         }
 
         public IDictionary<int, string> GetCategoryDictionary() {
@@ -113,44 +101,16 @@ namespace OrchardPros.Tickets.Services {
             });
         }
 
-        public void Archive(Ticket ticket) {
-            ticket.ArchivedUtc = _clock.UtcNow;
-        }
-
-        public void AssignCategories(Ticket ticket, IEnumerable<int> categoryIds) {
+        public void AssignCategories(TicketPart ticket, IEnumerable<int> categoryIds) {
             var categoryList = (categoryIds ?? Enumerable.Empty<int>()).ToArray();
-
-            // Delete current categories
-            foreach (var category in ticket.Categories.Where(x => !categoryList.Contains(x.CategoryId)).ToArray()) {
-                ticket.Categories.Remove(category);
-                _ticketCategoryRepository.Delete(category);
-            }
-
-            // Add new categories
-            var existingCategoryIds = ticket.Categories.Select(x => x.CategoryId).ToArray();
-            foreach (var categoryId in categoryList.Where(x => !existingCategoryIds.Contains(x))) {
-                var category = new TicketCategory {Ticket = ticket, CategoryId = categoryId};
-                _ticketCategoryRepository.Create(category);
-                ticket.Categories.Add(category);
-            }
+            var terms = _contentManager.GetMany<TermPart>(categoryList, VersionOptions.Published, QueryHints.Empty);
+            _taxonomyService.UpdateTerms(ticket.ContentItem, terms, "Categories");
         }
 
-        public void AssignTags(Ticket ticket, string tags) {
+        public void AssignTags(TicketPart ticket, string tags) {
             var tagList = !String.IsNullOrWhiteSpace(tags) ? ParseTags(tags).Select(x => x.Id) : Enumerable.Empty<int>();
-
-            // Delete current tags
-            foreach (var tag in ticket.Tags.Where(x => !tagList.Contains(x.TagId)).ToArray()) {
-                ticket.Tags.Remove(tag);
-                _ticketTagRepository.Delete(tag);
-            }
-
-            // Add new categories
-            var existingTagIds = ticket.Tags.Select(x => x.TagId).ToArray();
-            foreach (var tagId in tagList.Where(x => !existingTagIds.Contains(x))) {
-                var tag = new TicketTag { Ticket = ticket, TagId = tagId };
-                _ticketTagRepository.Create(tag);
-                ticket.Tags.Add(tag);
-            }
+            var terms = _contentManager.GetMany<TermPart>(tagList, VersionOptions.Published, QueryHints.Empty);
+            _taxonomyService.UpdateTerms(ticket.ContentItem, terms, "Tags");
         }
 
         public string UploadAttachment(HttpPostedFileBase file) {
@@ -162,7 +122,7 @@ namespace OrchardPros.Tickets.Services {
             return temporaryFileName;
         }
 
-        public void AssociateAttachments(Ticket ticket, IEnumerable<string> uploadedFileNames, IEnumerable<string> originalFileNames) {
+        public void AssociateAttachments(TicketPart ticket, IEnumerable<string> uploadedFileNames, IEnumerable<string> originalFileNames) {
             if (uploadedFileNames == null || originalFileNames == null)
                 return;
 
@@ -170,6 +130,7 @@ namespace OrchardPros.Tickets.Services {
             var ticketFolderPath = String.Format("_Attachments/{0:0000000}", ticket.Id);
             var uploadedFiles = uploadedFileNames.ToArray();
             var originalFiles = originalFileNames.ToArray();
+            var attachmentIds = ticket.As<AttachmentsHolderPart>().AttachmentIds.ToList();
 
             _storageProvider.TryCreateFolder(ticketFolderPath);
 
@@ -177,50 +138,47 @@ namespace OrchardPros.Tickets.Services {
                 var uploadedFilePath = tempFolderPath + "/"  + uploadedFiles[i];
                 var originalFileName = Path.GetFileName(originalFiles[i]);
                 var originalFilePath = ticketFolderPath + "/" + originalFileName;
-                var attachment = new Attachment {
-                    Ticket = ticket,
-                    CreatedUtc = _clock.UtcNow,
-                    FileName = originalFileName
-                };
+                var attachment = _contentManager.Create<AttachmentPart>("Attachment", a => {
+                    a.As<CommonPart>().Container = ticket;
+                    a.FileName = originalFileName;
+                });
 
-                _attachmentRepository.Create(attachment);
-                ticket.Attachments.Add(attachment);
+                attachmentIds.Add(attachment.Id);
                 _storageProvider.RenameFile(uploadedFilePath, originalFilePath);
             }
+
+            ticket.As<AttachmentsHolderPart>().AttachmentIds = attachmentIds;
         }
 
         public IPagedList<TicketSummary> GetSummarizedTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest) {
-            var session = _sessionLocator.For(typeof (Ticket));
-            var baseQuery = session.QueryOver<Ticket>();
+            var baseQuery = _contentManager.Query();
             var categoryDictionary = GetCategoryDictionary();
             var tagDictionary = GetTagDictionary();
 
-            baseQuery.RootCriteria.SetResultTransformer(new DistinctRootEntityResultTransformer());
-
             switch (criteria) {
                 case TicketsCriteria.Unsolved:
-                    baseQuery = baseQuery.Where(x => x.SolvedUtc == null).OrderBy(x => x.CreatedUtc).Desc;
+                    baseQuery = baseQuery.Where<TicketPartRecord>(x => x.SolvedUtc == null).Join<CommonPartRecord>().OrderByDescending(x => x.CreatedUtc);
                     break;
                 case TicketsCriteria.Popular:
-                    baseQuery = baseQuery.OrderBy(x => x.ViewCount).Desc.ThenBy(x => x.CreatedUtc).Desc;
+                    baseQuery = baseQuery.OrderByDescending<StatisticsPartRecord>(x => x.ViewCount).OrderByDescending<CommonPartRecord>(x => x.CreatedUtc);
                     break;
                 case TicketsCriteria.Deadline:
-                    baseQuery = baseQuery.OrderBy(x => x.DeadlineUtc).Asc;
+                    baseQuery = baseQuery.OrderBy<TicketPartRecord>(x => x.DeadlineUtc);
                     break;
                 case TicketsCriteria.Bounty:
-                    baseQuery = baseQuery.WhereNot(x => x.Bounty == null).OrderBy(x => x.Bounty).Desc;
+                    baseQuery = baseQuery.Where<TicketPartRecord>(x => x.Bounty == null).OrderByDescending(x => x.Bounty);
                     break;
                 default:
-                    baseQuery = baseQuery.OrderBy(x => x.CreatedUtc).Desc;
+                    baseQuery = baseQuery.OrderByDescending<CommonPartRecord>(x => x.CreatedUtc);
                     break;
             }
 
             var ticketsQuery = baseQuery;
-            var pagedQuery = skip != null && take != null ? ticketsQuery.Skip(skip.Value).Take(take.Value) : baseQuery;
-            var tickets = pagedQuery.Future().ToArray();
-            var totalCount = skip == null || take == null ? tickets.Length : baseQuery.RowCount();
+            var pagedQuery = skip != null && take != null ? ticketsQuery.ForPart<TicketPart>().Slice(skip.Value, take.Value) : baseQuery.ForPart<TicketPart>().List();
+            var tickets = pagedQuery.ToArray();
+            var totalCount = skip == null || take == null ? tickets.Length : baseQuery.Count();
             var userIds = CollectUserIds(tickets).ToArray();
-            var userDictionary = session.QueryOver<UserPartRecord>().WhereRestrictionOn(x => x.Id).IsIn(userIds).Future().ToDictionary(x => x.Id, x => x.UserName);
+            var userDictionary = _userRepository.Table.Where(x => userIds.Contains(x.Id)).ToDictionary(x => x.Id, x => x.UserName);
 
             return tickets.Select(ticket => new TicketSummary {
                 Id = ticket.Id,
@@ -289,12 +247,12 @@ namespace OrchardPros.Tickets.Services {
             return _taxonomyService.GetTerms(taxonomyId).OrderBy(x => x.Name);
         }
 
-        private static IEnumerable<int> CollectUserIds(IEnumerable<Ticket> tickets) {
+        private static IEnumerable<int> CollectUserIds(IEnumerable<TicketPart> tickets) {
             foreach (var ticket in tickets) {
-                yield return ticket.UserId;
+                yield return ticket.User.Id;
                 var lastReply = ticket.Replies.LastOrDefault();
                 if (lastReply != null)
-                    yield return lastReply.UserId;
+                    yield return lastReply.As<CommonPart>().Record.OwnerId;
             }
         }
     }
