@@ -1,26 +1,33 @@
 ﻿using System.Collections.Generic;
+using Orchard.ContentManagement;
 using Orchard.Security;
+using Orchard.Services;
 using Orchard.Users.Events;
 using Orchard.Workflows.Services;
+using OrchardPros.Membership.Activities;
+using OrchardPros.Membership.Models;
 
 namespace OrchardPros.Membership.Events {
     public class UserEventHandler : IUserEventHandler {
         private readonly IWorkflowManager _workFlowManager;
+        private readonly IClock _clock;
 
-        public UserEventHandler(IWorkflowManager workFlowManager) {
+        public UserEventHandler(IWorkflowManager workFlowManager, IClock clock) {
             _workFlowManager = workFlowManager;
+            _clock = clock;
         }
 
         public void Created(UserContext context) {
-            _workFlowManager.TriggerEvent("UserSignedUp", context.User, () => new Dictionary<string, object>());
+            context.User.As<UserProfilePart>().CreatedUtc = _clock.UtcNow;
+            _workFlowManager.TriggerEvent(UserSignedUpActivity.ActivityName, context.User, () => new Dictionary<string, object>());
         }
 
         public void LoggedIn(IUser user) {
-            _workFlowManager.TriggerEvent("UserSignedIn", user, () => new Dictionary<string, object>());
+            _workFlowManager.TriggerEvent(UserSignedInActivity.ActivityName, user, () => new Dictionary<string, object>());
         }
 
         public void LoggedOut(IUser user) {
-            _workFlowManager.TriggerEvent("UserSignedOut", null, () => new Dictionary<string, object>());
+            _workFlowManager.TriggerEvent(UserSignedOutActivity.ActivityName, null, () => new Dictionary<string, object>());
         }
         
         public void Creating(UserContext context) { }

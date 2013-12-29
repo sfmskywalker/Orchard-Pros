@@ -109,9 +109,17 @@
       <Project>{b262a7c7-8205-4b94-a359-f5379025df32}</Project>
       <Name>NGM.OpenAuthentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
+      <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
+      <Name>Orchard.Forms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.MediaLibrary\Orchard.MediaLibrary.csproj">
       <Project>{73a7688a-5bd3-4f7e-adfa-ce36c5a10e3b}</Project>
       <Name>Orchard.MediaLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Roles\Orchard.Roles.csproj">
+      <Project>{d10ad48f-407d-4db5-a328-173ec7cb010f}</Project>
+      <Name>Orchard.Roles</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Users\Orchard.Users.csproj">
       <Project>{79aed36e-abd0-4747-93d3-8722b042454b}</Project>
@@ -123,11 +131,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\AssignRole.cs" />
     <Compile Include="Activities\SignIn.cs" />
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Activities\EventBase.cs" />
     <Compile Include="Activities\UserSignedInActivity.cs" />
+    <Compile Include="Forms\SelectRolesForms.cs" />
     <Compile Include="Services\INotificationSettingsManager.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Models\NotificationSetting.cs" />
@@ -143,7 +153,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Drivers\UserProfilePartDriver.cs" />
     <Compile Include="Events\UserEventHandler.cs" />
-    <Compile Include="Handlers\UserEventHandler.cs" />
     <Compile Include="Helpers\AvatarHelper.cs" />
     <Compile Include="Helpers\ContentExtensions.cs" />
     <Compile Include="Helpers\UrlExtensions.cs" />
@@ -205,6 +214,7 @@
   <ItemGroup>
     <Content Include="Views\Profile.Settings.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

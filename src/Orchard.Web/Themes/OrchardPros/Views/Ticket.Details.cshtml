@@ -1,7 +1,11 @@
-﻿@using OrchardPros.Tickets.Models
+﻿@using Orchard.Core.Contents
+@using OrchardPros.Tickets.Models
 @{
     var ticket = (TicketPart) Model.Ticket;
     var user = ticket.User;
+}
+@if (Authorizer.Authorize(Permissions.EditContent, ticket)) {
+    <a class="btn btn-success" href="@Url.Action("Edit", "Ticket", new { id = ticket.Id, area = "OrchardPros.Tickets" })">@T("Edit")</a>
 }
 <section>
     <article>

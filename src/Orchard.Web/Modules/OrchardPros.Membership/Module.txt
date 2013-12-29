@@ -8,5 +8,5 @@ Description: Provides Orchard Pros membership services.
 Features:
     OrchardPros.Membership:
         Description: Provides Orchard Pros membership services.
-        Dependencies: Orchard.Users, Orchard.Workflows, Orchard.MediaLibrary
+        Dependencies: Orchard.Users, Orchard.Workflows, Orchard.MediaLibrary, Orchard.Roles
         Category: Orchard Pros

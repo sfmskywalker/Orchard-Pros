@@ -5,8 +5,10 @@ using Orchard.Workflows.Models;
 namespace OrchardPros.Membership.Activities {
     public class UserSignedInActivity : EventBase {
 
+        public const string ActivityName = "UserSignedIn";
+
         public override string Name {
-            get { return "UserSignedIn"; }
+            get { return ActivityName; }
         }
 
         public override LocalizedString Description {

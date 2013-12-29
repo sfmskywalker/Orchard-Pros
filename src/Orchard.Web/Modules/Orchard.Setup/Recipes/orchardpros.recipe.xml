@@ -171,21 +171,28 @@
   </Settings>
 
   <Migration features="*" />
+  <Roles>
+    <Role Name="Member" Permissions="EditOwnContent,AccessFrontEnd" />
+  </Roles>
   <Workflows>
     <Workflow Name="User Signed Up" Enabled="true">
       <Activities>
-        <Activity Id="17" Name="UserSignedUp" Start="true" X="594" Y="338">
+        <Activity Id="16" Name="UserSignedUp" Start="true" X="461" Y="309">
           <State>{}</State>
         </Activity>
-        <Activity Id="18" Name="Redirect" Start="false" X="501" Y="629">
+        <Activity Id="17" Name="Redirect" Start="false" X="804" Y="678">
           <State>{"Url":"~/OrchardPros.Membership/Account/Created"}</State>
         </Activity>
-        <Activity Id="19" Name="SignIn" Start="false" X="626" Y="483">
+        <Activity Id="18" Name="SignIn" Start="false" X="783" Y="549">
           <State>{}</State>
+        </Activity>
+        <Activity Id="19" Name="AssignRole" Start="false" X="631" Y="429">
+          <State>{"Roles":"8"}</State>
         </Activity>
       </Activities>
       <Transitions>
-        <Transition SourceActivityId="17" SourceEndpoint="Created" DestinationActivityId="19" DestinationEndpoint="" />
+        <Transition SourceActivityId="18" SourceEndpoint="Done" DestinationActivityId="17" DestinationEndpoint="" />
+        <Transition SourceActivityId="16" SourceEndpoint="Created" DestinationActivityId="19" DestinationEndpoint="" />
         <Transition SourceActivityId="19" SourceEndpoint="Done" DestinationActivityId="18" DestinationEndpoint="" />
       </Transitions>
     </Workflow>
