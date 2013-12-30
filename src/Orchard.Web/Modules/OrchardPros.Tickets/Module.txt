@@ -9,4 +9,4 @@ Features:
     OrchardPros.Tickets:
         Description: Description for feature OrchardPros.Tickets.
         Category: Orchard Pros
-		Dependencies: Orchard.Users, Orchard.Taxonomies
+		Dependencies: Orchard.Users, Orchard.Taxonomies, OrchardPros.Careers

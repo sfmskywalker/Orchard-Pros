@@ -9,7 +9,7 @@
     var userProfilePart = user.As<UserProfilePart>();
     var professionalProfilePart = user.As<ProfessionalProfilePart>();
     var currentPosition = professionalProfilePart.Positions.Current();
-    var recommendations = (IList<RecommendationEx>)Model.Recommendations;
+    var recommendations = professionalProfilePart.Recommendations;
     var filteredRecommendations = (bool) Model.IsCurrentUser ? recommendations : recommendations.Where(x => x.Approved).ToArray();
 }
 <article class="profile-title">
@@ -66,7 +66,7 @@
             <div class="media">
                 <a href="#" class="pull-left"><img src="~/themes/orchardpros/images/temp-profile.png" alt="@recommendation.RecommendingUser.UserName" class="profile-img-s media-object"></a>
                 <div class="media-body">
-                    <p><span class="dropcap">&nbsp;</span>@recommendation.Text</p>
+                    <p><span class="dropcap">&nbsp;</span>@recommendation.Body</p>
                 </div>
             </div>
         }

@@ -32,5 +32,6 @@ namespace OrchardPros.Tickets.Services {
         IUser GetLastModifierFor(TicketPart ticket);
 
         void Publish(TicketPart ticket);
+        void Solve(TicketPart ticket, ReplyPart reply);
     }
 }

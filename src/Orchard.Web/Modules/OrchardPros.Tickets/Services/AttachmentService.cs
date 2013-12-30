@@ -49,6 +49,10 @@ namespace OrchardPros.Tickets.Services {
                 });
 
                 attachmentIds.Add(attachment.Id);
+
+                if (_storageProvider.FileExists(originalFilePath)) {
+                    _storageProvider.DeleteFile(originalFilePath);
+                }
                 _storageProvider.RenameFile(uploadedFilePath, originalFilePath);
             }
 

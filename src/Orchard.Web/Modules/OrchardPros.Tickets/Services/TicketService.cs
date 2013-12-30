@@ -147,6 +147,23 @@ namespace OrchardPros.Tickets.Services {
             _contentManager.Publish(ticket.ContentItem);
         }
 
+        public void Solve(TicketPart ticket, ReplyPart reply) {
+            if(ticket.SolvedUtc != null)
+                throw new InvalidOperationException("The ticket has already been solved");
+
+            var expertPart = reply.User.As<ExpertPart>();
+
+            ticket.SolvedUtc = _clock.UtcNow;
+            ticket.AnswerId = reply.Id;
+            expertPart.ExperiencePoints += ticket.ExperiencePoints;
+
+            // TODO: Add to activity stream
+
+            if (ticket.Bounty != null) {
+                // TODO: Transfer funds.
+            }
+        }
+
         private IEnumerable<TermPart> ParseTags(string tags) {
             var tagList = !String.IsNullOrWhiteSpace(tags) ? tags.Split(new[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim().ToLower()).ToArray() : new string[0];
             var taxonomy = GetOrCreateTaxonomy("Tag");

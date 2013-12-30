@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Web.Mvc;
 using Orchard;
@@ -8,6 +9,8 @@ using Orchard.Services;
 using Orchard.Themes;
 using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
+using OrchardPros.Careers.Models;
+using OrchardPros.Careers.Services;
 using OrchardPros.Membership.Helpers;
 using OrchardPros.Tickets.Helpers;
 using OrchardPros.Tickets.Models;
@@ -21,14 +24,18 @@ namespace OrchardPros.Tickets.Controllers {
         private readonly ITicketService _ticketService;
         private readonly IClock _clock;
         private readonly IOrchardServices _services;
+        private readonly IContentManager _contentManager;
         private readonly IAttachmentService _attachmentService;
+        private readonly IRecommendationManager _recommendationManager;
 
-        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services, IAttachmentService attachmentService) {
+        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services, IAttachmentService attachmentService, IRecommendationManager recommendationManager) {
             _notifier = services.Notifier;
             _ticketService = ticketService;
             _clock = clock;
             _services = services;
+            _contentManager = services.ContentManager;
             _attachmentService = attachmentService;
+            _recommendationManager = recommendationManager;
             T = NullLocalizer.Instance;
         }
 
@@ -127,6 +134,28 @@ namespace OrchardPros.Tickets.Controllers {
             _ticketService.Publish(ticket);
 
             _notifier.Information(T("Your ticket has been updated."));
+            return Redirect(Url.ItemDisplayUrl(ticket));
+        }
+
+        public ActionResult Solve(int id, int replyId, int rating, string recommendation, bool allowPublication) {
+            var ticket = _ticketService.GetTicket(id);
+            var reply = ticket.Replies.Single(x => x.Id == replyId);
+            
+            _ticketService.Solve(ticket, reply);
+            _notifier.Information(T("Your ticket has been solved."));
+
+            if (!String.IsNullOrWhiteSpace(recommendation)) {
+                _recommendationManager.Create(r => {
+                    r.AllowPublication = allowPublication;
+                    r.Body = recommendation.TrimSafe();
+                    r.RecommendingUser = ticket.User;
+                    r.UserId = reply.User.Id;
+                });
+                _notifier.Information(allowPublication 
+                    ? T("Your recommendation has been created and will be published when approved. Thanks!") 
+                    : T("Your recommendation has been created. Thanks!"));
+            }
+
             return Redirect(Url.ItemDisplayUrl(ticket));
         }
 

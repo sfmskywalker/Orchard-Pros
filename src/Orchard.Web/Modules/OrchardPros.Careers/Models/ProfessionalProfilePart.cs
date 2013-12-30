@@ -6,7 +6,7 @@ namespace OrchardPros.Careers.Models {
     public class ProfessionalProfilePart : ContentPart {
         internal LazyField<IEnumerable<Position>> PositionsField = new LazyField<IEnumerable<Position>>();
         internal LazyField<IEnumerable<Skill>> SkillsField = new LazyField<IEnumerable<Skill>>();
-        internal LazyField<IEnumerable<Recommendation>> RecommendationsField = new LazyField<IEnumerable<Recommendation>>();
+        internal LazyField<IEnumerable<RecommendationPart>> RecommendationsField = new LazyField<IEnumerable<RecommendationPart>>();
         internal LazyField<IEnumerable<Experience>> ExperienceField = new LazyField<IEnumerable<Experience>>();
 
         public IEnumerable<Position> Positions {
@@ -17,7 +17,7 @@ namespace OrchardPros.Careers.Models {
             get { return SkillsField.Value; }
         }
 
-        public IEnumerable<Recommendation> Recommendations {
+        public IEnumerable<RecommendationPart> Recommendations {
             get { return RecommendationsField.Value; }
         }
 

@@ -6,29 +6,21 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Localization;
-using Orchard.Security;
 using OrchardPros.Careers.Models;
 using OrchardPros.Careers.Services;
 using OrchardPros.Careers.ViewModels;
 
 namespace OrchardPros.Careers.Drivers {
     public class ProfessionalProfilePartDriver : ContentPartDriver<ProfessionalProfilePart> {
-        private readonly IRecommendationManager _recommendationManager;
         private readonly IExperienceManager _experienceManager;
-        private readonly IContentManager _contentManager;
         private readonly IPositionManager _positionManager;
         private readonly ISkillManager _skillManager;
 
         public ProfessionalProfilePartDriver(
-            IRecommendationManager recommendationManager, 
             IExperienceManager experienceManager, 
-            IContentManager contentManager, 
             IPositionManager positionManager, 
             ISkillManager skillManager) {
-
-            _recommendationManager = recommendationManager;
             _experienceManager = experienceManager;
-            _contentManager = contentManager;
             _positionManager = positionManager;
             _skillManager = skillManager;
             T = NullLocalizer.Instance;
@@ -51,7 +43,7 @@ namespace OrchardPros.Careers.Drivers {
                 };
                 viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Positions(TabText: T("Positions"), Profile: part, Positions: part.Positions.ToList()));
                 viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Skills(TabText: T("Skills"), Profile: part, Skills: part.Skills.ToList()));
-                viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Recommendations(TabText: T("Recommendations"), Profile: part, Recommendations: _recommendationManager.FetchEx(part.Id).ToList()));
+                viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Recommendations(TabText: T("Recommendations"), Profile: part));
                 viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Experience(TabText: T("Experience"), Profile: part, Experience: _experienceManager.Fetch(part.Id).ToList()));
 
                 return shapeHelper.EditorTemplate(TemplateName: "Parts/ProfessionalProfile", Model: viewModel, Prefix: Prefix);
@@ -63,13 +55,11 @@ namespace OrchardPros.Careers.Drivers {
             partElement.Add(CreatePositionsElement(part));
             partElement.Add(CreateSkillsElement(part));
             partElement.Add(CreateExperiencesElement(part));
-            partElement.Add(CreateRecommendationsElement(part));
         }
 
         protected override void Importing(ProfessionalProfilePart part, ImportContentContext context) {
             var partElement = context.Data.Element(part.PartDefinition.Name);
             var positionsDictionary = ImportPositions(part, partElement);
-            ImportRecommendations(part, partElement, context);
             ImportSkills(part, partElement);
             ImportExperiences(part, partElement, positionsDictionary);
         }
@@ -103,23 +93,6 @@ namespace OrchardPros.Careers.Drivers {
             }
         }
 
-        private void ImportRecommendations(ProfessionalProfilePart part, XElement partElement, ImportContentContext context) {
-            var recommendationsElement = partElement.Element("Recommendations");
-
-            if (recommendationsElement == null)
-                return;
-
-            foreach (var recommendationElement in recommendationsElement.Elements("Recommendation")) {
-                var element = recommendationElement;
-                _recommendationManager.Create(part.Id, r => {
-                    r.Approved = element.Attr<bool>("Approved");
-                    r.CreatedUtc = element.Attr<DateTime>("CreatedUtc");
-                    r.RecommendingUserId = context.GetItemFromSession(element.Attr<string>("RecommendingUserId")).Id;
-                    r.Text = element.Value;
-                });
-            }
-        }
-
         private IDictionary<int, Position> ImportPositions(ProfessionalProfilePart part, XElement partElement) {
             var positionsElement = partElement.Element("Positions");
             var dictionary = new Dictionary<int, Position>();
@@ -145,18 +118,6 @@ namespace OrchardPros.Careers.Drivers {
                 }
             }
             return dictionary;
-        }
-
-        private XElement CreateRecommendationsElement(ProfessionalProfilePart part) {
-            var recommendingUserIds = part.Recommendations.Select(x => x.RecommendingUserId).Distinct().ToArray();
-            var recommendingUsers = _contentManager.GetMany<IUser>(recommendingUserIds, VersionOptions.Latest, QueryHints.Empty).ToDictionary(x => x.Id);
-            return new XElement("Recommendations",
-                part.Recommendations.Select(recommendation =>
-                    new XElement("Recommendation",
-                        new XAttribute("RecommendingUserId", _contentManager.GetItemMetadata(recommendingUsers[recommendation.RecommendingUserId]).Identity),
-                        new XAttribute("Approved", recommendation.Approved),
-                        new XAttribute("CreatedUtc", recommendation.CreatedUtc),
-                        new XText(recommendation.Text))));
         }
 
         private XElement CreateExperiencesElement(ProfessionalProfilePart part) {

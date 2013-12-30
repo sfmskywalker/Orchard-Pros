@@ -100,6 +100,10 @@
       <Project>{79aed36e-abd0-4747-93d3-8722b042454b}</Project>
       <Name>Orchard.Users</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OrchardPros.Careers\OrchardPros.Careers.csproj">
+      <Project>{3f168f27-6012-4402-93d1-e77f6ffdd627}</Project>
+      <Name>OrchardPros.Careers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OrchardPros.Membership\OrchardPros.Membership.csproj">
       <Project>{a0cd4784-104c-459c-8ec0-9e97b5b4207c}</Project>
       <Name>OrchardPros.Membership</Name>

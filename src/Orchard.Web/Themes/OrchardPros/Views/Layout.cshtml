@@ -20,6 +20,9 @@
         return Model.Content == null && Model.AsideSecond == null ? "col-md-12" : "col-md-4";
     }
 }
+@if (Model.Overlays != null) {
+    @Display(Model.Overlays)
+}
 @Display.SiteBar()
 @Display.NavBar()
 <div class="container">

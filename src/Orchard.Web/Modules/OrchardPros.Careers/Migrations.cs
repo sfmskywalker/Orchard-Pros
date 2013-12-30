@@ -7,6 +7,7 @@ using Orchard.Indexing;
 namespace OrchardPros.Careers {
     public class Migrations : DataMigrationImpl {
         public int Create() {
+            // Position
             SchemaBuilder.CreateTable("Position", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
                 .Column<int>("UserId")
@@ -22,20 +23,14 @@ namespace OrchardPros.Careers {
                 .Column<bool>("IsArchived")
                 .Column<DateTime>("ArchivedUtc"));
 
+            // Skill
             SchemaBuilder.CreateTable("Skill", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
                 .Column<int>("UserId")
                 .Column<string>("Name", c => c.WithLength(64))
                 .Column<int>("Rating", c => c.NotNull()));
 
-            SchemaBuilder.CreateTable("Recommendation", table => table
-                .Column<int>("Id", c => c.PrimaryKey().Identity())
-                .Column<int>("UserId")
-                .Column<int>("RecommendingUserId")
-                .Column<string>("Text", c => c.Unlimited())
-                .Column<bool>("Approved", c => c.NotNull())
-                .Column<DateTime>("CreatedUtc"));
-
+            // Experience
             SchemaBuilder.CreateTable("Experience", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
                 .Column<int>("UserId")
@@ -43,9 +38,28 @@ namespace OrchardPros.Careers {
                 .Column<string>("Description", c => c.Unlimited())
                 .Column<DateTime>("CreatedUtc"));
 
+            // Recommendation
+            SchemaBuilder.CreateTable("RecommendationPartRecord", table => table
+                .ContentPartRecord()
+                .Column<int>("UserId"));
+
+            ContentDefinitionManager.AlterPartDefinition("RecommendationPart", part => part
+                .Attachable(false)
+                .WithDescription("Used for the Recommendation content type"));
+
+            ContentDefinitionManager.AlterTypeDefinition("Recommendation", type => type
+                .WithPart("CommonPart")
+                .WithPart("IdentityPart")
+                .WithPart("BodyPart")
+                .WithPart("RecommendationPart")
+                .Creatable(false)
+                .Draftable(false));
+
+            // Profile
             ContentDefinitionManager.AlterPartDefinition("ProfessionalProfilePart", part => part
                 .WithDescription("Stores professional background information about a user"));
 
+            // User
             ContentDefinitionManager.AlterTypeDefinition("User", type => type
                 .WithPart("ProfessionalProfilePart")
                 .Indexed("Users"));

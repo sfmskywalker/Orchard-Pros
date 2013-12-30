@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Orchard;
+using Orchard.ContentManagement;
 using OrchardPros.Careers.Models;
-using OrchardPros.Careers.ViewModels;
 
 namespace OrchardPros.Careers.Services {
     public interface IRecommendationManager : IDependency {
-        IEnumerable<Recommendation> Fetch(int profileId);
-        IEnumerable<RecommendationEx> FetchEx(int profileId);
-        Recommendation Create(int profileId, Action<Recommendation> initialize = null);
-        Recommendation Get(int id);
-        void Delete(Recommendation recommendation);
-        void Approve(Recommendation recommendation);
+        RecommendationPart Create(Action<RecommendationPart> initialize = null);
+        IContentQuery<ContentItem, RecommendationPartRecord> GetByUser(int userId);
+        void Approve(RecommendationPart recommendation);
     }
 }

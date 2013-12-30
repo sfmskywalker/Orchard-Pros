@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
 using OrchardPros.Careers.Models;
 using OrchardPros.Careers.Services;
@@ -10,7 +11,12 @@ namespace OrchardPros.Careers.Handlers {
         private readonly IRecommendationManager _recommendationManager;
         private readonly IExperienceManager _experienceManager;
 
-        public ProfessionalProfilePartHandler(IPositionManager positionManager, ISkillManager skillManager, IRecommendationManager recommendationManager, IExperienceManager experienceManager) {
+        public ProfessionalProfilePartHandler(
+            IPositionManager positionManager, 
+            ISkillManager skillManager, 
+            IRecommendationManager recommendationManager, 
+            IExperienceManager experienceManager) {
+
             _positionManager = positionManager;
             _skillManager = skillManager;
             _recommendationManager = recommendationManager;
@@ -19,10 +25,10 @@ namespace OrchardPros.Careers.Handlers {
         }
 
         private void SetupFields(ActivatedContentContext context, ProfessionalProfilePart part) {
-            part.PositionsField.Loader(() => _positionManager.Fetch(part.Id).ToList());
-            part.SkillsField.Loader(() => _skillManager.Fetch(part.Id).ToList());
-            part.RecommendationsField.Loader(() => _recommendationManager.Fetch(part.Id).ToList());
-            part.ExperienceField.Loader(() => _experienceManager.Fetch(part.Id).ToList());
+            part.PositionsField.Loader(() => _positionManager.Fetch(part.Id).ToArray());
+            part.SkillsField.Loader(() => _skillManager.Fetch(part.Id).ToArray());
+            part.RecommendationsField.Loader(() => _recommendationManager.GetByUser(part.Id).List<RecommendationPart>().ToArray());
+            part.ExperienceField.Loader(() => _experienceManager.Fetch(part.Id).ToArray());
         }
     }
 }

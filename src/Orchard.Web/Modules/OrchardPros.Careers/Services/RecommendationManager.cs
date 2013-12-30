@@ -1,65 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Orchard.Data;
+using Orchard.ContentManagement;
 using Orchard.Services;
-using Orchard.Users.Models;
 using OrchardPros.Careers.Models;
-using OrchardPros.Careers.ViewModels;
 
 namespace OrchardPros.Careers.Services {
     public class RecommendationManager : IRecommendationManager {
-        private readonly IRepository<Recommendation> _recommendationRepository;
-        private readonly IRepository<UserPartRecord> _userRepository;
         private readonly IClock _clock;
+        private readonly IContentManager _contentManager;
 
-        public RecommendationManager(IRepository<Recommendation> recommendationRepository, IRepository<UserPartRecord> userRepository, IClock clock) {
-            _recommendationRepository = recommendationRepository;
-            _userRepository = userRepository;
+        public RecommendationManager(IClock clock, IContentManager contentManager) {
             _clock = clock;
+            _contentManager = contentManager;
         }
 
-        public IEnumerable<Recommendation> Fetch(int profileId) {
-            return _recommendationRepository.Fetch(x => x.UserId == profileId);
+        public RecommendationPart Create(Action<RecommendationPart> initialize = null) {
+            return _contentManager.Create("Recommendation", initialize);
         }
 
-        public IEnumerable<RecommendationEx> FetchEx(int profileId) {
-            return from recommendation in _recommendationRepository.Table
-                where recommendation.UserId == profileId
-                from user in _userRepository.Table
-                where user.Id == profileId
-                   select new RecommendationEx {
-                    Approved = recommendation.Approved,
-                    CreatedUtc = recommendation.CreatedUtc,
-                    UserId = recommendation.UserId,
-                    Id = recommendation.Id,
-                    RecommendingUserId = recommendation.RecommendingUserId,
-                    RecommendingUser = user,
-                    Text = recommendation.Text
-                };
+        public IContentQuery<ContentItem, RecommendationPartRecord> GetByUser(int userId) {
+            return _contentManager.Query().Join<RecommendationPartRecord>().Where(x => x.UserId == userId);
         }
 
-        public Recommendation Create(int profileId, Action<Recommendation> initialize = null) {
-            var recommendation = new Recommendation {
-                UserId = profileId,
-                CreatedUtc = _clock.UtcNow
-            };
-            if (initialize != null)
-                initialize(recommendation);
-            _recommendationRepository.Create(recommendation);
-            return recommendation;
-        }
-
-        public Recommendation Get(int id) {
-            return _recommendationRepository.Get(id);
-        }
-
-        public void Delete(Recommendation recommendation) {
-            _recommendationRepository.Delete(recommendation);
-        }
-
-        public void Approve(Recommendation recommendation) {
+        public void Approve(RecommendationPart recommendation) {
             recommendation.Approved = true;
+            recommendation.ApprovedUtc = _clock.UtcNow;
         }
     }
 }
