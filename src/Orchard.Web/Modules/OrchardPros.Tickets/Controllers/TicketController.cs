@@ -21,12 +21,14 @@ namespace OrchardPros.Tickets.Controllers {
         private readonly ITicketService _ticketService;
         private readonly IClock _clock;
         private readonly IOrchardServices _services;
+        private readonly IAttachmentService _attachmentService;
 
-        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services) {
+        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services, IAttachmentService attachmentService) {
             _notifier = services.Notifier;
             _ticketService = ticketService;
             _clock = clock;
             _services = services;
+            _attachmentService = attachmentService;
             T = NullLocalizer.Instance;
         }
 
@@ -77,7 +79,9 @@ namespace OrchardPros.Tickets.Controllers {
 
             _ticketService.AssignCategories(ticket, model.Categories);
             _ticketService.AssignTags(ticket, model.Tags);
-            _ticketService.AssociateAttachments(ticket, model.UploadedFileNames, model.OriginalFileNames);
+
+            if (model.Attachments != null)
+                _attachmentService.AssociateAttachments(ticket, model.Attachments.UploadedFileNames, model.Attachments.OriginalFileNames);
 
             _notifier.Information(T("Your ticket has been created."));
             return Redirect(Url.ItemDisplayUrl(ticket));
@@ -116,21 +120,14 @@ namespace OrchardPros.Tickets.Controllers {
 
             _ticketService.AssignCategories(ticket, model.Categories);
             _ticketService.AssignTags(ticket, model.Tags);
-            _ticketService.AssociateAttachments(ticket, model.UploadedFileNames, model.OriginalFileNames);
+
+            if (model.Attachments != null)
+                _attachmentService.AssociateAttachments(ticket, model.Attachments.UploadedFileNames, model.Attachments.OriginalFileNames);
+
             _ticketService.Publish(ticket);
 
             _notifier.Information(T("Your ticket has been updated."));
             return Redirect(Url.ItemDisplayUrl(ticket));
-        }
-
-        [HttpPost]
-        public JsonResult Upload() {
-            var file = Request.Files[0];
-            var temporaryFileName = _ticketService.UploadAttachment(file);
-
-            return Json(new {
-                uploadedFileName = temporaryFileName
-            });
         }
 
         private TicketViewModel SetupCreateViewModel(TicketViewModel model) {

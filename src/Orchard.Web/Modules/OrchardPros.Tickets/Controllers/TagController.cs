@@ -11,7 +11,7 @@ namespace OrchardPros.Tickets.Controllers {
         }
 
         public ActionResult Search(string term) {
-            var terms = _ticketService.GetTagDictionary().Values.Where(x => x.Contains(term));
+            var terms = _ticketService.GetTags().Select(x => x.Name).Where(x => x.Contains(term));
             return Json(terms, JsonRequestBehavior.AllowGet);
         }
     }

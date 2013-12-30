@@ -112,7 +112,7 @@ article.ticket-reply .ticket-status .votes { float:none; }
 .ticket-status .rate { width:21px; height:21px; border:none; text-align:center; margin-top:4px; padding:5px; color:#fff; float:left; }
 .ticket-status .rate.positive { background:#c9e3a7; margin-right:4px; }
 .ticket-status .rate.negative { background:#e3a7a7; }
-article.ticket-reply .ticket-summary { float:right; width:90%; min-height:255px; } 
+article.ticket-reply .ticket-summary { float:right; width:90%; min-height:288px; } 
 article.ticket-reply .ticket-info { border-top:1px solid #eee; }
 article.ticket-reply .idplate { float:right; }
 

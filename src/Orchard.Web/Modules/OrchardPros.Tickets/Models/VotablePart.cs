@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Orchard.ContentManagement;
+using OrchardPros.Tickets.Helpers;
 
 namespace OrchardPros.Tickets.Models {
     public class VotablePart : ContentPart {
-        public IList<int> VoteIds {
-            get { return this.Retrieve(x => x.VoteIds); }
-            set { this.Store(x => x.VoteIds, value); }
+        public IEnumerable<int> VoteIds {
+            get { return Retrieve<string>("Votes").Split<int>(); }
+            set { Store("Votes", value.Join()); }
         }
 
         public int VoteCount {
-            get { return VoteIds.Count; }
+            get { return VoteIds.Count(); }
         }
     }
 }

@@ -96,6 +96,7 @@ namespace OrchardPros.Tickets {
                 .WithPart("TitlePart")
                 .WithPart("ReplyPart")
                 .WithPart("BodyPart")
+                .WithPart("AttachmentsHolderPart")
                 .WithPart("VotablePart"));
 
             // Expert

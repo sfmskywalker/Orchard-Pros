@@ -17,12 +17,8 @@ namespace OrchardPros.Tickets.Services {
         int CalculateExperience(ExpertPart user);
         TimeSpan GetRemainingTimeFor(TicketPart ticket);
         TicketPart GetTicket(int id);
-        IDictionary<int, string> GetCategoryDictionary();
-        IDictionary<int, string> GetTagDictionary();
         void AssignCategories(TicketPart ticket, IEnumerable<int> categoryIds);
         void AssignTags(TicketPart ticket, string tags);
-        string UploadAttachment(HttpPostedFileBase file);
-        void AssociateAttachments(TicketPart ticket, IEnumerable<string> uploadedFileNames, IEnumerable<string> originalFileNames);
         IPagedList<TicketPart> GetTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest);
         
         /// <summary>

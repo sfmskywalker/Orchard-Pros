@@ -1,4 +1,12 @@
-﻿<!-- Replies -->
+﻿@using Orchard.ContentManagement
+@using Orchard.Core.Common.Models
+@using OrchardPros.Membership.Helpers
+@using OrchardPros.Membership.Models
+@using OrchardPros.Tickets.Models
+@{
+    var ticket = (TicketPart) Model.Ticket;
+}
+<!-- Replies -->
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -9,141 +17,109 @@
                         <li><a href="#">Latest</a></li>
                     </ul>
                 </div>
-
-                <!-- Ticket reply -->
-                <article class="ticket-reply">
-                    <div class="col-md-8">
-                        <div class="ticket-summary">
-                            <h3>Optional reply title</h3>
-                            <p>Decore reprehendunt ea ius, no dico ullum voluptatibus pro. Ne ullum partem vocent eam. Ea legere rationibus quo, sea prompta adolescens in, hinc docendi eu mei. Id deleniti periculis est. Has soleat graeco eligendi eu, ei veri assum pri. Et illud referrentur mei, pri ceteros commune temporibus no, et causae alterum quo. Mei ei reformidans vituperatoribus, aeque tritani eos id, ad nam graece ancillae invenire.</p>
-                            <p>Decore reprehendunt ea ius, no dico ullum voluptatibus pro. Ne ullum partem vocent eam. Ea legere rationibus quo, sea prompta adolescens in, hinc docendi eu mei. Id deleniti periculis est. Has soleat graeco eligendi eu, ei veri assum pri. Et illud referrentur mei, pri ceteros commune temporibus no, et causae alterum quo. Mei ei reformidans vituperatoribus, aeque tritani eos id, ad nam graece ancillae invenire. Decore reprehendunt ea ius, no dico ullum voluptatibus pro. Ne ullum partem vocent eam. Ea legere rationibus quo, sea prompta adolescens in, hinc docendi eu mei. Id deleniti periculis est. Has soleat graeco eligendi eu, ei veri assum pri. Et illud referrentur mei, pri ceteros commune temporibus no, et causae alterum quo. Mei ei reformidans vituperatoribus, aeque tritani eos id, ad nam graece ancillae invenire.</p>
-                        </div>
-                        <div class="ticket-status">
-                            <ul>
-                                <li class="votes positive"><span class="number">+8</span><span class="type">votes</span></li>
-                                <li class="rate positive"><span class="glyphicon glyphicon-plus"></span></li>
-                                <li class="rate negative"><span class="glyphicon glyphicon-minus"></span></li>
-                            </ul>
-                        </div>
-                        <div class="ticket-info">
-                            <a href="#">Reply</a>
-                            <span class="ticket-timestamp">50 mins ago by<span class="author"><a href="#">Username</a></span></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="panel panel-default idplate">
-                            <div class="panel-body">
-                                <div class="media">
-                                    <a href="#" class="pull-left"><img src="~/themes/orchardpros/images/temp-profile.png" class="media-object profile-img-m"></a>
-                                    <ul class="expert-info media-body">
-                                        <li class="name"><a href="#">Expert name (Links to profile)</a></li>
-                                        <li class="title">Lv.00 Title</li>
-                                        <li class="rating">
-                                            <span class="glyphicon glyphicon-star"></span>
-                                            <span class="glyphicon glyphicon-star"></span>
-                                            <span class="glyphicon glyphicon-star"></span>
-                                            <span class="glyphicon glyphicon-star"></span>
-                                            <span class="glyphicon glyphicon-star"></span>
-                                        </li>
-                                        <li class="experience">
-                                            <h4>Experience</h4>
-                                            <p>Total EXP: 10000</p>
-                                        </li>
-                                        <li class="achievements">
-                                            <h4>Achievements</h4>
-                                            <p>
-                                                <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
-                                                <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
-                                                <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
-                                                <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
-                                            </p>
-                                        </li>
-                                    </ul>
-                                </div>
+                
+                @foreach (var reply in ticket.Replies) {
+                    var votablePart = reply.As<VotablePart>();
+                    var user = reply.User;
+                    var profile = user.As<UserProfilePart>();
+                    var expert = user.As<ExpertPart>();
+                    var attachments = reply.As<AttachmentsHolderPart>().Attachments.ToArray();
+                    var voteCount = votablePart.VoteCount;
+                    var votesClass = voteCount == 0 ? "neutral" : voteCount < 0 ? "negative" : "positive";
+                    var votesSign = voteCount == 0 ? "" : voteCount < 0 ? "-" : "+";
+                    var createdUtc = reply.As<CommonPart>().CreatedUtc.Value;
+                    <!-- Ticket reply -->
+                    <article class="ticket-reply">
+                        <div class="col-md-8">
+                            <div class="ticket-summary">
+                                @if (!String.IsNullOrWhiteSpace(reply.Subject)) {
+                                    <h3>@reply.Subject</h3>
+                                }
+                                @reply.Body
+                                @if (attachments.Any()) {
+                                    <div class="reply-attachments">
+                                        <em>@T("Attachments")</em>
+                                        <ul class="list-unstyled">
+                                            @foreach (var attachment in attachments) {
+                                                <li><a href="#"><img src="~/themes/orchardpros/images/file-docx.png" alt="Document">@attachment.FileName</a></li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
                             </div>
-                        </div> <!-- /.panel -->
-                        <button type="button" class="btn btn-success btn-solve-ticket">Solve ticket</button>
-                    </div> <!-- /.col-md-4 -->
-                </article>
-
-                <article class="ticket-reply">
-                    <div class="col-md-8">
-                        <div class="ticket-summary">
-                            <h3>Optional reply title</h3>
-                            <p>Decore reprehendunt ea ius, no dico ullum voluptatibus pro. Ne ullum partem vocent eam. Ea legere rationibus quo, sea prompta adolescens in, hinc docendi eu mei. Id deleniti periculis est. Has soleat graeco eligendi eu, ei veri assum pri. Et illud referrentur mei, pri ceteros commune temporibus no, et causae alterum quo. Mei ei reformidans vituperatoribus, aeque tritani eos id, ad nam graece ancillae invenire.</p>
-                        </div>
-                        <div class="ticket-status">
-                            <ul>
-                                <li class="votes positive"><span class="number">+8</span><span class="type">votes</span></li>
-                                <li class="rate positive"><span class="glyphicon glyphicon-plus"></span></li>
-                                <li class="rate negative"><span class="glyphicon glyphicon-minus"></span></li>
-                            </ul>
-                        </div>
-                        <div class="ticket-info">
-                            <a href="#">Reply</a>
-                            <span class="ticket-timestamp">50 mins ago by<span class="author"><a href="#">Username</a></span></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="panel panel-default idplate">
-                            <div class="panel-body">
-                                <div class="media">
-                                    <a href="#" class="pull-left"><img src="~/themes/orchardpros/images/temp-profile.png" class="media-object profile-img-m"></a>
-                                    <ul class="expert-info media-body">
-                                        <li class="name"><a href="#">Expert name (Links to profile)</a></li>
-                                        <li class="title">Lv.00 Title</li>
-                                        <li class="rating">
-                                            <span class="glyphicon glyphicon-star"></span>
-                                            <span class="glyphicon glyphicon-star"></span>
-                                            <span class="glyphicon glyphicon-star"></span>
-                                            <span class="glyphicon glyphicon-star"></span>
-                                            <span class="glyphicon glyphicon-star"></span>
-                                        </li>
-                                        <li class="experience">
-                                            <h4>Experience</h4>
-                                            <p>Total EXP: 10000</p>
-                                        </li>
-                                        <li class="achievements">
-                                            <h4>Achievements</h4>
-                                            <p>
-                                                <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
-                                                <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
-                                                <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
-                                                <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
-                                            </p>
-                                        </li>
-                                    </ul>
-                                </div>
+                            <div class="ticket-status">
+                                <ul>
+                                    <li class="votes @votesClass"><span class="number">@(votesSign + voteCount)</span><span class="type">@T("votes")</span></li>
+                                    <li class="rate positive"><span class="glyphicon glyphicon-plus"></span></li>
+                                    <li class="rate negative"><span class="glyphicon glyphicon-minus"></span></li>
+                                </ul>
                             </div>
-                        </div> <!-- /.panel -->
-                        <button type="button" class="btn btn-success btn-solve-ticket">Solve ticket</button>
-                    </div> <!-- /.col-md-4 -->
-                </article> <!-- /Ticket replies -->
+                            <div class="ticket-info">
+                                <a href="#">@T("Reply")</a>
+                                <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: createdUtc))<span class="author"><a href="#">@T(user.UserName)</a></span></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel panel-default idplate">
+                                <div class="panel-body">
+                                    <div class="media">
+                                        <a href="#" class="pull-left"><img src="@Url.AvatarUrl(profile, this, 64)" class="media-object profile-img-m"></a>
+                                        <ul class="expert-info media-body">
+                                            <li class="name"><a href="#">@profile.DisplayName</a></li>
+                                            <li class="title">@T("Lv. {0:00} {1}", expert.Level, expert.RankName)</li>
+                                            <li class="rating">
+                                                @for (var i = 0; i < expert.Rating; i++) {
+                                                    <span class="glyphicon glyphicon-star"></span>
+                                                }
+                                            </li>
+                                            <li class="experience">
+                                                <h4>@T("Experience")</h4>
+                                                <p>@T("Total EXP: {0}", expert.ExperiencePoints)</p>
+                                            </li>
+                                            <li class="achievements">
+                                                <h4>@T("Achievements")</h4>
+                                                <p>
+                                                    <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                                    <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                                    <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                                    <img src="~/themes/orchardpros/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div> <!-- /.panel -->
+                            <button type="button" class="btn btn-success btn-solve-ticket">@T("Solve ticket")</button>
+                        </div> <!-- /.col-md-4 -->
+                    </article>
+                }<!-- /Ticket replies -->
             </section>
         </div> <!-- /.col-md-12 -->
     </div> <!-- /.row -->
 </div> <!-- /.container Replies -->
 <!-- Post a reply -->
 <div class="container">
-    <div class="row">
-        <div class="col-md-8">
-            <section>
-                <h2>Post a reply</h2>
-                <form class="form-group">
-                    <textarea class="form-control" rows="5"></textarea>
-                </form>
-                <form class="form-group">
-                    <button type="submit" class="btn btn-success btn-post">Post reply</button>
-                </form>
-            </section>
-        </div> <!-- /.col-md-8 -->
-        <div class="col-md-4">
-            <aside>
-                <div class="well" id="file-upload">
-                    <p class="h3">Drag &amp; Drop attachment(s) or</p>
-                    <button class="btn btn-default btn-upload" type="button">Browse files</button>
-                </div>
-            </aside>
-        </div> <!-- /.col-md-4 -->
-    </div> <!-- /.row -->
+    @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", "Reply", new {area = "OrchardPros.Tickets"}), FormMethod.Post, new {role = "form"})) {
+        <input type="hidden" name="ContentItemId" value="@ticket.Id"/>
+        <div class="row">
+            <div class="col-md-8">
+                <section>
+                    <h2>@T("Post a reply")</h2>
+                    <fieldset class="form-group">
+                        <input class="form-control" type="text" name="Title" value="@T("Re: {0}", ticket.Subject)"/>
+                        <textarea class="form-control" rows="5" name="Body"></textarea>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <button type="submit" class="btn btn-success btn-post">@T("Post reply")</button>
+                    </fieldset>
+                </section>
+            </div> <!-- /.col-md-8 -->
+            <div class="col-md-4">
+                <aside>
+                    @Html.Editor("Attachments", "AttachmentsViewModel")
+                </aside>
+            </div> <!-- /.col-md-4 -->
+        </div>
+        <!-- /.row -->
+    }
 </div> <!-- /.container Post a reply -->

@@ -5,6 +5,11 @@ using Orchard.Security;
 
 namespace OrchardPros.Tickets.Models {
     public class ReplyPart : ContentPart {
+        public IContent ContainingContent {
+            get { return this.As<CommonPart>().Container; }
+            set { this.As<CommonPart>().Container = value; }
+        }
+
         public string Subject{
             get { return this.As<TitlePart>().Title; }
             set { this.As<TitlePart>().Title = value; }
@@ -18,6 +23,11 @@ namespace OrchardPros.Tickets.Models {
         public IUser User {
             get { return this.As<CommonPart>().Owner; }
             set { this.As<CommonPart>().Owner = value; }
+        }
+
+        public int? ParentReplyId {
+            get { return this.Retrieve(x => x.ParentReplyId); }
+            set { this.Store(x => x.ParentReplyId, value); }
         }
     }
 }

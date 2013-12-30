@@ -86,20 +86,6 @@ namespace OrchardPros.Tickets.Services {
             return _contentManager.Get<TicketPart>(id);
         }
 
-        public IDictionary<int, string> GetCategoryDictionary() {
-            return _cache.Get("CategoryDictionary", context => {
-                context.Monitor(_signals.When(Signals.CategoryDictionary));
-                return GetCategories().ToDictionary(x => x.Id, x => x.Name);
-            });
-        }
-
-        public IDictionary<int, string> GetTagDictionary() {
-            return _cache.Get("TagDictionary", context => {
-                context.Monitor(_signals.When(Signals.TagDictionary));
-                return GetTags().ToDictionary(x => x.Id, x => x.Name);
-            });
-        }
-
         public void AssignCategories(TicketPart ticket, IEnumerable<int> categoryIds) {
             var categoryList = (categoryIds ?? Enumerable.Empty<int>()).ToArray();
             var terms = _contentManager.GetMany<TermPart>(categoryList, VersionOptions.Published, QueryHints.Empty);
@@ -110,43 +96,6 @@ namespace OrchardPros.Tickets.Services {
             var tagList = !String.IsNullOrWhiteSpace(tags) ? ParseTags(tags).Select(x => x.Id) : Enumerable.Empty<int>();
             var terms = _contentManager.GetMany<TermPart>(tagList, VersionOptions.Published, QueryHints.Empty);
             _taxonomyService.UpdateTerms(ticket.ContentItem, terms, "Tags");
-        }
-
-        public string UploadAttachment(HttpPostedFileBase file) {
-            var tempFolderPath = "_Attachments/_Temp";
-            var extension = Path.GetExtension(file.FileName);
-            var temporaryFileName = String.Format("{0}{1}", Guid.NewGuid(), extension);
-            var path = tempFolderPath + "/" + temporaryFileName;
-            _storageProvider.SaveStream(path, file.InputStream);
-            return temporaryFileName;
-        }
-
-        public void AssociateAttachments(TicketPart ticket, IEnumerable<string> uploadedFileNames, IEnumerable<string> originalFileNames) {
-            if (uploadedFileNames == null || originalFileNames == null)
-                return;
-
-            var tempFolderPath = "_Attachments/_Temp";
-            var ticketFolderPath = String.Format("_Attachments/{0:0000000}", ticket.Id);
-            var uploadedFiles = uploadedFileNames.ToArray();
-            var originalFiles = originalFileNames.ToArray();
-            var attachmentIds = ticket.As<AttachmentsHolderPart>().AttachmentIds.ToList();
-
-            _storageProvider.TryCreateFolder(ticketFolderPath);
-
-            for (var i = 0; i < uploadedFiles.Length; i++) {
-                var uploadedFilePath = tempFolderPath + "/"  + uploadedFiles[i];
-                var originalFileName = Path.GetFileName(originalFiles[i]);
-                var originalFilePath = ticketFolderPath + "/" + originalFileName;
-                var attachment = _contentManager.Create<AttachmentPart>("Attachment", a => {
-                    a.As<CommonPart>().Container = ticket;
-                    a.FileName = originalFileName;
-                });
-
-                attachmentIds.Add(attachment.Id);
-                _storageProvider.RenameFile(uploadedFilePath, originalFilePath);
-            }
-
-            ticket.As<AttachmentsHolderPart>().AttachmentIds = attachmentIds;
         }
 
         public IPagedList<TicketPart> GetTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest) {

@@ -6,8 +6,8 @@ namespace OrchardPros.Tickets {
             var manifest = builder.Add();
 
             manifest
-                .DefineScript("OrchardPros.Tickets.CreateTicket")
-                .SetUrl("ticket-create.min.js", "ticket-create.js")
+                .DefineScript("OrchardPros.AttachmentsUploader")
+                .SetUrl("attachments-uploader.min.js", "attachments-uploader.js")
                 .SetDependencies("jQuery", "jQueryFileUpload");
         }
     }

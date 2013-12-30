@@ -2,9 +2,7 @@
 @{
     Style.Include("select2.css");
     Style.Include("select2-bootstrap.css");
-    Script.Include("~/Modules/Orchard.MediaLibrary/Scripts/knockout-2.3.0.js");
     Script.Require("jQuery");
-    Script.Require("OrchardPros.Tickets.CreateTicket");
     Script.Include("select2.js", "select2.min.js");
     Script.Include("select2-initialization.js");
 }
@@ -43,17 +41,5 @@
 </div>
 <div class="form-group">
     <label>@T("Attachments")</label>
-    <div class="well" id="file-upload" data-upload-url="@Url.Action("Upload", "Ticket", new { Area = "OrchardPros.Tickets" })" data-anti-forgery-token="@Html.AntiForgeryTokenValueOrchard()">
-        <input type="file" name="files[]" multiple="multiple">
-        <ul data-bind="foreach: transfers" class="list-unstyled">
-            <li>
-                <input type="hidden" name="uploadedFileNames" data-bind="value: uploadedFileName"/>
-                <input type="hidden" name="originalFileNames" data-bind="value: fileName" />
-                <span data-bind="css: status, text: label"></span>
-                <button type="button" data-bind="click: $parent.remove">@T("X")</button>
-            </li>
-        </ul>
-        <p class="h3">@T("Drag &amp; Drop attachment(s) or")</p>
-        <button id="browse-files" class="btn btn-default btn-upload" type="button">@T("Browse Files")</button>
-    </div>
+    @Html.EditorFor(m => m.Attachments)
 </div>

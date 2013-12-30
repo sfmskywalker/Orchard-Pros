@@ -1,0 +1,18 @@
+﻿@model OrchardPros.Tickets.ViewModels.AttachmentsViewModel
+@{
+    Script.Include("~/Modules/Orchard.MediaLibrary/Scripts/knockout-2.3.0.js");
+    Script.Require("OrchardPros.AttachmentsUploader");
+}
+<div class="well" id="file-upload" data-upload-url="@Url.Action("Upload", "Attachment", new { Area = "OrchardPros.Tickets" })" data-anti-forgery-token="@Html.AntiForgeryTokenValueOrchard()">
+    <input type="file" name="files[]" multiple="multiple">
+    <ul data-bind="foreach: transfers" class="list-unstyled">
+        <li>
+            <input type="hidden" name="@Html.FieldNameFor(m => m.UploadedFileNames)" data-bind="value: uploadedFileName"/>
+            <input type="hidden" name="@Html.FieldNameFor(m => m.OriginalFileNames)" data-bind="value: fileName" />
+            <span data-bind="css: status, text: label"></span>
+            <button type="button" data-bind="click: $parent.remove">@T("X")</button>
+        </li>
+    </ul>
+    <p class="h3">@T("Drag &amp; Drop attachment(s) or")</p>
+    <button id="browse-files" class="btn btn-default btn-upload" type="button">@T("Browse Files")</button>
+</div>
