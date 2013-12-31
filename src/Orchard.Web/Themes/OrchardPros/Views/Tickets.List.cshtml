@@ -74,7 +74,7 @@
                             @T("Bounty: {0:c}", ticket.Bounty)
                         </span>
                     }
-                    <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<span class="author"><a href="#">@ticket.LastModifier.UserName</a></span></span>
+                    <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<span class="author">@Html.ProfileLink(ticket.LastModifier.UserName)</span></span>
                 </div>
             </article>
         }

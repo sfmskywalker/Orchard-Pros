@@ -138,6 +138,7 @@
     <Compile Include="Activities\EventBase.cs" />
     <Compile Include="Activities\UserSignedInActivity.cs" />
     <Compile Include="Forms\SelectRolesForms.cs" />
+    <Compile Include="Helpers\HtmlExtensions.cs" />
     <Compile Include="Services\INotificationSettingsManager.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Models\NotificationSetting.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Models\NotificationSettingDescriptor.cs" />
     <Compile Include="Services\NewsletterNotificationSettingsProvider.cs" />
     <Compile Include="Services\NotificationSettingsManager.cs" />
+    <Compile Include="Routes.cs" />
     <Compile Include="ViewModels\AccountSettingsViewModel.cs" />
     <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />

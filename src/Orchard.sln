@@ -235,7 +235,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchardPros", "Orchard.Web\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchardPros.Tickets", "Orchard.Web\Modules\OrchardPros.Tickets\OrchardPros.Tickets.csproj", "{9D6E83E0-F32C-473C-B119-9CA2291C857D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules.OrchardPros", "Modules.OrchardPros", "{AE6A1F0F-C07A-40E5-991F-30631F475B06}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules.Custom", "Modules.Custom", "{AE6A1F0F-C07A-40E5-991F-30631F475B06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchardPros.Commerce", "Orchard.Web\Modules\OrchardPros.Commerce\OrchardPros.Commerce.csproj", "{9CCDF301-9BA0-4436-812C-7C901F175F54}"
 EndProject

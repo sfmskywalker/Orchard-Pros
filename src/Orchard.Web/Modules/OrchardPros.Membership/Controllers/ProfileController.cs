@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using NGM.OpenAuthentication.Models;
-using NGM.OpenAuthentication.Services;
-using NGM.OpenAuthentication.Services.Clients;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
 using Orchard.Localization;
 using Orchard.Mvc;
-using Orchard.Mvc.Extensions;
 using Orchard.Security;
 using Orchard.Themes;
 using Orchard.UI.Notify;
-using Orchard.Users.Events;
 using Orchard.Users.Services;
-using Orchard.Workflows.Services;
 using OrchardPros.Membership.Helpers;
 using OrchardPros.Membership.Models;
 using OrchardPros.Membership.Services;
@@ -53,14 +46,15 @@ namespace OrchardPros.Membership.Controllers {
         public Localizer T { get; set; }
         private dynamic New { get; set; }
 
-        public ActionResult Index(string id = null) {
-            var user = String.IsNullOrWhiteSpace(id) ? _services.WorkContext.CurrentUser : _membershipService.GetUser(id);
+        public ActionResult Index(string userName) {
+            var user = GetUser(userName);
             var profileShape = Wrap(New.Profile(User: user, IsCurrentUser: _services.WorkContext.CurrentUser.Id == user.Id), user);
             return new ShapeResult(this, profileShape);
         }
 
-        public ActionResult TicketsCreated() {
-            var ticketsCreated = Wrap(New.Profile_TicketsCreated());
+        public ActionResult TicketsCreated(string userName) {
+            var user = GetUser(userName);
+            var ticketsCreated = Wrap(New.Profile_TicketsCreated(), user);
             return new ShapeResult(this, ticketsCreated);
         }
 
@@ -135,6 +129,10 @@ namespace OrchardPros.Membership.Controllers {
             wrapper.Add(shape);
             wrapper.User = user ?? _services.WorkContext.CurrentUser;
             return wrapper;
+        }
+
+        private IUser GetUser(string userName = null) {
+            return String.IsNullOrWhiteSpace(userName) ? _services.WorkContext.CurrentUser : _membershipService.GetUser(userName);
         }
     }
 }

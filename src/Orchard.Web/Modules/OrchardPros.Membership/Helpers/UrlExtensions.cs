@@ -15,5 +15,9 @@ namespace OrchardPros.Membership.Helpers {
         public static string AccountSignOut(this UrlHelper url) {
             return url.Action("SignOut", "Account", new { area = Area });
         }
+
+        public static string Profile(this UrlHelper url, string userName) {
+            return url.Action("Index", "Profile", new { userName = userName, area = Area });
+        }
     }
 }

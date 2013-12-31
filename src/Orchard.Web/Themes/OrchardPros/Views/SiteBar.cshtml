@@ -3,7 +3,8 @@
 @using OrchardPros.Membership.Helpers
 @using OrchardPros.Membership.Models
 @{
-    var isAuthenticated = WorkContext.CurrentUser != null;
+    var currentUser = WorkContext.CurrentUser;
+    var isAuthenticated = currentUser != null;
 }
 <!-- Sitebar -->
 <nav class="sitebar orchard" role="navigation">
@@ -11,7 +12,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <ul class="nav navbar-nav">
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Orchard Network <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">@T("Orchard Network") <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
@@ -34,11 +35,11 @@
                         @if (AuthorizedFor(StandardPermissions.AccessAdminPanel)) {
                             <li><a href="@Url.Action("Index", "Admin", new { area = "Dashboard" })">@T("Dashboard")</a></li>
                         }
-                        <li><a href="@Url.Action("Index", "Profile", new { area = "OrchardPros.Membership" })">@T("Profile")</a></li>
-                        <li><a href="@Url.Action("TicketsCreated", "Profile", new { area = "OrchardPros.Membership" })">@T("Tickets Created")</a></li>
-                        <li><a href="@Url.Action("TicketsFollowed", "Profile", new { area = "OrchardPros.Membership" })">@T("Tickets Followed")</a></li>
-                        <li><a href="@Url.Action("Settings", "Profile", new { area = "OrchardPros.Membership" })">@T("Settings")</a></li>
-                        <li><a href="@Url.Action("Signout", "Account", new { area = "OrchardPros.Membership" })">@T("Sign out")</a></li>
+                        <li><a href="@Url.Action("Index", "Profile", new { userName = currentUser.UserName, area = "OrchardPros.Membership" })">@T("Profile")</a></li>
+                        <li><a href="@Url.Action("TicketsCreated", "Profile", new { userName = currentUser.UserName, area = "OrchardPros.Membership" })">@T("Tickets Created")</a></li>
+                        <li><a href="@Url.Action("TicketsFollowed", "Profile", new { userName = currentUser.UserName, area = "OrchardPros.Membership" })">@T("Tickets Followed")</a></li>
+                        <li><a href="@Url.Action("Settings", "Profile", new { userName = currentUser.UserName, area = "OrchardPros.Membership" })">@T("Settings")</a></li>
+                        <li><a href="@Url.Action("Signout", "Account", new { userName = currentUser.UserName, area = "OrchardPros.Membership" })">@T("Sign out")</a></li>
                     </ul>
                 </li>
             }
