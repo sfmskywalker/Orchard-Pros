@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -99,7 +100,7 @@ namespace OrchardPros.Tickets.Services {
         }
 
         public IPagedList<TicketPart> GetTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest) {
-            var baseQuery = _contentManager.Query();
+            var baseQuery = _contentManager.Query(VersionOptions.Published);
 
             switch (criteria) {
                 case TicketsCriteria.Unsolved:
@@ -119,10 +120,10 @@ namespace OrchardPros.Tickets.Services {
                     break;
             }
 
-            var ticketsQuery = baseQuery;
-            var pagedQuery = skip != null && take != null ? ticketsQuery.ForPart<TicketPart>().Slice(skip.Value, take.Value) : baseQuery.ForPart<TicketPart>().List();
+            var ticketsQuery = baseQuery.ForPart<TicketPart>();
+            var pagedQuery = skip != null && take != null ? ticketsQuery.Slice(skip.Value, take.Value) : ticketsQuery.List();
             var tickets = pagedQuery.ToArray();
-            var totalCount = skip == null || take == null ? tickets.Length : baseQuery.Count();
+            var totalCount = skip == null || take == null ? tickets.Length : ticketsQuery.List().Count();
 
             return tickets.ToPagedList(totalCount);
         }
