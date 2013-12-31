@@ -2,22 +2,24 @@
 @using Orchard.Core.Common.Models
 @using OrchardPros.Membership.Helpers
 @using OrchardPros.Membership.Models
+@using OrchardPros.Tickets
 @using OrchardPros.Tickets.Models
 @{
-    var ticket = (TicketPart) Model.Ticket;
+    var ticket = (TicketPart)Model.Ticket;
+    var isSolved = ticket.IsSolved;
+    var canSolveTicket = !isSolved && Authorizer.Authorize(Permissions.SolveOwnTickets, ticket);
 }
 <!-- Replies -->
-<div class="container">
+<div id="replies" class="container">
     <div class="row">
         <div class="col-md-12">
             <section>
                 <div class="sorter">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#">Best voted</a></li>
-                        <li><a href="#">Latest</a></li>
+                        <li class="active"><a href="#">@T("Best voted")</a></li>
+                        <li><a href="#">@T("Latest")</a></li>
                     </ul>
                 </div>
-                
                 @foreach (var reply in ticket.Replies) {
                     var votablePart = reply.As<VotablePart>();
                     var user = reply.User;
@@ -28,12 +30,16 @@
                     var votesClass = voteCount == 0 ? "neutral" : voteCount < 0 ? "negative" : "positive";
                     var votesSign = voteCount == 0 ? "" : voteCount < 0 ? "-" : "+";
                     var createdUtc = reply.As<CommonPart>().CreatedUtc.Value;
+                    var isAnswer = reply.Id == ticket.AnswerId;
                     <!-- Ticket reply -->
                     <article class="ticket-reply">
                         <div class="col-md-8">
                             <div class="ticket-summary">
                                 @if (!String.IsNullOrWhiteSpace(reply.Subject)) {
                                     <h3>@reply.Subject</h3>
+                                    if (isAnswer) {
+                                        <h2>@T("This is the answer.")</h2>
+                                    }
                                 }
                                 @reply.Body
                                 @if (attachments.Any()) {
@@ -89,7 +95,9 @@
                                     </div>
                                 </div>
                             </div> <!-- /.panel -->
-                            <button type="button" class="btn btn-success btn-solve-ticket">@T("Solve ticket")</button>
+                            @if (canSolveTicket) {
+                                <button type="button" class="btn btn-success btn-solve-ticket" data-reply="@reply.Id">@T("Solve ticket")</button>
+                            }
                         </div> <!-- /.col-md-4 -->
                     </article>
                 }<!-- /Ticket replies -->
@@ -99,14 +107,14 @@
 </div> <!-- /.container Replies -->
 <!-- Post a reply -->
 <div class="container">
-    @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", "Reply", new {area = "OrchardPros.Tickets"}), FormMethod.Post, new {role = "form"})) {
-        <input type="hidden" name="ContentItemId" value="@ticket.Id"/>
+    @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", "Reply", new { area = "OrchardPros.Tickets" }), FormMethod.Post, new { role = "form" })) {
+        <input type="hidden" name="ContentItemId" value="@ticket.Id" />
         <div class="row">
             <div class="col-md-8">
                 <section>
                     <h2>@T("Post a reply")</h2>
                     <fieldset class="form-group">
-                        <input class="form-control" type="text" name="Title" value="@T("Re: {0}", ticket.Subject)"/>
+                        <input class="form-control" type="text" name="Title" value="@T("Re: {0}", ticket.Subject)" />
                         <textarea class="form-control" rows="5" name="Body"></textarea>
                     </fieldset>
                     <fieldset class="form-group">

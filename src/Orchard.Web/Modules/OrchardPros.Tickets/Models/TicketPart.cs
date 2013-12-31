@@ -41,6 +41,10 @@ namespace OrchardPros.Tickets.Models {
             set { Store(x => x.SolvedUtc, value); }
         }
 
+        public bool IsSolved {
+            get { return SolvedUtc != null; }
+        }
+
         public int? AnswerId {
             get { return Retrieve(x => x.AnswerId); }
             set { Store(x => x.AnswerId, value); }

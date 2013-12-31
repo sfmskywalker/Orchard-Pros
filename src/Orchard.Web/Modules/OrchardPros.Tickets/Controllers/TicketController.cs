@@ -5,6 +5,7 @@ using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Localization;
 using Orchard.Mvc.Html;
+using Orchard.Security;
 using Orchard.Services;
 using Orchard.Themes;
 using Orchard.UI.Navigation;
@@ -24,18 +25,25 @@ namespace OrchardPros.Tickets.Controllers {
         private readonly ITicketService _ticketService;
         private readonly IClock _clock;
         private readonly IOrchardServices _services;
-        private readonly IContentManager _contentManager;
         private readonly IAttachmentService _attachmentService;
         private readonly IRecommendationManager _recommendationManager;
+        private readonly IAuthorizer _authorizer;
 
-        public TicketController(ITicketService ticketService, IClock clock, IOrchardServices services, IAttachmentService attachmentService, IRecommendationManager recommendationManager) {
+        public TicketController(
+            ITicketService ticketService, 
+            IClock clock, 
+            IOrchardServices services, 
+            IAttachmentService attachmentService, 
+            IRecommendationManager recommendationManager, 
+            IAuthorizer authorizer) {
+
             _notifier = services.Notifier;
             _ticketService = ticketService;
             _clock = clock;
             _services = services;
-            _contentManager = services.ContentManager;
             _attachmentService = attachmentService;
             _recommendationManager = recommendationManager;
+            _authorizer = authorizer;
             T = NullLocalizer.Instance;
         }
 
@@ -137,8 +145,12 @@ namespace OrchardPros.Tickets.Controllers {
             return Redirect(Url.ItemDisplayUrl(ticket));
         }
 
-        public ActionResult Solve(int id, int replyId, int rating, string recommendation, bool allowPublication) {
+        public ActionResult Solve(int id, int replyId, int? rating, string recommendation, bool? allowPublication) {
             var ticket = _ticketService.GetTicket(id);
+
+            if(!_authorizer.Authorize(Permissions.SolveOwnTickets, ticket))
+                return new HttpUnauthorizedResult();
+
             var reply = ticket.Replies.Single(x => x.Id == replyId);
             
             _ticketService.Solve(ticket, reply);
@@ -146,12 +158,12 @@ namespace OrchardPros.Tickets.Controllers {
 
             if (!String.IsNullOrWhiteSpace(recommendation)) {
                 _recommendationManager.Create(r => {
-                    r.AllowPublication = allowPublication;
+                    r.AllowPublication = allowPublication == true;
                     r.Body = recommendation.TrimSafe();
                     r.RecommendingUser = ticket.User;
                     r.UserId = reply.User.Id;
                 });
-                _notifier.Information(allowPublication 
+                _notifier.Information(allowPublication == true
                     ? T("Your recommendation has been created and will be published when approved. Thanks!") 
                     : T("Your recommendation has been created. Thanks!"));
             }

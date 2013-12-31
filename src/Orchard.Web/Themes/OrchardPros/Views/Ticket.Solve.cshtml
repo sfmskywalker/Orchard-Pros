@@ -3,10 +3,11 @@
     var ticket = (TicketPart)Model.Ticket;
 }
 <!-- Overlay -->
-<div class="overlay">
+<div id="solve-ticket-popup" class="overlay">
     <div class="popup">
         @using (Html.BeginFormAntiForgeryPost(Url.Action("Solve", "Ticket", new { id = ticket.Id, area = "OrchardPros.Tickets" }), FormMethod.Post, new { role = "form" })) {
             <input type="hidden" name="ReplyId" />
+            <input type="hidden" name="Rating" value="1" />
             <div class="panel-body">
                 <button type="button" class="close" aria-hidden="true">&times;</button>
                 <h2>@T("Solve issue")</h2>
@@ -26,10 +27,10 @@
                 </p>
                 <h3>@T("Write a recommendation")</h3>
                 <div class="form-group">
-                    <textarea class="form-control" rows="3"></textarea>
+                    <textarea name="Recommendation" class="form-control" rows="3"></textarea>
                     <div class="checkbox pull-left">
                         <label>
-                            <input type="checkbox" checked> @T("Public")
+                            <input name="AllowPublication" type="checkbox" value="true" checked> @T("Public")
                         </label>
                     </div>
                 </div>

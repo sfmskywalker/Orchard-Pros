@@ -112,6 +112,8 @@
   <ItemGroup>
     <Compile Include="Controllers\AttachmentController.cs" />
     <Compile Include="Drivers\ReplyPartDriver.cs" />
+    <Compile Include="Permissions.cs" />
+    <Compile Include="Security\TicketAuthorizationEventHandler.cs" />
     <Compile Include="ViewModels\ReplyViewModel.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\ReplyController.cs" />

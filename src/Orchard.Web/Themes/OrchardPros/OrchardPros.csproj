@@ -100,6 +100,7 @@
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\less-1.5.0.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\ticket.js" />
     <Content Include="Scripts\select2-initialization.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
@@ -291,9 +292,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\OrchardPros.Tickets\Ticket\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Parts.Ticket.cshtml" />
