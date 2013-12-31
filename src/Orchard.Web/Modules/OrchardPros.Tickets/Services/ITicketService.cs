@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Web;
 using Orchard;
 using Orchard.Security;
 using Orchard.Taxonomies.Models;
@@ -19,7 +18,7 @@ namespace OrchardPros.Tickets.Services {
         TicketPart GetTicket(int id);
         void AssignCategories(TicketPart ticket, IEnumerable<int> categoryIds);
         void AssignTags(TicketPart ticket, string tags);
-        IPagedList<TicketPart> GetTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest);
+        IPagedList<TicketPart> GetTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null, int? tagId = null);
         
         /// <summary>
         /// Returns the date the ticket or any of its replies was modified.

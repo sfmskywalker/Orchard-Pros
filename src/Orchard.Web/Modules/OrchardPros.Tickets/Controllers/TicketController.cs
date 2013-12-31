@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.Handlers;
 using Orchard.Localization;
+using Orchard.Logging;
 using Orchard.Mvc.Html;
 using Orchard.Security;
 using Orchard.Services;
@@ -28,6 +31,7 @@ namespace OrchardPros.Tickets.Controllers {
         private readonly IAttachmentService _attachmentService;
         private readonly IRecommendationManager _recommendationManager;
         private readonly IAuthorizer _authorizer;
+        private readonly IEnumerable<IContentHandler> _handlers;
 
         public TicketController(
             ITicketService ticketService, 
@@ -35,7 +39,8 @@ namespace OrchardPros.Tickets.Controllers {
             IOrchardServices services, 
             IAttachmentService attachmentService, 
             IRecommendationManager recommendationManager, 
-            IAuthorizer authorizer) {
+            IAuthorizer authorizer, 
+            IEnumerable<IContentHandler> handlers) {
 
             _notifier = services.Notifier;
             _ticketService = ticketService;
@@ -44,18 +49,20 @@ namespace OrchardPros.Tickets.Controllers {
             _attachmentService = attachmentService;
             _recommendationManager = recommendationManager;
             _authorizer = authorizer;
+            _handlers = handlers;
             T = NullLocalizer.Instance;
         }
 
         public Localizer T { get; set; }
+        public ILogger Logger { get; set; }
 
         private ExpertPart CurrentUser {
             get { return _services.WorkContext.CurrentUser.As<ExpertPart>(); }
         }
 
-        public ActionResult Index(PagerParameters pagerParameters, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null) {
+        public ActionResult Index(PagerParameters pagerParameters, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null, int? tagId = null) {
             var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
-            var tickets = _ticketService.GetTickets(skip: pager.GetStartIndex(), take: pager.PageSize, criteria: criteria);
+            var tickets = _ticketService.GetTickets(pager.GetStartIndex(), pager.PageSize, criteria, categoryId, tagId);
             var pagerShape = _services.New.Pager(pager).TotalItemCount(tickets.TotalItemCount);
             var viewModel = _services.New.ViewModel(
                 Tickets_List: _services.New.Tickets_List(
@@ -65,7 +72,7 @@ namespace OrchardPros.Tickets.Controllers {
                     Pager: pagerShape),
                 Tickets_List_Filter: _services.New.Tickets_List_Filter(
                     Categories: _ticketService.GetCategories().ToArray(),
-                    Tags: _ticketService.GetTags().ToArray(),
+                    Tags: _ticketService.GetTags().OrderByDescending(x => x.Weight).Take(15).OrderBy(x => x.Name).ToArray(),
                     CategoryId: categoryId,
                     Criteria: criteria,
                     Pager: pagerShape));
@@ -98,9 +105,13 @@ namespace OrchardPros.Tickets.Controllers {
             if (model.Attachments != null)
                 _attachmentService.AssociateAttachments(ticket, model.Attachments.UploadedFileNames, model.Attachments.OriginalFileNames);
 
+            var context = new UpdateContentContext(ticket.ContentItem);
+            _handlers.Invoke(x => x.Updated(context), Logger);
+
             _notifier.Information(T("Your ticket has been created."));
             return Redirect(Url.ItemDisplayUrl(ticket));
         }
+
 
         public ActionResult Edit(int id) {
             var ticket = _ticketService.GetTicket(id);
@@ -139,6 +150,9 @@ namespace OrchardPros.Tickets.Controllers {
             if (model.Attachments != null)
                 _attachmentService.AssociateAttachments(ticket, model.Attachments.UploadedFileNames, model.Attachments.OriginalFileNames);
 
+            var context = new UpdateContentContext(ticket.ContentItem);
+
+            _handlers.Invoke(x => x.Updated(context), Logger);
             _ticketService.Publish(ticket);
 
             _notifier.Information(T("Your ticket has been updated."));

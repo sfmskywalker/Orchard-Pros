@@ -2,8 +2,10 @@
 @using OrchardPros.Tickets.Models
 @{
     var categories = (IList<TermPart>)Model.Categories;
-    var categoryId = (int?) Model.CategoryId;
-    var criteria = (TicketsCriteria) Model.Criteria;
+    var tags = (IList<TermPart>)Model.Tags;
+    var categoryId = (int?)Model.CategoryId;
+    var tagId = (int?)Model.TagId;
+    var criteria = (TicketsCriteria)Model.Criteria;
     var page = (int)Model.Pager.Page;
     var pageSize = (int)Model.Pager.PageSize;
 }
@@ -15,32 +17,32 @@
         <div class="panel-body">
             <ul class="list-categories">
                 @foreach (var category in categories) {
-                    <li @if(categoryId == category.Id){<text>class="active"</text>}><a href="@Url.Action("Index", "Ticket", new { area = "OrchardPros.Tickets", criteria, page, pageSize, categoryId = category.Id })">@category.Name</a></li>
+                    <li @if (categoryId == category.Id) { <text> class="active" </text> }>
+                        <a href="@Url.Action("Index", "Ticket", new { area = "OrchardPros.Tickets", criteria, page, pageSize, categoryId = category.Id })">@category.Name</a>
+                    </li>
                 }
             </ul>
         </div>
     </div> <!-- /.panel -->
     @*<div class="block filters">
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                Filter
-                <div class="caret-container"><span class="caret"></span></div>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Filter option</a></li>
-                <li><a href="#">Filter option</a></li>
-                <li><a href="#">Filter option</a></li>
-            </ul>
-        </div>
-    </div>*@ <!-- /.filters -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Filter
+                    <div class="caret-container"><span class="caret"></span></div>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Filter option</a></li>
+                    <li><a href="#">Filter option</a></li>
+                    <li><a href="#">Filter option</a></li>
+                </ul>
+            </div>
+        </div>*@ <!-- /.filters -->
     <div class="block tagcloud">
-        <h3>Popular tags</h3>
-        <a href="#"><span class="label label-default">Default</span></a>
-        <a href="#"><span class="label label-default">Default</span></a>
-        <a href="#"><span class="label label-default">Default</span></a>
-        <a href="#"><span class="label label-default">Default</span></a>
-        <a href="#"><span class="label label-default">Default</span></a>
-        <a href="#"><span class="label label-default">Default</span></a>
-        <a href="#"><span class="label label-default">Default</span></a>
+        <h3>@T("Popular tags")</h3>
+        @foreach (var tag in tags) {
+            <a @if(tag.Id == tagId){<text>class="active"</text>} href="@Url.Action("Index", "Ticket", new { area = "OrchardPros.Tickets", criteria, page, pageSize, tagId = tag.Id })">
+                <span class="label label-default">@tag.Name</span>
+            </a>
+        }
     </div> <!-- /.tagcloud -->
 </aside>

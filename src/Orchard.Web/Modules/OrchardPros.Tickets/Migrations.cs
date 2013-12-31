@@ -52,7 +52,9 @@ namespace OrchardPros.Tickets {
                 .Column<DateTime>("DeadlineUtc")
                 .Column<int>("ExperiencePoints")
                 .Column<DateTime>("SolvedUtc")
-                .Column<int>("AnswerId"));
+                .Column<int>("AnswerId")
+                .Column<string>("Categories", c => c.WithLength(512))
+                .Column<string>("Tags", c => c.WithLength(512)));
 
             ContentDefinitionManager.AlterPartDefinition("TicketPart", part => part
                 .WithField("Categories", field => field

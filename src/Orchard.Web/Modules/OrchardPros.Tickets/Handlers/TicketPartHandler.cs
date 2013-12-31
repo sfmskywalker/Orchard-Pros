@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
@@ -14,6 +15,12 @@ namespace OrchardPros.Tickets.Handlers {
             _ticketService = ticketService;
             Filters.Add(StorageFilter.For(repository));
             OnActivated<TicketPart>(SetupLazyFields);
+            OnUpdated<TicketPart>(OnTicketUpdated);
+        }
+
+        private void OnTicketUpdated(UpdateContentContext context, TicketPart part) {
+            part.Record.Categories = String.Format("|{0}|", String.Join("|", part.Categories.Select(x => x.Id)));
+            part.Record.Tags = String.Format("|{0}|", String.Join("|", part.Tags.Select(x => x.Id)));
         }
 
         private void SetupLazyFields(ActivatedContentContext context, TicketPart part) {

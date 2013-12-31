@@ -99,7 +99,7 @@ namespace OrchardPros.Tickets.Services {
             _taxonomyService.UpdateTerms(ticket.ContentItem, terms, "Tags");
         }
 
-        public IPagedList<TicketPart> GetTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest) {
+        public IPagedList<TicketPart> GetTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null, int? tagId = null) {
             var baseQuery = _contentManager.Query(VersionOptions.Published);
 
             switch (criteria) {
@@ -118,6 +118,16 @@ namespace OrchardPros.Tickets.Services {
                 default:
                     baseQuery = baseQuery.OrderByDescending<CommonPartRecord>(x => x.CreatedUtc);
                     break;
+            }
+
+            if (categoryId != null) {
+                var category = String.Format("|{0}|", categoryId);
+                baseQuery = baseQuery.Where<TicketPartRecord>(x => x.Categories.Contains(category));
+            }
+
+            if (tagId != null) {
+                var tag = String.Format("|{0}|", tagId);
+                baseQuery = baseQuery.Where<TicketPartRecord>(x => x.Tags.Contains(tag));
             }
 
             var ticketsQuery = baseQuery.ForPart<TicketPart>();
@@ -168,18 +178,19 @@ namespace OrchardPros.Tickets.Services {
         private IEnumerable<TermPart> ParseTags(string tags) {
             var tagList = !String.IsNullOrWhiteSpace(tags) ? tags.Split(new[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim().ToLower()).ToArray() : new string[0];
             var taxonomy = GetOrCreateTaxonomy("Tag");
-            var terms = GetTerms(taxonomy.Id).ToDictionary(x => x.Name.ToLower());
+            var termsDictionary = GetTerms(taxonomy.Id).ToDictionary(x => x.Name.ToLower());
 
             foreach (var tag in tagList) {
-                if (terms.ContainsKey(tag))
+                if (termsDictionary.ContainsKey(tag)) {
+                    yield return termsDictionary[tag];
                     continue;
-                
+                }
+
                 var term = CreateTerm(taxonomy, tag);
                 _signals.Trigger(Signals.TagDictionary);
-                terms.Add(tag, term);
+                termsDictionary.Add(tag, term);
+                yield return term;
             }
-
-            return terms.Values;
         }
 
         private TermPart CreateTerm(TaxonomyPart taxonomy, string name) {
@@ -205,15 +216,6 @@ namespace OrchardPros.Tickets.Services {
 
         private IEnumerable<TermPart> GetTerms(int taxonomyId) {
             return _taxonomyService.GetTerms(taxonomyId).OrderBy(x => x.Name);
-        }
-
-        private static IEnumerable<int> CollectUserIds(IEnumerable<TicketPart> tickets) {
-            foreach (var ticket in tickets) {
-                yield return ticket.User.Id;
-                var lastReply = ticket.Replies.LastOrDefault();
-                if (lastReply != null)
-                    yield return lastReply.As<CommonPart>().Record.OwnerId;
-            }
         }
     }
 }
