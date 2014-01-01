@@ -1,0 +1,45 @@
+﻿@model OrchardPros.ViewModels.TicketViewModel
+@{
+    Style.Include("select2.css");
+    Style.Include("select2-bootstrap.css");
+    Script.Require("jQuery");
+    Script.Include("select2.js", "select2.min.js");
+    Script.Include("select2-initialization.js");
+}
+<div class="form-group">
+    @Html.LabelFor(m => m.Subject, T("Subject"))
+    @Html.TextBoxFor(m => m.Subject, new { @class = "form-control", placeholder = T("Give your ticket a title") })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Type, T("Type"))
+    @Html.EditorFor(m => m.Type)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Body, T("Body"))
+    @Html.TextAreaFor(m => m.Body, new { @class = "form-control", placeholder = T("Describe your issue in details"), rows = 5 })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Categories, T("Categories"))
+    @Html.EditorFor(m => m.Categories, new { Terms = Model.CategoryTerms })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Tags, T("Tags"))
+    @Html.HiddenFor(m => m.Tags, new { data_tags = Url.Action("Search", "Tag", new { Area = "OrchardPros" }), @class = "form-control", placeholder = T("Tag your ticket, separated by comma [,]") })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Bounty, T("Bounty"))
+    @Html.TextBoxFor(m => m.Bounty, new { @class = "form-control", placeholder = T("Award the best solution with an optional bounty (in US Dollars)") })
+    @Html.ValidationMessageFor(m => m.Bounty)
+</div>
+<div class="form-group">
+    <label for="exp">Experience points</label>
+    <p>@T("This ticket will be worth <strong>{0} EXP</strong>.", Model.ExperiencePoints)</p>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.DeadlineUtc, T("Deadline"))
+    @Html.TextBoxFor(m => m.DeadlineUtc, new { @class = "form-control" })
+</div>
+<div class="form-group">
+    <label>@T("Attachments")</label>
+    @Html.EditorFor(m => m.Attachments)
+</div>

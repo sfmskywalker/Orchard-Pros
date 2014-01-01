@@ -1,0 +1,146 @@
+﻿@using Orchard.ContentManagement
+@using Orchard.Core.Common.Models
+@using OrchardPros.Models
+@using OrchardPros
+@using OrchardPros.Models
+@{
+    var ticket = (TicketPart)Model.Ticket;
+    var currentUser = WorkContext.CurrentUser;
+    var isAuthenticated = currentUser != null;
+    var isSolved = ticket.IsSolved;
+    var canSolveTicket = !isSolved && isAuthenticated && Authorizer.Authorize(Permissions.SolveOwnTickets, ticket);
+}
+<!-- Replies -->
+<div id="replies" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <section>
+                <div class="sorter">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#">@T("Best voted")</a></li>
+                        <li><a href="#">@T("Latest")</a></li>
+                    </ul>
+                </div>
+                @foreach (var reply in ticket.Replies) {
+                    var votablePart = reply.As<VotablePart>();
+                    var user = reply.User;
+                    var profile = user.As<UserProfilePart>();
+                    var expert = user.As<ExpertPart>();
+                    var attachments = reply.As<AttachmentsHolderPart>().Attachments.ToArray();
+                    var voteCount = votablePart.VoteCount;
+                    var votesClass = voteCount == 0 ? "neutral" : voteCount < 0 ? "negative" : "positive";
+                    var votesSign = voteCount == 0 ? "" : voteCount < 0 ? "-" : "+";
+                    var createdUtc = reply.As<CommonPart>().CreatedUtc.Value;
+                    var isAnswer = reply.Id == ticket.AnswerId;
+                    var isOwnReply = currentUser != null && reply.User.Id == currentUser.Id;
+                    <!-- Ticket reply -->
+                    <article class="ticket-reply">
+                        <div class="col-md-8">
+                            <div class="ticket-summary">
+                                @if (!String.IsNullOrWhiteSpace(reply.Subject)) {
+                                    <h3>@reply.Subject</h3>
+                                    if (isAnswer) {
+                                        <h2>@T("This is the answer.")</h2>
+                                    }
+                                }
+                                @reply.Body
+                                @if (attachments.Any()) {
+                                    <div class="reply-attachments">
+                                        <em>@T("Attachments")</em>
+                                        <ul class="list-unstyled">
+                                            @foreach (var attachment in attachments) {
+                                                <li><a href="#"><img src="~/themes/orchardprostheme/images/file-docx.png" alt="Document">@attachment.FileName</a></li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                            <div class="ticket-status">
+                                <ul>
+                                    <li class="votes @votesClass"><span class="number">@(votesSign + voteCount)</span><span class="type">@T("votes")</span></li>
+                                    <li class="rate positive"><span class="glyphicon glyphicon-plus"></span></li>
+                                    <li class="rate negative"><span class="glyphicon glyphicon-minus"></span></li>
+                                </ul>
+                            </div>
+                            <div class="ticket-info">
+                                @if (isAuthenticated) {
+                                    <a href="#">@T("Reply")</a>
+                                }
+                                <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: createdUtc))<span class="author"><a href="#">@T(user.UserName)</a></span></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel panel-default idplate">
+                                <div class="panel-body">
+                                    <div class="media">
+                                        <a href="#" class="pull-left"><img src="@Url.AvatarUrl(profile, this, 64)" class="media-object profile-img-m"></a>
+                                        <ul class="expert-info media-body">
+                                            <li class="name"><a href="#">@profile.DisplayName</a></li>
+                                            <li class="title">@T("Lv. {0:00} {1}", expert.Level, expert.RankName)</li>
+                                            <li class="rating">
+                                                @for (var i = 0; i < expert.Rating; i++) {
+                                                    <span class="glyphicon glyphicon-star"></span>
+                                                }
+                                            </li>
+                                            <li class="experience">
+                                                <h4>@T("Experience")</h4>
+                                                <p>@T("Total EXP: {0}", expert.ExperiencePoints)</p>
+                                            </li>
+                                            <li class="achievements">
+                                                <h4>@T("Achievements")</h4>
+                                                <p>
+                                                    <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                                    <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                                    <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                                    <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div> <!-- /.panel -->
+                            @if (canSolveTicket) {
+                                <button type="button" class="btn btn-success btn-solve-ticket" data-reply="@reply.Id" data-reply-is-self="@isOwnReply.ToString().ToLower()">@T("Solve ticket")</button>
+                            }
+                        </div> <!-- /.col-md-4 -->
+                    </article>
+                }<!-- /Ticket replies -->
+            </section>
+        </div> <!-- /.col-md-12 -->
+    </div> <!-- /.row -->
+</div> <!-- /.container Replies -->
+@if (isAuthenticated) {
+    <!-- Post a reply -->
+    <div class="container">
+        @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", "Reply", new {area = "OrchardPros"}), FormMethod.Post, new {role = "form"})) {
+            <input type="hidden" name="ContentItemId" value="@ticket.Id" />
+            <div class="row">
+                <div class="col-md-8">
+                    <section>
+                        <h2>@T("Post a reply")</h2>
+                        <fieldset class="form-group">
+                            <input class="form-control" type="text" name="Title" value="@T("Re: {0}", ticket.Subject)" />
+                            <textarea class="form-control" rows="5" name="Body"></textarea>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <button type="submit" class="btn btn-success btn-post">@T("Post reply")</button>
+                        </fieldset>
+                    </section>
+                </div> <!-- /.col-md-8 -->
+                <div class="col-md-4">
+                    <aside>
+                        @Html.Editor("Attachments", "AttachmentsViewModel")
+                    </aside>
+                </div> <!-- /.col-md-4 -->
+            </div>
+            <!-- /.row -->
+        }
+    </div>
+    <!-- /.container Post a reply -->
+}
+else {
+    <div class="container">
+        <h2>@T("Post a reply")</h2>
+        <p>@T("You need to be signed in to post a reply.")</p>
+    </div>
+}

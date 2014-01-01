@@ -1,0 +1,39 @@
+﻿@using OrchardPros.Models
+@{
+    var profile = (UserProfilePart) Model.Profile;
+    var experience = (IList<Experience>)Model.Experience;
+}
+<fieldset>
+    <legend>@T("Experience")</legend>
+    <table class="items">
+        <thead>
+            <tr>
+                <th>@T("Id")</th>
+                <th>@("Position")</th>
+                <th>@("Description")</th>
+                <th>@("Created")</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in experience) {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>
+                        @if (item.Position != null) { 
+                            <a href="@Url.Action("Edit", "Position", new { item.Position.Id, Area = "OrchardPros" })">@item.Position.CompanyName</a>
+                        }
+                        else { <text>-</text> }
+                    </td>
+                    <td>@item.Description</td>
+                    <td>@item.CreatedUtc</td>
+                    <td>
+                        @Html.ActionLink(T("Edit").ToString(), "Edit", "Experience", new { item.Id, area = "OrchardPros" }, null) @T("|")
+                        @Html.ActionLink(T("Delete").ToString(), "Delete", "Experience", new { item.Id, area = "OrchardPros" }, new { itemprop = "UnsafeUrl RemoveUrl" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.ActionLink(T("Add").ToString(), "Create", "Experience", new { profile.Id, area = "OrchardPros" }, new { @class = "button" })
+</fieldset>

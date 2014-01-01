@@ -1,0 +1,38 @@
+﻿<div class="jumbotron home">
+    <h1>@T("Time to level up.")</h1>
+    @if (WorkContext.CurrentUser == null) {
+        <div class="sign-in-up row">
+            <div class="col-md-6">
+                @using (Html.BeginFormAntiForgeryPost(Url.Action("SignIn", "Account", new {area = "OrchardPros"}), FormMethod.Post, new {role = "form", @class = "sign-in"})) {
+                    <h3>@T("Sign In")</h3>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="sign-in-username" placeholder="Username" name="UserNameOrEmail">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="sign-in-password" placeholder="Password" name="Password">
+                        <p class="small"><a href="#">@T("Forgot your password?")</a></p>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default btn-submit">@T("Sign in")</button>
+                    </div>
+                    <div class="form-group">
+                        @Display.OAuthLogin()
+                    </div>
+                }
+            </div>
+            <div class="col-md-6">
+                <form role="form" class="sign-up">
+                    <h3>Sign Up</h3>
+                    <p>
+                        @T("Not a member yet?")<br>
+                        @T("Sign up and get started!")
+                    </p>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-create-account">@T("Create account")</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.sign-in-up -->
+    }
+</div>

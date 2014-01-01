@@ -1,0 +1,12 @@
+﻿@model OrchardPros.ViewModels.TicketViewModel
+@{
+    Layout.Title = @T("Create Ticket");
+}
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.ValidationSummary()
+    @Html.EditorForModel()
+    <fieldset>
+        <button type="submit">@T("Create Ticket")</button>
+        @Html.ActionLink(T("Cancel").ToString(), "Edit", "Ticket", new { Model.Id, Area = "OrchardPros" }, new { @class = "button" })
+    </fieldset>
+}

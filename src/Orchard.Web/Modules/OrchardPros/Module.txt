@@ -1,0 +1,12 @@
+﻿Name: OrchardPros
+AntiForgery: enabled
+Author: IDeliverable
+Website: http://ideliverable.com
+Version: 1.0
+OrchardVersion: 1.0
+Description: Orchard Pros
+Features:
+    OrchardPros:
+        Description: Orchard Pros.
+        Category: Orchard Pros
+		Dependencies: Orchard.Users, Orchard.Taxonomies

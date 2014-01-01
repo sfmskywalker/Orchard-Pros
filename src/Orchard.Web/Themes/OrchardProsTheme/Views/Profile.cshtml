@@ -1,0 +1,73 @@
+﻿@using Orchard.ContentManagement
+@using Orchard.Security
+@using OrchardPros.Helpers
+@using OrchardPros.Models
+@using OrchardPros.Models
+@{
+    var user = (IUser) Model.User;
+    var userProfilePart = user.As<UserProfilePart>();
+    var UserProfilePart = user.As<UserProfilePart>();
+    var currentPosition = UserProfilePart.Positions.Current();
+    var recommendations = UserProfilePart.Recommendations;
+    var filteredRecommendations = (bool) Model.IsCurrentUser ? recommendations : recommendations.Where(x => x.Approved).ToArray();
+}
+<article class="profile-title">
+    <h2>Title</h2>
+    @if (currentPosition == null) {
+        <p>@T("No current or past positions have been specified.")</p>
+    }
+    else {
+        <h4>@currentPosition.Title</h4>
+        <p class="small">@currentPosition.Location</p>
+    }
+</article>
+<article class="profile-summary">
+    <h2>@T("Summary")</h2>
+    <p>@userProfilePart.Bio</p>
+</article>
+<article class="profile-experience">
+    <h2>@T("Positions")</h2>
+    @if (!UserProfilePart.Positions.Any()) {
+        <p>@T("No positions have been entered yet.")</p>
+    }
+    else {
+        <ul class="list-jobs">
+            @foreach (var position in UserProfilePart.Positions) {
+                <li>
+                    <h4>@position.Title</h4>
+                    <p>@position.CompanyName</p>
+                    <p class="small">@T("From: {0} to: {1}", position.Start(), position.End())</p>
+                </li>
+            }
+        </ul>
+    }
+</article>
+<article class="profile-skills">
+    <h2>@T("Skills")</h2>
+    <div class="block tagcloud">
+        @if (!UserProfilePart.Skills.Any()) {
+            <p>@T("No skills have been specified yet.")</p>
+        }
+        else {
+            foreach (var skill in UserProfilePart.Skills) {
+                <a href="#"><span class="label label-default">@skill.Name</span></a>
+            }
+        }
+    </div>
+</article>
+<article class="profile-recommendations">
+    <h2>@T("Recommendations")</h2>
+    @if (!filteredRecommendations.Any()) {
+        <p>@T("No recommendations were given yet.")</p>
+    }
+    else {
+        foreach (var recommendation in filteredRecommendations) {
+            <div class="media">
+                <a href="#" class="pull-left"><img src="~/themes/orchardprostheme/images/temp-profile.png" alt="@recommendation.RecommendingUser.UserName" class="profile-img-s media-object"></a>
+                <div class="media-body">
+                    <p><span class="dropcap">&nbsp;</span>@recommendation.Body</p>
+                </div>
+            </div>
+        }
+    }
+</article>

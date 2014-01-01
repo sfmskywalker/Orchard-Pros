@@ -1,0 +1,7 @@
+Name: Orchard Pros
+Author: IDeliverable / Design by Jay Tang | Visual Creature
+Website: http://ideliverable.net
+Description: Orchard Pros
+Version: 1.0
+Zones: Navigation, Jumbotron, Content, AsideFirst, AsideSecond, AfterContent
+Dependencies: OrchardPros

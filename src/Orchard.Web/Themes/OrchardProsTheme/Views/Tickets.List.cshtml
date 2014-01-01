@@ -1,0 +1,87 @@
+﻿@using Orchard.ContentManagement
+@using OrchardPros.Helpers
+@using OrchardPros.Models
+@{
+    var tickets = (IPagedList<TicketPart>)Model.Tickets;
+    var criteria = (TicketsCriteria)Model.Criteria;
+    var categoryId = (int?) Model.CategoryId;
+    var pager = Model.Pager;
+    var tabs = new List<SelectListItem> {
+        new SelectListItem {Text = T("Latest").ToString(), Value = TicketsCriteria.Latest.ToString(), Selected = criteria == TicketsCriteria.Latest},
+        new SelectListItem {Text = T("Unsolved").ToString(), Value = TicketsCriteria.Unsolved.ToString(), Selected = criteria == TicketsCriteria.Unsolved},
+        new SelectListItem {Text = T("Popular").ToString(), Value = TicketsCriteria.Popular.ToString(), Selected = criteria == TicketsCriteria.Popular},
+        new SelectListItem {Text = T("Deadline").ToString(), Value = TicketsCriteria.Deadline.ToString(), Selected = criteria == TicketsCriteria.Deadline},
+        new SelectListItem {Text = T("Bounty").ToString(), Value = TicketsCriteria.Bounty.ToString(), Selected = criteria == TicketsCriteria.Bounty}
+    };
+}
+@helper PageSizes() {
+    var criteria = (TicketsCriteria)Model.Criteria;
+    var categoryId = (int?)Model.CategoryId;
+    var pager = Model.Pager;
+    var pageSizes = new[] { 10, 20, 50 };
+    <div class="btn-group btn-group-sm filter-results">    
+        @foreach (var pageSize in pageSizes) {
+            <a href="@Url.Action("Index", "Ticket", new { criteria, pageSize, categoryId })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
+        }
+        <span>@T("per page")</span>
+    </div>
+}
+<section>
+    <div class="sorter">
+        <ul class="nav nav-tabs">
+            @foreach (var tab in tabs) {
+                <li @if (tab.Selected) { <text> class="active" </text>   }>
+                    <a href="@Url.Action("Index", "Ticket", new { Criteria = tab.Value, pager.Page, pager.PageSize, categoryId, Area = "OrchardPros" })">@tab.Text</a>
+                </li>
+            }
+        </ul>
+        @PageSizes()
+    </div>
+
+    @if (!tickets.Any()) {
+        <p>@T("There are no tickets to be displayed in the current view.")</p>
+    }
+    else {
+        <!-- Ticket posts -->
+        foreach (var ticket in tickets) {
+            var statisticsPart = ticket.As<StatisticsPart>();
+            <article class="ticket-post">
+                <div class="ticket-summary">
+                    <h2><a href="@Url.ItemDisplayUrl(ticket)">@ticket.Subject</a></h2>
+                    @foreach (var category in ticket.Categories) {
+                        <a href="#" class="category-link">@category.Name</a>
+                    }
+                    <div class="tags">
+                        @foreach (var tag in ticket.Tags) {
+                            <a href="#"><span class="label label-default">@tag.Name</span></a>
+                        }
+                    </div>
+                </div>
+                <div class="ticket-status">
+                    <ul>
+                        <li class="votes positive"><span class="number">0</span><span class="type">@T("votes")</span></li>
+                        <li class="views"><span class="number">@statisticsPart.ViewCount</span><span class="type">@T("views")</span></li>
+                        <li class="replies @if(ticket.SolvedUtc != null){<text>solved</text>}"><span class="number">@ticket.Replies.Count()</span><span class="type">@T("replies")</span></li>
+                    </ul>
+                </div>
+                <div class="ticket-info">
+                    <span class="ticket-expiration">
+                        @ticket.GetExpirationText(T)
+                    </span>
+                    <span class="ticket-exp">@T("EXP: {0}", ticket.ExperiencePoints)</span>
+                    @if (ticket.Bounty != null) {
+                        <span class="ticket-bounty">
+                            @T("Bounty: {0:c}", ticket.Bounty)
+                        </span>
+                    }
+                    <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<span class="author">@Html.ProfileLink(ticket.LastModifier.UserName)</span></span>
+                </div>
+            </article>
+        }
+    }
+    <!-- /Ticket posts -->
+    <div class="sorter bottom">
+        @Display(pager)
+        @PageSizes()
+    </div>
+</section>

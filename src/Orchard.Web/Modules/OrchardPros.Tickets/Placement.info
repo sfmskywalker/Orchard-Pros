@@ -1,7 +1,0 @@
-﻿<Placement>
-  <Place Parts_Ticket="Content:2"
-         Parts_User_Tickets="Content:9"
-         Parts_Expert_Edit="Content:5"/>
-  
-  <Place Parts_Ticket_Edit="Content:2" />
-</Placement>
