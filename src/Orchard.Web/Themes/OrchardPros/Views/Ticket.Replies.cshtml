@@ -1,13 +1,14 @@
 ﻿@using Orchard.ContentManagement
 @using Orchard.Core.Common.Models
-@using OrchardPros.Membership.Helpers
 @using OrchardPros.Membership.Models
 @using OrchardPros.Tickets
 @using OrchardPros.Tickets.Models
 @{
     var ticket = (TicketPart)Model.Ticket;
+    var currentUser = WorkContext.CurrentUser;
+    var isAuthenticated = currentUser != null;
     var isSolved = ticket.IsSolved;
-    var canSolveTicket = !isSolved && Authorizer.Authorize(Permissions.SolveOwnTickets, ticket);
+    var canSolveTicket = !isSolved && isAuthenticated && Authorizer.Authorize(Permissions.SolveOwnTickets, ticket);
 }
 <!-- Replies -->
 <div id="replies" class="container">
@@ -31,6 +32,7 @@
                     var votesSign = voteCount == 0 ? "" : voteCount < 0 ? "-" : "+";
                     var createdUtc = reply.As<CommonPart>().CreatedUtc.Value;
                     var isAnswer = reply.Id == ticket.AnswerId;
+                    var isOwnReply = currentUser != null && reply.User.Id == currentUser.Id;
                     <!-- Ticket reply -->
                     <article class="ticket-reply">
                         <div class="col-md-8">
@@ -61,7 +63,9 @@
                                 </ul>
                             </div>
                             <div class="ticket-info">
-                                <a href="#">@T("Reply")</a>
+                                @if (isAuthenticated) {
+                                    <a href="#">@T("Reply")</a>
+                                }
                                 <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: createdUtc))<span class="author"><a href="#">@T(user.UserName)</a></span></span>
                             </div>
                         </div>
@@ -96,7 +100,7 @@
                                 </div>
                             </div> <!-- /.panel -->
                             @if (canSolveTicket) {
-                                <button type="button" class="btn btn-success btn-solve-ticket" data-reply="@reply.Id">@T("Solve ticket")</button>
+                                <button type="button" class="btn btn-success btn-solve-ticket" data-reply="@reply.Id" data-reply-is-self="@isOwnReply.ToString().ToLower()">@T("Solve ticket")</button>
                             }
                         </div> <!-- /.col-md-4 -->
                     </article>
@@ -105,29 +109,38 @@
         </div> <!-- /.col-md-12 -->
     </div> <!-- /.row -->
 </div> <!-- /.container Replies -->
-<!-- Post a reply -->
-<div class="container">
-    @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", "Reply", new { area = "OrchardPros.Tickets" }), FormMethod.Post, new { role = "form" })) {
-        <input type="hidden" name="ContentItemId" value="@ticket.Id" />
-        <div class="row">
-            <div class="col-md-8">
-                <section>
-                    <h2>@T("Post a reply")</h2>
-                    <fieldset class="form-group">
-                        <input class="form-control" type="text" name="Title" value="@T("Re: {0}", ticket.Subject)" />
-                        <textarea class="form-control" rows="5" name="Body"></textarea>
-                    </fieldset>
-                    <fieldset class="form-group">
-                        <button type="submit" class="btn btn-success btn-post">@T("Post reply")</button>
-                    </fieldset>
-                </section>
-            </div> <!-- /.col-md-8 -->
-            <div class="col-md-4">
-                <aside>
-                    @Html.Editor("Attachments", "AttachmentsViewModel")
-                </aside>
-            </div> <!-- /.col-md-4 -->
-        </div>
-        <!-- /.row -->
-    }
-</div> <!-- /.container Post a reply -->
+@if (isAuthenticated) {
+    <!-- Post a reply -->
+    <div class="container">
+        @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", "Reply", new {area = "OrchardPros.Tickets"}), FormMethod.Post, new {role = "form"})) {
+            <input type="hidden" name="ContentItemId" value="@ticket.Id" />
+            <div class="row">
+                <div class="col-md-8">
+                    <section>
+                        <h2>@T("Post a reply")</h2>
+                        <fieldset class="form-group">
+                            <input class="form-control" type="text" name="Title" value="@T("Re: {0}", ticket.Subject)" />
+                            <textarea class="form-control" rows="5" name="Body"></textarea>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <button type="submit" class="btn btn-success btn-post">@T("Post reply")</button>
+                        </fieldset>
+                    </section>
+                </div> <!-- /.col-md-8 -->
+                <div class="col-md-4">
+                    <aside>
+                        @Html.Editor("Attachments", "AttachmentsViewModel")
+                    </aside>
+                </div> <!-- /.col-md-4 -->
+            </div>
+            <!-- /.row -->
+        }
+    </div>
+    <!-- /.container Post a reply -->
+}
+else {
+    <div class="container">
+        <h2>@T("Post a reply")</h2>
+        <p>@T("You need to be signed in to post a reply.")</p>
+    </div>
+}

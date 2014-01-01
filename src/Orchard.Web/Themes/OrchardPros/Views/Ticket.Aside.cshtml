@@ -51,15 +51,17 @@
             }
             <span class="ticket-exp">@T("EXP: {0}", ticket.ExperiencePoints)</span>
         </div>
-        <div class="panel-body">
-            <div class="ticket-attachments">
-                <h3>@T("Attachments")</h3>
-                <ul>
-                    @foreach (var attachment in attachmentsHolderPart.Attachments) {
-                        <li><a href="#"><img src="~/themes/orchardpros/images/file-docx.png" alt="Document">@attachment.FileName</a></li>
-                    }
-                </ul>
+        @if (attachmentsHolderPart.Attachments.Any()) {
+            <div class="panel-body">
+                <div class="ticket-attachments">
+                    <h3>@T("Attachments")</h3>
+                    <ul>
+                        @foreach (var attachment in attachmentsHolderPart.Attachments) {
+                            <li><a href="#"><img src="~/themes/orchardpros/images/file-docx.png" alt="Document">@attachment.FileName</a></li>
+                        }
+                    </ul>
+                </div>
             </div>
-        </div> <!-- /.ticket-details -->
-    </div>
+        }
+    </div><!-- /.ticket-details -->
 </aside>

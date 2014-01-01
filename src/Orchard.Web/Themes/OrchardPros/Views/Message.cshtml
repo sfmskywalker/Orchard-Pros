@@ -1,0 +1,14 @@
+﻿@using Orchard.UI.Notify
+@{
+    var dictionary = new Dictionary<NotifyType, string> {
+        {NotifyType.Information, "alert-success"},
+        {NotifyType.Warning, "alert-warning"},
+        {NotifyType.Error, "alert-danger"}
+    };
+    var notifyType = (NotifyType) Model.Type;
+    var bootstrapCss = dictionary[notifyType];
+}
+<div class="alert @bootstrapCss">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    @Html.Raw(Html.Encode(Model.Message).Replace("\n", "<br />"))
+</div>

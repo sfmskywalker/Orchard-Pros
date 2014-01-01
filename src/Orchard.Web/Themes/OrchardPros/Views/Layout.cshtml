@@ -26,6 +26,9 @@
 @Display.SiteBar()
 @Display.NavBar()
 <div class="container">
+    @if (Model.Messages != null) {
+        @Display(Model.Messages)
+    }
     @if (Model.Title != null) {
         <div class="header">
             <h1>@Model.Title</h1>

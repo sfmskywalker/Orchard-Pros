@@ -165,21 +165,25 @@ namespace OrchardPros.Tickets.Controllers {
             if(!_authorizer.Authorize(Permissions.SolveOwnTickets, ticket))
                 return new HttpUnauthorizedResult();
 
+            var currentUser = CurrentUser;
             var reply = ticket.Replies.Single(x => x.Id == replyId);
+            var isOwnReply = reply.User.Id == currentUser.Id;
             
             _ticketService.Solve(ticket, reply);
             _notifier.Information(T("Your ticket has been solved."));
 
-            if (!String.IsNullOrWhiteSpace(recommendation)) {
-                _recommendationManager.Create(r => {
-                    r.AllowPublication = allowPublication == true;
-                    r.Body = recommendation.TrimSafe();
-                    r.RecommendingUser = ticket.User;
-                    r.UserId = reply.User.Id;
-                });
-                _notifier.Information(allowPublication == true
-                    ? T("Your recommendation has been created and will be published when approved. Thanks!") 
-                    : T("Your recommendation has been created. Thanks!"));
+            if (!isOwnReply) {
+                if (!String.IsNullOrWhiteSpace(recommendation)) {
+                    _recommendationManager.Create(r => {
+                        r.AllowPublication = allowPublication == true;
+                        r.Body = recommendation.TrimSafe();
+                        r.RecommendingUser = ticket.User;
+                        r.UserId = reply.User.Id;
+                    });
+                    _notifier.Information(allowPublication == true
+                        ? T("Your recommendation has been created and will be published when approved. Thanks!")
+                        : T("Your recommendation has been created. Thanks!"));
+                }
             }
 
             return Redirect(Url.ItemDisplayUrl(ticket));
