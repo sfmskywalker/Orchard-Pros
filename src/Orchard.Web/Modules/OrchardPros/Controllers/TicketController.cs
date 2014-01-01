@@ -53,8 +53,8 @@ namespace OrchardPros.Controllers {
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        private ExpertPart CurrentUser {
-            get { return _services.WorkContext.CurrentUser.As<ExpertPart>(); }
+        private UserProfilePart CurrentUser {
+            get { return _services.WorkContext.CurrentUser.As<UserProfilePart>(); }
         }
 
         public ActionResult Index(PagerParameters pagerParameters, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null, int? tagId = null) {

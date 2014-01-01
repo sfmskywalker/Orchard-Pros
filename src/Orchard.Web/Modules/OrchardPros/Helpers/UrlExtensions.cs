@@ -1,4 +1,6 @@
 ﻿using System.Web.Mvc;
+using Orchard.Mvc.Html;
+using Orchard.Taxonomies.Models;
 using OrchardPros.Models;
 
 namespace OrchardPros.Helpers {
@@ -23,6 +25,18 @@ namespace OrchardPros.Helpers {
 
         public static string DownloadAttachment(this UrlHelper url, AttachmentPart attachment) {
             return url.Action("Download", "Attachment", new {id = attachment.UniqueIdentifier, area = Area});
+        }
+
+        public static string TicketDetails(this UrlHelper url, TicketPart ticket) {
+            return url.ItemDisplayUrl(ticket);
+        }
+
+        public static string Category(this UrlHelper url, TermPart category) {
+            return url.Action("Index", "Ticket", new { categoryId = category.Id, area = Area });
+        }
+
+        public static string Tag(this UrlHelper url, TermPart tag) {
+            return url.Action("Index", "Ticket", new { tagId = tag.Id, area = Area });
         }
     }
 }

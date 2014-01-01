@@ -8,6 +8,7 @@ using Orchard.Localization;
 using Orchard.Mvc;
 using Orchard.Security;
 using Orchard.Themes;
+using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
 using Orchard.Users.Services;
 using OrchardPros.Helpers;
@@ -24,6 +25,7 @@ namespace OrchardPros.Controllers {
         private readonly IAccountServices _accountServices;
         private readonly IAuthenticationService _authenticationService;
         private readonly INotificationSettingsManager _notificationSettingsManager;
+        private readonly ITicketService _ticketService;
 
         public ProfileController(
             IShapeFactory shapeFactory, 
@@ -31,7 +33,9 @@ namespace OrchardPros.Controllers {
             IUserService userService, 
             IOrchardServices services, 
             IAccountServices accountServices,
-            IAuthenticationService authenticationService, INotificationSettingsManager notificationSettingsManager) {
+            IAuthenticationService authenticationService, 
+            INotificationSettingsManager notificationSettingsManager, 
+            ITicketService ticketService) {
 
             New = shapeFactory;
             T = NullLocalizer.Instance;
@@ -41,6 +45,7 @@ namespace OrchardPros.Controllers {
             _accountServices = accountServices;
             _authenticationService = authenticationService;
             _notificationSettingsManager = notificationSettingsManager;
+            _ticketService = ticketService;
         }
 
         public Localizer T { get; set; }
@@ -52,9 +57,12 @@ namespace OrchardPros.Controllers {
             return new ShapeResult(this, profileShape);
         }
 
-        public ActionResult TicketsCreated(string userName) {
+        public ActionResult TicketsCreated(string userName, PagerParameters pagerParameters) {
+            var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
             var user = GetUser(userName);
-            var ticketsCreated = Wrap(New.Profile_TicketsCreated(), user);
+            var tickets = _ticketService.GetTicketsFor(user.Id, pager.GetStartIndex(), pager.PageSize);
+            var pagerShape = New.Pager(pager).TotalItemCount(tickets.TotalItemCount);
+            var ticketsCreated = Wrap(New.Profile_TicketsCreated(Tickets: tickets, Pager: pagerShape), user);
             return new ShapeResult(this, ticketsCreated);
         }
 

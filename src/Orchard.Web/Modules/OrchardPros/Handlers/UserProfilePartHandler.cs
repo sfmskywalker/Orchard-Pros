@@ -10,17 +10,22 @@ namespace OrchardPros.Handlers {
         private readonly ISkillManager _skillManager;
         private readonly IRecommendationManager _recommendationManager;
         private readonly IExperienceManager _experienceManager;
+        private readonly IReplyService _replyService;
+        private readonly ITicketService _ticketService;
 
         public UserProfilePartHandler(
             IPositionManager positionManager, 
             ISkillManager skillManager, 
             IRecommendationManager recommendationManager, 
-            IExperienceManager experienceManager) {
+            IExperienceManager experienceManager, 
+            IReplyService replyService, ITicketService ticketService) {
 
             _positionManager = positionManager;
             _skillManager = skillManager;
             _recommendationManager = recommendationManager;
             _experienceManager = experienceManager;
+            _replyService = replyService;
+            _ticketService = ticketService;
             OnActivated<UserProfilePart>(SetupFields);
         }
 
@@ -29,6 +34,8 @@ namespace OrchardPros.Handlers {
             part.SkillsField.Loader(() => _skillManager.Fetch(part.Id).ToArray());
             part.RecommendationsField.Loader(() => _recommendationManager.GetByUser(part.Id).List<RecommendationPart>().ToArray());
             part.ExperienceField.Loader(() => _experienceManager.Fetch(part.Id).ToArray());
+            part.RepliesField.Loader(() => _replyService.GetRepliesByUser(part.Id).ToArray());
+            part.SolvedTicketsField.Loader(() => _ticketService.GetSolvedTicketsFor(part.Id).ToArray());
         }
     }
 }

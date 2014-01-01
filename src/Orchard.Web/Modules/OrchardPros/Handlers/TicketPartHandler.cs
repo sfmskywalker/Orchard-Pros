@@ -24,7 +24,7 @@ namespace OrchardPros.Handlers {
         }
 
         private void SetupLazyFields(ActivatedContentContext context, TicketPart part) {
-            part.RepliesField.Loader(() => _replyService.GetRepliesFor(part.Id).List().ToArray());
+            part.RepliesField.Loader(() => _replyService.GetRepliesByContent(part.Id).ToArray());
             part.CategoriesField.Loader(() => _ticketService.GetCategoriesFor(part.Id).ToArray());
             part.TagsField.Loader(() => _ticketService.GetTagsFor(part.Id).ToArray());
             part.LastModifiedUtcField.Loader(() => _ticketService.GetLastModifiedUtcFor(part));

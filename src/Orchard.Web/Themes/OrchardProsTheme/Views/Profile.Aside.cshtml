@@ -1,13 +1,10 @@
 ﻿@using System.Globalization
 @using Orchard.ContentManagement
-@using Orchard.ContentManagement.Aspects
 @using Orchard.Security
-@using OrchardPros.Models
 @using OrchardPros.Models
 @{
     var user = (IUser) Model.User;
     var profilePart = user.As<UserProfilePart>();
-    var expertPart = user.As<ExpertPart>();
 }
 <aside>
     <div class="panel panel-default idplate">
@@ -17,14 +14,14 @@
         <div class="panel-body">
             <ul class="expert-info">
                 <li class="name"><a href="#">@profilePart.DisplayName</a></li>
-                <li class="title">@T("Lv. {0:d2} {1}", expertPart.Level, expertPart.RankName)</li>
+                <li class="title">@T("Lv. {0:d2} {1}", profilePart.Level, profilePart.RankName)</li>
                 <li class="rating">
-                    @for (var i = 0; i < expertPart.Rating; i++) {
+                    @for (var i = 0; i < profilePart.Rating; i++) {
                         <span class="glyphicon glyphicon-star"></span>
                     }
                 </li>
                 <li class="experience">
-                    <p>@T("{0} EXP", expertPart.ExperiencePoints)</p>
+                    <p>@T("{0} EXP", profilePart.ExperiencePoints)</p>
                 </li>
             </ul>
         </div>
@@ -33,15 +30,15 @@
                 <li class="activity bordered-top-bottom">
                     <h4>Activity</h4>
                     <p>@T("Active since {0}", profilePart.CreatedUtc.ToString("D", CultureInfo.InvariantCulture))</p>
-                    <p>Replies: 30</p>
-                    <p>Tickets solved: 4</p>
+                    <p>@T("Replies: {0}", profilePart.Replies.Count())</p>
+                    <p>@T("Tickets solved: {0}", profilePart.SolvedTickets.Count())</p>
                 </li>
             </ul>
         </div>
         <div class="panel-body">
             <ul class="expert-info">
                 <li class="achievements">
-                    <h4>Achievements</h4>
+                    <h4>@T("Badges")</h4>
                     <p>
                         <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
                         <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">

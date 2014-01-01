@@ -7,6 +7,8 @@ namespace OrchardPros.ViewModels {
         public string MiddleName { get; set; }
         public AvatarType AvatarType { get; set; }
         public string Bio { get; set; }
+        public int Level { get; set; }
+        public int ExperiencePoints { get; set; }
         public dynamic Tabs { get; set; }
     }
 }

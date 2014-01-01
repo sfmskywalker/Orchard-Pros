@@ -31,6 +31,18 @@
     </div>
 </fieldset>
 
+<fieldset>
+    <legend>@T("Expert")</legend>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Level, T("Level"))
+        @Html.TextBoxFor(m => m.Level, new { @class = "text small" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ExperiencePoints, T("EXP"))
+        @Html.TextBoxFor(m => m.ExperiencePoints, new { @class = "text small" })
+    </div>
+</fieldset>
+
 <div class="tabs" data-tabs>
     <ul>
         @foreach (var shape in Model.Tabs) {

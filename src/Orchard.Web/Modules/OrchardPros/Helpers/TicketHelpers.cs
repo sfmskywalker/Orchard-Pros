@@ -15,7 +15,7 @@ namespace OrchardPros.Helpers {
             var timeLeft = ticket.RemainingTime;
             var deadlineUtc = ticket.DeadlineUtc;
             return timeLeft > TimeSpan.Zero
-                ? T("Expires {0}d {1}h {2}m", timeLeft.Days, timeLeft.Hours, timeLeft.Minutes)
+                ? T("Expires in {0}d {1}h {2}m", timeLeft.Days, timeLeft.Hours, timeLeft.Minutes)
                 : T("Expired on {0}", deadlineUtc);
         }
     }

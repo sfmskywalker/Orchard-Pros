@@ -226,7 +226,6 @@
     <Compile Include="Drivers\AttachmentsHolderPartDriver.cs" />
     <Compile Include="Drivers\StatisticsPartDriver.cs" />
     <Compile Include="Drivers\VotablePartDriver.cs" />
-    <Compile Include="Drivers\ExpertPartDriver.cs" />
     <Compile Include="Handlers\AttachmentsHolderPartHandler.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Services\AttachmentService.cs" />
@@ -252,7 +251,6 @@
     <Compile Include="Services\TicketNotificationSettingsProvider.cs" />
     <Compile Include="Models\TicketsCriteria.cs" />
     <Compile Include="Signals.cs" />
-    <Compile Include="Models\ExpertPart.cs" />
     <Compile Include="Services\ExperienceCalculator.cs" />
     <Compile Include="Services\IExperienceCalculator.cs" />
     <Compile Include="ViewModels\AttachmentsViewModel.cs" />
@@ -289,9 +287,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\TicketTypePicker.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\EditorTemplates\Parts\Expert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\AdminTicket\Edit.cshtml" />

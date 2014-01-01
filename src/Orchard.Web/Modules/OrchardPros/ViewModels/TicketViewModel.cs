@@ -26,7 +26,7 @@ namespace OrchardPros.ViewModels {
         [Required]
         public DateTime? DeadlineUtc { get; set; }
 
-        public ExpertPart User { get; set; }
+        public UserProfilePart User { get; set; }
         public IEnumerable<TermPart> CategoryTerms { get; set; }
         public AttachmentsViewModel Attachments { get; set; }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using Orchard.Caching;
 using Orchard.ContentManagement;
 using Orchard.Core.Common.Models;
+using Orchard.Data;
 using Orchard.Security;
 using Orchard.Services;
 using Orchard.Taxonomies.Models;
@@ -18,23 +19,36 @@ namespace OrchardPros.Services {
         private readonly IExperienceCalculator _experienceCalculator;
         private readonly ISignals _signals;
         private readonly IClock _clock;
+        private readonly IReplyService _replyService;
+        private readonly IRepository<TicketPartRecord> _ticketPartRepository;
 
         public TicketService(
-            ITaxonomyService taxonomyService, 
+            ITaxonomyService taxonomyService,
             IContentManager contentManager,
-            IExperienceCalculator experienceCalculator, 
-            ISignals signals, 
-            IClock clock) {
+            IExperienceCalculator experienceCalculator,
+            ISignals signals,
+            IClock clock,
+            IReplyService replyService,
+            IRepository<TicketPartRecord> ticketPartRepository) {
 
             _taxonomyService = taxonomyService;
             _contentManager = contentManager;
             _experienceCalculator = experienceCalculator;
             _signals = signals;
             _clock = clock;
+            _replyService = replyService;
+            _ticketPartRepository = ticketPartRepository;
         }
 
-        public IEnumerable<TicketPart> GetTicketsFor(int userId) {
-            return _contentManager.Query<CommonPart, CommonPartRecord>().Where(x => x.OwnerId == userId).List<TicketPart>();
+        public IPagedList<TicketPart> GetTicketsFor(int userId, int? skip = null, int? take = null) {
+            var query = _contentManager.Query<CommonPart, CommonPartRecord>().Where(x => x.OwnerId == userId).Join<TicketPartRecord>();
+            var totalItemCount = query.Count();
+
+            if (skip != null && take != null) {
+                return new PagedList<TicketPart>(query.Slice(skip.Value, take.Value).Select(x => x.As<TicketPart>()), totalItemCount);
+            }
+
+            return new PagedList<TicketPart>(query.ForPart<TicketPart>().List(), totalItemCount);
         }
 
         public IEnumerable<TermPart> GetCategories() {
@@ -53,18 +67,18 @@ namespace OrchardPros.Services {
             return _taxonomyService.GetTermsForContentItem(ticketId, "Tags");
         }
 
-        public TicketPart Create(ExpertPart user, string subject, string body, TicketType type = TicketType.Question, Action<TicketPart> initialize = null) {
+        public TicketPart Create(UserProfilePart user, string subject, string body, TicketType type = TicketType.Question, Action<TicketPart> initialize = null) {
             return _contentManager.Create<TicketPart>("Ticket", VersionOptions.Published, t => {
                 t.User = user.As<IUser>();
                 t.Subject = subject;
                 t.Body = body;
-                
+
                 if (initialize != null)
                     initialize(t);
             });
         }
 
-        public int CalculateExperience(ExpertPart user) {
+        public int CalculateExperience(UserProfilePart user) {
             return _experienceCalculator.CalculateForTicket(user);
         }
 
@@ -90,37 +104,38 @@ namespace OrchardPros.Services {
         }
 
         public IPagedList<TicketPart> GetTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null, int? tagId = null) {
-            var baseQuery = _contentManager.Query(VersionOptions.Published);
+            var baseQuery = _contentManager.Query<TicketPart, TicketPartRecord>(VersionOptions.Published);
+            IContentQuery<TicketPart, CommonPartRecord> commonQuery;
 
             switch (criteria) {
                 case TicketsCriteria.Unsolved:
-                    baseQuery = baseQuery.Where<TicketPartRecord>(x => x.SolvedUtc == null).Join<CommonPartRecord>().OrderByDescending(x => x.CreatedUtc);
+                    commonQuery = baseQuery.Where<TicketPartRecord>(x => x.SolvedUtc == null).Join<CommonPartRecord>().OrderByDescending(x => x.CreatedUtc);
                     break;
                 case TicketsCriteria.Popular:
-                    baseQuery = baseQuery.OrderByDescending<StatisticsPartRecord>(x => x.ViewCount).OrderByDescending<CommonPartRecord>(x => x.CreatedUtc);
+                    commonQuery = baseQuery.OrderByDescending<StatisticsPartRecord>(x => x.ViewCount).OrderByDescending<CommonPartRecord>(x => x.CreatedUtc);
                     break;
                 case TicketsCriteria.Deadline:
-                    baseQuery = baseQuery.OrderBy<TicketPartRecord>(x => x.DeadlineUtc);
+                    commonQuery = baseQuery.OrderBy<TicketPartRecord>(x => x.DeadlineUtc).Join<CommonPartRecord>();
                     break;
                 case TicketsCriteria.Bounty:
-                    baseQuery = baseQuery.Where<TicketPartRecord>(x => x.Bounty == null).OrderByDescending(x => x.Bounty);
+                    commonQuery = baseQuery.Where<TicketPartRecord>(x => x.Bounty == null).OrderByDescending(x => x.Bounty).Join<CommonPartRecord>();
                     break;
                 default:
-                    baseQuery = baseQuery.OrderByDescending<CommonPartRecord>(x => x.CreatedUtc);
+                    commonQuery = baseQuery.OrderByDescending<CommonPartRecord>(x => x.CreatedUtc).Join<CommonPartRecord>();
                     break;
             }
 
             if (categoryId != null) {
                 var category = String.Format("|{0}|", categoryId);
-                baseQuery = baseQuery.Where<TicketPartRecord>(x => x.Categories.Contains(category));
+                commonQuery = baseQuery.Where<TicketPartRecord>(x => x.Categories.Contains(category)).Join<CommonPartRecord>();
             }
 
             if (tagId != null) {
                 var tag = String.Format("|{0}|", tagId);
-                baseQuery = baseQuery.Where<TicketPartRecord>(x => x.Tags.Contains(tag));
+                commonQuery = baseQuery.Where<TicketPartRecord>(x => x.Tags.Contains(tag)).Join<CommonPartRecord>();
             }
 
-            var ticketsQuery = baseQuery.ForPart<TicketPart>();
+            var ticketsQuery = commonQuery;
             var pagedQuery = skip != null && take != null ? ticketsQuery.Slice(skip.Value, take.Value) : ticketsQuery.List();
             var tickets = pagedQuery.ToArray();
             var totalCount = skip == null || take == null ? tickets.Length : ticketsQuery.List().Count();
@@ -149,10 +164,10 @@ namespace OrchardPros.Services {
         }
 
         public void Solve(TicketPart ticket, ReplyPart reply) {
-            if(ticket.SolvedUtc != null)
+            if (ticket.SolvedUtc != null)
                 throw new InvalidOperationException("The ticket has already been solved");
 
-            var expertPart = reply.User.As<ExpertPart>();
+            var expertPart = reply.User.As<UserProfilePart>();
 
             ticket.SolvedUtc = _clock.UtcNow;
             ticket.AnswerId = reply.Id;
@@ -165,8 +180,19 @@ namespace OrchardPros.Services {
             }
         }
 
+        public IEnumerable<TicketPart> GetSolvedTicketsFor(int userId) {
+            var replyIds = _replyService.GetRepliesByUser(userId).Select(x => x.Id).ToArray();
+            var answeredTicketsQuery = from ticket in _ticketPartRepository.Table
+                                       where ticket.AnswerId != null
+                                       let answerId = ticket.AnswerId.Value
+                                       where replyIds.Contains(answerId)
+                                       select ticket.Id;
+            var ticketIds = answeredTicketsQuery.ToArray();
+            return _contentManager.GetMany<TicketPart>(ticketIds, VersionOptions.Published, QueryHints.Empty);
+        }
+
         private IEnumerable<TermPart> ParseTags(string tags) {
-            var tagList = !String.IsNullOrWhiteSpace(tags) ? tags.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim().ToLower()).ToArray() : new string[0];
+            var tagList = !String.IsNullOrWhiteSpace(tags) ? tags.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim().ToLower()).ToArray() : new string[0];
             var taxonomy = GetOrCreateTaxonomy("Tag");
             var termsDictionary = GetTerms(taxonomy.Id).ToDictionary(x => x.Name.ToLower());
 

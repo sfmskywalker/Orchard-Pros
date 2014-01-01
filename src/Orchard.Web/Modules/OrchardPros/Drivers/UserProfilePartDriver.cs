@@ -43,6 +43,8 @@ namespace OrchardPros.Drivers {
                     LastName = part.LastName,
                     AvatarType = part.AvatarType,
                     Bio = part.Bio,
+                    Level = part.Level,
+                    ExperiencePoints = part.ExperiencePoints,
                     Tabs = shapeHelper.Tabs()
                 };
                 viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Positions(TabText: T("Positions"), Profile: part, Positions: part.Positions.ToList()));
@@ -57,6 +59,8 @@ namespace OrchardPros.Drivers {
                         part.LastName = viewModel.LastName.TrimSafe();
                         part.AvatarType = viewModel.AvatarType;
                         part.Bio = viewModel.Bio;
+                        part.Level = viewModel.Level;
+                        part.ExperiencePoints = viewModel.ExperiencePoints;
                     }
                 }
 
@@ -72,6 +76,9 @@ namespace OrchardPros.Drivers {
             partElement.SetAttributeValue("AvatarType", part.AvatarType);
             partElement.SetAttributeValue("CreatedUtc", part.CreatedUtc);
             partElement.SetAttributeValue("LastLoggedInUtc", part.LastLoggedInUtc);
+            partElement.SetAttributeValue("Level", part.Level);
+            partElement.SetAttributeValue("ExperiencePoints", part.ExperiencePoints);
+            partElement.SetAttributeValue("Rating", part.Rating);
             partElement.Add(CreatePositionsElement(part));
             partElement.Add(CreateSkillsElement(part));
             partElement.Add(CreateExperiencesElement(part));
@@ -91,6 +98,9 @@ namespace OrchardPros.Drivers {
             context.ImportAttribute(part.PartDefinition.Name, "AvatarType", x => part.AvatarType = (AvatarType)Enum.Parse(typeof(AvatarType), x));
             context.ImportAttribute(part.PartDefinition.Name, "CreatedUtc", x => part.CreatedUtc = XmlConvert.ToDateTime(x, XmlDateTimeSerializationMode.Utc));
             context.ImportAttribute(part.PartDefinition.Name, "LastLoggedInUtc", x => part.LastLoggedInUtc = XmlConvert.ToDateTime(x, XmlDateTimeSerializationMode.Utc));
+            context.ImportAttribute(part.PartDefinition.Name, "Level", x => part.Level = XmlConvert.ToInt32(x));
+            context.ImportAttribute(part.PartDefinition.Name, "ExperiencePoints", x => part.ExperiencePoints = XmlConvert.ToInt32(x));
+            context.ImportAttribute(part.PartDefinition.Name, "Rating", x => part.Rating = XmlConvert.ToInt32(x));
 
             part.Bio = bioElement != null ? bioElement.Value : null;
             ImportSkills(part, partElement);

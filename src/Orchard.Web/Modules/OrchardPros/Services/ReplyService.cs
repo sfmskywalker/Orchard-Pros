@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Orchard.ContentManagement;
 using Orchard.Core.Common.Models;
 using Orchard.Security;
@@ -12,8 +13,12 @@ namespace OrchardPros.Services {
             _contentManager = contentManager;
         }
 
-        public IContentQuery<ReplyPart> GetRepliesFor(int contentId) {
-            return _contentManager.Query<ReplyPart>().Where<CommonPartRecord>(x => x.Container.Id == contentId);
+        public IEnumerable<ReplyPart> GetRepliesByContent(int contentId) {
+            return _contentManager.Query<ReplyPart>().Where<CommonPartRecord>(x => x.Container.Id == contentId).List<ReplyPart>();
+        }
+
+        public IEnumerable<ReplyPart> GetRepliesByUser(int userId) {
+            return _contentManager.Query<ReplyPart>().Where<CommonPartRecord>(x => x.OwnerId == userId).List<ReplyPart>();
         }
 
         public ReplyPart Create(IContent container, string body, IUser user, string subject = null, int? parentReplyId = null, Action<ReplyPart> initialize = null) {
