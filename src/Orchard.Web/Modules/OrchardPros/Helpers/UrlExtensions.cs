@@ -19,5 +19,9 @@ namespace OrchardPros.Helpers {
         public static string Profile(this UrlHelper url, string userName) {
             return url.Action("Index", "Profile", new { userName = userName, area = Area });
         }
+
+        public static string DownloadAttachment(this UrlHelper url, int attachmentId) {
+            return url.Action("Download", "Attachment", new {id = attachmentId, area = Area});
+        }
     }
 }

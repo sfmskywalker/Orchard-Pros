@@ -17,8 +17,20 @@ namespace OrchardPros.Controllers {
             var temporaryFileName = _attachmentService.UploadAttachment(file);
 
             return Json(new {
-                uploadedFileName = temporaryFileName
+                uploadedFileName = temporaryFileName,
+                uploadedFileContentType = file.ContentType
             });
+        }
+
+        public ActionResult Download(int id) {
+            var attachment = _attachmentService.GetAttachment(id);
+
+            if (attachment == null)
+                return HttpNotFound();
+
+            attachment.DownloadCount++;
+            var stream = _attachmentService.OpenRead(attachment);
+            return File(stream, attachment.MimeType, attachment.OriginalFileName);
         }
     }
 }

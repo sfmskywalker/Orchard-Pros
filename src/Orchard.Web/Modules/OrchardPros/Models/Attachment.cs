@@ -2,14 +2,24 @@
 
 namespace OrchardPros.Models {
     public class AttachmentPart : ContentPart {
-        public string FileName {
-            get { return this.Retrieve(x => x.FileName); }
-            set { this.Store(x => x.FileName, value); }
+        public string OriginalFileName {
+            get { return this.Retrieve(x => x.OriginalFileName); }
+            set { this.Store(x => x.OriginalFileName, value); }
+        }
+
+        public string LocalFileName {
+            get { return this.Retrieve(x => x.LocalFileName); }
+            set { this.Store(x => x.LocalFileName, value); }
         }
 
         public long FileSize {
             get { return this.Retrieve(x => x.FileSize); }
             set { this.Store(x => x.FileSize, value); }
+        }
+
+        public string MimeType {
+            get { return this.Retrieve(x => x.MimeType); }
+            set { this.Store(x => x.MimeType, value); }
         }
 
         public int DownloadCount {

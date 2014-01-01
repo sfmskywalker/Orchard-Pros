@@ -98,9 +98,7 @@ namespace OrchardPros.Controllers {
 
             _ticketService.AssignCategories(ticket, model.Categories);
             _ticketService.AssignTags(ticket, model.Tags);
-
-            if (model.Attachments != null)
-                _attachmentService.AssociateAttachments(ticket, model.Attachments.UploadedFileNames, model.Attachments.OriginalFileNames);
+            UpdateAttachments(ticket, model);
 
             var context = new UpdateContentContext(ticket.ContentItem);
             _handlers.Invoke(x => x.Updated(context), Logger);
@@ -143,9 +141,7 @@ namespace OrchardPros.Controllers {
 
             _ticketService.AssignCategories(ticket, model.Categories);
             _ticketService.AssignTags(ticket, model.Tags);
-
-            if (model.Attachments != null)
-                _attachmentService.AssociateAttachments(ticket, model.Attachments.UploadedFileNames, model.Attachments.OriginalFileNames);
+            UpdateAttachments(ticket, model);
 
             var context = new UpdateContentContext(ticket.ContentItem);
 
@@ -186,6 +182,14 @@ namespace OrchardPros.Controllers {
             return Redirect(Url.ItemDisplayUrl(ticket));
         }
 
+        private void UpdateAttachments(TicketPart ticket, TicketViewModel model) {
+            if (model.Attachments != null)
+                _attachmentService.AssociateAttachments(ticket, model.Attachments.UploadedFileNames, model.Attachments.UploadedFileContentTypes, model.Attachments.OriginalFileNames);
+            else {
+                _attachmentService.DeleteAttachments(ticket);
+            }
+        }
+
         private TicketViewModel SetupCreateViewModel(TicketViewModel model) {
             model.ExperiencePoints = _ticketService.CalculateExperience(CurrentUser);
             model.CategoryTerms = _ticketService.GetCategories().ToArray();
@@ -202,7 +206,7 @@ namespace OrchardPros.Controllers {
             model.User = CurrentUser;
             model.CategoryTerms = _ticketService.GetCategories().ToArray();
             model.Attachments = new AttachmentsViewModel {
-                CurrentFiles = ticket.As<AttachmentsHolderPart>().Attachments.Select(x => new AttachmentViewModel {FileName = x.FileName, FileSize = x.FileSize}).ToList()
+                CurrentFiles = ticket.As<AttachmentsHolderPart>().Attachments.Select(x => new AttachmentViewModel {FileName = x.OriginalFileName, FileSize = x.FileSize}).ToList()
             };
             return model;
         }

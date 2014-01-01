@@ -4,14 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.Aspects;
 using Orchard.Core.Common.Models;
 using Orchard.FileSystems.Media;
 using OrchardPros.Models;
 
 namespace OrchardPros.Services {
     public class AttachmentService : IAttachmentService {
-        private const string TempFolderPath = "_Attachments/_Temp";
+        private const string AttachmentsFolderPath = "_Attachments";
         private readonly IContentManager _contentManager;
         private readonly IStorageProvider _storageProvider;
 
@@ -22,69 +21,79 @@ namespace OrchardPros.Services {
 
         public string UploadAttachment(HttpPostedFileBase file) {
             var extension = Path.GetExtension(file.FileName);
-            var temporaryFileName = String.Format("{0}{1}", Guid.NewGuid(), extension);
-            var path = TempFolderPath + "/" + temporaryFileName;
+            var fileName = String.Format("{0}{1}", Guid.NewGuid(), extension);
+            var path = AttachmentsFolderPath + "/" + fileName;
             _storageProvider.SaveStream(path, file.InputStream);
-            return temporaryFileName;
+            return fileName;
         }
 
-        public void AssociateAttachments(IContent content, IEnumerable<string> uploadedFileNames, IEnumerable<string> originalFileNames) {
+        public void AssociateAttachments(IContent content, IEnumerable<string> uploadedFileNames, IList<string> uploadedFileContentTypes, IEnumerable<string> originalFileNames) {
             if (uploadedFileNames == null || originalFileNames == null)
                 return;
 
-            var folderPath = GetFolderPath(content);
             var uploadedFiles = uploadedFileNames.ToArray();
             var originalFiles = originalFileNames.ToArray();
             var currentAttachments = content.As<AttachmentsHolderPart>().Attachments.ToList();
 
             // Delete current attachments (unless they are part of the originalFileNames list).
-            foreach (var attachment in currentAttachments.Where(x => !originalFiles.Contains(x.FileName, StringComparer.OrdinalIgnoreCase)).ToArray()) {
+            foreach (var attachment in currentAttachments.Where(x => !originalFiles.Contains(x.OriginalFileName, StringComparer.OrdinalIgnoreCase)).ToArray()) {
                 _contentManager.Remove(attachment.ContentItem);
                 currentAttachments.Remove(attachment);
             }
 
-            _storageProvider.TryCreateFolder(folderPath);
+            _storageProvider.TryCreateFolder(AttachmentsFolderPath);
 
             for (var i = 0; i < uploadedFiles.Length; i++) {
                 if (String.IsNullOrEmpty(uploadedFiles[i]))
                     continue; // This file was already uploaded, we're just receiving back the filename.
 
-                var uploadedFilePath = TempFolderPath + "/" + uploadedFiles[i];
-                var originalFileName = Path.GetFileName(originalFiles[i]);
-                var originalFilePath = folderPath + "/" + originalFileName;
+                var generatedFileName = uploadedFiles[i];
+                var mimeType = uploadedFileContentTypes[i];
+                var uploadedFilePath = AttachmentsFolderPath + "/" + generatedFileName;
+                var originalFileName = originalFiles[i];
                 var attachment = _contentManager.Create<AttachmentPart>("Attachment", a => {
                     a.As<CommonPart>().Container = content;
-                    a.FileName = originalFileName;
+                    a.OriginalFileName = originalFileName;
+                    a.LocalFileName = generatedFileName;
                     a.FileSize = _storageProvider.GetFile(uploadedFilePath).GetSize();
+                    a.MimeType = mimeType;
                 });
 
                 currentAttachments.Add(attachment);
-
-                // Overwrite any existing files.
-                DeleteFileFor(attachment);
-
-                // Move the file from the temporary folder to the destination folder.
-                _storageProvider.RenameFile(uploadedFilePath, originalFilePath);
-
             }
 
             content.As<AttachmentsHolderPart>().Attachments = currentAttachments;
         }
 
-        private string GetFolderPath(IContent content) {
-            return String.Format("_Attachments/{0:0000000}", content.Id);
+        public void DeleteAttachments(IContent content) {
+            var currentAttachments = content.As<AttachmentsHolderPart>().Attachments.ToList();
+            foreach (var attachment in currentAttachments) {
+                _contentManager.Remove(attachment.ContentItem);
+            }
         }
 
         public void DeleteFileFor(AttachmentPart attachment) {
-            var filePath = GetFolderPath(attachment.As<ICommonPart>().Container) + "/" + attachment.FileName;
+            var filePath = GetFilePath(attachment);
 
             if (_storageProvider.FileExists(filePath)) {
                 _storageProvider.DeleteFile(filePath);
             }
         }
 
+        public AttachmentPart GetAttachment(int id) {
+            return _contentManager.Get<AttachmentPart>(id);
+        }
+
         public IEnumerable<AttachmentPart> GetAttachments(IEnumerable<int> ids) {
             return _contentManager.GetMany<AttachmentPart>(ids, VersionOptions.Published, QueryHints.Empty);
+        }
+
+        public string GetFilePath(AttachmentPart attachment) {
+            return AttachmentsFolderPath + "/" + attachment.LocalFileName;
+        }
+
+        public Stream OpenRead(AttachmentPart attachment) {
+            return _storageProvider.GetFile(GetFilePath(attachment)).OpenRead();
         }
     }
 }

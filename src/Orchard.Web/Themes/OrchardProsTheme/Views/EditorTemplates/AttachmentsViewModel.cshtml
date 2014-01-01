@@ -13,6 +13,7 @@
     <ul data-bind="foreach: transfers" class="list-unstyled">
         <li>
             <input type="hidden" name="@Html.FieldNameFor(m => m.UploadedFileNames)" data-bind="value: uploadedFileName" />
+            <input type="hidden" name="@Html.FieldNameFor(m => m.UploadedFileContentTypes)" data-bind="value: uploadedFileContentType" />
             <input type="hidden" name="@Html.FieldNameFor(m => m.OriginalFileNames)" data-bind="value: fileName" />
             <span data-bind="css: status, text: label"></span>
             <button type="button" data-bind="click: $parent.remove">@T("X")</button>

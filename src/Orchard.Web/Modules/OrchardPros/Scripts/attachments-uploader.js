@@ -7,6 +7,7 @@
         this.label = ko.observable();
         this.status = ko.observable("uploading");
         this.uploadedFileName = ko.observable();
+        this.uploadedFileContentType = ko.observable();
     };
 
     var FileUploadViewModel = function (currentFiles) {
@@ -82,6 +83,7 @@
                 var result = data.result;
                 data.context.status("success");
                 data.context.uploadedFileName(result.uploadedFileName);
+                data.context.uploadedFileContentType(result.uploadedFileContentType);
                 data.context.label(data.context.fileName);
             },
             fail: function (e, data) {

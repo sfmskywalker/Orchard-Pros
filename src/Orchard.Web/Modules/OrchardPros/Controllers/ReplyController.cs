@@ -42,7 +42,7 @@ namespace OrchardPros.Controllers {
             var reply = _replyService.Create(contentItem, model.Body, user, model.Title, model.ParentReplyId);
 
             if (model.Attachments != null)
-                _attachmentService.AssociateAttachments(reply, model.Attachments.UploadedFileNames, model.Attachments.OriginalFileNames);
+                _attachmentService.AssociateAttachments(reply, model.Attachments.UploadedFileNames, model.Attachments.UploadedFileContentTypes, model.Attachments.OriginalFileNames);
 
             _notifier.Information(T("Your reply has been posted."));
             return Redirect(Url.ItemDisplayUrl(contentItem));
