@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using OrchardPros.Models;
 
 namespace OrchardPros.Helpers {
     public static class UrlExtensions {
@@ -20,8 +21,8 @@ namespace OrchardPros.Helpers {
             return url.Action("Index", "Profile", new { userName = userName, area = Area });
         }
 
-        public static string DownloadAttachment(this UrlHelper url, int attachmentId) {
-            return url.Action("Download", "Attachment", new {id = attachmentId, area = Area});
+        public static string DownloadAttachment(this UrlHelper url, AttachmentPart attachment) {
+            return url.Action("Download", "Attachment", new {id = attachment.UniqueIdentifier, area = Area});
         }
     }
 }

@@ -84,6 +84,14 @@ namespace OrchardPros.Services {
             return _contentManager.Get<AttachmentPart>(id);
         }
 
+        public AttachmentPart GetAttachmentByIdentifier(string identifier) {
+            return _contentManager
+                .Query<IdentityPart, IdentityPartRecord>()
+                .Where(x => x.Identifier == identifier)
+                .ForPart<AttachmentPart>().List()
+                .FirstOrDefault();
+        }
+
         public IEnumerable<AttachmentPart> GetAttachments(IEnumerable<int> ids) {
             return _contentManager.GetMany<AttachmentPart>(ids, VersionOptions.Published, QueryHints.Empty);
         }

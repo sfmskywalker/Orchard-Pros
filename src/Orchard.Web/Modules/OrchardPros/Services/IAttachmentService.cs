@@ -13,6 +13,7 @@ namespace OrchardPros.Services {
         IEnumerable<AttachmentPart> GetAttachments(IEnumerable<int> ids);
         void DeleteFileFor(AttachmentPart attachment);
         AttachmentPart GetAttachment(int id);
+        AttachmentPart GetAttachmentByIdentifier(string identifier);
         Stream OpenRead(AttachmentPart attachment);
     }
 }

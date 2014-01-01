@@ -22,8 +22,8 @@ namespace OrchardPros.Controllers {
             });
         }
 
-        public ActionResult Download(int id) {
-            var attachment = _attachmentService.GetAttachment(id);
+        public ActionResult Download(string id) {
+            var attachment = _attachmentService.GetAttachmentByIdentifier(id);
 
             if (attachment == null)
                 return HttpNotFound();

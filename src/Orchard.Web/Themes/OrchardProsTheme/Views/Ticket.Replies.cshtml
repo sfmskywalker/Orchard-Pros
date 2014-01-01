@@ -50,7 +50,7 @@
                                         <em>@T("Attachments")</em>
                                         <ul class="list-unstyled">
                                             @foreach (var attachment in attachments) {
-                                                <li><a href="@Url.DownloadAttachment(attachment.Id)"><img src="@Url.FileIcon(attachment.OriginalFileName)" alt="Document"> @attachment.OriginalFileName</a></li>
+                                                <li><a href="@Url.DownloadAttachment(attachment)"><img src="@Url.FileIcon(attachment.OriginalFileName)" alt="Document"> @attachment.OriginalFileName</a></li>
                                             }
                                         </ul>
                                     </div>

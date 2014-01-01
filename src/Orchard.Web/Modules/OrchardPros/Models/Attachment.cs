@@ -1,4 +1,5 @@
 ﻿using Orchard.ContentManagement;
+using Orchard.Core.Common.Models;
 
 namespace OrchardPros.Models {
     public class AttachmentPart : ContentPart {
@@ -25,6 +26,10 @@ namespace OrchardPros.Models {
         public int DownloadCount {
             get { return this.Retrieve(x => x.DownloadCount); }
             set { this.Store(x => x.DownloadCount, value); }
+        }
+
+        public string UniqueIdentifier {
+            get { return this.As<IdentityPart>().Identifier; }
         }
     }
 }
