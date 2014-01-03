@@ -1,11 +1,8 @@
-﻿@using Orchard.ContentManagement
-@using Orchard.Security
+﻿@using Orchard.Security
 @using OrchardPros.Helpers
-@using OrchardPros.Models
 @{
     var user = (IUser) Model.User;
-    var profilePart = user.As<UserProfilePart>();
 }
 <div class="jumbotron account">
-    <img src="@Url.AvatarUrl(profilePart, this, 140)" alt="@user.UserName" class="profile-img-l">
+    <img src="@Url.AvatarUrl(user, this, 140)" alt="@user.UserName" class="profile-img-l">
 </div>

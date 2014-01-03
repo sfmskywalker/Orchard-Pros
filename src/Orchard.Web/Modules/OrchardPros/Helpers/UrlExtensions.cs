@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Orchard.Mvc.Html;
+using Orchard.Security;
 using Orchard.Taxonomies.Models;
 using OrchardPros.Models;
 
@@ -17,6 +18,10 @@ namespace OrchardPros.Helpers {
 
         public static string AccountSignOut(this UrlHelper url) {
             return url.Action("SignOut", "Account", new { area = Area });
+        }
+
+        public static string Profile(this UrlHelper url, IUser user) {
+            return url.Profile(user.UserName);
         }
 
         public static string Profile(this UrlHelper url, string userName) {

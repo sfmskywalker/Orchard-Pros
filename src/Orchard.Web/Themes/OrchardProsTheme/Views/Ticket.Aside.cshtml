@@ -6,7 +6,6 @@
 @{
     var ticket = (TicketPart)Model.Ticket;
     var user = ticket.User;
-    var profilePart = user.As<UserProfilePart>();
     var commonPart = ticket.As<CommonPart>();
     var statisticsPart = ticket.As<StatisticsPart>();
     var attachmentsHolderPart = ticket.As<AttachmentsHolderPart>();
@@ -21,7 +20,7 @@
         </div>
         <div class="panel-body">
             <div class="ticket-info">
-                <a href="#" class="pull-left"><img src="@Url.AvatarUrl(profilePart, this, 64)" class="media-object profile-img-m"></a>
+                <a href="#" class="pull-left"><img src="@Url.AvatarUrl(user, this, 64)" class="media-object profile-img-m"></a>
                 <span class="ticket-timestamp">@T("Created {0} by", Display.DateTimeRelative(dateTimeUtc: commonPart.CreatedUtc))<span class="author"><a href="#">@user.UserName</a></span></span>
                 <span class="ticket-timestamp">@T("Updated {0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<span class="author"><a href="#">@lastModifier.UserName</a></span></span>
             </div>

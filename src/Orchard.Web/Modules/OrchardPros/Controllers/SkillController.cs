@@ -45,7 +45,7 @@ namespace OrchardPros.Controllers {
             }
             _skillManager.Create(CurrentUser.Id, x => Update(x, viewModel));
             _notifier.Information(T("Your Skill has been created."));
-            return Redirect(Url.Profile(CurrentUser.UserName));
+            return Redirect(Url.Profile(CurrentUser));
         }
 
         public ActionResult Edit(int id) {
@@ -76,7 +76,7 @@ namespace OrchardPros.Controllers {
             }
             Update(skill, viewModel);
             _notifier.Information(T("Your Skill has been updated."));
-            return Redirect(Url.Profile(CurrentUser.UserName));
+            return Redirect(Url.Profile(CurrentUser));
         }
 
         [HttpPost]
@@ -89,7 +89,7 @@ namespace OrchardPros.Controllers {
 
             _skillManager.Delete(skill);
             _notifier.Information(T("Your Skill has been deleted."));
-            return Redirect(Url.Profile(CurrentUser.UserName));
+            return Redirect(Url.Profile(CurrentUser));
         }
 
         private static void Update(Skill skill, SkillViewModel viewModel) {

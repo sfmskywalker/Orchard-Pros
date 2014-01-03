@@ -30,6 +30,6 @@
         }
         <a href="#">Reply</a>
         <a href="#">Share</a>
-        <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<a href="@Url.Profile(user.UserName)" class="author">@user.UserName</a></span>
+        <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<a href="@Url.Profile(user)" class="author">@user.UserName</a></span>
     </div>
 </section>

@@ -50,7 +50,7 @@ namespace OrchardPros.Controllers {
             }
             _positionManager.Create(CurrentUser.Id, x => Update(x, viewModel));
             _notifier.Information(T("Your Position has been created."));
-            return Redirect(Url.Profile(CurrentUser.UserName));
+            return Redirect(Url.Profile(CurrentUser));
         }
 
         public ActionResult Edit(int id) {
@@ -87,7 +87,7 @@ namespace OrchardPros.Controllers {
             }
             Update(position, viewModel);
             _notifier.Information(T("Your Position has been updated."));
-            return Redirect(Url.Profile(CurrentUser.UserName));
+            return Redirect(Url.Profile(CurrentUser));
         }
 
         [HttpPost]
@@ -100,7 +100,7 @@ namespace OrchardPros.Controllers {
 
             _positionManager.Archive(position);
             _notifier.Information(T("Your Position has been deleted."));
-            return Redirect(Url.Profile(CurrentUser.UserName));
+            return Redirect(Url.Profile(CurrentUser));
         }
 
         private static void Update(Position position, PositionViewModel viewModel) {

@@ -95,7 +95,7 @@
     else {
         foreach (var recommendation in filteredRecommendations) {
             <div class="media">
-                <a href="#" class="pull-left"><img src="~/themes/orchardprostheme/images/temp-profile.png" alt="@recommendation.RecommendingUser.UserName" class="profile-img-s media-object"></a>
+                <a href="@Url.Profile(recommendation.RecommendingUser)" class="pull-left"><img src="@Url.AvatarUrl(recommendation.RecommendingUser, this, 32)" alt="@recommendation.RecommendingUser.UserName" class="profile-img-s media-object"></a>
                 <div class="media-body">
                     <p><span class="dropcap">&nbsp;</span>@recommendation.Body</p>
                     @if (recommendation.AllowPublication) {

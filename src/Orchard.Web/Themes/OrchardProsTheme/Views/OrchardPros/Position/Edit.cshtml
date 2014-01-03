@@ -7,6 +7,6 @@
     @Html.EditorForModel()
     <fieldset>
         <button class="btn btn-success btn-save" type="submit" name="submit.Save" value="submit.Save">@T("Save")</button>
-        @Html.Link(T("Cancel").ToString(), Url.Profile(Model.User.UserName), new { @class = "btn btn-default" })
+        @Html.Link(T("Cancel").ToString(), Url.Profile(Model.User), new { @class = "btn btn-default" })
     </fieldset>
 }

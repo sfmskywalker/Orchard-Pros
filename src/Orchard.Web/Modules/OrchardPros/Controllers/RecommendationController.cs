@@ -81,7 +81,7 @@ namespace OrchardPros.Controllers {
             _contentManager.Publish(recommendation.ContentItem);
             _notifier.Information(T("That recommendation has been published."));
 
-            return Redirect(Url.Profile(user.UserName));
+            return Redirect(Url.Profile(user));
         }
 
         [HttpPost]
@@ -95,7 +95,7 @@ namespace OrchardPros.Controllers {
             _contentManager.Unpublish(recommendation.ContentItem);
             _notifier.Information(T("That recommendation has been unpublished."));
 
-            return Redirect(Url.Profile(user.UserName));
+            return Redirect(Url.Profile(user));
         }
 
         [HttpPost]
@@ -109,7 +109,7 @@ namespace OrchardPros.Controllers {
             _contentManager.Remove(recommendation.ContentItem);
             _notifier.Information(T("That recommendation has been removed."));
 
-            return Redirect(Url.Profile(user.UserName));
+            return Redirect(Url.Profile(user));
         }
     }
 }
