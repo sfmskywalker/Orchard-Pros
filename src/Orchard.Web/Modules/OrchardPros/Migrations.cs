@@ -7,6 +7,20 @@ using Orchard.Indexing;
 namespace OrchardPros {
     public class Migrations : DataMigrationImpl {
         public int Create() {
+            // Subscription
+            SchemaBuilder.CreateTable("Subscription", table => table
+                .Column<int>("Id", c => c.PrimaryKey().Identity())
+                .Column<int>("SubscriptionSourceId", c => c.NotNull())
+                .Column<int>("UserId", c => c.NotNull())
+                .Column<DateTime>("CreatedUtc", c => c.NotNull()));
+
+            SchemaBuilder.CreateTable("SubscriptionSourcePartRecord", table => table
+                .ContentPartRecord());
+
+            ContentDefinitionManager.AlterPartDefinition("SubscriptionSourcePart", part => part
+                .Attachable()
+                .WithDescription("Turns your content into a source of notifications that users can subscribe to."));
+
             // Position
             SchemaBuilder.CreateTable("Position", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
@@ -107,6 +121,7 @@ namespace OrchardPros {
                 .Attachable()
                 .WithDescription("Turns your content into a dossier capable of holding attachments."));
 
+
             // Ticket
             SchemaBuilder.CreateTable("TicketPartRecord", table => table
                 .ContentPartRecord()
@@ -145,6 +160,7 @@ namespace OrchardPros {
                 .WithPart("AttachmentsHolderPart")
                 .WithPart("CommentsPart")
                 .WithPart("StatisticsPart")
+                .WithPart("SubscriptionSourcePart")
                 .Creatable(false)
                 .Draftable());
 
@@ -163,14 +179,6 @@ namespace OrchardPros {
                 .WithPart("BodyPart")
                 .WithPart("AttachmentsHolderPart")
                 .WithPart("VotablePart"));
-
-            // Expert
-            ContentDefinitionManager.AlterPartDefinition("ExpertPart", part => part
-                .Attachable(false)
-                .WithDescription("Stores expert information about a user, such as level and experience points."));
-
-            ContentDefinitionManager.AlterTypeDefinition("User", type => type
-                .WithPart("ExpertPart"));
 
             return 1;
         }

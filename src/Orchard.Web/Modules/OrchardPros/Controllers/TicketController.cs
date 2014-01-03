@@ -152,6 +152,7 @@ namespace OrchardPros.Controllers {
             return Redirect(Url.ItemDisplayUrl(ticket));
         }
 
+        [HttpPost]
         public ActionResult Solve(int id, int replyId, int? rating, string recommendation, bool? allowPublication) {
             var ticket = _ticketService.GetTicket(id);
 

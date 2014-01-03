@@ -29,7 +29,7 @@
         <div class="ticket-info">
             <span class="ticket-expiration">@ticket.GetExpirationText(T)</span>
             <span class="ticket-bounty">@T("Bounty: {0:c}", ticket.Bounty)</span>
-            <span class="ticket-exp">@T("EXP: {0}")</span>
+            <span class="ticket-exp">@T("EXP: {0}", ticket.ExperiencePoints)</span>
             <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<span class="author">@Html.ProfileLink(ticket.LastModifier.UserName)</span></span>
         </div>
     </article>

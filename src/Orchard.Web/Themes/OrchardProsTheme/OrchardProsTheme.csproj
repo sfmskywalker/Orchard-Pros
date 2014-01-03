@@ -104,15 +104,26 @@
     <Content Include="Images\temp-icon-achievement.png" />
     <Content Include="Images\temp-profile.png" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.min.js">
+      <DependentUpon>bootstrap.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\common.min.js">
+      <DependentUpon>common.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\html5shiv.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\less-1.5.0.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\common.js" />
+    <Content Include="Scripts\select2.min.js">
+      <DependentUpon>select2.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\ticket.js" />
     <Content Include="Scripts\select2-initialization.js" />
     <Content Include="Scripts\select2.js" />
-    <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\ticket.min.js">
+      <DependentUpon>ticket.js</DependentUpon>
+    </Content>
     <Content Include="Styles\bootstrap-theme.css" />
     <Content Include="Styles\bootstrap-theme.min.css">
       <DependentUpon>bootstrap-theme.css</DependentUpon>
@@ -302,6 +313,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\UrlHelpers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\common.min.js.map">
+      <DependentUpon>common.js</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\select2.min.js.map">
+      <DependentUpon>select2.js</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\ticket.min.js.map">
+      <DependentUpon>ticket.js</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\bootstrap.min.js.map">
+      <DependentUpon>bootstrap.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

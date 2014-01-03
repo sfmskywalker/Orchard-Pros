@@ -1,8 +1,13 @@
-﻿@using Orchard.Core.Contents
+﻿@using Orchard.ContentManagement
+@using Orchard.Core.Contents
 @using OrchardPros.Models
 @{
-    var ticket = (TicketPart) Model.Ticket;
+    var ticket = (TicketPart)Model.Ticket;
+    var subscriptionSource = ticket.As<SubscriptionSourcePart>();
     var user = ticket.User;
+    var currentUser = WorkContext.CurrentUser;
+    var isFollowing = subscriptionSource.Subscribers.Any(x => x.Id == currentUser.Id);
+
 }
 @if (Authorizer.Authorize(Permissions.EditContent, ticket)) {
     <a class="btn btn-success" href="@Url.Action("Edit", "Ticket", new { id = ticket.Id, area = "OrchardPros" })">@T("Edit")</a>
@@ -13,7 +18,16 @@
         @ticket.Body
     </article>
     <div class="sorter bottom">
-        <a href="#">Follow ticket</a>
+        @if (isFollowing) {
+            using (Html.BeginFormAntiForgeryPost(Url.Action("Unsubscribe", "SubscriptionSource", new { id = ticket.Id, area = "OrchardPros", returnUrl = Request.Path }), FormMethod.Post)) {
+                <a href="#" data-submit-form>@T("Unfollow Ticket")</a>
+            }
+        }
+        else {
+            using (Html.BeginFormAntiForgeryPost(Url.Action("Subscribe", "SubscriptionSource", new { id = ticket.Id, area = "OrchardPros", returnUrl = Request.Path }), FormMethod.Post)) {
+                <a href="#" data-submit-form>@T("Follow Ticket")</a>
+            }
+        }
         <a href="#">Reply</a>
         <a href="#">Share</a>
         <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<a href="@Url.Profile(user.UserName)" class="author">@user.UserName</a></span>

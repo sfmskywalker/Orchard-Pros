@@ -15,6 +15,7 @@ using OrchardPros.Helpers;
 using OrchardPros.Models;
 using OrchardPros.Services;
 using OrchardPros.ViewModels;
+using ContentExtensions = OrchardPros.Helpers.ContentExtensions;
 
 namespace OrchardPros.Controllers {
     [Themed, Authorize]
@@ -26,6 +27,7 @@ namespace OrchardPros.Controllers {
         private readonly IAuthenticationService _authenticationService;
         private readonly INotificationSettingsManager _notificationSettingsManager;
         private readonly ITicketService _ticketService;
+        private readonly ISubscriptionService _subscriptionService;
 
         public ProfileController(
             IShapeFactory shapeFactory, 
@@ -35,7 +37,8 @@ namespace OrchardPros.Controllers {
             IAccountServices accountServices,
             IAuthenticationService authenticationService, 
             INotificationSettingsManager notificationSettingsManager, 
-            ITicketService ticketService) {
+            ITicketService ticketService, 
+            ISubscriptionService subscriptionService) {
 
             New = shapeFactory;
             T = NullLocalizer.Instance;
@@ -46,6 +49,7 @@ namespace OrchardPros.Controllers {
             _authenticationService = authenticationService;
             _notificationSettingsManager = notificationSettingsManager;
             _ticketService = ticketService;
+            _subscriptionService = subscriptionService;
         }
 
         public Localizer T { get; set; }
@@ -66,8 +70,12 @@ namespace OrchardPros.Controllers {
             return new ShapeResult(this, ticketsCreated);
         }
 
-        public ActionResult TicketsFollowed() {
-            var ticketsFollowed = Wrap(New.Profile_TicketsFollowed());
+        public ActionResult TicketsFollowed(PagerParameters pagerParameters) {
+            var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
+            var user = GetUser();
+            var tickets = _subscriptionService.GetSubscriptionSourcesByUser(user.Id).As<TicketPart>();
+            var pagerShape = New.Pager(pager).TotalItemCount(tickets.TotalItemCount);
+            var ticketsFollowed = Wrap(New.Profile_TicketsFollowed(Tickets: tickets, Pager: pagerShape));
             return new ShapeResult(this, ticketsFollowed);
         }
 

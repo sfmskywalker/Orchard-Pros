@@ -26,7 +26,6 @@
                     var votablePart = reply.As<VotablePart>();
                     var user = reply.User;
                     var profile = user.As<UserProfilePart>();
-                    var expert = user.As<ExpertPart>();
                     var attachments = reply.As<AttachmentsHolderPart>().Attachments.ToArray();
                     var voteCount = votablePart.VoteCount;
                     var votesClass = voteCount == 0 ? "neutral" : voteCount < 0 ? "negative" : "positive";
@@ -77,15 +76,15 @@
                                         <a href="#" class="pull-left"><img src="@Url.AvatarUrl(profile, this, 64)" class="media-object profile-img-m"></a>
                                         <ul class="expert-info media-body">
                                             <li class="name"><a href="#">@profile.DisplayName</a></li>
-                                            <li class="title">@T("Lv. {0:00} {1}", expert.Level, expert.RankName)</li>
+                                            <li class="title">@T("Lv. {0:00} {1}", profile.Level, profile.RankName)</li>
                                             <li class="rating">
-                                                @for (var i = 0; i < expert.Rating; i++) {
+                                                @for (var i = 0; i < profile.Rating; i++) {
                                                     <span class="glyphicon glyphicon-star"></span>
                                                 }
                                             </li>
                                             <li class="experience">
                                                 <h4>@T("Experience")</h4>
-                                                <p>@T("Total EXP: {0}", expert.ExperiencePoints)</p>
+                                                <p>@T("Total EXP: {0}", profile.ExperiencePoints)</p>
                                             </li>
                                             <li class="achievements">
                                                 <h4>@T("Achievements")</h4>

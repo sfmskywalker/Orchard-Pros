@@ -1,76 +1,38 @@
-﻿<!-- Tickets posts -->
-<article class="ticket-post">
-    <div class="ticket-summary">
-        <h2><a href="#">Post title</a></h2>
-        <a href="#" class="category-link">Category</a>
-        <div class="tags">
-            <a href="#"><span class="label label-default">Default</span></a>
-            <a href="#"><span class="label label-default">Default</span></a>
-            <a href="#"><span class="label label-default">Default</span></a>
+﻿@using Orchard.ContentManagement
+@using OrchardPros.Models
+@{
+    var tickets = (IPagedList<TicketPart>)Model.Tickets;
+    var pager = Model.Pager;
+}
+<!-- Tickets posts -->
+@foreach (var ticket in tickets) {
+    var statisticsPart = ticket.As<StatisticsPart>();
+    <article class="ticket-post">
+        <div class="ticket-summary">
+            <h2>@Html.TicketDetailsLink(ticket)</h2>
+            @foreach (var category in ticket.Categories) {
+                <a href="@Url.Category(category)" class="category-link">@category.Name</a>
+            }
+            <div class="tags">
+                @foreach (var tag in ticket.Tags) {
+                    <a href="@Url.Tag(tag)"><span class="label label-default">@tag.Name</span></a>
+                }
+            </div>
         </div>
-    </div>
-    <div class="ticket-status">
-        <ul>
-            <li class="votes negative"><span class="number">-8</span><span class="type">votes</span></li>
-            <li class="views"><span class="number">8</span><span class="type">views</span></li>
-            <li class="replies solved"><span class="number">2</span><span class="type">replies</span></li>
-        </ul>
-    </div>
-    <div class="ticket-info">
-        <span class="ticket-expiration">Expires 2d 5h 30m</span>
-        <span class="ticket-bounty">Bounty: $100</span>
-        <span class="ticket-exp">EXP: 50</span>
-        <span class="ticket-timestamp">50 mins ago by<span class="author"><a href="#">Username</a></span></span>
-    </div>
-</article>
-
-<article class="ticket-post">
-    <div class="ticket-summary">
-        <h2><a href="#">Post title</a></h2>
-        <a href="#" class="category-link">Category</a>
-        <div class="tags">
-            <a href="#"><span class="label label-default">Default</span></a>
-            <a href="#"><span class="label label-default">Default</span></a>
-            <a href="#"><span class="label label-default">Default</span></a>
+        <div class="ticket-status">
+            <ul>
+                <li class="votes"><span class="number">0</span><span class="type">@T("votes")</span></li>
+                <li class="views"><span class="number">@statisticsPart.ViewCount</span><span class="type">@T("views")</span></li>
+                <li class="replies @if(ticket.IsSolved){<text>solved</text>}"><span class="number">@ticket.Replies.Count()</span><span class="type">@T("replies")</span></li>
+            </ul>
         </div>
-    </div>
-    <div class="ticket-status">
-        <ul>
-            <li class="votes negative"><span class="number">-8</span><span class="type">votes</span></li>
-            <li class="views"><span class="number">8</span><span class="type">views</span></li>
-            <li class="replies solved"><span class="number">2</span><span class="type">replies</span></li>
-        </ul>
-    </div>
-    <div class="ticket-info">
-        <span class="ticket-expiration">Expires 2d 5h 30m</span>
-        <span class="ticket-bounty">Bounty: $100</span>
-        <span class="ticket-exp">EXP: 50</span>
-        <span class="ticket-timestamp">50 mins ago by<span class="author"><a href="#">Username</a></span></span>
-    </div>
-</article>
-
-<article class="ticket-post">
-    <div class="ticket-summary">
-        <h2><a href="#">Post title</a></h2>
-        <a href="#" class="category-link">Category</a>
-        <div class="tags">
-            <a href="#"><span class="label label-default">Default</span></a>
-            <a href="#"><span class="label label-default">Default</span></a>
-            <a href="#"><span class="label label-default">Default</span></a>
+        <div class="ticket-info">
+            <span class="ticket-expiration">@ticket.GetExpirationText(T)</span>
+            <span class="ticket-bounty">@T("Bounty: {0:c}", ticket.Bounty)</span>
+            <span class="ticket-exp">@T("EXP: {0}", ticket.ExperiencePoints)</span>
+            <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<span class="author">@Html.ProfileLink(ticket.LastModifier.UserName)</span></span>
         </div>
-    </div>
-    <div class="ticket-status">
-        <ul>
-            <li class="votes negative"><span class="number">-8</span><span class="type">votes</span></li>
-            <li class="views"><span class="number">8</span><span class="type">views</span></li>
-            <li class="replies solved"><span class="number">2</span><span class="type">replies</span></li>
-        </ul>
-    </div>
-    <div class="ticket-info">
-        <span class="ticket-expiration">Expires 2d 5h 30m</span>
-        <span class="ticket-bounty">Bounty: $100</span>
-        <span class="ticket-exp">EXP: 50</span>
-        <span class="ticket-timestamp">50 mins ago by<span class="author"><a href="#">Username</a></span></span>
-    </div>
-</article>
+    </article>
+}
 <!-- /Ticket Posts -->
+@Display(pager)

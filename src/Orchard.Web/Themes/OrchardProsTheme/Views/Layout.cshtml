@@ -1,11 +1,11 @@
 ﻿@{
     Style.Include("bootstrap.css", "bootstrap.min.css");
     Style.Include("theme.css", "theme.min.css");
-    Script.Require("jQuery").AtFoot();
-    Script.Include("html5shiv.js").Define(x => x.SetCdn("https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js")).UseCdn().UseCondition("if lt IE 9").AtHead();
-    Script.Include("respond.min.js").Define(x => x.SetCdn("https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js")).UseCdn().UseCondition("if lt IE 9").AtHead();
-    Script.Include("jquery.js").Define(x => x.SetCdn("https://code.jquery.com/jquery.js")).UseCdn().AtFoot();
+    Script.Require("jQuery").Define(x => x.SetCdn("https://code.jquery.com/jquery.js")).UseCdn(false).AtFoot();
+    Script.Include("html5shiv.js").Define(x => x.SetCdn("https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js")).UseCdn(false).UseCondition("if lt IE 9").AtHead();
+    Script.Include("respond.min.js").Define(x => x.SetCdn("https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js")).UseCdn(false).UseCondition("if lt IE 9").AtHead();
     Script.Include("bootstrap.js", "bootstrap.min.js").AtFoot();
+    Script.Include("common.js", "common.min.js").AtFoot();
 }
 @functions {
     string ContentZoneClass() {

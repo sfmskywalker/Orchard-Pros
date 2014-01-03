@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 namespace OrchardPros.Models {
-    public interface IPagedList<T> : IList<T> {
+    public interface IPagedList<out T> : IEnumerable<T> {
         long TotalItemCount { get; }
     }
 }
