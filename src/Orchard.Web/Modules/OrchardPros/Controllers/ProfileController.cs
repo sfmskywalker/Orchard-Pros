@@ -15,7 +15,6 @@ using OrchardPros.Helpers;
 using OrchardPros.Models;
 using OrchardPros.Services;
 using OrchardPros.ViewModels;
-using ContentExtensions = OrchardPros.Helpers.ContentExtensions;
 
 namespace OrchardPros.Controllers {
     [Themed, Authorize]
@@ -86,13 +85,16 @@ namespace OrchardPros.Controllers {
             var settingsModel = new AccountSettingsViewModel {
                 Email = currentUser.Email,
                 UserName = currentUser.UserName,
+                AvatarType = profilePart.AvatarType,
                 Notifications = _notificationSettingsManager.GetNotificationSettings().Select(x => new NotificationSettingViewModel {
                     Name = x.Name,
                     Description = x.Description,
                     Checked = notificationSettings.ContainsKey(x.Name)
                 }).ToList()
             };
-            var shape = Wrap(New.Profile_Settings(AccountSettings: settingsModel));
+            var shape = Wrap(New.Profile_Settings(
+                AccountSettings: settingsModel,
+                User: currentUser));
             return new ShapeResult(this, shape);
         }
 
@@ -127,8 +129,30 @@ namespace OrchardPros.Controllers {
 
             }
             if (!ModelState.IsValid) {
-                var shape = Wrap(New.Profile_Settings());
+                var shape = Wrap(New.Profile_Settings(
+                    AccountSettings: accountSettings,
+                    User: currentUser));
                 return new ShapeResult(this, shape);    
+            }
+
+            profilePart.AvatarType = accountSettings.AvatarType;
+
+            if (accountSettings.DeleteAvatar == true) {
+                _accountServices.DeleteAvatar(currentUser);
+            }
+
+            if (accountSettings.DeleteWallpaper == true) {
+                _accountServices.DeleteWallpaper(currentUser);
+            }
+
+            var avatarFile = Request.Files["AvatarFile"];
+            if (avatarFile.ContentLength > 0) {
+                _accountServices.UpdateAvatar(currentUser, avatarFile);
+            }
+
+            var wallpaperFile = Request.Files["WallpaperFile"];
+            if (wallpaperFile.ContentLength > 0) {
+                _accountServices.UpdateWallpaper(currentUser, wallpaperFile);
             }
 
             profilePart.NotificationSettings = accountSettings.Notifications.Where(x => x.Checked).Select(x => new NotificationSetting {Name = x.Name}).ToArray();

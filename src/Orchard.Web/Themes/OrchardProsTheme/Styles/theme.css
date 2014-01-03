@@ -57,7 +57,13 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 .jumbotron input { margin-bottom:0.5em; }
 
 .jumbotron.home { min-height: 322px; }
-.jumbotron.account { background:#eee; height:300px; }
+.jumbotron.account {
+    background:#eee center center; 
+    height:300px;
+    -ms-background-size: cover;
+    background-size: cover;
+}
+
 .jumbotron.account img { position:absolute; left:40px; bottom:40px; }
 
 /* Header */

@@ -6,6 +6,7 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.FieldStorage.InfosetStorage;
 using Orchard.Core.Common.Utilities;
 using Orchard.MediaLibrary.Fields;
+using Orchard.MediaLibrary.Models;
 using Orchard.Security;
 using OrchardPros.Helpers;
 
@@ -39,10 +40,20 @@ namespace OrchardPros.Models {
         }
 
         public string Avatar {
-            get { return this.FieldValue<MediaLibraryPickerField, string>("Avatar", x => {
-                var media = x.MediaParts.FirstOrDefault();
-                return media != null ? media.MediaUrl : null;
-            });}
+            get { 
+                return this.FieldValue<MediaLibraryPickerField, string>("Avatar", x => {
+                    var media = x.MediaParts.FirstOrDefault();
+                    return media != null ? media.MediaUrl : null;
+                });
+            }
+        }
+
+        public MediaLibraryPickerField AvatarField {
+            get { return this.Field<MediaLibraryPickerField>("Avatar"); }
+        }
+
+        public MediaLibraryPickerField WallpaperField {
+            get { return this.Field<MediaLibraryPickerField>("Wallpaper"); }
         }
 
         public AvatarType AvatarType {

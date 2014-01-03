@@ -103,10 +103,14 @@
     <Content Include="Images\social-twitter.png" />
     <Content Include="Images\temp-icon-achievement.png" />
     <Content Include="Images\temp-profile.png" />
+    <Content Include="Scripts\account-settings.min.js">
+      <DependentUpon>account-settings.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js">
       <DependentUpon>bootstrap.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\account-settings.js" />
     <Content Include="Scripts\common.min.js">
       <DependentUpon>common.js</DependentUpon>
     </Content>
@@ -366,6 +370,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\RecommendationViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\account-settings.min.js.map">
+      <DependentUpon>account-settings.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

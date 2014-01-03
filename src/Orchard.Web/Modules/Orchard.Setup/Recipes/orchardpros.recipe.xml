@@ -158,6 +158,33 @@
       </UserProfilePart>
       <ExpertPart Level="80" ExperiencePoints="364000" Rating="1" />
     </User>
+    <User Id="/User.UserName=jay" Status="Published">
+      <MediaLibraryPickerField.Avatar ContentItems="/Identifier=5b76ff5ab622433cb15c9e17392dd983" />
+      <UserPart Email="imj@visualcreature.nl" EmailStatus="Approved" HashAlgorithm="SHA1" NormalizedUserName="jay" Password="Y2SFFbW9VLIKcE5swgdoMNywFZI=" PasswordFormat="Hashed" PasswordSalt="Ems5sdEvbk5tkFG8GMhdsw==" RegistrationStatus="Approved" UserName="jay" />
+      <UserRolesPart Roles="Member" />
+      <UserProfilePart>
+        <Positions>
+          <Position LocalId="1" CompanyName="Visual Creature" Title="Freelance Photographer and Visual Designer" Location="Amsterdam Area, The Netherlands" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2000" PeriodStartMonth="5">Desiging websites and other things.</Position>
+        </Positions>
+        <Skills>
+          <Skill Name="html5" Rating="10" />
+          <Skill Name="css3" Rating="10" />
+          <Skill Name="graphic design" Rating="10" />
+          <Skill Name="web design" Rating="10" />
+          <Skill Name="ui/ux" Rating="10" />
+        </Skills>
+        <Experiences>
+          <Experience LocalPositionId="1" CreatedUtc="2013-12-21T11:29:16">I've done some cool projects here.</Experience>
+        </Experiences>
+        <Recommendations>
+          <Recommendation RecommendingUserId="/User.UserName=snow" Approved="true" CreatedUtc="2013-12-20T23:33:55">Jay is iemand die goed aan kan voelen wat iemand wil en kan daar perfect op in spelen. Of het nou gaat om design of creatieve ideeën, bij beide zal hij je nooit te kort schieten. Al met al is het altijd plezierig om met Jay samen te werken!</Recommendation>
+        </Recommendations>
+      </UserProfilePart>
+      <UserProfilePart FirstName="Jay" MiddleName="" LastName="Tang" AvatarType="LocalStorage" CreatedUtc="0001-01-01T00:00:00Z">
+        Jay Tang | VISUAL CREATURE is a freelance photographer and visual designer based in the Amsterdam area, The Netherlands. He specializes in visual identities, graphic design, web design and photography, which includes fashion, glamour &amp; beauty, interiors, architecture and commercial works.        He is the co-founder of Amsterdam-based creative agency Terra Preta.        Specialties: Branding and Visual Identities, Creative Thinking, Graphics Illustrations and Visuals, Print Design, HTML5, CSS3, Digital Retouching and Photography, including:        Fashion, Beauty &amp; Glamour, Travel &amp; Landscapes, Creative Stills, Product Stills, Wedding and Architecture &amp; Interiors.
+      </UserProfilePart>
+      <ExpertPart Level="1" ExperiencePoints="0" Rating="1" />
+    </User>
   </Data>
 
   <Settings>

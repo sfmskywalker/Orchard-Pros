@@ -1,9 +1,17 @@
-﻿@using OrchardPros.ViewModels
+﻿@using Orchard.ContentManagement
+@using Orchard.Security
+@using OrchardPros.Models
+@using OrchardPros.ViewModels
 @{
     var accountSettings = (AccountSettingsViewModel)Model.AccountSettings;
+    var user = (IUser)Model.User;
+    var profile = user.As<UserProfilePart>();
+
+    Script.Require("jQuery");
+    Script.Include("account-settings.js", "account-settings.min.js");
 }
 @Html.ValidationSummary()
-@using (Html.BeginFormAntiForgeryPost(Url.Action("Settings", "Profile", new { Area = "OrchardPros" }), FormMethod.Post, new { role = "form", @class = "form-horizontal" })) {
+@using (Html.BeginFormAntiForgeryPost(Url.Action("Settings", "Profile", new { Area = "OrchardPros" }), FormMethod.Post, new { role = "form", @class = "form-horizontal", enctype = "multipart/form-data" })) {
     <article class="profile-account">
         <h2>@T("Account Settings")</h2>
         <div class="form-group">
@@ -31,6 +39,42 @@
             </div>
         </div>
     </article>
+    <article class="profile-avatar">
+        <h2>@T("Avatar")</h2>
+        <div class="form-group">
+            <label class="radio-inline">
+                <input type="radio" name="@Html.FieldNameFor(m => accountSettings.AvatarType)" value="@AvatarType.Gravatar" @if (accountSettings.AvatarType == AvatarType.Gravatar) { <text> checked="checked" </text>   } />
+                @T("Gravatar")
+            </label>
+            <label class="radio-inline">
+                <input type="radio" id="avatar-type-localstorage" name="@Html.FieldNameFor(m => accountSettings.AvatarType)" value="@AvatarType.LocalStorage" @if (accountSettings.AvatarType == AvatarType.LocalStorage) { <text> checked="checked" </text>   } />
+                @T("Uploaded Picture")
+            </label>
+        </div>
+        <div class="form-group @if(accountSettings.AvatarType == AvatarType.Gravatar){<text>hidden</text>}" data-controller="avatar-type-localstorage">
+            @if (profile.AvatarField.MediaParts.Any()) {
+                var mediaPart = profile.AvatarField.MediaParts.First();
+                <img id="current-avatar" src="@mediaPart.MediaUrl" width="128" height="128" />
+                <button type="button" id="delete-avatar" class="btn btn-default" data-state-field="@Html.FieldIdFor(m => accountSettings.DeleteAvatar)">@T("Delete")</button>
+                @Html.HiddenFor(m => accountSettings.DeleteAvatar)
+                <p id="avatar-removed-hint" class="alert alert-info hidden">@T("You need to save your changes for this change to take effect.")</p>
+            }
+            <input type="file" name="AvatarFile" />
+        </div>
+    </article>
+    <article class="profile-wallpaper">
+        <h2>@T("Wallpaper")</h2>
+        <div class="form-group">
+            @if (profile.WallpaperField.MediaParts.Any()) {
+                var mediaPart = profile.WallpaperField.MediaParts.First();
+                <img id="current-wallpaper" src="@mediaPart.MediaUrl" width="256" height="128" />
+                <button type="button" id="delete-wallpaper" class="btn btn-default" data-state-field="@Html.FieldIdFor(m => accountSettings.DeleteWallpaper)">@T("Delete")</button>
+                @Html.HiddenFor(m => accountSettings.DeleteWallpaper)
+                <p id="wallpaper-removed-hint" class="alert alert-info hidden">@T("You need to save your changes for this change to take effect.")</p>
+            }
+            <input type="file" name="WallpaperFile" />
+        </div>
+    </article>
     <article class="profile-notifications">
         <h2>@T("Notifications")</h2>
         @{ var notificationIndex = 0;}
@@ -38,7 +82,7 @@
             <div class="checkbox">
                 <input type="hidden" name="accountSettings.Notifications[@notificationIndex].Name" value="@notification.Name" />
                 <label>
-                    <input type="checkbox" name="accountSettings.Notifications[@notificationIndex].Checked" value="true" @if(notification.Checked){<text>checked="checked"</text>}>
+                    <input type="checkbox" name="accountSettings.Notifications[@notificationIndex].Checked" value="true" @if (notification.Checked) { <text> checked="checked" </text> }>
                     @notification.Description
                 </label>
             </div>

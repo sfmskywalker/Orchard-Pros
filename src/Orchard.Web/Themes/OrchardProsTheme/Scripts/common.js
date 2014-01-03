@@ -1,6 +1,6 @@
 (function($) {
     $(function() {
-        $("a[data-submit-form").on("click", function (e) {
+        $("a[data-submit-form]").on("click", function (e) {
             $(this).parents("form:first").submit();
             e.preventDefault();
         });
@@ -23,6 +23,21 @@
 
             $("body").append(form);
             form.submit();
+        });
+
+        $("[data-controller]").each(function() {
+            var controllee = $(this);
+            var controller = $("#" + controllee.data("controller"));
+            var groupName = controller.attr("name");
+            var radios = $("input[name=\"" + groupName + "\"]:radio");
+
+            radios.on("change", function () {
+                if (controller.is(":checked")) {
+                    controllee.removeClass("hidden").addClass("show");
+                } else {
+                    controllee.removeClass("show").addClass("hidden");
+                }
+            });
         });
     });
 })(jQuery);

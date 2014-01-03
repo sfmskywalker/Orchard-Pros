@@ -76,6 +76,8 @@ namespace OrchardPros {
             ContentDefinitionManager.AlterPartDefinition("UserProfilePart", part => part
                 .WithField("Avatar", field => field
                     .OfType("MediaLibraryPickerField"))
+                .WithField("Wallpaper", field => field
+                    .OfType("MediaLibraryPickerField"))
                 .WithDescription("Provides additional information about the user."));
 
             // User

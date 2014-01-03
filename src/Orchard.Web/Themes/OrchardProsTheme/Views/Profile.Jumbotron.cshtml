@@ -1,8 +1,12 @@
-﻿@using Orchard.Security
+﻿@using Orchard.ContentManagement
+@using Orchard.Security
 @using OrchardPros.Helpers
+@using OrchardPros.Models
 @{
     var user = (IUser) Model.User;
+    var profile = user.As<UserProfilePart>();
+    var wallPaperUrl = profile.WallpaperField.MediaParts.Any() ? profile.WallpaperField.MediaParts.First().MediaUrl : default(string);
 }
-<div class="jumbotron account">
+<div class="jumbotron account" @if(!String.IsNullOrWhiteSpace(wallPaperUrl)){<text>style="background-image: url(@wallPaperUrl)"</text>}>
     <img src="@Url.AvatarUrl(user, this, 140)" alt="@user.UserName" class="profile-img-l">
 </div>
