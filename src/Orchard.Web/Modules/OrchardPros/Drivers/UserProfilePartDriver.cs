@@ -64,7 +64,7 @@ namespace OrchardPros.Drivers {
                     }
                 }
 
-                return shapeHelper.EditorTemplate(TemplateName: "Parts/UserProfile", Model: part, Prefix: Prefix);
+                return shapeHelper.EditorTemplate(TemplateName: "Parts/UserProfile", Model: viewModel, Prefix: Prefix);
             });
         }
 

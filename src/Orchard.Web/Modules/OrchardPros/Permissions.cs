@@ -5,6 +5,7 @@ using Orchard.Security.Permissions;
 namespace OrchardPros {
     public class Permissions : IPermissionProvider {
         public static readonly Permission SolveOwnTickets = new Permission { Description = "Solve own tickets", Name = "SolveOwnTickets" };
+        public static readonly Permission ManageOwnProfile = new Permission { Description = "Manage own profile", Name = "ManageOwnProfile" };
 
         public virtual Feature Feature { get; set; }
 
@@ -18,11 +19,11 @@ namespace OrchardPros {
             return new[] {
                 new PermissionStereotype {
                     Name = "Administrator",
-                    Permissions = new[] {SolveOwnTickets}
+                    Permissions = new[] {SolveOwnTickets, ManageOwnProfile}
                 },
                 new PermissionStereotype {
                     Name = "Member",
-                    Permissions = new[] {SolveOwnTickets}
+                    Permissions = new[] {SolveOwnTickets, ManageOwnProfile}
                 },
             };
         }

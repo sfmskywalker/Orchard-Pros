@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Localization;
+using Orchard.Security;
 using Orchard.Services;
-using Orchard.UI.Admin;
+using Orchard.Themes;
 using Orchard.UI.Notify;
 using OrchardPros.Helpers;
 using OrchardPros.Models;
@@ -13,44 +15,52 @@ using OrchardPros.Services;
 using OrchardPros.ViewModels;
 
 namespace OrchardPros.Controllers {
-    [Admin]
+    [Themed, Authorize]
     public class PositionController : Controller {
-        private readonly IContentManager _contentManager;
         private readonly IClock _clock;
         private readonly IPositionManager _positionManager;
         private readonly INotifier _notifier;
+        private readonly IOrchardServices _services;
+        private readonly IContentManager _contentManager;
 
-        public PositionController(IContentManager contentManager, IClock clock, IPositionManager positionManager, INotifier notifier) {
-            _contentManager = contentManager;
+        public PositionController(IClock clock, IPositionManager positionManager, IOrchardServices services) {
             _clock = clock;
             _positionManager = positionManager;
-            _notifier = notifier;
+            _notifier = services.Notifier;
+            _services = services;
+            _contentManager = services.ContentManager;
             T = NullLocalizer.Instance;
         }
 
         public Localizer T { get; set; }
 
-        public ActionResult Create(int id) {
-            var profile = _contentManager.Get<UserProfilePart>(id);
-            var viewModel = CreateViewModel(profile);
+        private IUser CurrentUser {
+            get { return _services.WorkContext.CurrentUser; }
+        }
+
+        public ActionResult Create() {
+            var viewModel = CreateViewModel();
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult Create(int id, PositionViewModel viewModel) {
-            var profile = _contentManager.Get<UserProfilePart>(id);
+        public ActionResult Create(PositionViewModel viewModel) {
             if (!ModelState.IsValid) {
-                return View(InitializeViewModel(viewModel, profile));
+                return View(InitializeViewModel(viewModel));
             }
-            _positionManager.Create(id, x => Update(x, viewModel));
+            _positionManager.Create(CurrentUser.Id, x => Update(x, viewModel));
             _notifier.Information(T("Your Position has been created."));
-            return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });
+            return Redirect(Url.Profile(CurrentUser.UserName));
         }
 
         public ActionResult Edit(int id) {
             var position = _positionManager.Get(id);
-            var profile = _contentManager.Get<UserProfilePart>(position.UserId);
-            var viewModel = CreateViewModel(profile, x => {
+            var user = _contentManager.Get<IUser>(position.UserId);
+
+            if(!_services.Authorizer.Authorize(Permissions.ManageOwnProfile, user))
+                return new HttpUnauthorizedResult(T("You do not have permission to edit this Position.").ToString());
+
+            var viewModel = CreateViewModel(x => {
                 x.CompanyName = position.CompanyName;
                 x.Description = position.Description;
                 x.IsCurrentPosition = position.IsCurrentPosition;
@@ -67,23 +77,30 @@ namespace OrchardPros.Controllers {
         [HttpPost]
         public ActionResult Edit(int id, PositionViewModel viewModel) {
             var position = _positionManager.Get(id);
-            var profile = _contentManager.Get<UserProfilePart>(position.UserId);
+            var user = _contentManager.Get<IUser>(position.UserId);
+
+            if (!_services.Authorizer.Authorize(Permissions.ManageOwnProfile, user))
+                return new HttpUnauthorizedResult(T("You do not have permission to edit this Position.").ToString());
 
             if (!ModelState.IsValid) {
-                return View(InitializeViewModel(viewModel, profile));
+                return View(InitializeViewModel(viewModel));
             }
             Update(position, viewModel);
             _notifier.Information(T("Your Position has been updated."));
-            return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });
+            return Redirect(Url.Profile(CurrentUser.UserName));
         }
 
         [HttpPost]
         public ActionResult Delete(int id) {
             var position = _positionManager.Get(id);
-            var profile = _contentManager.Get<UserProfilePart>(position.UserId);
+            var user = _contentManager.Get<IUser>(position.UserId);
+
+            if (!_services.Authorizer.Authorize(Permissions.ManageOwnProfile, user))
+                return new HttpUnauthorizedResult(T("You do not have permission to delete this Position.").ToString());
+
             _positionManager.Archive(position);
             _notifier.Information(T("Your Position has been deleted."));
-            return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });
+            return Redirect(Url.Profile(CurrentUser.UserName));
         }
 
         private static void Update(Position position, PositionViewModel viewModel) {
@@ -98,12 +115,12 @@ namespace OrchardPros.Controllers {
             position.Title = viewModel.Title.TrimSafe();
         }
 
-        private PositionViewModel CreateViewModel(UserProfilePart profile, Action<PositionViewModel> initialize = null) {
-            return InitializeViewModel(new PositionViewModel(), profile, initialize);
+        private PositionViewModel CreateViewModel(Action<PositionViewModel> initialize = null) {
+            return InitializeViewModel(new PositionViewModel(), initialize);
         }
 
-        private PositionViewModel InitializeViewModel(PositionViewModel viewModel, UserProfilePart profile, Action<PositionViewModel> initialize = null) {
-            viewModel.Profile = profile;
+        private PositionViewModel InitializeViewModel(PositionViewModel viewModel, Action<PositionViewModel> initialize = null) {
+            viewModel.User = CurrentUser;
             viewModel.Years = GetYears();
             viewModel.Months = GetMonths();
             if (initialize != null)

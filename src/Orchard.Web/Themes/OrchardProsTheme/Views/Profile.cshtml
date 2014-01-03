@@ -1,14 +1,14 @@
 ﻿@using Orchard.ContentManagement
 @using Orchard.Security
+@using OrchardPros
 @using OrchardPros.Helpers
-@using OrchardPros.Models
 @using OrchardPros.Models
 @{
     var user = (IUser) Model.User;
     var userProfilePart = user.As<UserProfilePart>();
-    var UserProfilePart = user.As<UserProfilePart>();
-    var currentPosition = UserProfilePart.Positions.Current();
-    var recommendations = UserProfilePart.Recommendations;
+    var canEditProfile = Authorizer.Authorize(Permissions.ManageOwnProfile, user);
+    var currentPosition = userProfilePart.Positions.Current();
+    var recommendations = userProfilePart.Recommendations;
     var filteredRecommendations = (bool) Model.IsCurrentUser ? recommendations : recommendations.Where(x => x.Approved).ToArray();
 }
 <article class="profile-title">
@@ -27,29 +27,36 @@
 </article>
 <article class="profile-experience">
     <h2>@T("Positions")</h2>
-    @if (!UserProfilePart.Positions.Any()) {
+    @if (!userProfilePart.Positions.Any()) {
         <p>@T("No positions have been entered yet.")</p>
     }
     else {
         <ul class="list-jobs">
-            @foreach (var position in UserProfilePart.Positions) {
+            @foreach (var position in userProfilePart.Positions) {
                 <li>
                     <h4>@position.Title</h4>
                     <p>@position.CompanyName</p>
                     <p class="small">@T("From: {0} to: {1}", position.Start(), position.End())</p>
+                    @if (canEditProfile) {
+                        <a href="@Url.Action("Edit", "Position", new { id = position.Id, area = "OrchardPros" })">@T("Edit")</a>
+                        <a href="@Url.Action("Delete", "Position", new { id = position.Id, area = "OrchardPros" })" data-post="@Html.AntiForgeryTokenValueOrchard()" data-prompt="@T("Are you sure you want to delete this Position?")">@T("Delete")</a>
+                    }
                 </li>
             }
         </ul>
+    }
+    @if (canEditProfile) {
+        <a class="btn btn-default btn-sm" href="@Url.Action("Create", "Position", new {area = "OrchardPros"})">@T("Add Position")</a>
     }
 </article>
 <article class="profile-skills">
     <h2>@T("Skills")</h2>
     <div class="block tagcloud">
-        @if (!UserProfilePart.Skills.Any()) {
+        @if (!userProfilePart.Skills.Any()) {
             <p>@T("No skills have been specified yet.")</p>
         }
         else {
-            foreach (var skill in UserProfilePart.Skills) {
+            foreach (var skill in userProfilePart.Skills) {
                 <a href="#"><span class="label label-default">@skill.Name</span></a>
             }
         }

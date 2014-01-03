@@ -21,7 +21,7 @@
                     <td>@item.Id</td>
                     <td>
                         @if (item.Position != null) { 
-                            <a href="@Url.Action("Edit", "Position", new { item.Position.Id, Area = "OrchardPros" })">@item.Position.CompanyName</a>
+                            <a href="@Url.Action("Edit", "AdminPosition", new { item.Position.Id, Area = "OrchardPros" })">@item.Position.CompanyName</a>
                         }
                         else { <text>-</text> }
                     </td>

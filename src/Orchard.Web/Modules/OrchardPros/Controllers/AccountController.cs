@@ -85,7 +85,7 @@ namespace OrchardPros.Controllers {
 
             _authenticationService.SignIn(user, true);
             _userEventHandler.LoggedIn(user);
-            return Response.IsRequestBeingRedirected ? (ActionResult)new EmptyResult() : RedirectToAction("Dashboard");
+            return Response.IsRequestBeingRedirected ? (ActionResult)new EmptyResult() : RedirectToAction("Index", "Profile");
         }
 
         public ActionResult SignOut() {
@@ -94,10 +94,6 @@ namespace OrchardPros.Controllers {
             if (wasLoggedInUser != null)
                 _userEventHandler.LoggedOut(wasLoggedInUser);
             return Response.IsRequestBeingRedirected ? (ActionResult)new EmptyResult() : Redirect("~/");
-        }
-
-        public ActionResult Dashboard() {
-            return View();
         }
     }
 }

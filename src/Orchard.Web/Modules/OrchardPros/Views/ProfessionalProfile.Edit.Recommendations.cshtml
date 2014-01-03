@@ -1,8 +1,9 @@
-﻿@using OrchardPros.Models
-@using OrchardPros.ViewModels
+﻿@using Orchard.ContentManagement
+@using Orchard.Core.Common.Models
+@using OrchardPros.Models
 @{
     var profile = (UserProfilePart) Model.Profile;
-    var recommendations = (IList<RecommendationEx>)Model.Recommendations;
+    var recommendations = profile.Recommendations;
 }
 <fieldset>
     <legend>@T("Recommendations")</legend>
@@ -19,11 +20,12 @@
         </thead>
         <tbody>
             @foreach (var recommendation in recommendations) {
+                var commonPart = recommendation.As<CommonPart>();
                 <tr>
                     <td>@recommendation.Id</td>
                     <td>@recommendation.RecommendingUser.UserName</td>
-                    <td>@recommendation.Text</td>
-                    <td>@recommendation.CreatedUtc</td>
+                    <td>@recommendation.Body</td>
+                    <td>@commonPart.CreatedUtc</td>
                     <td>@recommendation.Approved</td>
                     <td>
                         @Html.ActionLink(T("Edit").ToString(), "Edit", "Recommendation", new { recommendation.Id, area = "OrchardPros" }, null) @T("|")

@@ -28,12 +28,12 @@
                     <td>@position.Start()</td>
                     <td>@position.End()</td>
                     <td>
-                        @Html.ActionLink(T("Edit").ToString(), "Edit", "Position", new { position.Id, area = "OrchardPros" }, null) @T(" |")
-                        @Html.ActionLink(T("Delete").ToString(), "Delete", "Position", new { position.Id, area = "OrchardPros" }, new { itemprop = "UnsafeUrl RemoveUrl" })
+                        @Html.ActionLink(T("Edit").ToString(), "Edit", "AdminPosition", new { position.Id, area = "OrchardPros" }, null) @T(" |")
+                        @Html.ActionLink(T("Delete").ToString(), "Delete", "AdminPosition", new { position.Id, area = "OrchardPros" }, new { itemprop = "UnsafeUrl RemoveUrl" })
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    @Html.ActionLink(T("Add").ToString(), "Create", "Position", new { profile.Id, area = "OrchardPros" }, new { @class = "button" })
+    @Html.ActionLink(T("Add").ToString(), "Create", "AdminPosition", new { profile.Id, area = "OrchardPros" }, new { @class = "button" })
 </fieldset>

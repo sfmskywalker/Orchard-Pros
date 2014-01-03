@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using OrchardPros.Models;
+using Orchard.Security;
 
 namespace OrchardPros.ViewModels {
     public class PositionViewModel {
@@ -16,6 +16,6 @@ namespace OrchardPros.ViewModels {
 
         public IList<int> Years { get; set; }
         public IList<int> Months { get; set; }
-        public UserProfilePart Profile { get; set; }
+        public IUser User { get; set; }
     }
 }
