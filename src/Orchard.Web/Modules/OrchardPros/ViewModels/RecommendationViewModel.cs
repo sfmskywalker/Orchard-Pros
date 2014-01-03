@@ -1,17 +1,15 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using OrchardPros.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using Orchard.Security;
 
 namespace OrchardPros.ViewModels {
     public class RecommendationViewModel {
-        [StringLength(64), Required]
-        public string RecommendingUserName { get; set; }
+        public RecommendationViewModel() {
+            AllowPublication = true;
+        }
 
         [Required] 
         public string Text{ get; set; }
-        public bool Approved { get; set; }
-        public DateTime CreatedUtc { get; set; }
-
-        public UserProfilePart Profile { get; set; }
+        public bool AllowPublication { get; set; }
+        public IUser User { get; set; }
     }
 }

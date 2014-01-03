@@ -7,10 +7,14 @@ namespace OrchardPros.Security {
     [UsedImplicitly]
     public class TicketAuthorizationEventHandler : IAuthorizationServiceEventHandler {
         public void Checking(CheckAccessContext context) {
-            if (!context.Granted && context.Content.Is<ICommonPart>()) {
-                if (HasOwnership(context.User, context.Content)) {
-                    context.Granted = true;
-                }
+            if (context.Permission.Name != Permissions.SolveOwnTickets.Name)
+                return;
+
+            if (context.Granted || !context.Content.Is<ICommonPart>())
+                return;
+
+            if (HasOwnership(context.User, context.Content)) {
+                context.Granted = true;
             }
         }
         public void Complete(CheckAccessContext context) { }

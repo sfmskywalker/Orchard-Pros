@@ -1,5 +1,4 @@
-﻿using System;
-using Orchard.ContentManagement;
+﻿using Orchard.ContentManagement;
 using Orchard.Core.Common.Models;
 using Orchard.Core.Common.Utilities;
 using Orchard.Security;
@@ -26,16 +25,6 @@ namespace OrchardPros.Models {
         public string Body {
             get { return this.As<BodyPart>().Text; }
             set { this.As<BodyPart>().Text = value; }
-        }
-
-        public bool Approved {
-            get { return this.Retrieve(x => x.Approved); }
-            set { this.Store(x => x.Approved, value); }
-        }
-
-        public DateTime? ApprovedUtc {
-            get { return this.Retrieve(x => x.ApprovedUtc); }
-            set { this.Store(x => x.ApprovedUtc, value); }
         }
 
         public bool AllowPublication {

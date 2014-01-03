@@ -176,6 +176,7 @@
     <Compile Include="Events\UserEventHandler.cs" />
     <Compile Include="Forms\SelectRolesForms.cs" />
     <Compile Include="Helpers\PagedContentExtensions.cs" />
+    <Compile Include="Security\RecommendationAuthorizationEventHandler.cs" />
     <Compile Include="Security\ProfileAuthorizationEventHandler.cs" />
     <Compile Include="Services\ISubscriptionService.cs" />
     <Compile Include="Handlers\SubscriptionSourcePartHandler.cs" />
@@ -341,7 +342,6 @@
     <Content Include="Views\Experience\Create.cshtml" />
     <Content Include="Views\Experience\Edit.cshtml" />
     <Content Include="Views\Recommendation\Create.cshtml" />
-    <Content Include="Views\Recommendation\Edit.cshtml" />
     <Content Include="Views\Skill\Create.cshtml" />
     <Content Include="Views\Skill\Edit.cshtml" />
   </ItemGroup>

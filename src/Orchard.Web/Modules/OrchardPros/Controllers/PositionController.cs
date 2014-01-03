@@ -58,7 +58,7 @@ namespace OrchardPros.Controllers {
             var user = _contentManager.Get<IUser>(position.UserId);
 
             if(!_services.Authorizer.Authorize(Permissions.ManageOwnProfile, user))
-                return new HttpUnauthorizedResult(T("You do not have permission to edit this Position.").ToString());
+                return new HttpUnauthorizedResult(T("You do not have permissions to edit this Position.").ToString());
 
             var viewModel = CreateViewModel(x => {
                 x.CompanyName = position.CompanyName;
@@ -80,7 +80,7 @@ namespace OrchardPros.Controllers {
             var user = _contentManager.Get<IUser>(position.UserId);
 
             if (!_services.Authorizer.Authorize(Permissions.ManageOwnProfile, user))
-                return new HttpUnauthorizedResult(T("You do not have permission to edit this Position.").ToString());
+                return new HttpUnauthorizedResult(T("You do not have permissions to edit this Position.").ToString());
 
             if (!ModelState.IsValid) {
                 return View(InitializeViewModel(viewModel));
@@ -96,7 +96,7 @@ namespace OrchardPros.Controllers {
             var user = _contentManager.Get<IUser>(position.UserId);
 
             if (!_services.Authorizer.Authorize(Permissions.ManageOwnProfile, user))
-                return new HttpUnauthorizedResult(T("You do not have permission to delete this Position.").ToString());
+                return new HttpUnauthorizedResult(T("You do not have permissions to delete this Position.").ToString());
 
             _positionManager.Archive(position);
             _notifier.Information(T("Your Position has been deleted."));

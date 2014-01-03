@@ -349,6 +349,24 @@
   <ItemGroup>
     <Content Include="Views\EditorTemplates\YearPicker.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros\Skill\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros\Skill\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\SkillViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Rating.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros\Recommendation\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\RecommendationViewModel.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

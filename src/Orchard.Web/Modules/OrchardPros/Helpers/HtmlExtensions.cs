@@ -9,7 +9,11 @@ namespace OrchardPros.Helpers {
         public const string Area = "OrchardPros";
 
         public static IHtmlString ProfileLink(this HtmlHelper html, string userName, object htmlAttributes = null) {
-            return html.ActionLink(userName, "Index", "Profile", new {userName = userName, area = Area}, htmlAttributes);
+            return html.ProfileLink(userName, userName, htmlAttributes);
+        }
+
+        public static IHtmlString ProfileLink(this HtmlHelper html, string linkText, string userName, object htmlAttributes = null) {
+            return html.ActionLink(linkText, "Index", "Profile", new { userName = userName, area = Area }, htmlAttributes);
         }
 
         public static IHtmlString TicketDetailsLink(this HtmlHelper html, TicketPart ticket, object htmlAttributes = null) {

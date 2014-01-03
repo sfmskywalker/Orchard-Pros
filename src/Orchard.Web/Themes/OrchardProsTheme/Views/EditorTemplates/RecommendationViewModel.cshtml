@@ -1,0 +1,15 @@
+﻿@model OrchardPros.ViewModels.RecommendationViewModel
+<fieldset>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Text, T("Text").ToString(), new { @class = "col-sm-3" })
+        <div class="col-sm-4">
+            @Html.TextAreaFor(m => m.Text, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="@Html.FieldIdFor(m => m.AllowPublication)">
+            @Html.CheckBoxFor(m => m.AllowPublication)
+            @T("Allow publication")
+        </label>
+    </div>
+</fieldset>

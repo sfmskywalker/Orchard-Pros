@@ -1,0 +1,12 @@
+﻿@model OrchardPros.ViewModels.SkillViewModel
+@{
+    Layout.Title = @T("Edit Skill");
+}
+@Html.ValidationSummary()
+@using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", "Skill", new { id = Model.Id, area = "OrchardPros" }), FormMethod.Post, new { role = "form", @class = "form-horizontal" })) {
+    @Html.EditorForModel()
+    <fieldset>
+        <button class="btn btn-success btn-save" type="submit" name="submit.Save" value="submit.Save">@T("Save")</button>
+        @Html.ProfileLink(T("Cancel").ToString(), Model.User.UserName, new { @class = "btn btn-default" })
+    </fieldset>
+}

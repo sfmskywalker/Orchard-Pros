@@ -4,12 +4,14 @@
 @using OrchardPros.Helpers
 @using OrchardPros.Models
 @{
-    var user = (IUser) Model.User;
+    var user = (IUser)Model.User;
     var userProfilePart = user.As<UserProfilePart>();
     var canEditProfile = Authorizer.Authorize(Permissions.ManageOwnProfile, user);
     var currentPosition = userProfilePart.Positions.Current();
     var recommendations = userProfilePart.Recommendations;
-    var filteredRecommendations = (bool) Model.IsCurrentUser ? recommendations : recommendations.Where(x => x.Approved).ToArray();
+    var isCurrentUser = (bool)Model.IsCurrentUser;
+    var filteredRecommendations = isCurrentUser ? recommendations : recommendations.Where(x => x.IsPublished() && x.AllowPublication).ToArray();
+    var skills = userProfilePart.Skills;
 }
 <article class="profile-title">
     <h2>Title</h2>
@@ -52,15 +54,38 @@
 <article class="profile-skills">
     <h2>@T("Skills")</h2>
     <div class="block tagcloud">
-        @if (!userProfilePart.Skills.Any()) {
+        @if (!skills.Any()) {
             <p>@T("No skills have been specified yet.")</p>
         }
         else {
-            foreach (var skill in userProfilePart.Skills) {
-                <a href="#"><span class="label label-default">@skill.Name</span></a>
+            if (isCurrentUser) {
+                <ul class="list-skills">
+                    @foreach (var skill in skills) {
+                        <li>
+                            <span>@skill.Name</span>
+                            <p>
+                                @for (var i = 0; i < skill.Rating; i++) {
+                                    <span class="glyphicon glyphicon-star"></span>
+                                }
+                            </p>
+                            @if (canEditProfile) {
+                                <a href="@Url.Action("Edit", "Skill", new {id = skill.Id, area = "OrchardPros"})">@T("Edit")</a>
+                                <a href="@Url.Action("Delete", "Skill", new {id = skill.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()" data-prompt="@T("Are you sure you want to delete this Skill?")">@T("Delete")</a>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+            else {
+                foreach (var skill in skills) {
+                    <a href="#" class="label label-default">@skill.Name</a>
+                }
             }
         }
     </div>
+    @if (canEditProfile) {
+        <a class="btn btn-default btn-sm" href="@Url.Action("Create", "Skill", new {area = "OrchardPros"})">@T("Add Skill")</a>
+    }
 </article>
 <article class="profile-recommendations">
     <h2>@T("Recommendations")</h2>
@@ -73,8 +98,23 @@
                 <a href="#" class="pull-left"><img src="~/themes/orchardprostheme/images/temp-profile.png" alt="@recommendation.RecommendingUser.UserName" class="profile-img-s media-object"></a>
                 <div class="media-body">
                     <p><span class="dropcap">&nbsp;</span>@recommendation.Body</p>
+                    @if (recommendation.AllowPublication) {
+                        if (!recommendation.IsPublished()) {
+                            <a href="@Url.Action("Publish", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Publish")</a>
+                        }
+                        else {
+                            <a href="@Url.Action("Unpublish", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Unpublish")</a>
+                        }
+                    }
+                    <a href="@Url.Action("Delete", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()" data-prompt="@T("Are you sure you want to delete this recommendation?")">@T("Delete")</a>
+                    @if (!recommendation.AllowPublication) {
+                        <span>@T("The user does not allow this recommendation to be published.")</span>
+                    }
                 </div>
             </div>
         }
+    }
+    @if (Authorizer.Authorize(Permissions.WriteRecommendation, user)) {
+        @Html.ActionLink(T("Write a Recommendation").ToString(), "Create", "Recommendation", new { id = user.UserName, area = "OrchardPros" }, new { @class = "btn btn-default" })
     }
 </article>

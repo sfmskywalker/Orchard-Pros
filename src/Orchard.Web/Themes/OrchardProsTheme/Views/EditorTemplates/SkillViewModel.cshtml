@@ -1,0 +1,15 @@
+﻿@model OrchardPros.ViewModels.SkillViewModel
+<fieldset>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, T("Name").ToString(), new { @class = "col-sm-3" })
+        <div class="col-sm-4">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Rating, T("Rating").ToString(), new { @class = "col-sm-3" })
+        <div class="col-sm-4">
+            @Html.EditorFor(m => m.Rating)
+        </div>
+    </div>
+</fieldset>

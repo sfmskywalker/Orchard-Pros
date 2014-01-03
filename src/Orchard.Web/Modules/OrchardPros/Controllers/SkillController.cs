@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Web.Mvc;
+using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Localization;
-using Orchard.UI.Admin;
+using Orchard.Security;
+using Orchard.Themes;
 using Orchard.UI.Notify;
 using OrchardPros.Helpers;
 using OrchardPros.Models;
@@ -10,42 +12,51 @@ using OrchardPros.Services;
 using OrchardPros.ViewModels;
 
 namespace OrchardPros.Controllers {
-    [Admin]
+    [Themed, Authorize]
     public class SkillController : Controller {
         private readonly IContentManager _contentManager;
         private readonly ISkillManager _skillManager;
         private readonly INotifier _notifier;
+        private readonly IOrchardServices _services;
 
-        public SkillController(IContentManager contentManager, ISkillManager skillManager, INotifier notifier) {
-            _contentManager = contentManager;
+        public SkillController(ISkillManager skillManager, INotifier notifier, IOrchardServices services) {
+            _contentManager = services.ContentManager;
             _skillManager = skillManager;
             _notifier = notifier;
+            _services = services;
             T = NullLocalizer.Instance;
         }
 
         public Localizer T { get; set; }
 
-        public ActionResult Create(int id) {
-            var profile = _contentManager.Get<UserProfilePart>(id);
-            var viewModel = CreateViewModel(profile);
+        private IUser CurrentUser {
+            get { return _services.WorkContext.CurrentUser; }
+        }
+
+        public ActionResult Create() {
+            var viewModel = CreateViewModel();
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult Create(int id, SkillViewModel viewModel) {
-            var profile = _contentManager.Get<UserProfilePart>(id);
+        public ActionResult Create(SkillViewModel viewModel) {
             if (!ModelState.IsValid) {
-                return View(InitializeViewModel(viewModel, profile));
+                return View(InitializeViewModel(viewModel));
             }
-            _skillManager.Create(id, x => Update(x, viewModel));
+            _skillManager.Create(CurrentUser.Id, x => Update(x, viewModel));
             _notifier.Information(T("Your Skill has been created."));
-            return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });
+            return Redirect(Url.Profile(CurrentUser.UserName));
         }
 
         public ActionResult Edit(int id) {
             var skill = _skillManager.Get(id);
-            var profile = _contentManager.Get<UserProfilePart>(skill.UserId);
-            var viewModel = CreateViewModel(profile, x => {
+            var user = _contentManager.Get<IUser>(skill.UserId);
+
+            if(!_services.Authorizer.Authorize(Permissions.ManageOwnProfile, user))
+                return new HttpUnauthorizedResult(T("You don't have permissions to edit that Skill").ToString());
+
+            var viewModel = CreateViewModel(x => {
+                x.Id = id;
                 x.Name = skill.Name;
                 x.Rating = skill.Rating;
             });
@@ -55,23 +66,30 @@ namespace OrchardPros.Controllers {
         [HttpPost]
         public ActionResult Edit(int id, SkillViewModel viewModel) {
             var skill = _skillManager.Get(id);
-            var profile = _contentManager.Get<UserProfilePart>(skill.UserId);
+            var user = _contentManager.Get<IUser>(skill.UserId);
+
+            if (!_services.Authorizer.Authorize(Permissions.ManageOwnProfile, user))
+                return new HttpUnauthorizedResult(T("You don't have permissions to edit that Skill").ToString());
 
             if (!ModelState.IsValid) {
-                return View(InitializeViewModel(viewModel, profile));
+                return View(InitializeViewModel(viewModel, vm => vm.Id = id));
             }
             Update(skill, viewModel);
             _notifier.Information(T("Your Skill has been updated."));
-            return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });
+            return Redirect(Url.Profile(CurrentUser.UserName));
         }
 
         [HttpPost]
         public ActionResult Delete(int id) {
             var skill = _skillManager.Get(id);
-            var profile = _contentManager.Get<UserProfilePart>(skill.UserId);
+            var user = _contentManager.Get<IUser>(skill.UserId);
+
+            if (!_services.Authorizer.Authorize(Permissions.ManageOwnProfile, user))
+                return new HttpUnauthorizedResult(T("You don't have permissions to delete that Skill").ToString());
+
             _skillManager.Delete(skill);
             _notifier.Information(T("Your Skill has been deleted."));
-            return RedirectToAction("Edit", "Admin", new { profile.Id, Area = "Orchard.Users" });
+            return Redirect(Url.Profile(CurrentUser.UserName));
         }
 
         private static void Update(Skill skill, SkillViewModel viewModel) {
@@ -79,12 +97,12 @@ namespace OrchardPros.Controllers {
             skill.Rating = viewModel.Rating;
         }
 
-        private static SkillViewModel CreateViewModel(UserProfilePart profile, Action<SkillViewModel> initialize = null) {
-            return InitializeViewModel(new SkillViewModel(), profile, initialize);
+        private SkillViewModel CreateViewModel(Action<SkillViewModel> initialize = null) {
+            return InitializeViewModel(new SkillViewModel(), initialize);
         }
 
-        private static SkillViewModel InitializeViewModel(SkillViewModel viewModel, UserProfilePart profile, Action<SkillViewModel> initialize = null) {
-            viewModel.Profile = profile;
+        private SkillViewModel InitializeViewModel(SkillViewModel viewModel, Action<SkillViewModel> initialize = null) {
+            viewModel.User = CurrentUser;
             if (initialize != null)
                 initialize(viewModel);
             return viewModel;

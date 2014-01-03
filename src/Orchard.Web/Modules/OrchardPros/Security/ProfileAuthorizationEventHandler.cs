@@ -6,10 +6,14 @@ namespace OrchardPros.Security {
     [UsedImplicitly]
     public class ProfileAuthorizationEventHandler : IAuthorizationServiceEventHandler {
         public void Checking(CheckAccessContext context) {
-            if (!context.Granted) {
-                if (IsCurrentUser(context.User, context.Content)) {
-                    context.Granted = true;
-                }
+            if (context.Permission.Name != Permissions.ManageOwnProfile.Name)
+                return;
+
+            if (context.Granted)
+                return;
+
+            if (IsCurrentUser(context.User, context.Content)) {
+                context.Granted = true;
             }
         }
         public void Complete(CheckAccessContext context) { }
