@@ -86,6 +86,9 @@ namespace OrchardPros.Controllers {
                 Email = currentUser.Email,
                 UserName = currentUser.UserName,
                 AvatarType = profilePart.AvatarType,
+                FirstName = profilePart.FirstName,
+                MiddleName = profilePart.MiddleName,
+                LastName = profilePart.LastName,
                 Notifications = _notificationSettingsManager.GetNotificationSettings().Select(x => new NotificationSettingViewModel {
                     Name = x.Name,
                     Description = x.Description,
@@ -135,6 +138,9 @@ namespace OrchardPros.Controllers {
                 return new ShapeResult(this, shape);    
             }
 
+            profilePart.FirstName = accountSettings.FirstName.TrimSafe();
+            profilePart.MiddleName = accountSettings.MiddleName.TrimSafe();
+            profilePart.LastName = accountSettings.LastName.TrimSafe();
             profilePart.AvatarType = accountSettings.AvatarType;
 
             if (accountSettings.DeleteAvatar == true) {

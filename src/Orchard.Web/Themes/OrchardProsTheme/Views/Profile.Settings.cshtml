@@ -15,7 +15,7 @@
     <article class="profile-account">
         <h2>@T("Account Settings")</h2>
         <div class="form-group">
-            @Html.LabelFor(m => accountSettings.UserName, T("UserName").ToString(), new { @class = "col-sm-3" })
+            @Html.LabelFor(m => accountSettings.UserName, T("User Name").ToString(), new { @class = "col-sm-3" })
             <div class="col-sm-4">
                 @Html.TextBoxFor(m => accountSettings.UserName, new { @class = "form-control" })
             </div>
@@ -39,15 +39,36 @@
             </div>
         </div>
     </article>
+    <article class="profile-personal-details">
+        <h2>@T("Personal Details")</h2>
+        <div class="form-group">
+            @Html.LabelFor(m => accountSettings.FirstName, T("First Name").ToString(), new { @class = "col-sm-3" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => accountSettings.FirstName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => accountSettings.MiddleName, T("Middle Name").ToString(), new { @class = "col-sm-3" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => accountSettings.MiddleName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => accountSettings.LastName, T("Last Name").ToString(), new { @class = "col-sm-3" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => accountSettings.LastName, new { @class = "form-control" })
+            </div>
+        </div>
+    </article>
     <article class="profile-avatar">
         <h2>@T("Avatar")</h2>
         <div class="form-group">
             <label class="radio-inline">
-                <input type="radio" name="@Html.FieldNameFor(m => accountSettings.AvatarType)" value="@AvatarType.Gravatar" @if (accountSettings.AvatarType == AvatarType.Gravatar) { <text> checked="checked" </text>   } />
+                <input type="radio" name="@Html.FieldNameFor(m => accountSettings.AvatarType)" value="@AvatarType.Gravatar" @if (accountSettings.AvatarType == AvatarType.Gravatar) { <text> checked="checked" </text>    } />
                 @T("Gravatar")
             </label>
             <label class="radio-inline">
-                <input type="radio" id="avatar-type-localstorage" name="@Html.FieldNameFor(m => accountSettings.AvatarType)" value="@AvatarType.LocalStorage" @if (accountSettings.AvatarType == AvatarType.LocalStorage) { <text> checked="checked" </text>   } />
+                <input type="radio" id="avatar-type-localstorage" name="@Html.FieldNameFor(m => accountSettings.AvatarType)" value="@AvatarType.LocalStorage" @if (accountSettings.AvatarType == AvatarType.LocalStorage) { <text> checked="checked" </text>    } />
                 @T("Uploaded Picture")
             </label>
         </div>
@@ -82,11 +103,11 @@
             <div class="checkbox">
                 <input type="hidden" name="accountSettings.Notifications[@notificationIndex].Name" value="@notification.Name" />
                 <label>
-                    <input type="checkbox" name="accountSettings.Notifications[@notificationIndex].Checked" value="true" @if (notification.Checked) { <text> checked="checked" </text> }>
+                    <input type="checkbox" name="accountSettings.Notifications[@notificationIndex].Checked" value="true" @if (notification.Checked) { <text> checked="checked" </text>  }>
                     @notification.Description
                 </label>
             </div>
-            notificationIndex++;
+notificationIndex++;
         }
     </article>
     <article class="profile-payment">

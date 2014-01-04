@@ -21,8 +21,8 @@
         <div class="panel-body">
             <div class="ticket-info">
                 <a href="#" class="pull-left"><img src="@Url.AvatarUrl(user, this, 64)" class="media-object profile-img-m"></a>
-                <span class="ticket-timestamp">@T("Created {0} by", Display.DateTimeRelative(dateTimeUtc: commonPart.CreatedUtc))<span class="author"><a href="#">@user.UserName</a></span></span>
-                <span class="ticket-timestamp">@T("Updated {0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<span class="author"><a href="#">@lastModifier.UserName</a></span></span>
+                <span class="ticket-timestamp">@T("Created {0} by", Display.DateTimeRelative(dateTimeUtc: commonPart.CreatedUtc))<span class="author">@Html.ProfileLink(user)</span></span>
+                <span class="ticket-timestamp">@T("Updated {0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<span class="author">@Html.ProfileLink(lastModifier)</span></span>
             </div>
             <div class="ticket-summary">
                 @foreach (var category in categories) {

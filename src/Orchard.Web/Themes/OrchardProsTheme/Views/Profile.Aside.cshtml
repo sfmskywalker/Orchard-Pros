@@ -13,7 +13,7 @@
         </div>
         <div class="panel-body">
             <ul class="expert-info">
-                <li class="name"><a href="#">@profilePart.DisplayName</a></li>
+                <li class="name">@Html.ProfileLink(user)</li>
                 <li class="title">@T("Lv. {0:d2} {1}", profilePart.Level, profilePart.RankName)</li>
                 <li class="rating">
                     @for (var i = 0; i < profilePart.Rating; i++) {

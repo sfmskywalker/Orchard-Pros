@@ -49,17 +49,17 @@
                 <div class="ticket-summary">
                     <h2><a href="@Url.ItemDisplayUrl(ticket)">@ticket.Subject</a></h2>
                     @foreach (var category in ticket.Categories) {
-                        <a href="#" class="category-link">@category.Name</a>
+                        <a href="@Url.Category(category)" class="category-link">@category.Name</a>
                     }
                     <div class="tags">
                         @foreach (var tag in ticket.Tags) {
-                            <a href="#"><span class="label label-default">@tag.Name</span></a>
+                            <a href="@Url.Tag(tag)"><span class="label label-default">@tag.Name</span></a>
                         }
                     </div>
                 </div>
                 <div class="ticket-status">
                     <ul>
-                        <li class="votes positive"><span class="number">0</span><span class="type">@T("votes")</span></li>
+                        <li class="votes"><span class="number">0</span><span class="type">@T("votes")</span></li>
                         <li class="views"><span class="number">@statisticsPart.ViewCount</span><span class="type">@T("views")</span></li>
                         <li class="replies @if(ticket.IsSolved){<text>solved</text>}"><span class="number">@ticket.Replies.Count()</span><span class="type">@T("replies")</span></li>
                     </ul>
@@ -74,7 +74,12 @@
                             @T("Bounty: {0:c}", ticket.Bounty)
                         </span>
                     }
-                    <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<span class="author">@Html.ProfileLink(ticket.LastModifier.UserName)</span></span>
+                    <span class="ticket-timestamp">
+                        @T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))
+                        <span class="author">
+                            @Html.ProfileLink(ticket.LastModifier)
+                        </span>
+                    </span>
                 </div>
             </article>
         }

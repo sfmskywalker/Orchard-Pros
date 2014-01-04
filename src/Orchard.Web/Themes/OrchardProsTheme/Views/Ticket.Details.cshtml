@@ -19,14 +19,10 @@
     </article>
     <div class="sorter bottom">
         @if (isFollowing) {
-            using (Html.BeginFormAntiForgeryPost(Url.Action("Unsubscribe", "SubscriptionSource", new { id = ticket.Id, area = "OrchardPros", returnUrl = Request.Path }), FormMethod.Post)) {
-                <a href="#" data-submit-form>@T("Unfollow Ticket")</a>
-            }
+            <a href="@Url.Action("Unsubscribe", "SubscriptionSource", new { id = ticket.Id, area = "OrchardPros", returnUrl = Request.Path })" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Unfollow Ticket")</a>
         }
         else {
-            using (Html.BeginFormAntiForgeryPost(Url.Action("Subscribe", "SubscriptionSource", new { id = ticket.Id, area = "OrchardPros", returnUrl = Request.Path }), FormMethod.Post)) {
-                <a href="#" data-submit-form>@T("Follow Ticket")</a>
-            }
+            <a href="@Url.Action("Subscribe", "SubscriptionSource", new { id = ticket.Id, area = "OrchardPros", returnUrl = Request.Path })" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Follow Ticket")</a>
         }
         <a href="#">Reply</a>
         <a href="#">Share</a>

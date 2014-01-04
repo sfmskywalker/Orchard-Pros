@@ -11,6 +11,10 @@ namespace OrchardPros.ViewModels {
         [Compare("Password", ErrorMessage = "The two passwords don't match.")]
         public string PasswordRepeat { get; set; }
 
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+
         public AvatarType AvatarType { get; set; }
         public bool? DeleteAvatar { get; set; }
         public bool? DeleteWallpaper { get; set; }

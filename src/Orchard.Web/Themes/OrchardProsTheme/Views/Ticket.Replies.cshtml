@@ -66,7 +66,7 @@
                                 @if (isAuthenticated) {
                                     <a href="#">@T("Reply")</a>
                                 }
-                                <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: createdUtc))<span class="author"><a href="#">@T(user.UserName)</a></span></span>
+                                <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: createdUtc))<span class="author">@Html.ProfileLink(user)</span></span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -75,7 +75,7 @@
                                     <div class="media">
                                         <a href="#" class="pull-left"><img src="@Url.AvatarUrl(user, this, 64)" class="media-object profile-img-m"></a>
                                         <ul class="expert-info media-body">
-                                            <li class="name"><a href="#">@profile.DisplayName</a></li>
+                                            <li class="name">@Html.ProfileLink(user)</li>
                                             <li class="title">@T("Lv. {0:00} {1}", profile.Level, profile.RankName)</li>
                                             <li class="rating">
                                                 @for (var i = 0; i < profile.Rating; i++) {
