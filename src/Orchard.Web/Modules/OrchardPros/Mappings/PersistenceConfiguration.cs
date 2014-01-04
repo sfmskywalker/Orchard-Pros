@@ -10,6 +10,7 @@ namespace OrchardPros.Mappings {
         public void Created(FluentConfiguration cfg, AutoPersistenceModel defaultModel) {
             defaultModel.Override<Experience>(mapping => mapping.References(x => x.Position, "PositionId"));
             defaultModel.Override<SubscriptionSourcePartRecord>(mapping => mapping.HasMany(x => x.Subscriptions).KeyColumn("SubscriptionSourceId"));
+            defaultModel.Override<UserProfilePartRecord>(mapping => mapping.References(x => x.Country, "CountryId").Fetch.Join().Not.LazyLoad());
         }
 
         public void Building(Configuration cfg) { }

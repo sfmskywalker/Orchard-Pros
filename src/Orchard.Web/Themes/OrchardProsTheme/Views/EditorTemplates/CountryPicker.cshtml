@@ -1,0 +1,7 @@
+﻿@using OrchardPros.Models
+@{
+    var countries = (IList<Country>)ViewBag.Countries;
+    var currentValue = (ViewData.TemplateInfo.FormattedModelValue as int?);
+    var options = countries.Select(x => new SelectListItem {Text = x.Name, Value = x.Id.ToString(), Selected = x.Id == currentValue});
+}
+@Html.DropDownList("", options, T("Country").ToString(), new { @class = "form-control" })

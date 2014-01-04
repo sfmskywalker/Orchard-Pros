@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.Data;
 using Orchard.DisplayManagement;
 using Orchard.Localization;
 using Orchard.Mvc;
@@ -27,6 +28,7 @@ namespace OrchardPros.Controllers {
         private readonly INotificationSettingsManager _notificationSettingsManager;
         private readonly ITicketService _ticketService;
         private readonly ISubscriptionService _subscriptionService;
+        private readonly IRepository<Country> _countryRepository;
 
         public ProfileController(
             IShapeFactory shapeFactory, 
@@ -37,7 +39,8 @@ namespace OrchardPros.Controllers {
             IAuthenticationService authenticationService, 
             INotificationSettingsManager notificationSettingsManager, 
             ITicketService ticketService, 
-            ISubscriptionService subscriptionService) {
+            ISubscriptionService subscriptionService, 
+            IRepository<Country> countryRepository) {
 
             New = shapeFactory;
             T = NullLocalizer.Instance;
@@ -49,6 +52,7 @@ namespace OrchardPros.Controllers {
             _notificationSettingsManager = notificationSettingsManager;
             _ticketService = ticketService;
             _subscriptionService = subscriptionService;
+            _countryRepository = countryRepository;
         }
 
         public Localizer T { get; set; }
@@ -89,6 +93,7 @@ namespace OrchardPros.Controllers {
                 FirstName = profilePart.FirstName,
                 MiddleName = profilePart.MiddleName,
                 LastName = profilePart.LastName,
+                CountryId = profilePart.Country != null ? profilePart.Country.Id : default(int?),
                 Notifications = _notificationSettingsManager.GetNotificationSettings().Select(x => new NotificationSettingViewModel {
                     Name = x.Name,
                     Description = x.Description,
@@ -97,7 +102,8 @@ namespace OrchardPros.Controllers {
             };
             var shape = Wrap(New.Profile_Settings(
                 AccountSettings: settingsModel,
-                User: currentUser));
+                User: currentUser,
+                Countries: _countryRepository.Table.ToArray()));
             return new ShapeResult(this, shape);
         }
 
@@ -134,13 +140,15 @@ namespace OrchardPros.Controllers {
             if (!ModelState.IsValid) {
                 var shape = Wrap(New.Profile_Settings(
                     AccountSettings: accountSettings,
-                    User: currentUser));
+                    User: currentUser,
+                    Countries: _countryRepository.Table.ToArray()));
                 return new ShapeResult(this, shape);    
             }
 
             profilePart.FirstName = accountSettings.FirstName.TrimSafe();
             profilePart.MiddleName = accountSettings.MiddleName.TrimSafe();
             profilePart.LastName = accountSettings.LastName.TrimSafe();
+            profilePart.Country = accountSettings.CountryId != null ? _countryRepository.Get(accountSettings.CountryId.Value) : null;
             profilePart.AvatarType = accountSettings.AvatarType;
 
             if (accountSettings.DeleteAvatar == true) {

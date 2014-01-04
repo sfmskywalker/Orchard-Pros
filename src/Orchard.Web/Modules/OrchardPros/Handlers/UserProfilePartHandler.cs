@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
+using Orchard.Data;
 using OrchardPros.Models;
 using OrchardPros.Services;
 
@@ -14,11 +15,13 @@ namespace OrchardPros.Handlers {
         private readonly ITicketService _ticketService;
 
         public UserProfilePartHandler(
+            IRepository<UserProfilePartRecord> repository,
             IPositionManager positionManager, 
             ISkillManager skillManager, 
             IRecommendationManager recommendationManager, 
             IExperienceManager experienceManager, 
-            IReplyService replyService, ITicketService ticketService) {
+            IReplyService replyService, 
+            ITicketService ticketService) {
 
             _positionManager = positionManager;
             _skillManager = skillManager;
@@ -26,6 +29,7 @@ namespace OrchardPros.Handlers {
             _experienceManager = experienceManager;
             _replyService = replyService;
             _ticketService = ticketService;
+            Filters.Add(StorageFilter.For(repository));
             OnActivated<UserProfilePart>(SetupFields);
         }
 

@@ -6,12 +6,11 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.FieldStorage.InfosetStorage;
 using Orchard.Core.Common.Utilities;
 using Orchard.MediaLibrary.Fields;
-using Orchard.MediaLibrary.Models;
 using Orchard.Security;
 using OrchardPros.Helpers;
 
 namespace OrchardPros.Models {
-    public class UserProfilePart : ContentPart {
+    public class UserProfilePart : ContentPart<UserProfilePartRecord> {
         internal LazyField<IEnumerable<Position>> PositionsField = new LazyField<IEnumerable<Position>>();
         internal LazyField<IEnumerable<Skill>> SkillsField = new LazyField<IEnumerable<Skill>>();
         internal LazyField<IEnumerable<RecommendationPart>> RecommendationsField = new LazyField<IEnumerable<RecommendationPart>>();
@@ -32,6 +31,11 @@ namespace OrchardPros.Models {
         public string MiddleName {
             get { return this.Retrieve(x => x.MiddleName); }
             set { this.Store(x => x.MiddleName, value); }
+        }
+
+        public Country Country {
+            get { return Record.Country; }
+            set { Record.Country = value; }
         }
 
         public string Bio {

@@ -176,6 +176,8 @@
     <Compile Include="Events\UserEventHandler.cs" />
     <Compile Include="Forms\SelectRolesForms.cs" />
     <Compile Include="Helpers\PagedContentExtensions.cs" />
+    <Compile Include="Models\Country.cs" />
+    <Compile Include="Models\UserProfilePartRecord.cs" />
     <Compile Include="Security\RecommendationAuthorizationEventHandler.cs" />
     <Compile Include="Security\ProfileAuthorizationEventHandler.cs" />
     <Compile Include="Services\ISubscriptionService.cs" />

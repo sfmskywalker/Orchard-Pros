@@ -14,6 +14,9 @@ namespace OrchardPros.ViewModels {
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        
+        [UIHint("CountryPicker")]
+        public int? CountryId { get; set; }
 
         public AvatarType AvatarType { get; set; }
         public bool? DeleteAvatar { get; set; }
