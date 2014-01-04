@@ -101,7 +101,13 @@
     <Content Include="Lib\NGravatar\NGravatar.XML" />
     <Content Include="Lib\NGravatar\ReadMe.txt" />
     <Content Include="Scripts\attachments-uploader.js" />
+    <Content Include="Scripts\attachments-uploader.min.js">
+      <DependentUpon>attachments-uploader.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\tabify.js" />
+    <Content Include="Scripts\tabify.min.js">
+      <DependentUpon>tabify.js</DependentUpon>
+    </Content>
     <Content Include="Styles\admin-tabs.css">
       <DependentUpon>admin-tabs.less</DependentUpon>
     </Content>
@@ -392,6 +398,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\People\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\attachments-uploader.min.js.map">
+      <DependentUpon>attachments-uploader.js</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\tabify.min.js.map">
+      <DependentUpon>tabify.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
