@@ -1,0 +1,47 @@
+﻿@using Orchard.ContentManagement
+@using Orchard.Security
+@using OrchardPros.Models
+@{
+    var user = (IUser)Model.User;
+}
+@if (user != null) {
+    var profile = user.As<UserProfilePart>();
+    <div class="panel panel-default idplate">
+        <div class="panel-heading">
+            <h3 class="panel-title">@T("Top contributor of the week")</h3>
+        </div>
+        <div class="panel-body">
+            <div class="media">
+                <a href="#" class="pull-left"><img src="@Url.AvatarUrl(user, this, 64)" class="media-object profile-img-m"></a>
+                <ul class="expert-info media-body">
+                    <li class="name">@Html.ProfileLink(user)</li>
+                    <li class="title">@T("Lv. {0:00} {1}", profile.Level, profile.RankName)</li>
+                    <li class="rating">
+                        @for (var i = 0; i < profile.Rating; i++) {
+                            <span class="glyphicon glyphicon-star"></span>
+                        }
+                    </li>
+                    <li class="experience">
+                        <h4>@T("Experience")</h4>
+                        <p>@T("Total EXP: {0}", profile.ExperiencePoints)</p>
+                        <p>@T("EXP earned this week: {0}", profile.ExperiencePoints)</p>
+                    </li>
+                    <li class="activity">
+                        <h4>@T("Activity")</h4>
+                        <p>@T("Replies: {0}", profile.Replies.Count())</p>
+                        <p>@T("Tickets solved: {0}", profile.SolvedTickets.Count())</p>
+                    </li>
+                    <li class="achievements">
+                        <h4>@T("Badges")</h4>
+                        <p>
+                            <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                            <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                            <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                            <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}

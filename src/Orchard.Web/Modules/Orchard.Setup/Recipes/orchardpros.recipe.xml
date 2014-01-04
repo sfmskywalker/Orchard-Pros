@@ -126,8 +126,38 @@
     <ShapeWidget Id="/Identifier=807b333934e24bdfb1e20b47891b37d0" Status="Published">
       <TextField.ShapeName Text="Jumbotron__HomePage" />
       <IdentityPart Identifier="807b333934e24bdfb1e20b47891b37d0" />
-      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2013-12-20T14:41:22.1036314Z" PublishedUtc="2013-12-20T14:41:22.1636354Z" ModifiedUtc="2013-12-20T14:41:22.2136385Z" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2013-12-20T14:41:22.1036314Z" PublishedUtc="2014-01-04T20:21:29.0489797Z" ModifiedUtc="2013-12-20T14:41:22.2136385Z" />
       <WidgetPart Title="Jumbotron" Position="1" Zone="Jumbotron" RenderTitle="false" Name="" />
+    </ShapeWidget>
+    <ShapeWidget Id="/Identifier=610897acafde4342a706d2f5c6535b05" Status="Published">
+      <TextField.ShapeName Text="Tickets__HomePage" />
+      <IdentityPart Identifier="610897acafde4342a706d2f5c6535b05" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2014-01-04T20:22:23.8710419Z" PublishedUtc="2014-01-04T20:22:23.9220454Z" ModifiedUtc="2014-01-04T20:22:23.9480472Z" />
+      <WidgetPart Title="Tickets" Position="1" Zone="Content" RenderTitle="false" Name="" />
+    </ShapeWidget>
+    <ShapeWidget Id="/Identifier=8b31721c75b84faa9b0d06be54888b2b" Status="Published">
+      <TextField.ShapeName Text="TagCloud__HomePage" />
+      <IdentityPart Identifier="8b31721c75b84faa9b0d06be54888b2b" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2014-01-04T20:22:51.5009925Z" PublishedUtc="2014-01-04T20:22:51.5289764Z" ModifiedUtc="2014-01-04T20:22:51.5349768Z" />
+      <WidgetPart Title="Tag Cloud" Position="4" Zone="AsideSecond" RenderTitle="false" Name="" />
+    </ShapeWidget>
+    <ShapeWidget Id="/Identifier=b370a596487d4a6c875a2bd353aaeb4f" Status="Published">
+      <TextField.ShapeName Text="Quote__HomePage" />
+      <IdentityPart Identifier="b370a596487d4a6c875a2bd353aaeb4f" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2014-01-04T20:23:05.3087428Z" PublishedUtc="2014-01-04T20:23:05.349251Z" ModifiedUtc="2014-01-04T20:23:05.3592492Z" />
+      <WidgetPart Title="Quote" Position="3" Zone="AsideSecond" RenderTitle="false" Name="" />
+    </ShapeWidget>
+    <ShapeWidget Id="/Identifier=9599371a473c413293478cce165a1c67" Status="Published">
+      <TextField.ShapeName Text="TopContributor__HomePage" />
+      <IdentityPart Identifier="9599371a473c413293478cce165a1c67" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2014-01-04T20:23:21.9725094Z" PublishedUtc="2014-01-04T20:23:22.0166379Z" ModifiedUtc="2014-01-04T20:23:22.0256383Z" />
+      <WidgetPart Title="Top contributor of the week" Position="2" Zone="AsideSecond" RenderTitle="false" Name="" />
+    </ShapeWidget>
+    <ShapeWidget Id="/Identifier=e8ad4113fafb47e5a05538b5a4d2e889" Status="Published">
+      <TextField.ShapeName Text="CreateTicket__HomePage" />
+      <IdentityPart Identifier="e8ad4113fafb47e5a05538b5a4d2e889" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2014-01-04T20:23:36.5207684Z" PublishedUtc="2014-01-04T20:23:36.5577465Z" ModifiedUtc="2014-01-04T20:23:36.5657474Z" />
+      <WidgetPart Title="Create Ticket" Position="1" Zone="AsideSecond" RenderTitle="false" Name="" />
     </ShapeWidget>
     <User Id="/User.UserName=snow" Status="Published">
       <MediaLibraryPickerField.Avatar ContentItems="/Identifier=5b76ff5ab622433cb15c9e17392dd983" />
@@ -181,7 +211,10 @@
         </Recommendations>
       </UserProfilePart>
       <UserProfilePart FirstName="Jay" MiddleName="" LastName="Tang" AvatarType="LocalStorage" CreatedUtc="0001-01-01T00:00:00Z">
-        Jay Tang | VISUAL CREATURE is a freelance photographer and visual designer based in the Amsterdam area, The Netherlands. He specializes in visual identities, graphic design, web design and photography, which includes fashion, glamour &amp; beauty, interiors, architecture and commercial works.        He is the co-founder of Amsterdam-based creative agency Terra Preta.        Specialties: Branding and Visual Identities, Creative Thinking, Graphics Illustrations and Visuals, Print Design, HTML5, CSS3, Digital Retouching and Photography, including:        Fashion, Beauty &amp; Glamour, Travel &amp; Landscapes, Creative Stills, Product Stills, Wedding and Architecture &amp; Interiors.
+        Jay Tang | VISUAL CREATURE is a freelance photographer and visual designer based in the Amsterdam area, The Netherlands. He specializes in visual identities, graphic design, web design and photography, which includes fashion, glamour &amp; beauty, interiors, architecture and commercial works.
+        He is the co-founder of Amsterdam-based creative agency Terra Preta.
+        Specialties: Branding and Visual Identities, Creative Thinking, Graphics Illustrations and Visuals, Print Design, HTML5, CSS3, Digital Retouching and Photography, including:
+        Fashion, Beauty &amp; Glamour, Travel &amp; Landscapes, Creative Stills, Product Stills, Wedding and Architecture &amp; Interiors.
       </UserProfilePart>
       <ExpertPart Level="1" ExperiencePoints="0" Rating="1" />
     </User>

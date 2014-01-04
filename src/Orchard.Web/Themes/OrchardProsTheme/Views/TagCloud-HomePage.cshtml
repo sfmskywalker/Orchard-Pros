@@ -1,0 +1,12 @@
+﻿@using Orchard.Taxonomies.Models
+@{
+    var tags = (IList<TermPart>) Model.Tags;
+}
+@if (tags.Any()) {
+    <div class="block tagcloud">
+        <h3>@T("Popular Tags")</h3>
+        @foreach (var tag in tags) {
+            <a href="@Url.Tag(tag)"><span class="label label-default">@tag.Name</span></a>
+        }
+    </div>
+}

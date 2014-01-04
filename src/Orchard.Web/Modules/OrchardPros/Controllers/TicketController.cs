@@ -57,6 +57,7 @@ namespace OrchardPros.Controllers {
             get { return _services.WorkContext.CurrentUser.As<UserProfilePart>(); }
         }
 
+        [AllowAnonymous]
         public ActionResult Index(PagerParameters pagerParameters, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null, int? tagId = null) {
             var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
             var tickets = _ticketService.GetTickets(pager.GetStartIndex(), pager.PageSize, criteria, categoryId, tagId);
@@ -69,7 +70,7 @@ namespace OrchardPros.Controllers {
                     Pager: pagerShape),
                 Tickets_List_Filter: _services.New.Tickets_List_Filter(
                     Categories: _ticketService.GetCategories().ToArray(),
-                    Tags: _ticketService.GetTags().OrderByDescending(x => x.Weight).Take(15).OrderBy(x => x.Name).ToArray(),
+                    Tags: _ticketService.GetPopularTags().ToArray(),
                     CategoryId: categoryId,
                     Criteria: criteria,
                     Pager: pagerShape));

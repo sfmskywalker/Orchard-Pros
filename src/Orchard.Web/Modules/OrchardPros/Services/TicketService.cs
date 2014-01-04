@@ -191,6 +191,10 @@ namespace OrchardPros.Services {
             return _contentManager.GetMany<TicketPart>(ticketIds, VersionOptions.Published, QueryHints.Empty);
         }
 
+        public IEnumerable<TermPart> GetPopularTags() {
+            return GetTags().OrderByDescending(x => x.Weight).Take(15).OrderBy(x => x.Name);
+        }
+
         private IEnumerable<TermPart> ParseTags(string tags) {
             var tagList = !String.IsNullOrWhiteSpace(tags) ? tags.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim().ToLower()).ToArray() : new string[0];
             var taxonomy = GetOrCreateTaxonomy("Tag");

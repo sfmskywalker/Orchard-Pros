@@ -33,5 +33,6 @@ namespace OrchardPros.Services {
         void Publish(TicketPart ticket);
         void Solve(TicketPart ticket, ReplyPart reply);
         IEnumerable<TicketPart> GetSolvedTicketsFor(int userId);
+        IEnumerable<TermPart> GetPopularTags();
     }
 }

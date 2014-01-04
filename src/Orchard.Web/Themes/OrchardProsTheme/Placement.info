@@ -1,4 +1,8 @@
 <Placement>
+  <Match Path="~/">
+    <Place Parts_Title="-" 
+           Parts_Common_Body="-"/>
+  </Match>
   <Match ContentType="Ticket">
     <Match DisplayType="Detail">
       <Place Parts_Title="-"

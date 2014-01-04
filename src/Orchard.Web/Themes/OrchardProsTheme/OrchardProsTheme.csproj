@@ -223,7 +223,7 @@
     <Content Include="Views\Jumbotron-HomePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Widget-Jumbotron.cshtml" />
+    <Content Include="Views\Widget-ShapeWidget.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Profile.Wrapper.cshtml" />
@@ -387,6 +387,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\People.List.Filter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Tickets-HomePage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CreateTicket-HomePage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\TopContributor-HomePage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Quote-HomePage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\TagCloud-HomePage.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

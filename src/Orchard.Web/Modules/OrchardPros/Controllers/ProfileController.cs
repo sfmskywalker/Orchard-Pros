@@ -58,12 +58,15 @@ namespace OrchardPros.Controllers {
         public Localizer T { get; set; }
         private dynamic New { get; set; }
 
+        [AllowAnonymous]
         public ActionResult Index(string userName) {
             var user = GetUser(userName);
-            var profileShape = Wrap(New.Profile(User: user, IsCurrentUser: _services.WorkContext.CurrentUser.Id == user.Id), user);
+            var currentUserId = _services.WorkContext.CurrentUser != null ? _services.WorkContext.CurrentUser.Id : default(int?);
+            var profileShape = Wrap(New.Profile(User: user, IsCurrentUser: currentUserId == user.Id), user);
             return new ShapeResult(this, profileShape);
         }
 
+        [AllowAnonymous]
         public ActionResult TicketsCreated(string userName, PagerParameters pagerParameters) {
             var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
             var user = GetUser(userName);

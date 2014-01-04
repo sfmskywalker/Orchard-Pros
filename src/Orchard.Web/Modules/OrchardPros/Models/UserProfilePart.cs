@@ -115,8 +115,8 @@ namespace OrchardPros.Models {
         }
 
         public int ExperiencePoints {
-            get { return this.Retrieve(x => x.ExperiencePoints); }
-            set { this.Store(x => x.ExperiencePoints, value); }
+            get { return Retrieve(x => x.ExperiencePoints); }
+            set { Store(x => x.ExperiencePoints, value); }
         }
 
         public int Rating {
