@@ -379,6 +379,15 @@
   <ItemGroup>
     <Content Include="Views\EditorTemplates\CountryPicker.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros\People\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\People.List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\People.List.Filter.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

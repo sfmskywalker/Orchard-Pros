@@ -1,0 +1,46 @@
+﻿@using Orchard.ContentManagement
+@using Orchard.Security
+@using OrchardPros.Models
+@{
+    var users = (IList<IUser>)Model.Users;
+    var pager = Model.Pager;
+}
+@helper PageSizes() {
+    var pager = Model.Pager;
+    var country = (Country)Model.Country;
+    var pageSizes = new[] { 10, 20, 50 };
+    <div class="btn-group btn-group-sm filter-results">
+        @foreach (var pageSize in pageSizes) {
+            <a href="@Url.Action("Index", "People", new { countryCode = country != null ? country.Code : default(string), pageSize = pageSize, })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
+        }
+        <span>@T("per page")</span>
+    </div>
+}
+<section>
+    @if (!users.Any()) {
+        <p>@T("There are no users to be displayed in the current view.")</p>
+    }
+    else {
+        <div class="sorter">
+            @PageSizes()
+        </div>
+        foreach (var user in users) {
+            var profile = user.As<UserProfilePart>();
+            var userUrl = Url.Profile(user);
+            <article class="user">
+                <div class="user-summary">
+                    <h2><a href="@userUrl">@profile.DisplayName</a></h2>
+                    <a href="@userUrl"><img src="@Url.AvatarUrl(user, this, 128)" /></a>
+                    @if (profile.Country != null) {
+                        <a href="@Url.Action("Index", "People", new {countryCode = profile.Country.Code})" class="country-link">@profile.Country.Name</a>
+                    }
+                </div>
+            </article>
+        }
+        <div class="sorter bottom">
+            @Display(pager)
+            @PageSizes()
+        </div>
+    }
+
+</section>

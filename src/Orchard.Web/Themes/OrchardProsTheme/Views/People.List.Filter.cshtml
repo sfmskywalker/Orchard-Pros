@@ -1,0 +1,23 @@
+﻿@using OrchardPros.Models
+@{
+    var countries = (IList<Country>)Model.Countries;
+    var selectedCountry = (Country)Model.Country;
+    var selectedCountryId = selectedCountry != null ? selectedCountry.Id : default(int?);
+    var pager = Model.Pager;
+}
+<aside>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">@T("Countries")</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="list-countries">
+                @foreach (var country in countries) {
+                    <li @if (country.Id == selectedCountryId) { <text> class="active" </text> }>
+                        <a href="@Url.Action("Index", "People", new { area = "OrchardPros", countryCode = country.Code, page = pager.Page, pageSize = pager.PageSize })">@country.Name</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</aside>

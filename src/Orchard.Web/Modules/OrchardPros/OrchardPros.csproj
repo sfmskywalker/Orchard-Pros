@@ -169,6 +169,7 @@
     <Compile Include="Controllers\RecommendationController.cs" />
     <Compile Include="Controllers\SkillController.cs" />
     <Compile Include="Controllers\SubscriptionSourceController.cs" />
+    <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Drivers\SubscriptionSourcePartDriver.cs" />
     <Compile Include="Drivers\RecommendationPartDriver.cs" />
     <Compile Include="Drivers\ReplyPartDriver.cs" />
@@ -388,6 +389,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Position\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\People\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

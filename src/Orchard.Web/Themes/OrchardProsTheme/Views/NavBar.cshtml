@@ -15,11 +15,11 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="@Url.Action("Create", "Ticket", new { Area = "OrchardPros" })" class="btn btn-default btn-create-ticket">@T("Create ticket")</a>
+                    <a href="@Url.Action("Create", "Ticket", new { area = "OrchardPros" })" class="btn btn-default btn-create-ticket">@T("Create ticket")</a>
                 </li>
-                <li><a href="@Url.Action("Index", "Ticket", new { Area = "OrchardPros" })">@T("Tickets")</a></li>
-                <li><a href="#">Categories</a></li>
-                <li><a href="#">Tags</a></li>
+                <li><a href="@Url.Action("Index", "Ticket", new { area = "OrchardPros" })">@T("Tickets")</a></li>
+                <li><a href="@Url.Action("Index", "People", new { area = "OrchardPros" })">@T("People")</a></li>
+                <li><a href="@Url.Action("Index", "Companies", new { area = "OrchardPros" })">@T("Companies")</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
