@@ -35,9 +35,8 @@
                     <section>
                         <h2>@T("Post a reply")</h2>
                         <fieldset class="form-group">
-                            <input class="form-control" type="text" name="Title" value="@T("Re: {0}", ticket.Subject)" />
-                            @*<textarea class="form-control" rows="5" name="Body"></textarea>*@
-                            @Html.Editor("Body", "Markdown")
+                            <input class="form-control" type="text" name="Title" value="@T("Re: {0}", ticket.Subject)" placeholder="@T("Title")" />
+                            @Html.Editor("Body", "Markdown", new { Placeholder = "Your reply" })
                         </fieldset>
                         <fieldset class="form-group">
                             <button type="submit" class="btn btn-success btn-post">@T("Post reply")</button>

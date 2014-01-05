@@ -1,0 +1,15 @@
+﻿@using OrchardPros.Models
+@{
+    var votablePart = (VotablePart) Model.ContentPart;
+    var caps = (VoteCaps) Model.VoteCaps;
+    var voteCount = votablePart.VoteCount;
+    var votesClass = voteCount == 0 ? "neutral" : voteCount < 0 ? "negative" : "positive";
+    var votesSign = voteCount == 0 ? "" : voteCount < 0 ? "-" : "+";
+    var hideUp = !caps.VoteUp;
+    var hideDown = !caps.VoteDown;
+}
+<ul class="voting">
+    <li class="votes @votesClass"><span class="number">@(votesSign + voteCount)</span><span class="type">@T("votes")</span></li>
+    <li class="rate positive @if(hideUp){<text>invisible</text>}"><a href="@Url.Action("Up", "Vote", new { id = votablePart.Id, area = "OrchardPros" })" class="glyphicon glyphicon-plus"></a></li>
+    <li class="rate negative @if(hideDown){<text>invisible</text>}"><a href="@Url.Action("Down", "Vote", new { id = votablePart.Id, area = "OrchardPros" })" class="glyphicon glyphicon-minus"></a></li>
+</ul>

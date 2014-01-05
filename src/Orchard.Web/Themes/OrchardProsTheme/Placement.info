@@ -13,6 +13,7 @@
     </Match>
   </Match>
   <Match ContentType="Reply">
-    <Place Parts_Title="-" />
+    <Place Parts_Title="-"
+           Parts_Votable="Voting:0"/>
   </Match>
 </Placement>

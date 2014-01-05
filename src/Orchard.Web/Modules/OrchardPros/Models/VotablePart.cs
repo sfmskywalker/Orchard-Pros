@@ -1,17 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Orchard.ContentManagement;
-using OrchardPros.Helpers;
+﻿using Orchard.ContentManagement;
+using Orchard.Core.Common.Utilities;
 
 namespace OrchardPros.Models {
     public class VotablePart : ContentPart {
-        public IEnumerable<int> VoteIds {
-            get { return Retrieve<string>("Votes").Split<int>(); }
-            set { Store("Votes", value.Join()); }
-        }
+        internal LazyField<int> VoteCountField = new LazyField<int>();
 
         public int VoteCount {
-            get { return VoteIds.Count(); }
+            get { return VoteCountField.Value; }
         }
     }
 }

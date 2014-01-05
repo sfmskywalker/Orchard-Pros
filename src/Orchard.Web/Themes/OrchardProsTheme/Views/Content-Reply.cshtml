@@ -7,13 +7,9 @@
     var contentItem = (ContentItem) Model.ContentItem;
     var replyPart = contentItem.As<ReplyPart>();
     var ticket = replyPart.ContainingContent.As<TicketPart>();
-    var votablePart = replyPart.As<VotablePart>();
     var user = replyPart.User;
     var profile = user.As<UserProfilePart>();
     var attachments = replyPart.As<AttachmentsHolderPart>().Attachments.ToArray();
-    var voteCount = votablePart.VoteCount;
-    var votesClass = voteCount == 0 ? "neutral" : voteCount < 0 ? "negative" : "positive";
-    var votesSign = voteCount == 0 ? "" : voteCount < 0 ? "-" : "+";
     var createdUtc = replyPart.As<CommonPart>().CreatedUtc.Value;
     var isAnswer = replyPart.Id == ticket.AnswerId;
     var currentUser = WorkContext.CurrentUser;
@@ -21,6 +17,8 @@
     var isOwnReply = currentUser != null && replyPart.User.Id == currentUser.Id;
     var isSolved = ticket.IsSolved;
     var canSolveTicket = !isSolved && isAuthenticated && Authorizer.Authorize(Permissions.SolveOwnTickets, ticket);
+
+    Script.Include("voting.js");
 }
 <!-- Ticket reply -->
 <article class="ticket-reply">
@@ -43,11 +41,7 @@
                 }
         </div>
         <div class="ticket-status">
-            <ul>
-                <li class="votes @votesClass"><span class="number">@(votesSign + voteCount)</span><span class="type">@T("votes")</span></li>
-                <li class="rate positive"><span class="glyphicon glyphicon-plus"></span></li>
-                <li class="rate negative"><span class="glyphicon glyphicon-minus"></span></li>
-            </ul>
+            @Display(Model.Voting)
         </div>
         <div class="ticket-info">
             @if (isAuthenticated) { <a href="#post-reply" data-reply-id="@replyPart.Id" data-reply-subject="@T("Re: {0}", replyPart.Subject)">@T("Reply")</a> }

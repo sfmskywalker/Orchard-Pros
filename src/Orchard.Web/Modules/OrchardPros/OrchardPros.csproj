@@ -180,6 +180,9 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Models\VoteDirection.cs" />
+    <Compile Include="Handlers\VotablePartHandler.cs" />
+    <Compile Include="Services\IVoteService.cs" />
     <Compile Include="Controllers\PositionController.cs" />
     <Compile Include="Controllers\AttachmentController.cs" />
     <Compile Include="Controllers\ExperienceController.cs" />
@@ -189,6 +192,7 @@
     <Compile Include="Controllers\SkillController.cs" />
     <Compile Include="Controllers\SubscriptionSourceController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
+    <Compile Include="Controllers\VoteController.cs" />
     <Compile Include="Drivers\SubscriptionSourcePartDriver.cs" />
     <Compile Include="Drivers\RecommendationPartDriver.cs" />
     <Compile Include="Drivers\ReplyPartDriver.cs" />
@@ -247,6 +251,8 @@
     <Compile Include="Services\RecommendationManager.cs" />
     <Compile Include="Services\SkillManager.cs" />
     <Compile Include="Services\SubscriptionService.cs" />
+    <Compile Include="Models\VoteCaps.cs" />
+    <Compile Include="Services\VoteService.cs" />
     <Compile Include="Shapes.cs" />
     <Compile Include="ViewModels\AccountSettingsViewModel.cs" />
     <Compile Include="ViewModels\AttachmentViewModel.cs" />

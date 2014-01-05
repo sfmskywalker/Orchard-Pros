@@ -122,6 +122,10 @@
     <Content Include="Scripts\select2.min.js">
       <DependentUpon>select2.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\voting.js" />
+    <Content Include="Scripts\ticket - Copy.min.js">
+      <DependentUpon>voting.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\ticket.js" />
     <Content Include="Scripts\select2-initialization.js" />
     <Content Include="Scripts\select2.js" />
@@ -411,6 +415,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\OrchardPros\Reply\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.Votable.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\ticket - Copy.min.js.map">
+      <DependentUpon>voting.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,11 +1,15 @@
 ﻿@{
     var currentValue = ViewData.TemplateInfo.FormattedModelValue as string;
+    var placeholder = ViewBag.Placeholder as string;
     var htmlAttributes = new Dictionary<string, object> {
         {"class", "mdd_editor form-control clearfix"},
         {"data-help-location", Url.Content("~/Modules/OrchardPros/Html/mdd_help.htm")},
-        {"data-preview", "false"},
-        {"placeholder", T("Describe your issue in details")}
+        {"data-preview", "false"}
     };
+
+    if (!String.IsNullOrWhiteSpace(placeholder)) {
+        htmlAttributes["placeholder"] = T(placeholder);
+    }
     
     Style.Require("MarkdownDeep");
     Script.Require("MarkdownDeep");

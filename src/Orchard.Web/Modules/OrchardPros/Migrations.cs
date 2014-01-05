@@ -105,10 +105,10 @@ namespace OrchardPros {
                 .WithPart("UserProfilePart")
                 .Indexed("Users"));
             
-            // Voteable
+            // Voting
             SchemaBuilder.CreateTable("Vote", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
-                .Column<int>("ReplyId", c => c.NotNull())
+                .Column<int>("ContentItemId", c => c.NotNull())
                 .Column<int>("UserId", c => c.NotNull())
                 .Column<int>("Points", c => c.NotNull())
                 .Column<DateTime>("CreatedUtc", c => c.NotNull()));

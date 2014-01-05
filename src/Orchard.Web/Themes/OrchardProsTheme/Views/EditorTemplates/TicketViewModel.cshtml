@@ -16,7 +16,7 @@
 </div>
 <div class="form-group">
     @Html.LabelFor(m => m.Body, T("Body"))
-    @Html.EditorFor(m => m.Body)
+    @Html.EditorFor(m => m.Body, new { Placeholder = "Describe your question or issue in detail" })
 </div>
 <div class="form-group">
     @Html.LabelFor(m => m.Categories, T("Categories"))
