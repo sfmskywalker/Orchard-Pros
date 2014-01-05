@@ -1,0 +1,11 @@
+﻿@{
+    Layout.Title = @T("Post Reply");
+}
+@Html.ValidationSummary()
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.TextBox("Title")
+    @Html.TextArea("Body")
+    <fieldset>
+        <button type="submit">@T("Post Reply")</button>
+    </fieldset>
+}

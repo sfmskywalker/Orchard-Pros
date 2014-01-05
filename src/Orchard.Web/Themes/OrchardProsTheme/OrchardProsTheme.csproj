@@ -283,9 +283,6 @@
     <Content Include="Views\Ticket.Aside.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Ticket.Replies.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\OrchardPros\Ticket\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -411,6 +408,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Parts.Common.Body.Summary-Reply.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros\Reply\Create.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

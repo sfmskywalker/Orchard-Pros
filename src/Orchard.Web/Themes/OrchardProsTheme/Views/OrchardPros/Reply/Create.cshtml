@@ -1,0 +1,42 @@
+﻿@model OrchardPros.ViewModels.ReplyViewModel
+@{
+    var isAuthenticated = WorkContext.CurrentUser != null;
+    
+    Layout.Title = @T("Post Reply");
+}
+@Html.ValidationSummary()
+@if (isAuthenticated) {
+    <!-- Post a reply -->
+    <div id="post-reply" class="container">
+        @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", "Reply", new { area = "OrchardPros" }), FormMethod.Post, new { role = "form" })) {
+            @Html.HiddenFor(m => m.ContentItemId)
+            <div class="row">
+                <div class="col-md-8">
+                    <section>
+                        <h2>@T("Post a reply")</h2>
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                            @Html.EditorFor(m => m.Body, "Markdown")
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <button type="submit" class="btn btn-success btn-post">@T("Post reply")</button>
+                        </fieldset>
+                    </section>
+                </div> <!-- /.col-md-8 -->
+                <div class="col-md-4">
+                    <aside>
+                        @Html.Editor("Attachments", "AttachmentsViewModel")
+                    </aside>
+                </div> <!-- /.col-md-4 -->
+            </div>
+            <!-- /.row -->
+        }
+    </div>
+    <!-- /.container Post a reply -->
+}
+else {
+    <div class="container">
+        <h2>@T("Post a reply")</h2>
+        <p>@T("You need to be signed in to post a reply.")</p>
+    </div>
+}

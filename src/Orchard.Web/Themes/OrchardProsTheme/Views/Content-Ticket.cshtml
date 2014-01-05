@@ -23,6 +23,7 @@
 }
 <section>
     <article>
+        @Html.ValidationSummary()
         <h2>@ticket.Subject</h2>
         @Display(Model.Content)
     </article>
