@@ -5,7 +5,6 @@
     var contentItem = (ContentItem)Model.ContentItem;
     var ticket = contentItem.As<TicketPart>();
     var ticketAside = New.Ticket_Aside(Ticket: ticket);
-    //var ticketReplies = New.Ticket_Replies(Ticket: ticket);
     var ticketSolve = New.Ticket_Solve(Ticket: ticket);
     var subscriptionSource = ticket.As<SubscriptionSourcePart>();
     var user = ticket.User;
@@ -18,7 +17,6 @@
     Layout.Title = ticket.IsSolved ? T("Ticket (Solved)") : T("Ticket");
     Layout.Overlays.Add(ticketSolve);
     Layout.AsideSecond.Add(ticketAside);
-    //Layout.AfterContent.Add(ticketReplies);
 }
 @if (Authorizer.Authorize(Permissions.EditContent, ticket)) {
     <a class="btn btn-success" href="@Url.Action("Edit", "Ticket", new { id = ticket.Id, area = "OrchardPros" })">@T("Edit")</a>
@@ -35,7 +33,7 @@
         else {
             <a href="@Url.Action("Subscribe", "SubscriptionSource", new { id = ticket.Id, area = "OrchardPros", returnUrl = Request.Path })" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Follow Ticket")</a>
         }
-        <a href="#">Reply</a>
+        <a href="#post-reply" data-reply-subject="@T("Re: {0}", ticket.Subject)">@T("Reply")</a>
         <a href="#">Share</a>
         <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<a href="@Url.Profile(user)" class="author">@user.UserName</a></span>
     </div>

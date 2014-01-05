@@ -50,7 +50,7 @@
             </ul>
         </div>
         <div class="ticket-info">
-            @if (isAuthenticated) { <a href="#">@T("Reply")</a> }
+            @if (isAuthenticated) { <a href="#post-reply" data-reply-id="@replyPart.Id" data-reply-subject="@T("Re: {0}", replyPart.Subject)">@T("Reply")</a> }
             <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: createdUtc))<span class="author">@Html.ProfileLink(user)</span></span>
         </div>
     </div>
@@ -64,8 +64,8 @@
                         <li class="title">@T("Lv. {0:00} {1}", profile.Level, profile.RankName)</li>
                         <li class="rating">
                             @for (var i = 0; i < profile.Rating; i++) {
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                }
+                                <span class="glyphicon glyphicon-star"></span>
+                            }
                         </li>
                         <li class="experience">
                             <h4>@T("Experience")</h4>

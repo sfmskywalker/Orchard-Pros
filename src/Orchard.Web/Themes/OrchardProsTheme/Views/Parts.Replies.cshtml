@@ -28,7 +28,7 @@
 </div> <!-- /.container Replies -->
 @if (isAuthenticated) {
     <!-- Post a reply -->
-    <div class="container">
+    <div id="post-reply" class="container">
         @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", "Reply", new {area = "OrchardPros"}), FormMethod.Post, new {role = "form"})) {
             <input type="hidden" name="ContentItemId" value="@ticket.Id" />
             <div class="row">
