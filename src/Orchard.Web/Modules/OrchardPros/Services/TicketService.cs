@@ -144,7 +144,7 @@ namespace OrchardPros.Services {
         }
 
         public DateTime? GetLastModifiedUtcFor(TicketPart ticket) {
-            var lastReply = ticket.Replies.LastOrDefault();
+            var lastReply = ticket.As<RepliesPart>().Replies.LastOrDefault();
             var ticketModifiedUtc = ticket.As<CommonPart>().ModifiedUtc ?? DateTime.MinValue;
             var replyModifiedUtc = (lastReply != null ? lastReply.As<CommonPart>().ModifiedUtc : default(DateTime?)) ?? DateTime.MinValue;
             var timeStamp = replyModifiedUtc > ticketModifiedUtc ? replyModifiedUtc : ticketModifiedUtc;
@@ -152,7 +152,7 @@ namespace OrchardPros.Services {
         }
 
         public IUser GetLastModifierFor(TicketPart ticket) {
-            var lastReply = ticket.Replies.LastOrDefault();
+            var lastReply = ticket.As<RepliesPart>().Replies.LastOrDefault();
             var ticketModifiedUtc = ticket.As<CommonPart>().ModifiedUtc ?? DateTime.MinValue;
             var replyModifiedUtc = (lastReply != null ? lastReply.As<CommonPart>().ModifiedUtc : default(DateTime?)) ?? DateTime.MinValue;
             var user = (replyModifiedUtc > ticketModifiedUtc) && lastReply != null ? lastReply.User : ticket.User;

@@ -7,11 +7,9 @@ using OrchardPros.Services;
 
 namespace OrchardPros.Handlers {
     public class TicketPartHandler : ContentHandler {
-        private readonly IReplyService _replyService;
         private readonly ITicketService _ticketService;
 
-        public TicketPartHandler(IRepository<TicketPartRecord> repository, IReplyService replyService, ITicketService ticketService) {
-            _replyService = replyService;
+        public TicketPartHandler(IRepository<TicketPartRecord> repository, ITicketService ticketService) {
             _ticketService = ticketService;
             Filters.Add(StorageFilter.For(repository));
             OnActivated<TicketPart>(SetupLazyFields);
@@ -24,7 +22,6 @@ namespace OrchardPros.Handlers {
         }
 
         private void SetupLazyFields(ActivatedContentContext context, TicketPart part) {
-            part.RepliesField.Loader(() => _replyService.GetRepliesByContent(part.Id).ToArray());
             part.CategoriesField.Loader(() => _ticketService.GetCategoriesFor(part.Id).ToArray());
             part.TagsField.Loader(() => _ticketService.GetTagsFor(part.Id).ToArray());
             part.LastModifiedUtcField.Loader(() => _ticketService.GetLastModifiedUtcFor(part));

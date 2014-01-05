@@ -29,6 +29,9 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 .navbar-brand { padding: 0px 15px 0px 0px; }
 .navbar .btn-create-ticket { margin-top:8px; }
 
+/* Markdown */
+.mdd_editor_wrap { clear: both;margin-top: 30px; }
+
 /* Profile images */
 .profile-img-s { width:32px; height:32px; border:1px solid #000; margin-right:10px; }
 .profile-img-m { width:64px; height:64px; }

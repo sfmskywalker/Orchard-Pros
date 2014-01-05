@@ -1,0 +1,64 @@
+﻿@using Orchard.ContentManagement
+@using OrchardPros
+@using OrchardPros.Models
+@{
+    var repliesPart = (RepliesPart) Model.ContentPart;
+    var ticket = repliesPart.As<TicketPart>();
+    var currentUser = WorkContext.CurrentUser;
+    var isAuthenticated = currentUser != null;
+    var replies = Model.Replies;
+}
+<!-- Replies -->
+<div id="replies" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <section>
+                <div class="sorter">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#">@T("Best voted")</a></li>
+                        <li><a href="#">@T("Latest")</a></li>
+                    </ul>
+                </div>
+                @foreach (var reply in replies) {
+                    @Display(reply)
+                }
+            </section>
+        </div> <!-- /.col-md-12 -->
+    </div> <!-- /.row -->
+</div> <!-- /.container Replies -->
+@if (isAuthenticated) {
+    <!-- Post a reply -->
+    <div class="container">
+        @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", "Reply", new {area = "OrchardPros"}), FormMethod.Post, new {role = "form"})) {
+            <input type="hidden" name="ContentItemId" value="@ticket.Id" />
+            <div class="row">
+                <div class="col-md-8">
+                    <section>
+                        <h2>@T("Post a reply")</h2>
+                        <fieldset class="form-group">
+                            <input class="form-control" type="text" name="Title" value="@T("Re: {0}", ticket.Subject)" />
+                            @*<textarea class="form-control" rows="5" name="Body"></textarea>*@
+                            @Html.Editor("Body", "Markdown")
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <button type="submit" class="btn btn-success btn-post">@T("Post reply")</button>
+                        </fieldset>
+                    </section>
+                </div> <!-- /.col-md-8 -->
+                <div class="col-md-4">
+                    <aside>
+                        @Html.Editor("Attachments", "AttachmentsViewModel")
+                    </aside>
+                </div> <!-- /.col-md-4 -->
+            </div>
+            <!-- /.row -->
+        }
+    </div>
+    <!-- /.container Post a reply -->
+}
+else {
+    <div class="container">
+        <h2>@T("Post a reply")</h2>
+        <p>@T("You need to be signed in to post a reply.")</p>
+    </div>
+}

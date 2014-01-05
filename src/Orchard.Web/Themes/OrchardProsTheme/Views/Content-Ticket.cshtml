@@ -2,12 +2,23 @@
 @using Orchard.Core.Contents
 @using OrchardPros.Models
 @{
-    var ticket = (TicketPart)Model.Ticket;
+    var contentItem = (ContentItem)Model.ContentItem;
+    var ticket = contentItem.As<TicketPart>();
+    var ticketAside = New.Ticket_Aside(Ticket: ticket);
+    //var ticketReplies = New.Ticket_Replies(Ticket: ticket);
+    var ticketSolve = New.Ticket_Solve(Ticket: ticket);
     var subscriptionSource = ticket.As<SubscriptionSourcePart>();
     var user = ticket.User;
     var currentUser = WorkContext.CurrentUser;
     var isFollowing = subscriptionSource.Subscribers.Any(x => x.Id == currentUser.Id);
-
+    
+    Script.Require("jQuery");
+    Script.Include("ticket.js");
+    
+    Layout.Title = ticket.IsSolved ? T("Ticket (Solved)") : T("Ticket");
+    Layout.Overlays.Add(ticketSolve);
+    Layout.AsideSecond.Add(ticketAside);
+    //Layout.AfterContent.Add(ticketReplies);
 }
 @if (Authorizer.Authorize(Permissions.EditContent, ticket)) {
     <a class="btn btn-success" href="@Url.Action("Edit", "Ticket", new { id = ticket.Id, area = "OrchardPros" })">@T("Edit")</a>
@@ -15,7 +26,7 @@
 <section>
     <article>
         <h2>@ticket.Subject</h2>
-        @ticket.Body
+        @Display(Model.Content)
     </article>
     <div class="sorter bottom">
         @if (isFollowing) {

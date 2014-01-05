@@ -6,8 +6,13 @@
   <Match ContentType="Ticket">
     <Match DisplayType="Detail">
       <Place Parts_Title="-"
-             Parts_Common_Body="-"
+             Parts_Common_Body="Content:0"
+             Parts_Ticket="-"
+             Parts_Replies="/AfterContent:0"
              Fields_TaxonomyField="-"/>
     </Match>
+  </Match>
+  <Match ContentType="Reply">
+    <Place Parts_Title="-" />
   </Match>
 </Placement>

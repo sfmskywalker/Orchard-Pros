@@ -5,6 +5,7 @@
 @using OrchardProsTheme.Helpers
 @{
     var ticket = (TicketPart)Model.Ticket;
+    var repliesPart = ticket.As<RepliesPart>();
     var user = ticket.User;
     var commonPart = ticket.As<CommonPart>();
     var statisticsPart = ticket.As<StatisticsPart>();
@@ -38,7 +39,7 @@
                 <ul>
                     <li class="votes"><span class="number">0</span><span class="type">@T("votes")</span></li>
                     <li class="views"><span class="number">@statisticsPart.ViewCount</span><span class="type">@T("views")</span></li>
-                    <li class="replies"><span class="number">@ticket.Replies.Count()</span><span class="type">@T("replies")</span></li>
+                    <li class="replies"><span class="number">@repliesPart.Replies.Count()</span><span class="type">@T("replies")</span></li>
                 </ul>
             </div>
         </div> <!-- /.panel -->

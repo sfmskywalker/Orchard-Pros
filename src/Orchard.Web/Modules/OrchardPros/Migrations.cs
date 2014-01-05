@@ -142,6 +142,26 @@ namespace OrchardPros {
                 .Attachable()
                 .WithDescription("Turns your content into a dossier capable of holding attachments."));
 
+            // Reply
+            ContentDefinitionManager.AlterPartDefinition("RepliesPart", part => part
+                .Attachable()
+                .WithDescription("Enables your content item to receive replies."));
+
+            ContentDefinitionManager.AlterPartDefinition("ReplyPart", part => part
+                .Attachable(false)
+                .WithDescription("Turns your content type into a Reply."));
+
+            ContentDefinitionManager.AlterTypeDefinition("Reply", type => type
+                .WithPart("CommonPart", part => part
+                    .WithSetting("OwnerEditorSettings.ShowOwnerEditor", "false")
+                    .WithSetting("DateEditorSettings.ShowDateEditor", "false"))
+                .WithPart("IdentityPart")
+                .WithPart("TitlePart")
+                .WithPart("ReplyPart")
+                .WithPart("BodyPart", p => p.WithSetting("BodyTypePartSettings.Flavor", "markdowndeep"))
+                .WithPart("AttachmentsHolderPart")
+                .WithPart("VotablePart"));
+
 
             // Ticket
             SchemaBuilder.CreateTable("TicketPartRecord", table => table
@@ -179,27 +199,11 @@ namespace OrchardPros {
                 .WithPart("BodyPart", p => p.WithSetting("BodyTypePartSettings.Flavor", "markdowndeep"))
                 .WithPart("TicketPart")
                 .WithPart("AttachmentsHolderPart")
-                .WithPart("CommentsPart")
+                .WithPart("RepliesPart")
                 .WithPart("StatisticsPart")
                 .WithPart("SubscriptionSourcePart")
                 .Creatable(false)
                 .Draftable());
-
-            // Reply
-            ContentDefinitionManager.AlterPartDefinition("ReplyPart", part => part
-                .Attachable(false)
-                .WithDescription("Turns your content type into a Reply."));
-
-            ContentDefinitionManager.AlterTypeDefinition("Reply", type => type
-                .WithPart("CommonPart", part => part
-                    .WithSetting("OwnerEditorSettings.ShowOwnerEditor", "false")
-                    .WithSetting("DateEditorSettings.ShowDateEditor", "false"))
-                .WithPart("IdentityPart")
-                .WithPart("TitlePart")
-                .WithPart("ReplyPart")
-                .WithPart("BodyPart", p => p.WithSetting("BodyTypePartSettings.Flavor", "markdowndeep"))
-                .WithPart("AttachmentsHolderPart")
-                .WithPart("VotablePart"));
 
             CreateCountries();
             return 1;

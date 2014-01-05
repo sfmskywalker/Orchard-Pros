@@ -2,10 +2,10 @@
 @using Orchard.Core.Common.Models
 @using OrchardPros.Models
 @using OrchardPros
-@using OrchardPros.Models
 @using OrchardProsTheme.Helpers
 @{
     var ticket = (TicketPart)Model.Ticket;
+    var replies = ticket.As<RepliesPart>().Replies;
     var currentUser = WorkContext.CurrentUser;
     var isAuthenticated = currentUser != null;
     var isSolved = ticket.IsSolved;
@@ -22,7 +22,7 @@
                         <li><a href="#">@T("Latest")</a></li>
                     </ul>
                 </div>
-                @foreach (var reply in ticket.Replies) {
+                @foreach (var reply in replies) {
                     var votablePart = reply.As<VotablePart>();
                     var user = reply.User;
                     var profile = user.As<UserProfilePart>();
@@ -120,7 +120,8 @@
                         <h2>@T("Post a reply")</h2>
                         <fieldset class="form-group">
                             <input class="form-control" type="text" name="Title" value="@T("Re: {0}", ticket.Subject)" />
-                            <textarea class="form-control" rows="5" name="Body"></textarea>
+                            @*<textarea class="form-control" rows="5" name="Body"></textarea>*@
+                            @Html.Editor("Body", "Markdown")
                         </fieldset>
                         <fieldset class="form-group">
                             <button type="submit" class="btn btn-success btn-post">@T("Post reply")</button>

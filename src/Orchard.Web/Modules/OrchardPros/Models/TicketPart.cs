@@ -9,7 +9,7 @@ using Orchard.Taxonomies.Models;
 
 namespace OrchardPros.Models {
     public class TicketPart: ContentPart<TicketPartRecord> {
-        internal LazyField<IEnumerable<ReplyPart>> RepliesField = new LazyField<IEnumerable<ReplyPart>>();
+        
         internal LazyField<IEnumerable<TermPart>> CategoriesField = new LazyField<IEnumerable<TermPart>>();
         internal LazyField<IEnumerable<TermPart>> TagsField = new LazyField<IEnumerable<TermPart>>();
         internal LazyField<DateTime?> LastModifiedUtcField = new LazyField<DateTime?>();
@@ -63,10 +63,6 @@ namespace OrchardPros.Models {
         public IUser User {
             get { return this.As<CommonPart>().Owner; }
             set { this.As<CommonPart>().Owner = value; }
-        }
-
-        public IEnumerable<ReplyPart> Replies {
-            get { return RepliesField.Value; }
         }
 
         public TimeSpan RemainingTime {

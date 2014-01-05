@@ -192,11 +192,14 @@
     <Compile Include="Drivers\SubscriptionSourcePartDriver.cs" />
     <Compile Include="Drivers\RecommendationPartDriver.cs" />
     <Compile Include="Drivers\ReplyPartDriver.cs" />
+    <Compile Include="Drivers\RepliesPartDriver.cs" />
     <Compile Include="Drivers\UserProfilePartDriver.cs" />
     <Compile Include="Events\UserEventHandler.cs" />
     <Compile Include="Forms\SelectRolesForms.cs" />
+    <Compile Include="Handlers\RepliesPartHandler.cs" />
     <Compile Include="Helpers\PagedContentExtensions.cs" />
     <Compile Include="Models\Country.cs" />
+    <Compile Include="Models\RepliesPart.cs" />
     <Compile Include="Models\UserProfilePartRecord.cs" />
     <Compile Include="ResourceManifests\MarkdownDeep.cs" />
     <Compile Include="Security\RecommendationAuthorizationEventHandler.cs" />
@@ -432,6 +435,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\Reply.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\Replies.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

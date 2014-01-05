@@ -13,7 +13,7 @@ namespace OrchardPros.ViewModels {
         [UIHint("TicketTypePicker")]
         public TicketType Type { get; set; }
 
-        [Required]
+        [Required, UIHint("Markdown")]
         public string Body { get; set; }
 
         [UIHint("TermsPicker")]

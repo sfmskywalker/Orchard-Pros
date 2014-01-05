@@ -1,0 +1,91 @@
+﻿@using Orchard.ContentManagement
+@using Orchard.Core.Common.Models
+@using OrchardPros
+@using OrchardPros.Models
+@using OrchardProsTheme.Helpers
+@{
+    var contentItem = (ContentItem) Model.ContentItem;
+    var replyPart = contentItem.As<ReplyPart>();
+    var ticket = replyPart.ContainingContent.As<TicketPart>();
+    var votablePart = replyPart.As<VotablePart>();
+    var user = replyPart.User;
+    var profile = user.As<UserProfilePart>();
+    var attachments = replyPart.As<AttachmentsHolderPart>().Attachments.ToArray();
+    var voteCount = votablePart.VoteCount;
+    var votesClass = voteCount == 0 ? "neutral" : voteCount < 0 ? "negative" : "positive";
+    var votesSign = voteCount == 0 ? "" : voteCount < 0 ? "-" : "+";
+    var createdUtc = replyPart.As<CommonPart>().CreatedUtc.Value;
+    var isAnswer = replyPart.Id == ticket.AnswerId;
+    var currentUser = WorkContext.CurrentUser;
+    var isAuthenticated = currentUser != null;
+    var isOwnReply = currentUser != null && replyPart.User.Id == currentUser.Id;
+    var isSolved = ticket.IsSolved;
+    var canSolveTicket = !isSolved && isAuthenticated && Authorizer.Authorize(Permissions.SolveOwnTickets, ticket);
+}
+<!-- Ticket reply -->
+<article class="ticket-reply">
+    <div class="col-md-8">
+        <div class="ticket-summary">
+            @if (!String.IsNullOrWhiteSpace(replyPart.Subject)) {
+                <h3>@replyPart.Subject</h3>
+                if (isAnswer) { <h2>@T("This is the answer.")</h2> }
+            }
+            @Display(Model.Content)
+            @if (attachments.Any()) {
+                <div class="reply-attachments">
+                    <em>@T("Attachments")</em>
+                    <ul class="list-unstyled">
+                        @foreach (var attachment in attachments) {
+                            <li><a href="@Url.DownloadAttachment(attachment)"><img src="@Url.FileIcon(attachment.OriginalFileName)" alt="Document"> @attachment.OriginalFileName</a></li>
+                            }
+                    </ul>
+                </div>
+                }
+        </div>
+        <div class="ticket-status">
+            <ul>
+                <li class="votes @votesClass"><span class="number">@(votesSign + voteCount)</span><span class="type">@T("votes")</span></li>
+                <li class="rate positive"><span class="glyphicon glyphicon-plus"></span></li>
+                <li class="rate negative"><span class="glyphicon glyphicon-minus"></span></li>
+            </ul>
+        </div>
+        <div class="ticket-info">
+            @if (isAuthenticated) { <a href="#">@T("Reply")</a> }
+            <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: createdUtc))<span class="author">@Html.ProfileLink(user)</span></span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default idplate">
+            <div class="panel-body">
+                <div class="media">
+                    <a href="#" class="pull-left"><img src="@Url.AvatarUrl(user, this, 64)" class="media-object profile-img-m"></a>
+                    <ul class="expert-info media-body">
+                        <li class="name">@Html.ProfileLink(user)</li>
+                        <li class="title">@T("Lv. {0:00} {1}", profile.Level, profile.RankName)</li>
+                        <li class="rating">
+                            @for (var i = 0; i < profile.Rating; i++) {
+                                                <span class="glyphicon glyphicon-star"></span>
+                                                }
+                        </li>
+                        <li class="experience">
+                            <h4>@T("Experience")</h4>
+                            <p>@T("Total EXP: {0}", profile.ExperiencePoints)</p>
+                        </li>
+                        <li class="achievements">
+                            <h4>@T("Achievements")</h4>
+                            <p>
+                                <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- /.panel -->
+        @if (canSolveTicket) {
+            <button type="button" class="btn btn-success btn-solve-ticket" data-reply="@replyPart.Id" data-reply-is-self="@isOwnReply.ToString().ToLower()">@T("Solve ticket")</button>
+        }
+    </div> <!-- /.col-md-4 -->
+</article>

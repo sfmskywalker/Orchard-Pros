@@ -161,7 +161,7 @@ namespace OrchardPros.Controllers {
                 return new HttpUnauthorizedResult();
 
             var currentUser = CurrentUser;
-            var reply = ticket.Replies.Single(x => x.Id == replyId);
+            var reply = ticket.As<RepliesPart>().Replies.Single(x => x.Id == replyId);
             var isOwnReply = reply.User.Id == currentUser.Id;
             
             _ticketService.Solve(ticket, reply);

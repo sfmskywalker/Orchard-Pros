@@ -280,9 +280,6 @@
     <Content Include="Views\EditorTemplates\TermsPicker.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Ticket.Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Ticket.Aside.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -299,9 +296,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Pager.Links.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Parts.Ticket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\AttachmentsViewModel.cshtml" />
@@ -402,6 +396,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TagCloud-HomePage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Markdown.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content-Ticket.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.Replies-Ticket.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content-Reply.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.Common.Body.Summary-Reply.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
