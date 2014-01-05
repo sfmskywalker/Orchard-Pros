@@ -51,6 +51,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\nhibernate\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="MarkdownDeep, Version=1.1.4105.19498, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\MarkdownDeep\MarkdownDeep.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NGravatar, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -97,6 +101,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Html\mdd_help.htm" />
+    <Content Include="Images\mdd_ajax_loader.gif" />
+    <Content Include="Images\mdd_gripper.png" />
+    <Content Include="Images\mdd_modal_background.png" />
+    <Content Include="Images\mdd_toolbar.png" />
+    <Content Include="Lib\MarkdownDeep\MarkdownDeep.dll" />
     <Content Include="Lib\NGravatar\NGravatar.dll" />
     <Content Include="Lib\NGravatar\NGravatar.XML" />
     <Content Include="Lib\NGravatar\ReadMe.txt" />
@@ -104,6 +114,8 @@
     <Content Include="Scripts\attachments-uploader.min.js">
       <DependentUpon>attachments-uploader.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\markdowndeep.js" />
+    <Content Include="Scripts\MarkdownDeepLib.min.js" />
     <Content Include="Scripts\tabify.js" />
     <Content Include="Scripts\tabify.min.js">
       <DependentUpon>tabify.js</DependentUpon>
@@ -114,6 +126,7 @@
     <Content Include="Styles\admin-tabs.min.css">
       <DependentUpon>admin-tabs.less</DependentUpon>
     </Content>
+    <Content Include="Styles\mdd_styles.css" />
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
@@ -185,6 +198,7 @@
     <Compile Include="Helpers\PagedContentExtensions.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\UserProfilePartRecord.cs" />
+    <Compile Include="ResourceManifests\MarkdownDeep.cs" />
     <Compile Include="Security\RecommendationAuthorizationEventHandler.cs" />
     <Compile Include="Security\ProfileAuthorizationEventHandler.cs" />
     <Compile Include="Services\ISubscriptionService.cs" />
@@ -222,6 +236,7 @@
     <Compile Include="Services\IPositionManager.cs" />
     <Compile Include="Services\IRecommendationManager.cs" />
     <Compile Include="Services\ISkillManager.cs" />
+    <Compile Include="Services\MarkdownDeepFilter.cs" />
     <Compile Include="Services\NewsletterNotificationSettingsProvider.cs" />
     <Compile Include="Services\NotificationSettingsManager.cs" />
     <Compile Include="Services\OpenAuthServices.cs" />
@@ -265,7 +280,7 @@
     <Compile Include="Models\StatisticsPart.cs" />
     <Compile Include="Models\VotablePart.cs" />
     <Compile Include="Models\ReplyPart.cs" />
-    <Compile Include="ResourceManifest.cs" />
+    <Compile Include="ResourceManifests\OrchardPros.cs" />
     <Compile Include="Models\IPagedList.cs" />
     <Compile Include="Services\ReplyService.cs" />
     <Compile Include="Services\TicketNotificationSettingsProvider.cs" />
@@ -408,6 +423,15 @@
     <Content Include="Scripts\tabify.min.js.map">
       <DependentUpon>tabify.js</DependentUpon>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Body-MarkdownDeep.Editor.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Html\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\Web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

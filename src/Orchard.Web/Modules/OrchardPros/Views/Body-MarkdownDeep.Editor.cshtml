@@ -1,0 +1,15 @@
+﻿@{
+    Style.Require("MarkdownDeep");
+    Script.Require("MarkdownDeep");
+
+    var idPostfix = Html.FieldIdFor(m => m);
+    var textAreaAttributes = new Dictionary<string, object> {
+        {"id", "mdd-input" + "-" + idPostfix},
+        {"class", "mdd_editor"},
+        {"data-help-location", Url.Content("~/Modules/OrchardPros/Html/mdd_help.htm")},
+        {"data-preview", "false"}
+    };
+}
+<div class="mdd_toolbar"></div>
+@Html.TextArea("Text", (string)Model.Text, 25, 80, textAreaAttributes)
+<div class="mdd_resizer"></div>

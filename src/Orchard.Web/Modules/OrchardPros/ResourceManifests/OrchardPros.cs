@@ -1,7 +1,7 @@
 ﻿using Orchard.UI.Resources;
 
-namespace OrchardPros {
-    public class ResourceManifest : IResourceManifestProvider {
+namespace OrchardPros.ResourceManifests {
+    public class OrchardPros : IResourceManifestProvider {
         public void BuildManifests(ResourceManifestBuilder builder) {
             var manifest = builder.Add();
 

@@ -10,7 +10,7 @@
   </Recipe>
 
   <Feature enable="Orchard.Alias,Orchard.Autoroute,
-                   Markdown,Orchard.MediaLibrary,Orchard.ContentPicker,
+                   Orchard.MediaLibrary,Orchard.ContentPicker,
                    Orchard.jQuery,Orchard.Widgets,Orchard.ContentTypes,
                    Orchard.Scripting,Orchard.Scripting.Lightweight,PackagingServices,Orchard.Packaging,
                    Orchard.Fields,Orchard.OutputCache,Orchard.Workflows,

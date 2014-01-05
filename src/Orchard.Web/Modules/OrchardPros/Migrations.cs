@@ -176,7 +176,7 @@ namespace OrchardPros {
                     .WithSetting("AutorouteSettings.AutomaticAdjustmentOnEdit", "false")
                     .WithSetting("AutorouteSettings.PatternDefinitions", "[{Name:'ID', Pattern: 'tickets/{Content.Id}', Description: 'tickets/123'}]")
                     .WithSetting("AutorouteSettings.DefaultPatternIndex", "0"))
-                .WithPart("BodyPart")
+                .WithPart("BodyPart", p => p.WithSetting("BodyTypePartSettings.Flavor", "markdowndeep"))
                 .WithPart("TicketPart")
                 .WithPart("AttachmentsHolderPart")
                 .WithPart("CommentsPart")
@@ -197,7 +197,7 @@ namespace OrchardPros {
                 .WithPart("IdentityPart")
                 .WithPart("TitlePart")
                 .WithPart("ReplyPart")
-                .WithPart("BodyPart")
+                .WithPart("BodyPart", p => p.WithSetting("BodyTypePartSettings.Flavor", "markdowndeep"))
                 .WithPart("AttachmentsHolderPart")
                 .WithPart("VotablePart"));
 
