@@ -5,6 +5,8 @@ using Orchard.Caching;
 using Orchard.ContentManagement;
 using Orchard.Core.Common.Models;
 using Orchard.Data;
+using Orchard.Search.Models;
+using Orchard.Search.Services;
 using Orchard.Security;
 using Orchard.Services;
 using Orchard.Taxonomies.Models;
@@ -21,6 +23,7 @@ namespace OrchardPros.Services {
         private readonly IClock _clock;
         private readonly IReplyService _replyService;
         private readonly IRepository<TicketPartRecord> _ticketPartRepository;
+        private readonly ISearchService _searchService;
 
         public TicketService(
             ITaxonomyService taxonomyService,
@@ -29,7 +32,8 @@ namespace OrchardPros.Services {
             ISignals signals,
             IClock clock,
             IReplyService replyService,
-            IRepository<TicketPartRecord> ticketPartRepository) {
+            IRepository<TicketPartRecord> ticketPartRepository, 
+            ISearchService searchService) {
 
             _taxonomyService = taxonomyService;
             _contentManager = contentManager;
@@ -38,6 +42,7 @@ namespace OrchardPros.Services {
             _clock = clock;
             _replyService = replyService;
             _ticketPartRepository = ticketPartRepository;
+            _searchService = searchService;
         }
 
         public IPagedList<TicketPart> GetTicketsFor(int userId, int? skip = null, int? take = null) {
@@ -103,8 +108,15 @@ namespace OrchardPros.Services {
             _taxonomyService.UpdateTerms(ticket.ContentItem, terms, "Tags");
         }
 
-        public IPagedList<TicketPart> GetTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null, int? tagId = null) {
-            var baseQuery = _contentManager.Query<TicketPart, TicketPartRecord>(VersionOptions.Published);
+        public IPagedList<TicketPart> GetTickets(int? skip = null, int? take = null, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null, int? tagId = null, string term = null) {
+            var baseQuery = _contentManager.Query<TicketPart>(VersionOptions.Published);
+
+            if (!String.IsNullOrWhiteSpace(term)) {
+                var foundTicketIds = SearchTickets(term, skip.GetValueOrDefault(), take);
+                baseQuery = baseQuery.ForContentItems(foundTicketIds);
+            }
+
+            baseQuery = baseQuery.Join<TicketPartRecord>();
             IContentQuery<TicketPart, CommonPartRecord> commonQuery;
 
             switch (criteria) {
@@ -236,6 +248,20 @@ namespace OrchardPros.Services {
 
         private IEnumerable<TermPart> GetTerms(int taxonomyId) {
             return _taxonomyService.GetTerms(taxonomyId).OrderBy(x => x.Name);
+        }
+
+        private IEnumerable<int> SearchTickets(string term, int skip, int? take) {
+            var searchHits = _searchService.Query(
+                query: term, 
+                filterCulture: false,
+                skip: skip,
+                take: take,
+                index: "Tickets",
+                searchFields: new[]{"author", "body", "title", "Categories", "Tags"},
+                shapeResult: searchHit => searchHit);
+
+            var foundIds = searchHits.Select(searchHit => searchHit.ContentItemId).ToList();
+            return foundIds;
         }
     }
 }

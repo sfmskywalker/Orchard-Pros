@@ -160,7 +160,8 @@ namespace OrchardPros {
                 .WithPart("ReplyPart")
                 .WithPart("BodyPart", p => p.WithSetting("BodyTypePartSettings.Flavor", "markdowndeep"))
                 .WithPart("AttachmentsHolderPart")
-                .WithPart("VotablePart"));
+                .WithPart("VotablePart")
+                .Indexed("Tickets"));
 
 
             // Ticket
@@ -203,7 +204,8 @@ namespace OrchardPros {
                 .WithPart("StatisticsPart")
                 .WithPart("SubscriptionSourcePart")
                 .Creatable(false)
-                .Draftable());
+                .Draftable()
+                .Indexed("Tickets"));
 
             CreateCountries();
             return 1;

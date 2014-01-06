@@ -20,18 +20,6 @@
 
   <Metadata>
     <Types>
-      <CategoryTerm Taxonomy="Category" DisplayName="Category Term">
-        <TermPart />
-        <TitlePart />
-        <AutoroutePart AutorouteSettings.AllowCustomPattern="true" AutorouteSettings.AutomaticAdjustmentOnEdit="false" AutorouteSettings.PatternDefinitions="[{Name:'Taxonomy and Title', Pattern: '{Content.Container.Path}/{Content.Slug}', Description: 'my-taxonomy/my-term/sub-term'}]" AutorouteSettings.DefaultPatternIndex="0" />
-        <CommonPart />
-      </CategoryTerm>
-      <TagTerm Taxonomy="Tag" DisplayName="Tag Term">
-        <TermPart />
-        <TitlePart />
-        <AutoroutePart AutorouteSettings.AllowCustomPattern="true" AutorouteSettings.AutomaticAdjustmentOnEdit="false" AutorouteSettings.PatternDefinitions="[{Name:'Taxonomy and Title', Pattern: '{Content.Container.Path}/{Content.Slug}', Description: 'my-taxonomy/my-term/sub-term'}]" AutorouteSettings.DefaultPatternIndex="0" />
-        <CommonPart />
-      </TagTerm>
       <Page ContentTypeSettings.Draftable="True" TypeIndexing.Indexes="Search">
         <TagsPart />
         <LocalizationPart />
@@ -328,5 +316,6 @@
     menu create /MenuName:"Main Menu"
     page create /Slug:"welcome-to-orchard-pros" /Title:"Welcome to Orchard Pros!" /Path:"welcome-to-orchard-pros" /Homepage:true /Publish:true /UseWelcomeText:true
     theme activate "Orchard Pros"
+    index create "Tickets"
   </Command>
 </Orchard>

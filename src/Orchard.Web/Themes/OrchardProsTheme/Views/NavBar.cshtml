@@ -23,11 +23,11 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <form class="navbar-form navbar-left" role="search">
+                    <form class="navbar-form navbar-left" role="search" method="GET" action="@Url.Action("Index", "Ticket", new { area = "OrchardPros" })">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
+                            <input type="text" class="form-control" placeholder="Search" name="term" value="@Request.QueryString["term"]">
                         </div>
-                        <button type="submit" class="btn btn-default btn-submit">Submit</button>
+                        <button type="submit" class="btn btn-default btn-submit">@T("Submit")</button>
                     </form>
                 </li>
             </ul>

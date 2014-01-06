@@ -58,9 +58,9 @@ namespace OrchardPros.Controllers {
         }
 
         [AllowAnonymous]
-        public ActionResult Index(PagerParameters pagerParameters, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null, int? tagId = null) {
+        public ActionResult Index(PagerParameters pagerParameters, TicketsCriteria criteria = TicketsCriteria.Latest, int? categoryId = null, int? tagId = null, string term = null) {
             var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
-            var tickets = _ticketService.GetTickets(pager.GetStartIndex(), pager.PageSize, criteria, categoryId, tagId);
+            var tickets = _ticketService.GetTickets(pager.GetStartIndex(), pager.PageSize, criteria, categoryId, tagId, term);
             var pagerShape = _services.New.Pager(pager).TotalItemCount(tickets.TotalItemCount);
             var viewModel = _services.New.ViewModel(
                 Tickets_List: _services.New.Tickets_List(
