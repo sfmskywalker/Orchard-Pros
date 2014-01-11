@@ -12,7 +12,10 @@ namespace OrchardPros.Handlers {
         }
 
         private void SetupLazyFields(ActivatedContentContext context, VotablePart part) {
-            part.VoteCountField.Loader(() => _votingService.GetResult(part.Id, "sum").Count);
+            part.VoteCountField.Loader(() => {
+                var result = _votingService.GetResult(part.Id, "sum");
+                return result != null ? result.Value : 0;
+            });
         }
     }
 }

@@ -3,9 +3,9 @@ using Orchard.Core.Common.Utilities;
 
 namespace OrchardPros.Models {
     public class VotablePart : ContentPart {
-        internal LazyField<int> VoteCountField = new LazyField<int>();
+        internal LazyField<double> VoteCountField = new LazyField<double>();
 
-        public int VoteCount {
+        public double VoteCount {
             get { return VoteCountField.Value; }
         }
     }

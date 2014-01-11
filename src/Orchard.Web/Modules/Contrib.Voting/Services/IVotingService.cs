@@ -11,7 +11,7 @@ namespace Contrib.Voting.Services {
         IEnumerable<VoteRecord> Get(Expression<Func<VoteRecord, bool>> predicate);
         void RemoveVote(VoteRecord vote);
         void RemoveVote(IEnumerable<VoteRecord> votes);
-        void Vote(ContentItem contentItem, string userName, string hostname, double value, string dimension = null);
+        VoteRecord Vote(ContentItem contentItem, string userName, string hostname, double value, string dimension = null);
         void ChangeVote(VoteRecord vote, double value);
 
         ResultRecord GetResult(int contentItemId, string function, string dimension = null);

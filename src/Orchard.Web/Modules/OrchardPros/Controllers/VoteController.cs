@@ -28,9 +28,7 @@ namespace OrchardPros.Controllers {
         private ActionResult Vote(int contentId, double value) {
             var user = _services.WorkContext.CurrentUser;
             var votablePart = _services.ContentManager.Get<VotablePart>(contentId);
-            var caps = _votingPolicy.GetCapabilities(votablePart, user);
-            
-            _votingPolicy.CastVote(caps, value);
+            var caps = _votingPolicy.CastVote(votablePart, user, value);
             
             return Json(new {
                 Points = votablePart.VoteCount,

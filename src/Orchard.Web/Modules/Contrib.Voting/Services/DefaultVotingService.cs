@@ -5,6 +5,7 @@ using Contrib.Voting.Events;
 using Contrib.Voting.Functions;
 using Contrib.Voting.Models;
 using Orchard.Caching;
+using Orchard.ContentManagement;
 using Orchard.Data;
 using Orchard.Services;
 
@@ -61,7 +62,7 @@ namespace Contrib.Voting.Services {
                 _voteRepository.Delete(vote);
         }
 
-        public void Vote(Orchard.ContentManagement.ContentItem contentItem, string userName, string hostname, double value, string dimension = null) {
+        public VoteRecord Vote(ContentItem contentItem, string userName, string hostname, double value, string dimension = null) {
             var vote = new VoteRecord {
                 Dimension = dimension,
                 ContentItemRecord = contentItem.Record,
@@ -79,6 +80,7 @@ namespace Contrib.Voting.Services {
             }
 
             _eventHandler.Voted(vote);
+            return vote;
         }
 
         public void ChangeVote(VoteRecord vote, double value) {

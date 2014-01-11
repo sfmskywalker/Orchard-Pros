@@ -123,7 +123,7 @@
       <Name>Orchard.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.TaskLease\Orchard.TaskLease.csproj">
-      <Project>{3F72A4E9-7B72-4260-B010-C16EC54F9BAF}</Project>
+      <Project>{3f72a4e9-7b72-4260-b010-c16ec54f9baf}</Project>
       <Name>Orchard.TaskLease</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Workflows\Orchard.Workflows.csproj">

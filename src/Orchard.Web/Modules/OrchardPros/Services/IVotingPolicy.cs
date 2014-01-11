@@ -6,6 +6,6 @@ using OrchardPros.Models;
 namespace OrchardPros.Services {
     public interface IVotingPolicy : IDependency {
         VotingCapabilities GetCapabilities(IContent content, IUser user);
-        void CastVote(VotingCapabilities caps, double value);
+        VotingCapabilities CastVote(IContent content, IUser user, double value);
     }
 }
