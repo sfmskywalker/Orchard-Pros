@@ -75,7 +75,9 @@
     <Content Include="Views\Admin\Delete.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Compile Include="Implementation\Updater\AliasUpdateCursor.cs" />
     <Compile Include="Implementation\Updater\IAliasUpdateCursor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

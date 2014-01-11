@@ -153,7 +153,7 @@
     <Compile Include="Compilation\ICompiler.cs" />
     <Compile Include="Compilation\Razor\RazorModule.cs" />
     <Compile Include="Compilation\Razor\IRazorCompiler.cs" />
-    <Compile Include="Compilation\Razor\IRazorTemplateCache.cs" />
+    <Compile Include="Compilation\Razor\IRazorTemplateHolder.cs" />
     <Compile Include="Compilation\Razor\RazorCompiler.cs" />
     <Compile Include="Compilation\Razor\RazorTemplateBase.cs" />
     <Compile Include="Compilation\Razor\RazorTemplateCache.cs" />
@@ -220,6 +220,7 @@
     <Compile Include="DisplayManagement\Implementation\IShapeDisplayEvents.cs" />
     <Compile Include="DisplayManagement\Implementation\IShapeFactoryEvents.cs" />
     <Compile Include="DisplayManagement\INamedEnumerable.cs" />
+    <Compile Include="DisplayManagement\IShapeDisplay.cs" />
     <Compile Include="DisplayManagement\Shapes\Composite.cs" />
     <Compile Include="DisplayManagement\Shapes\ShapeDebugView.cs" />
     <Compile Include="DisplayManagement\Shapes\ITagBuilderFactory.cs" />

@@ -17,18 +17,21 @@ namespace Orchard.DisplayManagement.Descriptors {
         private readonly ICacheManager _cacheManager;
         private readonly IParallelCacheContext _parallelCacheContext;
         private readonly IEnumerable<IShapeTableEventHandler> _shapeTableEventHandlers;
+        private readonly IEnumerable<IShapeTableMonitor> _shapeTableMonitors;
 
         public DefaultShapeTableManager(
             IEnumerable<Meta<IShapeTableProvider>> bindingStrategies,
             IExtensionManager extensionManager,
             ICacheManager cacheManager,
             IParallelCacheContext parallelCacheContext,
-            IEnumerable<IShapeTableEventHandler> shapeTableEventHandlers
+            IEnumerable<IShapeTableEventHandler> shapeTableEventHandlers,
+            IEnumerable<IShapeTableMonitor> shapeTableMonitors 
             ) {
             _extensionManager = extensionManager;
             _cacheManager = cacheManager;
             _parallelCacheContext = parallelCacheContext;
             _shapeTableEventHandlers = shapeTableEventHandlers;
+            _shapeTableMonitors = shapeTableMonitors;
             _bindingStrategies = bindingStrategies;
             Logger = NullLogger.Instance;
         }
@@ -78,6 +81,8 @@ namespace Orchard.DisplayManagement.Descriptors {
 
                 _shapeTableEventHandlers.Invoke(ctx => ctx.ShapeTableCreated(result), Logger);
 
+                _shapeTableMonitors.Invoke(ctx => ctx.Monitor(x.Monitor), Logger);
+
                 Logger.Information("Done building shape table");
                 return result;
             });
@@ -107,7 +112,7 @@ namespace Orchard.DisplayManagement.Descriptors {
             if (DefaultExtensionTypes.IsTheme(extensionType)) {
                 // alterations from themes must be from the given theme or a base theme
                 var featureName = alteration.Feature.Descriptor.Id;
-                return featureName == themeName || IsBaseTheme(featureName, themeName);
+                return String.IsNullOrEmpty(featureName) || featureName == themeName || IsBaseTheme(featureName, themeName);
             }
 
             return false;

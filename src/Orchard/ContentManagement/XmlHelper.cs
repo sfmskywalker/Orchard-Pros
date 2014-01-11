@@ -158,7 +158,7 @@ namespace Orchard.ContentManagement {
                 return Convert.ToString(value);
             }
             if ((!type.IsValueType || Nullable.GetUnderlyingType(type) != null) &&
-                value == null &&
+                value == null && 
                 type != typeof(string)) {
 
                 return "null";

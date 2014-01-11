@@ -3,74 +3,63 @@ using System.Linq;
 using System.Web;
 using Orchard.Caching;
 using Orchard.Compilation.Razor;
-using Orchard.ContentManagement;
 using Orchard.DisplayManagement.Descriptors;
 using Orchard.DisplayManagement.Implementation;
-using Orchard.Environment.Extensions;
 using Orchard.Environment.Extensions.Models;
 using Orchard.Mvc.Spooling;
-using Orchard.Settings;
-using Orchard.Themes.Models;
 
 namespace Orchard.Templates.Services {
-    public class TemplateBindingStrategy : IShapeTableProvider {
-        private readonly IWorkContextAccessor _wca;
-        private readonly ICacheManager _cache;
+    public class TemplateBindingStrategy : IShapeTableProvider, IShapeTableMonitor {
+        private readonly ITemplateService _templateService;
+        private readonly IRazorTemplateHolder _templateProvider;
         private readonly ISignals _signals;
 
-        public TemplateBindingStrategy(IWorkContextAccessor wca, ICacheManager cache, ISignals signals) {
-            _wca = wca;
-            _cache = cache;
+        public TemplateBindingStrategy(
+            ITemplateService templateService,
+            IRazorTemplateHolder templateProvider,
+            ISignals signals) {
+            _templateService = templateService;
+            _templateProvider = templateProvider;
             _signals = signals;
         }
 
+        public virtual Feature Feature { get; set; }
+
         public void Discover(ShapeTableBuilder builder) {
-            EnsureWorkContext(() => BuildShapes(builder));
+            BuildShapes(builder);
         }
 
         private void BuildShapes(ShapeTableBuilder builder) {
-            
-            var templateService = _wca.GetContext().Resolve<ITemplateService>();
-            var templateCache = _wca.GetContext().Resolve<IRazorTemplateCache>();
-            var siteService = _wca.GetContext().Resolve<ISiteService>();
-            var extensionManager = _wca.GetContext().Resolve<IExtensionManager>();
 
-            var currentTheme = extensionManager.GetExtension(siteService.GetSiteSettings().As<ThemeSiteSettingsPart>().CurrentThemeName);
-            var themeFeature = currentTheme.Features.FirstOrDefault();
+            var shapes = _templateService.GetTemplates().Select(r =>
+                new {
+                    r.Name,
+                    r.Language,
+                    r.Template
+                })
+                .ToList();
 
-            var hackedDescriptor = new FeatureDescriptor
-            {
-                Category = themeFeature.Category,
-                Dependencies = themeFeature.Dependencies,
-                Description = themeFeature.Description,
-                Extension = themeFeature.Extension,
-                Id = themeFeature.Id,
-                Name = themeFeature.Name,
-                Priority = int.MaxValue
+            // Use a fake theme descriptor which will ensure the shape is used over
+            // any other extension. It's also necessary to define them in the Admin 
+            // theme in order to process tokens
+
+            var fakeThemeDescriptor = new FeatureDescriptor {
+                Id = "", // so that the binding is not filtered out
+                Priority = 10, // so that it's higher than the themes' priority
+                Extension = new ExtensionDescriptor {
+                    ExtensionType = DefaultExtensionTypes.Theme, // so that the binding is overriding modules
+                }
             };
 
-            var shapes = _cache.Get(
-                DefaultTemplateService.TemplatesSignal, 
-                ctx => {
-                    ctx.Monitor(_signals.When(DefaultTemplateService.TemplatesSignal));
-                    return templateService
-                        .GetTemplates()
-                        .Select(r => new { 
-                            r.Name, 
-                            r.Language, 
-                            r.Template })
-                        .ToList();
-                });
-
             foreach (var record in shapes) {
-                templateCache.Set(record.Name, record.Template);
+                _templateProvider.Set(record.Name, record.Template);
                 var shapeType = AdjustName(record.Name);
 
                 builder.Describe(shapeType)
-                       .From(new Feature { Descriptor = hackedDescriptor })
+                       .From(new Feature { Descriptor = fakeThemeDescriptor })
                        .BoundAs("Template::" + shapeType,
                                 descriptor => context => {
-                                    var template = templateCache.Get(record.Name);
+                                    var template = _templateProvider.Get(record.Name);
                                     return template != null ? PerformInvoke(context, record.Name, record.Language, template) : new HtmlString("");
                                 });
             }
@@ -78,13 +67,12 @@ namespace Orchard.Templates.Services {
 
         private IHtmlString PerformInvoke(DisplayContext displayContext, string name, string type, string template)
         {
-            var service = _wca.GetContext().Resolve<ITemplateService>();
-            var output = new HtmlStringWriter();
-
-            if (String.IsNullOrEmpty(template))
+            if (String.IsNullOrEmpty(template)) {
                 return null;
+            }
 
-            output.Write(CoerceHtmlString(service.Execute(template, name, type, displayContext, displayContext.Value)));
+            var output = new HtmlStringWriter();
+            output.Write(CoerceHtmlString(_templateService.Execute(template, name, type, displayContext, displayContext.Value)));
 
             return output;
         }
@@ -121,16 +109,8 @@ namespace Orchard.Templates.Services {
             return invoke as IHtmlString ?? (invoke != null ? new HtmlString(invoke.ToString()) : null);
         }
 
-        private void EnsureWorkContext(Action action) {
-            var workContext = _wca.GetContext();
-            if (workContext != null) {
-                action();
-            }
-            else {
-                using (_wca.CreateWorkContextScope()) {
-                    action();
-                }
-            }
+        public void Monitor(Action<IVolatileToken> monitor) {
+            monitor(_signals.When(DefaultTemplateService.TemplatesSignal));
         }
     }
 }
