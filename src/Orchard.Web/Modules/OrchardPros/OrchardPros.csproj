@@ -188,6 +188,13 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Handlers\ReplyPartHandler.cs" />
+    <Compile Include="Models\LevelUpContext.cs" />
+    <Compile Include="Models\UserContext.cs" />
+    <Compile Include="Services\IXpCalculator.cs" />
+    <Compile Include="Models\TicketContext.cs" />
+    <Compile Include="Services\ITicketEventHandler.cs" />
+    <Compile Include="Services\IUserProfileEventHandler.cs" />
     <Compile Include="Services\IVotingPolicy.cs" />
     <Compile Include="Handlers\VotablePartHandler.cs" />
     <Compile Include="Controllers\PositionController.cs" />
@@ -250,6 +257,7 @@
     <Compile Include="Services\IPositionManager.cs" />
     <Compile Include="Services\IRecommendationManager.cs" />
     <Compile Include="Services\ISkillManager.cs" />
+    <Compile Include="Services\XpCalculator.cs" />
     <Compile Include="Services\MarkdownDeepFilter.cs" />
     <Compile Include="Services\NewsletterNotificationSettingsProvider.cs" />
     <Compile Include="Services\NotificationSettingsManager.cs" />
@@ -259,7 +267,10 @@
     <Compile Include="Services\SkillManager.cs" />
     <Compile Include="Services\SubscriptionService.cs" />
     <Compile Include="Models\VotingCapabilities.cs" />
+    <Compile Include="Models\TicketSolvedContext.cs" />
+    <Compile Include="Events\AssignExperienceTicketEventHandler.cs" />
     <Compile Include="Services\VotingPolicy.cs" />
+    <Compile Include="Models\XpReceivedContext.cs" />
     <Compile Include="Shapes.cs" />
     <Compile Include="ViewModels\AccountSettingsViewModel.cs" />
     <Compile Include="ViewModels\AttachmentViewModel.cs" />
@@ -302,8 +313,8 @@
     <Compile Include="Services\TicketNotificationSettingsProvider.cs" />
     <Compile Include="Models\TicketsCriteria.cs" />
     <Compile Include="Signals.cs" />
-    <Compile Include="Services\ExperienceCalculator.cs" />
-    <Compile Include="Services\IExperienceCalculator.cs" />
+    <Compile Include="Services\UserManager.cs" />
+    <Compile Include="Services\IUserManager.cs" />
     <Compile Include="ViewModels\AttachmentsViewModel.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />

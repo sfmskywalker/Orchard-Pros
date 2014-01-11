@@ -18,31 +18,34 @@ namespace OrchardPros.Services {
     public class TicketService : ITicketService {
         private readonly ITaxonomyService _taxonomyService;
         private readonly IContentManager _contentManager;
-        private readonly IExperienceCalculator _experienceCalculator;
+        private readonly IUserManager _userManager;
         private readonly ISignals _signals;
         private readonly IClock _clock;
         private readonly IReplyService _replyService;
         private readonly IRepository<TicketPartRecord> _ticketPartRepository;
         private readonly ISearchService _searchService;
+        private readonly ITicketEventHandler _ticketEventHandlers;
 
         public TicketService(
             ITaxonomyService taxonomyService,
             IContentManager contentManager,
-            IExperienceCalculator experienceCalculator,
+            IUserManager userManager,
             ISignals signals,
             IClock clock,
             IReplyService replyService,
             IRepository<TicketPartRecord> ticketPartRepository, 
-            ISearchService searchService) {
+            ISearchService searchService, 
+            ITicketEventHandler ticketEventHandlers) {
 
             _taxonomyService = taxonomyService;
             _contentManager = contentManager;
-            _experienceCalculator = experienceCalculator;
+            _userManager = userManager;
             _signals = signals;
             _clock = clock;
             _replyService = replyService;
             _ticketPartRepository = ticketPartRepository;
             _searchService = searchService;
+            _ticketEventHandlers = ticketEventHandlers;
         }
 
         public IPagedList<TicketPart> GetTicketsFor(int userId, int? skip = null, int? take = null) {
@@ -84,7 +87,7 @@ namespace OrchardPros.Services {
         }
 
         public int CalculateExperience(UserProfilePart user) {
-            return _experienceCalculator.CalculateForTicket(user);
+            return _userManager.CalculateXpWhenSolved(user);
         }
 
         public TimeSpan GetRemainingTimeFor(TicketPart ticket) {
@@ -183,7 +186,11 @@ namespace OrchardPros.Services {
 
             ticket.SolvedUtc = _clock.UtcNow;
             ticket.AnswerId = reply.Id;
-            expertPart.ExperiencePoints += ticket.ExperiencePoints;
+
+            _ticketEventHandlers.Solved(new TicketSolvedContext {
+                Ticket = ticket,
+                Expert = reply.User
+            });
 
             // TODO: Add to activity stream
 
