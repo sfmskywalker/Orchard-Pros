@@ -6,19 +6,18 @@ using OrchardPros.Services;
 namespace OrchardPros.Drivers {
     public class VotablePartDriver : ContentPartDriver<VotablePart> {
         private readonly IOrchardServices _services;
-        private readonly IVoteService _voteService;
+        private readonly IVotingPolicy _votingPolicy;
 
-        public VotablePartDriver(IOrchardServices services, IVoteService voteService) {
+        public VotablePartDriver(IOrchardServices services, IVotingPolicy votingPolicy) {
             _services = services;
-            _voteService = voteService;
+            _votingPolicy = votingPolicy;
         }
 
         protected override DriverResult Display(VotablePart part, string displayType, dynamic shapeHelper) {
             return ContentShape("Parts_Votable", () => {
                 var currentUser = _services.WorkContext.CurrentUser;
-                var vote = _voteService.GetVoteByUser(part, currentUser);
-                var voteCaps = _voteService.GetVoteCapabilitiesByUser(part, currentUser);
-                return shapeHelper.Parts_Votable(Vote: vote, VoteCaps: voteCaps);
+                var voteCaps = _votingPolicy.GetCapabilities(part, currentUser);
+                return shapeHelper.Parts_Votable(Vote: voteCaps.Vote, VoteCaps: voteCaps);
             });
         }
     }

@@ -1,18 +1,18 @@
+using Contrib.Voting.Services;
 using Orchard.ContentManagement.Handlers;
 using OrchardPros.Models;
-using OrchardPros.Services;
 
 namespace OrchardPros.Handlers {
     public class VotablePartHandler : ContentHandler {
-        private readonly IVoteService _voteService;
+        private readonly IVotingService _votingService;
 
-        public VotablePartHandler(IVoteService voteService) {
-            _voteService = voteService;
+        public VotablePartHandler(IVotingService votingService) {
+            _votingService = votingService;
             OnActivated<VotablePart>(SetupLazyFields);
         }
 
         private void SetupLazyFields(ActivatedContentContext context, VotablePart part) {
-            part.VoteCountField.Loader(() => _voteService.CountVotes(part.Id));
+            part.VoteCountField.Loader(() => _votingService.GetResult(part.Id, "sum").Count);
         }
     }
 }

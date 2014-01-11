@@ -143,6 +143,10 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Contrib.Voting\Contrib.Voting.csproj">
+      <Project>{4da5f35f-e62c-4b49-b5a8-379503257b3a}</Project>
+      <Name>Contrib.Voting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NGM.OpenAuthentication\NGM.OpenAuthentication.csproj">
       <Project>{b262a7c7-8205-4b94-a359-f5379025df32}</Project>
       <Name>NGM.OpenAuthentication</Name>
@@ -184,9 +188,8 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Models\VoteDirection.cs" />
+    <Compile Include="Services\IVotingPolicy.cs" />
     <Compile Include="Handlers\VotablePartHandler.cs" />
-    <Compile Include="Services\IVoteService.cs" />
     <Compile Include="Controllers\PositionController.cs" />
     <Compile Include="Controllers\AttachmentController.cs" />
     <Compile Include="Controllers\ExperienceController.cs" />
@@ -255,8 +258,8 @@
     <Compile Include="Services\RecommendationManager.cs" />
     <Compile Include="Services\SkillManager.cs" />
     <Compile Include="Services\SubscriptionService.cs" />
-    <Compile Include="Models\VoteCaps.cs" />
-    <Compile Include="Services\VoteService.cs" />
+    <Compile Include="Models\VotingCapabilities.cs" />
+    <Compile Include="Services\VotingPolicy.cs" />
     <Compile Include="Shapes.cs" />
     <Compile Include="ViewModels\AccountSettingsViewModel.cs" />
     <Compile Include="ViewModels\AttachmentViewModel.cs" />
@@ -312,7 +315,6 @@
     <Compile Include="Models\TicketPart.cs" />
     <Compile Include="Models\TicketType.cs" />
     <Compile Include="Migrations.cs" />
-    <Compile Include="Models\Vote.cs" />
     <Compile Include="Mappings\PersistenceConfiguration.cs" />
     <Compile Include="Services\TicketService.cs" />
   </ItemGroup>

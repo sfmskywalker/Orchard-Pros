@@ -1,12 +1,12 @@
 ﻿@using OrchardPros.Models
 @{
     var votablePart = (VotablePart) Model.ContentPart;
-    var caps = (VoteCaps) Model.VoteCaps;
+    var caps = (VotingCapabilities) Model.VoteCaps;
     var voteCount = votablePart.VoteCount;
     var votesClass = voteCount == 0 ? "neutral" : voteCount < 0 ? "negative" : "positive";
-    var votesSign = voteCount == 0 ? "" : voteCount < 0 ? "-" : "+";
-    var hideUp = !caps.VoteUp;
-    var hideDown = !caps.VoteDown;
+    var votesSign = voteCount > 0 ? "+" : "";
+    var hideUp = !caps.CanVoteUp;
+    var hideDown = !caps.CanVoteDown;
 }
 <ul class="voting">
     <li class="votes @votesClass"><span class="number">@(votesSign + voteCount)</span><span class="type">@T("votes")</span></li>

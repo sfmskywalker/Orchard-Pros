@@ -1,44 +1,42 @@
-using System;
 using System.Web.Mvc;
 using Orchard;
 using Orchard.ContentManagement;
-using Orchard.Mvc;
 using OrchardPros.Models;
 using OrchardPros.Services;
 
 namespace OrchardPros.Controllers {
     [Authorize]
     public class VoteController : Controller {
-        private readonly IVoteService _voteService;
         private readonly IOrchardServices _services;
+        private readonly IVotingPolicy _votingPolicy;
 
-        public VoteController(IOrchardServices services, IVoteService voteService) {
+        public VoteController(IOrchardServices services, IVotingPolicy votingPolicy) {
             _services = services;
-            _voteService = voteService;
+            _votingPolicy = votingPolicy;
         }
 
         [HttpPost]
         public ActionResult Up(int id) {
-            return Vote(id, VoteDirection.Up);
+            return Vote(id, 1);
         }
 
         [HttpPost]
         public ActionResult Down(int id) {
-            return Vote(id, VoteDirection.Down);
+            return Vote(id, -1);
         }
 
-        private ActionResult Vote(int contentId, VoteDirection direction) {
+        private ActionResult Vote(int contentId, double value) {
             var user = _services.WorkContext.CurrentUser;
             var votablePart = _services.ContentManager.Get<VotablePart>(contentId);
+            var caps = _votingPolicy.GetCapabilities(votablePart, user);
             
-            _voteService.Vote(votablePart, user, direction);
-            var caps = _voteService.GetVoteCapabilitiesByUser(votablePart, user);
-
+            _votingPolicy.CastVote(caps, value);
+            
             return Json(new {
                 Points = votablePart.VoteCount,
                 Caps = new {
-                    VoteUp = caps.VoteUp,
-                    VoteDown = caps.VoteDown
+                    VoteUp = caps.CanVoteUp,
+                    VoteDown = caps.CanVoteDown
                 }
             }, JsonRequestBehavior.DenyGet);
         }

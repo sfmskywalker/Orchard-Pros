@@ -1,0 +1,321 @@
+﻿<?xml version="1.0"?>
+<Orchard>
+  <Recipe>
+    <Name>Orchard Pros</Name>
+    <Description>The Orchard Pros recipe.</Description>
+    <Author>IDeliverable</Author>
+    <WebSite>http://ideliverable.net</WebSite>
+    <Tags></Tags>
+    <Version>1.0</Version>
+  </Recipe>
+
+  <Feature enable="Orchard.Alias,Orchard.Autoroute,
+                   Orchard.MediaLibrary,Orchard.ContentPicker,
+                   Orchard.jQuery,Orchard.Widgets,Orchard.ContentTypes,
+                   Orchard.Scripting,Orchard.Scripting.Lightweight,PackagingServices,Orchard.Packaging,
+                   Orchard.Fields,Orchard.OutputCache,Orchard.Workflows,
+                   UrlAlternates, Orchard.ImportExport,
+                   NGM.OpenAuthentication.Workflows, Orchard.Messaging,
+                   OrchardPros, OrchardProsTheme" />
+
+  <Metadata>
+    <Types>
+      <Page ContentTypeSettings.Draftable="True" TypeIndexing.Indexes="Search">
+        <TagsPart />
+        <LocalizationPart />
+        <TitlePart/>
+        <AutoroutePart />
+        <MenuPart />
+      </Page>
+      <ShapeWidget ContentTypeSettings.Creatable="False" ContentTypeSettings.Draftable="False" Stereotype="Widget" DisplayName="Shape Widget">
+        <CommonPart DateEditorSettings.ShowDateEditor="False" OwnerEditorSettings.ShowOwnerEditor="False" />
+        <IdentityPart />
+        <WidgetPart />
+        <ShapeWidget />
+      </ShapeWidget>
+    </Types>
+    <Parts>
+      <BodyPart BodyPartSettings.FlavorDefault="markdown" />
+      <ShapeWidget ContentPartSettings.Attachable="True">
+        <ShapeName.TextField DisplayName="Shape Name" TextFieldSettings.Flavor="Wide" TextFieldSettings.Hint="Specify the name of the Shape to render." TextFieldSettings.Required="True" />
+      </ShapeWidget>
+    </Parts>
+  </Metadata>
+
+  <Data>
+    <Layer Id="/Layer.LayerName=Default" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-21T16:12:00.7614462Z" PublishedUtc="2013-12-21T16:12:00.7834462Z" ModifiedUtc="2013-12-21T16:12:00.7614462Z" />
+      <LayerPart Name="Default" Description="The widgets in this layer are displayed on all pages" LayerRule="true" />
+    </Layer>
+    <Layer Id="/Layer.LayerName=Authenticated" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-21T16:12:00.797447Z" PublishedUtc="2013-12-21T16:12:00.8054323Z" ModifiedUtc="2013-12-21T16:12:00.797447Z" />
+      <LayerPart Name="Authenticated" Description="The widgets in this layer are displayed when the user is authenticated" LayerRule="authenticated" />
+    </Layer>
+    <Layer Id="/Layer.LayerName=Anonymous" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-21T16:12:00.8174479Z" PublishedUtc="2013-12-21T16:12:00.8294564Z" ModifiedUtc="2013-12-21T16:12:00.8174479Z" />
+      <LayerPart Name="Anonymous" Description="The widgets in this layer are displayed when the user is anonymous" LayerRule="not authenticated" />
+    </Layer>
+    <Layer Id="/Layer.LayerName=Disabled" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-21T16:12:00.8454501Z" PublishedUtc="2013-12-21T16:12:00.8514367Z" ModifiedUtc="2013-12-21T16:12:00.8454501Z" />
+      <LayerPart Name="Disabled" Description="The widgets in this layer are never displayed" LayerRule="false" />
+    </Layer>
+    <Layer Id="/Layer.LayerName=TheHomepage" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-21T16:12:00.8644349Z" PublishedUtc="2013-12-21T16:12:00.8714528Z" ModifiedUtc="2013-12-21T16:12:00.8644349Z" />
+      <LayerPart Name="TheHomepage" Description="The widgets in this layer are displayed on the home page" LayerRule="url '~/'" />
+    </Layer>
+    <Taxonomy Id="/alias=category" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-15T13:31:48.9469273Z" PublishedUtc="2013-12-15T13:31:48.9689273Z" ModifiedUtc="2013-12-15T13:31:48.9469273Z" />
+      <AutoroutePart Alias="category" UseCustomPattern="false" />
+      <TitlePart Title="Category" />
+      <TaxonomyPart TermTypeName="CategoryTerm" />
+    </Taxonomy>
+    <Taxonomy Id="/alias=tag" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2013-12-15T13:31:48.9469273Z" PublishedUtc="2013-12-15T13:31:48.9689273Z" ModifiedUtc="2013-12-15T13:31:48.9469273Z" />
+      <AutoroutePart Alias="tag" UseCustomPattern="false" />
+      <TitlePart Title="Tag" />
+      <TaxonomyPart TermTypeName="TagTerm" />
+    </Taxonomy>
+    <CategoryTerm Id="/alias=category\/category-1" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2013-12-15T13:32:01.7961683Z" PublishedUtc="2013-12-15T13:32:01.9391763Z" ModifiedUtc="2013-12-15T13:32:01.8071786Z" />
+      <AutoroutePart Alias="category/category-1" UseCustomPattern="false" />
+      <TitlePart Title="Category 1" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=category" Path="" />
+    </CategoryTerm>
+    <CategoryTerm Id="/alias=category\/category-2" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2013-12-15T13:32:07.8900143Z" PublishedUtc="2013-12-15T13:32:07.9360023Z" ModifiedUtc="2013-12-15T13:32:07.8910121Z" />
+      <AutoroutePart Alias="category/category-2" UseCustomPattern="false" />
+      <TitlePart Title="Category 2" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=category" Path="" />
+    </CategoryTerm>
+    <CategoryTerm Id="/alias=category\/category-3" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2013-12-15T13:32:16.0438425Z" PublishedUtc="2013-12-15T13:32:16.0928095Z" ModifiedUtc="2013-12-15T13:32:16.0458417Z" />
+      <AutoroutePart Alias="category/category-3" UseCustomPattern="false" />
+      <TitlePart Title="Category 3" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=category" Path="" />
+    </CategoryTerm>
+    <TagTerm Id="/alias=tag\/tag1" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=tag" CreatedUtc="2013-12-15T13:32:16.0438425Z" PublishedUtc="2013-12-15T13:32:16.0928095Z" ModifiedUtc="2013-12-15T13:32:16.0458417Z" />
+      <AutoroutePart Alias="tag/tag1" UseCustomPattern="false" />
+      <TitlePart Title="tag1" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=tag" Path="" />
+    </TagTerm>
+    <TagTerm Id="/alias=tag\/tag2" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=tag" CreatedUtc="2013-12-15T13:32:16.0438425Z" PublishedUtc="2013-12-15T13:32:16.0928095Z" ModifiedUtc="2013-12-15T13:32:16.0458417Z" />
+      <AutoroutePart Alias="tag/tag2" UseCustomPattern="false" />
+      <TitlePart Title="tag2" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=tag" Path="" />
+    </TagTerm>
+    <TagTerm Id="/alias=tag\/tag3" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" Container="/alias=tag" CreatedUtc="2013-12-15T13:32:16.0438425Z" PublishedUtc="2013-12-15T13:32:16.0928095Z" ModifiedUtc="2013-12-15T13:32:16.0458417Z" />
+      <AutoroutePart Alias="tag/tag3" UseCustomPattern="false" />
+      <TitlePart Title="tag3" />
+      <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=tag" Path="" />
+    </TagTerm>
+    <ShapeWidget Id="/Identifier=807b333934e24bdfb1e20b47891b37d0" Status="Published">
+      <TextField.ShapeName Text="Jumbotron__HomePage" />
+      <IdentityPart Identifier="807b333934e24bdfb1e20b47891b37d0" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2013-12-20T14:41:22.1036314Z" PublishedUtc="2014-01-04T20:21:29.0489797Z" ModifiedUtc="2013-12-20T14:41:22.2136385Z" />
+      <WidgetPart Title="Jumbotron" Position="1" Zone="Jumbotron" RenderTitle="false" Name="" />
+    </ShapeWidget>
+    <ShapeWidget Id="/Identifier=610897acafde4342a706d2f5c6535b05" Status="Published">
+      <TextField.ShapeName Text="Tickets__HomePage" />
+      <IdentityPart Identifier="610897acafde4342a706d2f5c6535b05" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2014-01-04T20:22:23.8710419Z" PublishedUtc="2014-01-04T20:22:23.9220454Z" ModifiedUtc="2014-01-04T20:22:23.9480472Z" />
+      <WidgetPart Title="Tickets" Position="1" Zone="Content" RenderTitle="false" Name="" />
+    </ShapeWidget>
+    <ShapeWidget Id="/Identifier=8b31721c75b84faa9b0d06be54888b2b" Status="Published">
+      <TextField.ShapeName Text="TagCloud__HomePage" />
+      <IdentityPart Identifier="8b31721c75b84faa9b0d06be54888b2b" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2014-01-04T20:22:51.5009925Z" PublishedUtc="2014-01-04T20:22:51.5289764Z" ModifiedUtc="2014-01-04T20:22:51.5349768Z" />
+      <WidgetPart Title="Tag Cloud" Position="4" Zone="AsideSecond" RenderTitle="false" Name="" />
+    </ShapeWidget>
+    <ShapeWidget Id="/Identifier=b370a596487d4a6c875a2bd353aaeb4f" Status="Published">
+      <TextField.ShapeName Text="Quote__HomePage" />
+      <IdentityPart Identifier="b370a596487d4a6c875a2bd353aaeb4f" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2014-01-04T20:23:05.3087428Z" PublishedUtc="2014-01-04T20:23:05.349251Z" ModifiedUtc="2014-01-04T20:23:05.3592492Z" />
+      <WidgetPart Title="Quote" Position="3" Zone="AsideSecond" RenderTitle="false" Name="" />
+    </ShapeWidget>
+    <ShapeWidget Id="/Identifier=9599371a473c413293478cce165a1c67" Status="Published">
+      <TextField.ShapeName Text="TopContributor__HomePage" />
+      <IdentityPart Identifier="9599371a473c413293478cce165a1c67" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2014-01-04T20:23:21.9725094Z" PublishedUtc="2014-01-04T20:23:22.0166379Z" ModifiedUtc="2014-01-04T20:23:22.0256383Z" />
+      <WidgetPart Title="Top contributor of the week" Position="2" Zone="AsideSecond" RenderTitle="false" Name="" />
+    </ShapeWidget>
+    <ShapeWidget Id="/Identifier=e8ad4113fafb47e5a05538b5a4d2e889" Status="Published">
+      <TextField.ShapeName Text="CreateTicket__HomePage" />
+      <IdentityPart Identifier="e8ad4113fafb47e5a05538b5a4d2e889" />
+      <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2014-01-04T20:23:36.5207684Z" PublishedUtc="2014-01-04T20:23:36.5577465Z" ModifiedUtc="2014-01-04T20:23:36.5657474Z" />
+      <WidgetPart Title="Create Ticket" Position="1" Zone="AsideSecond" RenderTitle="false" Name="" />
+    </ShapeWidget>
+    <User Id="/User.UserName=snow" Status="Published">
+      <MediaLibraryPickerField.Avatar ContentItems="/Identifier=5b76ff5ab622433cb15c9e17392dd983" />
+      <UserPart Email="sipkeschoorstra@hotmail.com" EmailStatus="Approved" HashAlgorithm="SHA1" NormalizedUserName="snow" Password="Y2SFFbW9VLIKcE5swgdoMNywFZI=" PasswordFormat="Hashed" PasswordSalt="Ems5sdEvbk5tkFG8GMhdsw==" RegistrationStatus="Approved" UserName="snow" />
+      <UserRolesPart Roles="Member" />
+      <UserProfilePart>
+        <Positions>
+          <Position LocalId="1" CompanyName="IDeliverable" Title="Orchard Expert" Location="Rotterdam" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2013" PeriodStartMonth="11">Doing Orchard development &amp; consultancy.</Position>
+          <Position LocalId="2" CompanyName="Skywalker Software Development" Title="Founder" Location="Rotterdam" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2011" PeriodStartMonth="6">Freelance Orchard Developer.</Position>
+        </Positions>
+        <Skills>
+          <Skill Name="Orchard" Rating="9" />
+          <Skill Name="C#" Rating="9" />
+          <Skill Name="ASP.NET MVC" Rating="9" />
+        </Skills>
+        <Experiences>
+          <Experience LocalPositionId="1" CreatedUtc="2013-12-21T11:29:16">I've done some cool projects here.</Experience>
+          <Experience LocalPositionId="2" CreatedUtc="2013-12-21T11:29:40">Did a lot of cool projects here.</Experience>
+        </Experiences>
+        <Recommendations>
+          <Recommendation RecommendingUserId="/User.UserName=snow" Approved="true" CreatedUtc="2013-12-20T23:33:55">This guy is awesome.</Recommendation>
+          <Recommendation RecommendingUserId="/User.UserName=snow" Approved="false" CreatedUtc="2013-12-20T23:34:17">This guy SUCKS!!</Recommendation>
+        </Recommendations>
+      </UserProfilePart>
+      <UserProfilePart FirstName="Sipke" MiddleName="" LastName="Schoorstra" AvatarType="LocalStorage" CreatedUtc="0001-01-01T00:00:00Z">
+        I grew up in Bergen, Noord-Holland with my 8 bit NES and later my self-earned 16 bit SNES by being a paperboy. Inspired by games like Mario, Zelda, Mystic Quest &amp; Secret Of Mana, I knew that I wanted to create games myself and started drawing heroes, dragons, elves and trees (I should mention girls as well). But I wanted more, so at some point I sold my game consoles and bought a PC with Klik &amp; Play and Macromedia Director and learned to script, which provided me with a great preparation for the multimedia study I started the year after. During this period I moved on to C++ and DirectX which gave me the confidence that I could actually become a programmer. At some point a company invited me to work for them and that’s how I got into the Internet of things. Since then, I’ve worked for a variety of companies building a vast range of .NET applications, including for the web, desktop, servers, and embedded systems. In 2003 I started as a freelancer and developed a new CMS along the way to serve my clients. During that time I found out how hard it is to maintain and evolve a CMS all by yourself, so at some point I started looking for an open source CMS. Being in love with MVC, I was content when I found out about Oxite, but mesmerized when I found out about Orchard.
+        In my spare time, I enjoy reading, blogging, jogging, working on personal projects and dreaming about my next killer RPG.
+      </UserProfilePart>
+      <ExpertPart Level="80" ExperiencePoints="364000" Rating="1" />
+    </User>
+    <User Id="/User.UserName=jay" Status="Published">
+      <MediaLibraryPickerField.Avatar ContentItems="/Identifier=5b76ff5ab622433cb15c9e17392dd983" />
+      <UserPart Email="imj@visualcreature.nl" EmailStatus="Approved" HashAlgorithm="SHA1" NormalizedUserName="jay" Password="Y2SFFbW9VLIKcE5swgdoMNywFZI=" PasswordFormat="Hashed" PasswordSalt="Ems5sdEvbk5tkFG8GMhdsw==" RegistrationStatus="Approved" UserName="jay" />
+      <UserRolesPart Roles="Member" />
+      <UserProfilePart>
+        <Positions>
+          <Position LocalId="1" CompanyName="Visual Creature" Title="Freelance Photographer and Visual Designer" Location="Amsterdam Area, The Netherlands" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2000" PeriodStartMonth="5">Desiging websites and other things.</Position>
+        </Positions>
+        <Skills>
+          <Skill Name="html5" Rating="10" />
+          <Skill Name="css3" Rating="10" />
+          <Skill Name="graphic design" Rating="10" />
+          <Skill Name="web design" Rating="10" />
+          <Skill Name="ui/ux" Rating="10" />
+        </Skills>
+        <Experiences>
+          <Experience LocalPositionId="1" CreatedUtc="2013-12-21T11:29:16">I've done some cool projects here.</Experience>
+        </Experiences>
+        <Recommendations>
+          <Recommendation RecommendingUserId="/User.UserName=snow" Approved="true" CreatedUtc="2013-12-20T23:33:55">Jay is iemand die goed aan kan voelen wat iemand wil en kan daar perfect op in spelen. Of het nou gaat om design of creatieve ideeën, bij beide zal hij je nooit te kort schieten. Al met al is het altijd plezierig om met Jay samen te werken!</Recommendation>
+        </Recommendations>
+      </UserProfilePart>
+      <UserProfilePart FirstName="Jay" MiddleName="" LastName="Tang" AvatarType="LocalStorage" CreatedUtc="0001-01-01T00:00:00Z">
+        Jay Tang | VISUAL CREATURE is a freelance photographer and visual designer based in the Amsterdam area, The Netherlands. He specializes in visual identities, graphic design, web design and photography, which includes fashion, glamour &amp; beauty, interiors, architecture and commercial works.
+        He is the co-founder of Amsterdam-based creative agency Terra Preta.
+        Specialties: Branding and Visual Identities, Creative Thinking, Graphics Illustrations and Visuals, Print Design, HTML5, CSS3, Digital Retouching and Photography, including:
+        Fashion, Beauty &amp; Glamour, Travel &amp; Landscapes, Creative Stills, Product Stills, Wedding and Architecture &amp; Interiors.
+      </UserProfilePart>
+      <ExpertPart Level="1" ExperiencePoints="0" Rating="1" />
+    </User>
+  </Data>
+
+  <Settings>
+    <SiteSettingsPart PageTitleSeparator=" - " SiteName="Orchard Pros" SiteSalt="1f8757683b674a5eb38a0b2dec50727b" SuperUser="admin" SiteCulture="en-US" PageSize="10" SiteTimeZone="W. Europe Standard Time" BaseUrl="http://localhost:30356" />
+    <RegistrationSettingsPart UsersCanRegister="true" UsersMustValidateEmail="false" ValidateEmailRegisteredWebsite="" ValidateEmailContactEMail="" UsersAreModerated="false" NotifyModeration="false" NotificationsRecipients="" EnableLostPassword="true" />
+    <OpenAuthenticationSettingsPart AutoRegistrationEnabled="true" />
+    <CacheSettingsPart DefaultCacheDuration="0" DefaultMaxAge="0" ApplyCulture="false" DebugMode="false" />
+    <ThemeSiteSettingsPart CurrentThemeName="OrchardProsTheme" />
+    <WebSearchSettingsPart />
+  </Settings>
+
+  <Migration features="*" />
+  <Roles>
+    <Role Name="Member" Permissions="EditOwnContent,AccessFrontEnd" />
+  </Roles>
+  <Workflows>
+    <Workflow Name="User Signed Up" Enabled="true">
+      <Activities>
+        <Activity Id="35" Name="UserSignedUp" Start="true" X="461" Y="309">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="36" Name="Redirect" Start="false" X="1096" Y="547">
+          <State>{"Url":"~/profile"}</State>
+        </Activity>
+        <Activity Id="37" Name="SignIn" Start="false" X="783" Y="549">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="38" Name="AssignRole" Start="false" X="631" Y="429">
+          <State>{"Roles":"8"}</State>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition SourceActivityId="37" SourceEndpoint="Done" DestinationActivityId="36" DestinationEndpoint="" />
+        <Transition SourceActivityId="35" SourceEndpoint="Created" DestinationActivityId="38" DestinationEndpoint="" />
+        <Transition SourceActivityId="38" SourceEndpoint="Done" DestinationActivityId="37" DestinationEndpoint="" />
+      </Transitions>
+    </Workflow>
+    <Workflow Name="User Signed In" Enabled="true">
+      <Activities>
+        <Activity Id="33" Name="UserSignedIn" Start="true" X="451" Y="482">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="34" Name="Redirect" Start="false" X="783" Y="484">
+          <State>{"Url":"~/profile"}</State>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition SourceActivityId="33" SourceEndpoint="Signed In" DestinationActivityId="34" DestinationEndpoint="" />
+      </Transitions>
+    </Workflow>
+    <Workflow Name="User Signed Out" Enabled="true">
+      <Activities>
+        <Activity Id="7" Name="UserSignedOut" Start="true" X="793" Y="267">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="8" Name="Redirect" Start="false" X="811" Y="470">
+          <State>{"Url":"~/"}</State>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition SourceActivityId="7" SourceEndpoint="Signed Out" DestinationActivityId="8" DestinationEndpoint="" />
+      </Transitions>
+    </Workflow>
+    <Workflow Name="Open Authentication" Enabled="true">
+      <Activities>
+        <Activity Id="25" Name="OAuthVerify" Start="true" X="733" Y="299">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="26" Name="Notify" Start="false" X="651" Y="493">
+          <State>{"Notification":"Error","Message":"Your authentication request failed."}</State>
+        </Activity>
+        <Activity Id="27" Name="OAuthSignIn" Start="false" X="885" Y="479">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="28" Name="Notify" Start="false" X="936" Y="676">
+          <State>{"Notification":"Information","Message":"You have been logged using your {0} account."}</State>
+        </Activity>
+        <Activity Id="29" Name="OAuthCreateOrAssociateUser" Start="false" X="1234" Y="308">
+          <State>{}</State>
+        </Activity>
+        <Activity Id="30" Name="Notify" Start="false" X="1109" Y="511">
+          <State>{"Notification":"Information","Message":"Your {0} account has been attached to your local account."}</State>
+        </Activity>
+        <Activity Id="31" Name="Redirect" Start="false" X="1066" Y="764">
+          <State>{"Url":"~/profile"}</State>
+        </Activity>
+        <Activity Id="32" Name="Notify" Start="false" X="1427" Y="601">
+          <State>{"Notification":"Information","Message":"You have been logged in using your {0} account. We have created a local account for you with the name '{1}'"}</State>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition SourceActivityId="25" SourceEndpoint="Failed" DestinationActivityId="26" DestinationEndpoint="" />
+        <Transition SourceActivityId="25" SourceEndpoint="AssociationFound" DestinationActivityId="27" DestinationEndpoint="" />
+        <Transition SourceActivityId="27" SourceEndpoint="Failed" DestinationActivityId="26" DestinationEndpoint="" />
+        <Transition SourceActivityId="27" SourceEndpoint="Success" DestinationActivityId="28" DestinationEndpoint="" />
+        <Transition SourceActivityId="25" SourceEndpoint="AssociationNotFound" DestinationActivityId="29" DestinationEndpoint="" />
+        <Transition SourceActivityId="30" SourceEndpoint="Done" DestinationActivityId="31" DestinationEndpoint="" />
+        <Transition SourceActivityId="29" SourceEndpoint="CurrentUserAssociated" DestinationActivityId="30" DestinationEndpoint="" />
+        <Transition SourceActivityId="32" SourceEndpoint="Done" DestinationActivityId="31" DestinationEndpoint="" />
+        <Transition SourceActivityId="29" SourceEndpoint="NewUserAssociated" DestinationActivityId="32" DestinationEndpoint="" />
+        <Transition SourceActivityId="28" SourceEndpoint="Done" DestinationActivityId="31" DestinationEndpoint="" />
+      </Transitions>
+    </Workflow>
+  </Workflows>
+
+  <Command>
+    site setting set baseurl
+    menu create /MenuName:"Main Menu"
+    page create /Slug:"welcome-to-orchard-pros" /Title:"Welcome to Orchard Pros!" /Path:"welcome-to-orchard-pros" /Homepage:true /Publish:true /UseWelcomeText:true
+    theme activate "Orchard Pros"
+    index create "Tickets"
+  </Command>
+</Orchard>
