@@ -78,7 +78,6 @@ namespace OrchardPros.Drivers {
             partElement.SetAttributeValue("LastLoggedInUtc", part.LastLoggedInUtc);
             partElement.SetAttributeValue("Level", part.Level);
             partElement.SetAttributeValue("ExperiencePoints", part.ExperiencePoints);
-            partElement.SetAttributeValue("Rating", part.Rating);
             partElement.Add(CreatePositionsElement(part));
             partElement.Add(CreateSkillsElement(part));
             partElement.Add(CreateExperiencesElement(part));
@@ -100,7 +99,6 @@ namespace OrchardPros.Drivers {
             context.ImportAttribute(part.PartDefinition.Name, "LastLoggedInUtc", x => part.LastLoggedInUtc = XmlConvert.ToDateTime(x, XmlDateTimeSerializationMode.Utc));
             context.ImportAttribute(part.PartDefinition.Name, "Level", x => part.Level = XmlConvert.ToInt32(x));
             context.ImportAttribute(part.PartDefinition.Name, "ExperiencePoints", x => part.ExperiencePoints = XmlConvert.ToInt32(x));
-            context.ImportAttribute(part.PartDefinition.Name, "Rating", x => part.Rating = XmlConvert.ToInt32(x));
 
             part.Bio = bioElement != null ? bioElement.Value : null;
             ImportSkills(part, partElement);

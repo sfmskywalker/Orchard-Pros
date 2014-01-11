@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Contrib.Voting.Services;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
@@ -29,6 +30,7 @@ namespace OrchardPros.Controllers {
         private readonly IRecommendationManager _recommendationManager;
         private readonly IAuthorizer _authorizer;
         private readonly IEnumerable<IContentHandler> _handlers;
+        private readonly IVotingService _votingService;
 
         public TicketController(
             ITicketService ticketService, 
@@ -37,7 +39,8 @@ namespace OrchardPros.Controllers {
             IAttachmentService attachmentService, 
             IRecommendationManager recommendationManager, 
             IAuthorizer authorizer, 
-            IEnumerable<IContentHandler> handlers) {
+            IEnumerable<IContentHandler> handlers, 
+            IVotingService votingService) {
 
             _notifier = services.Notifier;
             _ticketService = ticketService;
@@ -47,6 +50,7 @@ namespace OrchardPros.Controllers {
             _recommendationManager = recommendationManager;
             _authorizer = authorizer;
             _handlers = handlers;
+            _votingService = votingService;
             T = NullLocalizer.Instance;
         }
 
@@ -107,8 +111,7 @@ namespace OrchardPros.Controllers {
             _notifier.Information(T("Your ticket has been created."));
             return Redirect(Url.ItemDisplayUrl(ticket));
         }
-
-
+        
         public ActionResult Edit(int id) {
             var ticket = _ticketService.GetTicket(id);
             var model = SetupEditViewModel(new TicketViewModel {
@@ -168,6 +171,10 @@ namespace OrchardPros.Controllers {
             _notifier.Information(T("Your ticket has been solved."));
 
             if (!isOwnReply) {
+                if (rating != null) {
+                    _votingService.Vote(reply.User.ContentItem, currentUser.As<IUser>().UserName, Request.UserHostAddress, rating.Value);
+                }
+
                 if (!String.IsNullOrWhiteSpace(recommendation)) {
                     _recommendationManager.Create(r => {
                         r.AllowPublication = allowPublication == true;

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Contrib.Voting.Services;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
@@ -13,6 +14,7 @@ namespace OrchardPros.Handlers {
         private readonly IExperienceManager _experienceManager;
         private readonly IReplyService _replyService;
         private readonly ITicketService _ticketService;
+        private readonly IVotingService _votingService;
 
         public UserProfilePartHandler(
             IRepository<UserProfilePartRecord> repository,
@@ -21,7 +23,7 @@ namespace OrchardPros.Handlers {
             IRecommendationManager recommendationManager, 
             IExperienceManager experienceManager, 
             IReplyService replyService, 
-            ITicketService ticketService) {
+            ITicketService ticketService, IVotingService votingService) {
 
             _positionManager = positionManager;
             _skillManager = skillManager;
@@ -29,6 +31,7 @@ namespace OrchardPros.Handlers {
             _experienceManager = experienceManager;
             _replyService = replyService;
             _ticketService = ticketService;
+            _votingService = votingService;
             Filters.Add(StorageFilter.For(repository));
             OnActivated<UserProfilePart>(SetupFields);
         }
@@ -40,6 +43,10 @@ namespace OrchardPros.Handlers {
             part.ExperienceField.Loader(() => _experienceManager.Fetch(part.Id).ToArray());
             part.RepliesField.Loader(() => _replyService.GetRepliesByUser(part.Id).ToArray());
             part.SolvedTicketsField.Loader(() => _ticketService.GetSolvedTicketsFor(part.Id).ToArray());
+            part.RatingField.Loader(() => {
+                var result = _votingService.GetResult(part.Id, "average");
+                return (int) (result != null ? result.Value : 1);
+            });
         }
     }
 }

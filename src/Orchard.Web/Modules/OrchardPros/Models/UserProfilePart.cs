@@ -17,6 +17,7 @@ namespace OrchardPros.Models {
         internal LazyField<IEnumerable<Experience>> ExperienceField = new LazyField<IEnumerable<Experience>>();
         internal LazyField<IEnumerable<ReplyPart>> RepliesField = new LazyField<IEnumerable<ReplyPart>>();
         internal LazyField<IEnumerable<TicketPart>> SolvedTicketsField = new LazyField<IEnumerable<TicketPart>>();
+        internal LazyField<int> RatingField = new LazyField<int>();
 
         public string FirstName {
             get { return this.Retrieve(x => x.FirstName); }
@@ -120,8 +121,7 @@ namespace OrchardPros.Models {
         }
 
         public int Rating {
-            get { return this.Retrieve(x => x.Rating, 1); }
-            set { this.Store(x => x.Rating, value); }
+            get { return RatingField.Value; }
         }
 
         public string RankName {
