@@ -1,6 +1,10 @@
 ﻿@using OrchardPros.Models
 @{
     var ticket = (TicketPart)Model.Ticket;
+    
+    Style.Include("jquery.rating.css");
+    Script.Require("jQuery");
+    Script.Include("jquery.rating.js", "jquery.rating.pack.js");
 }
 <!-- Overlay -->
 <div id="solve-ticket-popup" class="overlay">
@@ -25,21 +29,14 @@
                         <p>@T("Award this expert <strong>{0} EXP</strong> for giving you the best solution.", ticket.ExperiencePoints)</p>
                     }
                     <p>@T("Rate the expert")</p>
-                    <p>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
+                    <p class="clearfix">
+                        @for (var i = 0; i < 5; i++) {
+                            <input type="radio" name="Rating" value="@(i + 1)" class="star"/>
+                        }
                     </p>
-                    <h3>@T("Write a recommendation")</h3>
+                    <h3>@T("Write a review")</h3>
                     <div class="form-group">
                         <textarea name="Recommendation" class="form-control" rows="3"></textarea>
-                        <div class="checkbox pull-left">
-                            <label>
-                                <input name="AllowPublication" type="checkbox" value="true" checked> @T("Public")
-                            </label>
-                        </div>
                     </div>
                 </div>
                 <div class="form-group pull-right">

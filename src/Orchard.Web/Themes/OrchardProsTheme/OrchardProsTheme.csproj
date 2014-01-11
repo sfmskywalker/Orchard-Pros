@@ -89,11 +89,13 @@
     <Content Include="Html %28Reference%29\ticket-create.html" />
     <Content Include="Html %28Reference%29\ticket-post.html" />
     <Content Include="Html %28Reference%29\tickets.html" />
+    <Content Include="Images\delete.gif" />
     <Content Include="Images\file-document.png" />
     <Content Include="Images\file-docx.png" />
     <Content Include="Images\file-image.png" />
     <Content Include="Images\file-pdf.png" />
     <Content Include="Images\file-pptx.png" />
+    <Content Include="Images\file-video.png" />
     <Content Include="Images\file-xlsx.png" />
     <Content Include="Images\jumbotron.jpg" />
     <Content Include="Images\left-quote.png" />
@@ -101,6 +103,7 @@
     <Content Include="Images\social-facebook.png" />
     <Content Include="Images\social-openid.png" />
     <Content Include="Images\social-twitter.png" />
+    <Content Include="Images\star.gif" />
     <Content Include="Images\temp-icon-achievement.png" />
     <Content Include="Images\temp-profile.png" />
     <Content Include="Scripts\account-settings.min.js">
@@ -116,6 +119,8 @@
     </Content>
     <Content Include="Scripts\html5shiv.js" />
     <Content Include="Scripts\jquery.js" />
+    <Content Include="Scripts\jquery.rating.js" />
+    <Content Include="Scripts\jquery.rating.pack.js" />
     <Content Include="Scripts\less-1.5.0.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\common.js" />
@@ -138,6 +143,7 @@
     <Content Include="Styles\bootstrap.min.css">
       <DependentUpon>bootstrap.css</DependentUpon>
     </Content>
+    <Content Include="Styles\jquery.rating.css" />
     <Content Include="Styles\select2-bootstrap.css" />
     <Content Include="Images\select2-spinner.gif" />
     <Content Include="Styles\select2.css" />
