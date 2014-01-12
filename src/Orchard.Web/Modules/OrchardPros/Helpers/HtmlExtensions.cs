@@ -11,11 +11,13 @@ namespace OrchardPros.Helpers {
         public const string Area = "OrchardPros";
 
         public static IHtmlString ProfileLink(this HtmlHelper html, IUser user, object htmlAttributes = null) {
-            return html.ProfileLink(user.As<UserProfilePart>().DisplayName, user.UserName, htmlAttributes);
+            var userName = user != null ? user.UserName : "#removed";
+            var displayName = user != null ? user.As<UserProfilePart>().DisplayName : "Removed";
+            return html.ProfileLink(displayName, userName, htmlAttributes);
         }
 
         public static IHtmlString ProfileLink(this HtmlHelper html, string linkText, IUser user, object htmlAttributes = null) {
-            return html.ProfileLink(linkText, user.UserName, htmlAttributes);
+            return html.ProfileLink(linkText, user != null ? user.UserName : "#removed", htmlAttributes);
         }
 
         public static IHtmlString ProfileLink(this HtmlHelper html, string userName, object htmlAttributes = null) {

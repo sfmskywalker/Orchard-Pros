@@ -188,6 +188,7 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Events\OpenAuthUserEventHandler.cs" />
     <Compile Include="Handlers\ReplyPartHandler.cs" />
     <Compile Include="Models\LevelUpContext.cs" />
     <Compile Include="Models\UserContext.cs" />
