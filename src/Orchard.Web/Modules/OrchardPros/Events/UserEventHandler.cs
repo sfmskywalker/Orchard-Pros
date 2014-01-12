@@ -19,7 +19,7 @@ namespace OrchardPros.Events {
 
         public void Created(UserContext context) {
             context.User.As<UserProfilePart>().CreatedUtc = _clock.UtcNow;
-            _workFlowManager.TriggerEvent(UserSignedUpActivity.ActivityName, context.User, () => new Dictionary<string, object>());
+            _workFlowManager.TriggerEvent(UserSignedUpActivity.ActivityName, context.User, () => new Dictionary<string, object> { {"User", context.User} });
         }
 
         public void LoggedIn(IUser user) {
