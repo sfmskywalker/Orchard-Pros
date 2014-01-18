@@ -10,7 +10,7 @@
                     </div>
                     <div class="form-group">
                         <input type="password" class="form-control" id="sign-in-password" placeholder="Password" name="Password">
-                        <p class="small"><a href="#">@T("Forgot your password?")</a></p>
+                        <p class="small"><a href="@Url.Action("RequestLostPassword", "Account", new { area = "Orchard.Users" })">@T("Forgot your password?")</a></p>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-default btn-submit">@T("Sign in")</button>
