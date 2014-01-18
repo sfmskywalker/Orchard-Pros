@@ -40,9 +40,8 @@
             </div>
             <div class="ticket-status">
                 <ul>
-                    <li class="votes"><span class="number">0</span><span class="type">@T("votes")</span></li>
                     <li class="views"><span class="number">@statisticsPart.ViewCount</span><span class="type">@T("views")</span></li>
-                    <li class="replies @if(ticket.IsSolved){<text>solved</text>}"><span class="number">@repliesPart.Replies.Count()</span><span class="type">@T("replies")</span></li>
+                    <li class="replies @if(ticket.IsSolved){<text>@T("solved")</text>}"><span class="number">@repliesPart.Replies.Count()</span><span class="type">@T("replies")</span></li>
                 </ul>
             </div>
             <div class="ticket-info">
