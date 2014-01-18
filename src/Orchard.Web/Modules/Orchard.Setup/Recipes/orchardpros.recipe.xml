@@ -16,7 +16,7 @@
                    Orchard.Fields,Orchard.OutputCache,Orchard.Workflows,
                    UrlAlternates, Orchard.ImportExport,
                    Orchard.Email,
-                   NGM.OpenAuthentication.Workflows, Orchard.Messaging,
+                   NGM.OpenAuthentication.Workflows,
                    OrchardPros, OrchardProsTheme" />
 
   <Metadata>

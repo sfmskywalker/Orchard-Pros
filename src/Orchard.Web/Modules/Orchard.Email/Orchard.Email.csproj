@@ -79,6 +79,7 @@
     <Compile Include="Rules\MailActions.cs" />
     <Compile Include="Rules\MailForms.cs" />
     <Compile Include="Services\DefaultEmailMessageChannelSelector.cs" />
+    <Compile Include="Services\ISmtpChannel.cs" />
     <Compile Include="Services\SmtpMessageChannel.cs" />
     <Compile Include="Services\EmailMessageEventHandler.cs" />
     <Compile Include="Services\EmailMessagingChannel.cs" />
@@ -105,10 +106,6 @@
       <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
       <Name>Orchard.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Orchard.Messaging\Orchard.Messaging.csproj">
-      <Project>{085948ff-0e9b-4a9a-b564-f8b8b4bdddbc}</Project>
-      <Name>Orchard.Messaging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Orchard.Workflows\Orchard.Workflows.csproj">
       <Project>{7059493c-8251-4764-9c1e-2368b8b485bc}</Project>
       <Name>Orchard.Workflows</Name>
@@ -128,6 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Activity-SendEmail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Template.Smtp.Wrapper.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

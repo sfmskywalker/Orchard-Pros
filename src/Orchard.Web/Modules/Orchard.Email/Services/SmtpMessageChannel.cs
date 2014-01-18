@@ -1,19 +1,31 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
-using Newtonsoft.Json;
+using System.Web.Mvc;
+using Newtonsoft.Json.Linq;
+using Orchard.ContentManagement;
+using Orchard.DisplayManagement;
 using Orchard.Logging;
 using Orchard.Email.Models;
-using Orchard.Messaging.Services;
 
 namespace Orchard.Email.Services {
-    public class SmtpMessageChannel : Component, IMessageChannel, IDisposable {
+    public class SmtpMessageChannel : Component, ISmtpChannel, IDisposable {
         private readonly SmtpSettingsPart _smtpSettings;
+        private readonly IShapeFactory _shapeFactory;
+        private readonly IShapeDisplay _shapeDisplay;
         private readonly Lazy<SmtpClient> _smtpClientField;
         public static readonly string MessageType = "Email";
 
-        public SmtpMessageChannel(SmtpSettingsPart smtpSettings) {
-            _smtpSettings = smtpSettings;
+        public SmtpMessageChannel(
+            IOrchardServices orchardServices,
+            IShapeFactory shapeFactory,
+            IShapeDisplay shapeDisplay) {
+            _shapeFactory = shapeFactory;
+            _shapeDisplay = shapeDisplay;
+
+            _smtpSettings = orchardServices.WorkContext.CurrentSite.As<SmtpSettingsPart>();
             _smtpClientField = new Lazy<SmtpClient>(CreateSmtpClient);
         }
 
@@ -25,30 +37,38 @@ namespace Orchard.Email.Services {
             _smtpClientField.Value.Dispose();
         }
 
-        public void Process(string payload) {
+        public void Process(IDictionary<string, object> parameters) {
+
+
             if (!_smtpSettings.IsValid()) {
                 return;
             }
 
-            var emailMessage = JsonConvert.DeserializeObject<EmailMessage>(payload);
-            if (emailMessage == null) {
-                return;
-            }
+            var emailMessage = new EmailMessage {
+                Body = parameters["Body"] as string,
+                Subject = parameters["Subject"] as string,
+                Recipients = parameters["Recipients"] as string
+            };
 
             if (emailMessage.Recipients.Length == 0) {
                 Logger.Error("Email message doesn't have any recipient");
                 return;
             }
 
+            // Applying default Body alteration for SmtpChannel
+            var template = _shapeFactory.Create("Template_Smtp_Wrapper", Arguments.From(new {
+                Content = new MvcHtmlString(emailMessage.Body)
+            }));
+
             var mailMessage = new MailMessage {
                 From = new MailAddress(_smtpSettings.Address),
                 Subject = emailMessage.Subject,
-                Body = emailMessage.Body,
-                IsBodyHtml = emailMessage.Body != null && emailMessage.Body.Contains("<") && emailMessage.Body.Contains(">")
+                Body = _shapeDisplay.Display(template),
+                IsBodyHtml = true
             };
 
             try {
-                foreach (var recipient in emailMessage.Recipients) {
+                foreach (var recipient in emailMessage.Recipients.Split(new [] {',', ';'}, StringSplitOptions.RemoveEmptyEntries)) {
                     mailMessage.To.Add(new MailAddress(recipient));
                 }
 

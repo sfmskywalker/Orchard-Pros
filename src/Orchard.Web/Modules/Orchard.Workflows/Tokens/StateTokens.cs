@@ -8,7 +8,7 @@ namespace Orchard.Workflows.Tokens {
 
         public void Describe(DescribeContext context) {
             context.For("Workflow", T("Workflow"), T("Workflow tokens."))
-                .Token("State:*", T("State:<workflowcontext path>"), T("The workflow context state to access. E.g. State:MyData.MyProperty.SubProperty"))
+                .Token("State:*", T("State:<workflowcontext path>"), T("The workflow context state to access. Workflow.State:MyData.MyProperty.SubProperty"))
             ;
         }
 
