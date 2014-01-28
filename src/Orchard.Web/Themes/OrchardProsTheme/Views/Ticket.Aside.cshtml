@@ -1,5 +1,6 @@
 ﻿@using Orchard.ContentManagement
 @using Orchard.Core.Common.Models
+@using OrchardPros
 @using OrchardPros.Helpers
 @using OrchardPros.Models
 @using OrchardProsTheme.Helpers
@@ -37,7 +38,6 @@
             </div>
             <div class="ticket-status">
                 <ul>
-                    <li class="votes"><span class="number">0</span><span class="type">@T("votes")</span></li>
                     <li class="views"><span class="number">@statisticsPart.ViewCount</span><span class="type">@T("views")</span></li>
                     <li class="replies"><span class="number">@repliesPart.Replies.Count()</span><span class="type">@T("replies")</span></li>
                 </ul>
@@ -61,6 +61,9 @@
                     </ul>
                 </div>
             </div>
+        }
+        @if (Authorizer.Authorize(Permissions.StartBounty, ticket)) {
+            @Html.ActionLink(T("Start a Bounty").ToString(), "Create", "Bounty", new { id = ticket.Id, area = "OrchardPros" }, new { @class = "btn btn-default" })
         }
     </div><!-- /.ticket-details -->
 </aside>

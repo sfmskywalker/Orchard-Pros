@@ -188,10 +188,17 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BountyController.cs" />
+    <Compile Include="Services\CommerceService.cs" />
+    <Compile Include="Services\ICommerceService.cs" />
+    <Compile Include="Models\TransactionStatus.cs" />
+    <Compile Include="Models\Transaction.cs" />
+    <Compile Include="ViewModels\BountyViewModel.cs" />
     <Compile Include="Events\OpenAuthUserEventHandler.cs" />
     <Compile Include="Handlers\ReplyPartHandler.cs" />
     <Compile Include="Models\LevelUpContext.cs" />
     <Compile Include="Models\UserContext.cs" />
+    <Compile Include="Security\StartBountyAuthorizationEventHandler.cs" />
     <Compile Include="Services\IXpCalculator.cs" />
     <Compile Include="Models\TicketContext.cs" />
     <Compile Include="Services\ITicketEventHandler.cs" />
@@ -468,6 +475,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Reply\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Bounty\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\BountyViewModel.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -20,7 +20,6 @@ namespace OrchardPros.ViewModels {
         public IList<int> Categories { get; set; }
 
         public string Tags { get; set; }
-        public decimal? Bounty { get; set; }
         public int ExperiencePoints { get; set; }
 
         [Required]

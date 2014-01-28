@@ -1,0 +1,5 @@
+﻿@model OrchardPros.ViewModels.BountyViewModel
+<div class="form-group">
+    @Html.LabelFor(m => m.Amount, T("Amount"))
+    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", placeholder = T("Enter an amount") })
+</div>

@@ -21,6 +21,18 @@ namespace OrchardPros {
                 .Column<string>("Name", c => c.WithLength(64).NotNull())
                 .Column<string>("Code", c => c.WithLength(2)));
 
+            // Transaction
+            SchemaBuilder.CreateTable("Transaction", table => table
+                .Column<int>("Id", c => c.PrimaryKey().Identity())
+                .Column<int>("UserId", c => c.NotNull())
+                .Column<string>("ProductName", c => c.WithLength(256))
+                .Column<string>("Status", c => c.WithLength(64))
+                .Column<decimal>("Amount", c => c.NotNull())
+                .Column<DateTime>("CreatedUtc", c => c.NotNull())
+                .Column<DateTime>("PaidUtc", c => c.Nullable())
+                .Column<DateTime>("CanceledUtc", c => c.Nullable())
+                .Column<DateTime>("PaymentDeclinedUtc", c => c.Nullable()));
+
             // Subscription
             SchemaBuilder.CreateTable("Subscription", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())

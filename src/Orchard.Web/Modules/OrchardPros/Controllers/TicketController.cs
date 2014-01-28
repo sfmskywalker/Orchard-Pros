@@ -96,7 +96,6 @@ namespace OrchardPros.Controllers {
             }
 
             var ticket = _ticketService.Create(user, model.Subject, model.Body, model.Type, t => {
-                t.Bounty = model.Bounty;
                 t.DeadlineUtc = model.DeadlineUtc.Value;
                 t.ExperiencePoints = _ticketService.CalculateExperience(CurrentUser);
             });
@@ -116,7 +115,6 @@ namespace OrchardPros.Controllers {
             var ticket = _ticketService.GetTicket(id);
             var model = SetupEditViewModel(new TicketViewModel {
                 Id = id,
-                Bounty = ticket.Bounty,
                 Categories = ticket.Categories.Select(x => x.Id).ToArray(),
                 Tags = _ticketService.GetTagsFor(ticket.Id).ToDelimitedString(),
                 DeadlineUtc = ticket.DeadlineUtc,
@@ -137,7 +135,6 @@ namespace OrchardPros.Controllers {
                 return View(model);
             }
 
-            ticket.Bounty = model.Bounty;
             ticket.DeadlineUtc = model.DeadlineUtc.Value;
             ticket.Body = model.Body.TrimSafe();
             ticket.Subject = model.Subject;
