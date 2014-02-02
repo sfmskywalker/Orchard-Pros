@@ -30,6 +30,7 @@ namespace OrchardPros {
                 .Column<string>("ProductName", c => c.WithLength(256))
                 .Column<string>("Status", c => c.WithLength(64))
                 .Column<decimal>("Amount", c => c.NotNull())
+                .Column<string>("Context", c => c.Nullable().WithLength(64))
                 .Column<DateTime>("CreatedUtc", c => c.NotNull())
                 .Column<DateTime>("ChargedUtc", c => c.Nullable())
                 .Column<DateTime>("CanceledUtc", c => c.Nullable())

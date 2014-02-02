@@ -56,6 +56,10 @@
       <HintPath>Lib\MarkdownDeep\MarkdownDeep.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\newtonsoft.json\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NGravatar, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\NGravatar\NGravatar.dll</HintPath>
@@ -188,13 +192,22 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Services\ITransactionEventHandler.cs" />
     <Compile Include="Controllers\StripeController.cs" />
     <Compile Include="Controllers\BountyController.cs" />
+    <Compile Include="Models\TransactionChargedContext.cs" />
+    <Compile Include="Models\TransactionContext.cs" />
+    <Compile Include="Events\TicketTransactionEventHandler.cs" />
+    <Compile Include="Services\TransactionEventHandlerBase.cs" />
+    <Compile Include="ViewModels\StripeErrorViewModel.cs" />
     <Compile Include="Services\DefaultHandleGenerator.cs" />
     <Compile Include="Services\IHandleGenerator.cs" />
     <Compile Include="Services\IStripeClient.cs" />
     <Compile Include="Models\StripeCharge.cs" />
+    <Compile Include="Services\IStripeClientConfigurationAccessor.cs" />
     <Compile Include="Services\StripeClient.cs" />
+    <Compile Include="Models\StripeClientConfiguration.cs" />
+    <Compile Include="Services\StripeClientConfigurationAccessor.cs" />
     <Compile Include="ViewModels\StripeViewModel.cs" />
     <Compile Include="Services\CommerceService.cs" />
     <Compile Include="Services\ICommerceService.cs" />
@@ -494,6 +507,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Stripe\Success.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Stripe\Error.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Stripe\PaymentFailed.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

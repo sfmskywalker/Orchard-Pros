@@ -32,5 +32,16 @@ namespace OrchardPros.Services {
         public Transaction GetTransaction(string handle) {
             return _transactionRepository.Get(x => x.Handle == handle);
         }
+
+        public void ChargeTransaction(Transaction transaction, string reference) {
+            transaction.ChargedUtc = _clock.UtcNow;
+            transaction.Reference = reference;
+            transaction.Status = TransactionStatus.Charged;
+        }
+
+        public void DeclineTransaction(Transaction transaction) {
+            transaction.DeclinedUtc = _clock.UtcNow;
+            transaction.Status = TransactionStatus.Declined;
+        }
     }
 }

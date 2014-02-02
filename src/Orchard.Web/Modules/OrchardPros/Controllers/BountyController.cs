@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Web.Mvc;
 using Orchard;
 using Orchard.Localization;
@@ -59,7 +60,9 @@ namespace OrchardPros.Controllers {
                 return View(model);
             }
 
+            // ReSharper disable once PossibleInvalidOperationException
             var transaction = _commerceService.CreateTransaction(CurrentUser, "Bounty", model.Amount.Value);
+            transaction.Context = ticket.Id.ToString(CultureInfo.InvariantCulture);
             return RedirectToAction("Pay", "Stripe", new { id = transaction.Handle });
         }
     }

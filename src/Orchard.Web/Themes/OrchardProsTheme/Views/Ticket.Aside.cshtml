@@ -63,7 +63,9 @@
             </div>
         }
         @if (Authorizer.Authorize(Permissions.StartBounty, ticket)) {
-            @Html.ActionLink(T("Start a Bounty").ToString(), "Create", "Bounty", new { id = ticket.Id, area = "OrchardPros" }, new { @class = "btn btn-default" })
+            if (ticket.Bounty == null) {
+                @Html.ActionLink(T("Start a Bounty").ToString(), "Create", "Bounty", new { id = ticket.Id, area = "OrchardPros" }, new { @class = "btn btn-default" })
+            }
         }
     </div><!-- /.ticket-details -->
 </aside>
