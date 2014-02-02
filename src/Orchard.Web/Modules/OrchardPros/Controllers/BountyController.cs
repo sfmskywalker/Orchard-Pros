@@ -1,22 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
-using Contrib.Voting.Services;
 using Orchard;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Handlers;
 using Orchard.Localization;
 using Orchard.Logging;
-using Orchard.Mvc.Html;
 using Orchard.Security;
 using Orchard.Services;
 using Orchard.Themes;
-using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
-using OrchardPros.Models;
 using OrchardPros.Services;
-using OrchardPros.Helpers;
 using OrchardPros.ViewModels;
 
 namespace OrchardPros.Controllers {
@@ -69,10 +59,8 @@ namespace OrchardPros.Controllers {
                 return View(model);
             }
 
-            // Create a transaction.
             var transaction = _commerceService.CreateTransaction(CurrentUser, "Bounty", model.Amount.Value);
-
-            return Redirect("http://stripe.com?transid=123");
+            return RedirectToAction("Pay", "Stripe", new { id = transaction.Handle });
         }
     }
 }

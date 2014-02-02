@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents.Extensions;
 using Orchard.Data;
@@ -24,14 +25,16 @@ namespace OrchardPros {
             // Transaction
             SchemaBuilder.CreateTable("Transaction", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())
+                .Column<string>("Handle", c => c.NotNull().WithLength(64))
                 .Column<int>("UserId", c => c.NotNull())
                 .Column<string>("ProductName", c => c.WithLength(256))
                 .Column<string>("Status", c => c.WithLength(64))
                 .Column<decimal>("Amount", c => c.NotNull())
                 .Column<DateTime>("CreatedUtc", c => c.NotNull())
-                .Column<DateTime>("PaidUtc", c => c.Nullable())
+                .Column<DateTime>("ChargedUtc", c => c.Nullable())
                 .Column<DateTime>("CanceledUtc", c => c.Nullable())
-                .Column<DateTime>("PaymentDeclinedUtc", c => c.Nullable()));
+                .Column<DateTime>("DeclinedUtc", c => c.Nullable())
+                .Column<string>("Reference", c => c.Nullable().WithLength(256)));
 
             // Subscription
             SchemaBuilder.CreateTable("Subscription", table => table
@@ -113,7 +116,6 @@ namespace OrchardPros {
 
             // User
             ContentDefinitionManager.AlterTypeDefinition("User", type => type
-                .WithPart("UserProfilePart")
                 .WithPart("UserProfilePart")
                 .Indexed("Users"));
             

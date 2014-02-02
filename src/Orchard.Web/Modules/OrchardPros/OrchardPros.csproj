@@ -188,7 +188,14 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\StripeController.cs" />
     <Compile Include="Controllers\BountyController.cs" />
+    <Compile Include="Services\DefaultHandleGenerator.cs" />
+    <Compile Include="Services\IHandleGenerator.cs" />
+    <Compile Include="Services\IStripeClient.cs" />
+    <Compile Include="Models\StripeCharge.cs" />
+    <Compile Include="Services\StripeClient.cs" />
+    <Compile Include="ViewModels\StripeViewModel.cs" />
     <Compile Include="Services\CommerceService.cs" />
     <Compile Include="Services\ICommerceService.cs" />
     <Compile Include="Models\TransactionStatus.cs" />
@@ -481,6 +488,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\BountyViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Stripe\Pay.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Stripe\Success.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

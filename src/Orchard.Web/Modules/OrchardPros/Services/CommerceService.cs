@@ -7,23 +7,30 @@ namespace OrchardPros.Services {
     public class CommerceService : ICommerceService {
         private readonly IClock _clock;
         private readonly IRepository<Transaction> _transactionRepository;
+        private readonly IHandleGenerator _handleGenerator;
 
-        public CommerceService(IClock clock, IRepository<Transaction> transactionRepository) {
+        public CommerceService(IClock clock, IRepository<Transaction> transactionRepository, IHandleGenerator handleGenerator) {
             _clock = clock;
             _transactionRepository = transactionRepository;
+            _handleGenerator = handleGenerator;
         }
 
         public Transaction CreateTransaction(IUser user, string productName, decimal amount) {
             var transaction = new Transaction {
+                Handle = _handleGenerator.Generate(),
                 Amount = amount,
                 CreatedUtc = _clock.UtcNow,
                 ProductName = productName,
-                Status = TransactionStatus.PaymentPending,
+                Status = TransactionStatus.Pending,
                 UserId = user.Id
             };
 
             _transactionRepository.Create(transaction);
             return transaction;
+        }
+
+        public Transaction GetTransaction(string handle) {
+            return _transactionRepository.Get(x => x.Handle == handle);
         }
     }
 }

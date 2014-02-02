@@ -1,8 +1,8 @@
 namespace OrchardPros.Models {
     public enum TransactionStatus {
-        PaymentPending,
-        Paid,
+        Pending,
+        Charged,
         Canceled,
-        PaymentDeclined
+        Declined
     }
 }
