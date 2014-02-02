@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Instrumentation;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -108,6 +109,10 @@ namespace Orchard.Mvc {
 
             public override PageInstrumentationService PageInstrumentation {
                 get { return new PageInstrumentationService(); }
+            }
+
+            public override Cache Cache {
+                get { return HttpRuntime.Cache; }
             }
         }
 
