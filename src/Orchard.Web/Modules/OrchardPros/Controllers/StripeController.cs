@@ -12,14 +12,14 @@ using OrchardPros.ViewModels;
 namespace OrchardPros.Controllers {
     [Authorize, Themed]
     public class StripeController : Controller {
-        private readonly ICommerceService _commerceService;
+        private readonly ITransactionService _transactionService;
         private readonly IContentManager _contentManager;
         private readonly IStripeClient _stripeClient;
         private readonly ITransactionEventHandler _transactionEventHandler;
 
-        public StripeController(ICommerceService commerceService, IContentManager contentManager, IStripeClient stripeClient, ITransactionEventHandler transactionEventHandler) {
+        public StripeController(ITransactionService transactionService, IContentManager contentManager, IStripeClient stripeClient, ITransactionEventHandler transactionEventHandler) {
 
-            _commerceService = commerceService;
+            _transactionService = transactionService;
             _contentManager = contentManager;
             _stripeClient = stripeClient;
             _transactionEventHandler = transactionEventHandler;
@@ -30,7 +30,7 @@ namespace OrchardPros.Controllers {
         public ILogger Logger { get; set; }
 
         public ActionResult Pay(string id) {
-            var transaction = _commerceService.GetTransaction(id);
+            var transaction = _transactionService.Get(id);
 
             if (transaction == null)
                 return HttpNotFound();
@@ -43,7 +43,7 @@ namespace OrchardPros.Controllers {
         }
 
         public ActionResult Charge(string id, string stripeToken) {
-            var transaction = _commerceService.GetTransaction(id);
+            var transaction = _transactionService.Get(id);
 
             if (transaction == null)
                 return HttpNotFound();
@@ -52,16 +52,16 @@ namespace OrchardPros.Controllers {
                 var charge = _stripeClient.CreateCharge((int)(transaction.Amount * 100), "USD", stripeToken, "Bounty");
 
                 if (!charge.Paid) {
-                    _commerceService.DeclineTransaction(transaction);
+                    _transactionService.Decline(transaction);
                     return RedirectToAction("PaymentFailed", new {id = id});
                 }
 
-                _commerceService.ChargeTransaction(transaction, charge.Id);
+                _transactionService.Charge(transaction, charge.Id);
                 _transactionEventHandler.Charged(new TransactionChargedContext {Transaction = transaction});
                 return RedirectToAction("Success", new { id = id });
             }
             catch (Exception) {
-                _commerceService.DeclineTransaction(transaction);
+                _transactionService.Decline(transaction);
                 var viewModel = new StripeErrorViewModel {
                     Transaction = transaction
                 };
@@ -70,7 +70,7 @@ namespace OrchardPros.Controllers {
         }
 
         public ActionResult Success(string id) {
-            var transaction = _commerceService.GetTransaction(id);
+            var transaction = _transactionService.Get(id);
 
             if (transaction == null)
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace OrchardPros.Controllers {
         }
 
         public ActionResult PaymentFailed(string id) {
-            var transaction = _commerceService.GetTransaction(id);
+            var transaction = _transactionService.Get(id);
 
             if (transaction == null)
                 return HttpNotFound();

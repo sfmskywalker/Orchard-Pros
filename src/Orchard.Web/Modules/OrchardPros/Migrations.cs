@@ -30,12 +30,24 @@ namespace OrchardPros {
                 .Column<string>("ProductName", c => c.WithLength(256))
                 .Column<string>("Status", c => c.WithLength(64))
                 .Column<decimal>("Amount", c => c.NotNull())
+                .Column<string>("Currency", c => c.NotNull().WithLength(3))
                 .Column<string>("Context", c => c.Nullable().WithLength(64))
                 .Column<DateTime>("CreatedUtc", c => c.NotNull())
                 .Column<DateTime>("ChargedUtc", c => c.Nullable())
                 .Column<DateTime>("CanceledUtc", c => c.Nullable())
                 .Column<DateTime>("DeclinedUtc", c => c.Nullable())
                 .Column<string>("Reference", c => c.Nullable().WithLength(256)));
+
+            // Transfer
+            SchemaBuilder.CreateTable("Transfer", table => table
+                .Column<int>("Id", c => c.PrimaryKey().Identity())
+                .Column<int>("RecipientUserId", c => c.NotNull())
+                .Column<string>("Status", c => c.WithLength(64))
+                .Column<decimal>("Amount", c => c.NotNull())
+                .Column<string>("Currency", c => c.NotNull().WithLength(3))
+                .Column<string>("Context", c => c.Nullable().WithLength(64))
+                .Column<DateTime>("CreatedUtc", c => c.NotNull())
+                .Column<DateTime>("CompletedUtc", c => c.Nullable()));
 
             // Subscription
             SchemaBuilder.CreateTable("Subscription", table => table

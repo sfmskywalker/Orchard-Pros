@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Orchard.Caching;
 using Orchard.ContentManagement;
@@ -25,6 +26,7 @@ namespace OrchardPros.Services {
         private readonly IRepository<TicketPartRecord> _ticketPartRepository;
         private readonly ISearchService _searchService;
         private readonly ITicketEventHandler _ticketEventHandlers;
+        private readonly ITransferService _transferService;
 
         public TicketService(
             ITaxonomyService taxonomyService,
@@ -35,7 +37,8 @@ namespace OrchardPros.Services {
             IReplyService replyService,
             IRepository<TicketPartRecord> ticketPartRepository, 
             ISearchService searchService, 
-            ITicketEventHandler ticketEventHandlers) {
+            ITicketEventHandler ticketEventHandlers, 
+            ITransferService transferService) {
 
             _taxonomyService = taxonomyService;
             _contentManager = contentManager;
@@ -46,6 +49,7 @@ namespace OrchardPros.Services {
             _ticketPartRepository = ticketPartRepository;
             _searchService = searchService;
             _ticketEventHandlers = ticketEventHandlers;
+            _transferService = transferService;
         }
 
         public IPagedList<TicketPart> GetTicketsFor(int userId, int? skip = null, int? take = null) {
@@ -133,7 +137,7 @@ namespace OrchardPros.Services {
                     commonQuery = baseQuery.OrderBy<TicketPartRecord>(x => x.DeadlineUtc).Join<CommonPartRecord>();
                     break;
                 case TicketsCriteria.Bounty:
-                    commonQuery = baseQuery.Where<TicketPartRecord>(x => x.Bounty == null).OrderByDescending(x => x.Bounty).Join<CommonPartRecord>();
+                    commonQuery = baseQuery.Where<TicketPartRecord>(x => x.Bounty != null).OrderByDescending(x => x.Bounty).Join<CommonPartRecord>();
                     break;
                 default:
                     commonQuery = baseQuery.OrderByDescending<CommonPartRecord>(x => x.CreatedUtc).Join<CommonPartRecord>();
@@ -195,7 +199,7 @@ namespace OrchardPros.Services {
             // TODO: Add to activity stream
 
             if (ticket.Bounty != null) {
-                // TODO: Transfer funds.
+                _transferService.Create(reply.User.Id, ticket.Bounty.Value, "USD", ticket.Id.ToString(CultureInfo.InvariantCulture));
             }
         }
 

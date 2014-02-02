@@ -7,6 +7,7 @@ namespace OrchardPros.Models {
         public virtual int UserId { get; set; }
         public virtual string ProductName { get; set; }
         public virtual decimal Amount { get; set; }
+        public virtual string Currency { get; set; }
         public virtual string Context { get; set; }
         public virtual TransactionStatus Status { get; set; }
         public virtual DateTime CreatedUtc { get; set; }

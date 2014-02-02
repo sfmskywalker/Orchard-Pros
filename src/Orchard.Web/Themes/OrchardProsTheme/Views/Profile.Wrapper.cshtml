@@ -15,9 +15,7 @@
             
             @if (isCurrentUser) { 
                 <li @if (String.Equals(currentAction, "TicketsFollowed", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text>  }><a href="@Url.Action("TicketsFollowed", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("Tickets Followed")</a></li>
-            }
-            
-            @if (isCurrentUser) { 
+                <li @if (String.Equals(currentAction, "ConnectedApps", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text>   }><a href="@Url.Action("ConnectedApps", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("Connected Apps")</a></li>
                 <li @if (String.Equals(currentAction, "Settings", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text>  }><a href="@Url.Action("Settings", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("Settings")</a></li>
             }
         </ul>

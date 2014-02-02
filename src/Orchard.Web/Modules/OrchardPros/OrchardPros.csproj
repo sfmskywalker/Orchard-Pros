@@ -192,13 +192,17 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Models\Transfer.cs" />
+    <Compile Include="Models\TransferStatus.cs" />
     <Compile Include="Services\ITransactionEventHandler.cs" />
     <Compile Include="Controllers\StripeController.cs" />
     <Compile Include="Controllers\BountyController.cs" />
     <Compile Include="Models\TransactionChargedContext.cs" />
     <Compile Include="Models\TransactionContext.cs" />
     <Compile Include="Events\TicketTransactionEventHandler.cs" />
+    <Compile Include="Services\ITransferService.cs" />
     <Compile Include="Services\TransactionEventHandlerBase.cs" />
+    <Compile Include="Services\TransferService.cs" />
     <Compile Include="ViewModels\StripeErrorViewModel.cs" />
     <Compile Include="Services\DefaultHandleGenerator.cs" />
     <Compile Include="Services\IHandleGenerator.cs" />
@@ -209,8 +213,8 @@
     <Compile Include="Models\StripeClientConfiguration.cs" />
     <Compile Include="Services\StripeClientConfigurationAccessor.cs" />
     <Compile Include="ViewModels\StripeViewModel.cs" />
-    <Compile Include="Services\CommerceService.cs" />
-    <Compile Include="Services\ICommerceService.cs" />
+    <Compile Include="Services\TransactionService.cs" />
+    <Compile Include="Services\ITransactionService.cs" />
     <Compile Include="Models\TransactionStatus.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="ViewModels\BountyViewModel.cs" />
@@ -513,6 +517,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Stripe\PaymentFailed.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Profile.ConnectedApps.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

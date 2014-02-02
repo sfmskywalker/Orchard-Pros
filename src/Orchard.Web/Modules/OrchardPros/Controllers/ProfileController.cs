@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using NGM.OpenAuthentication.Models;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Data;
@@ -29,6 +30,7 @@ namespace OrchardPros.Controllers {
         private readonly ITicketService _ticketService;
         private readonly ISubscriptionService _subscriptionService;
         private readonly IRepository<Country> _countryRepository;
+        private readonly IOpenAuthServices _openAuthServices;
 
         public ProfileController(
             IShapeFactory shapeFactory, 
@@ -40,7 +42,8 @@ namespace OrchardPros.Controllers {
             INotificationSettingsManager notificationSettingsManager, 
             ITicketService ticketService, 
             ISubscriptionService subscriptionService, 
-            IRepository<Country> countryRepository) {
+            IRepository<Country> countryRepository, 
+            IOpenAuthServices openAuthServices) {
 
             New = shapeFactory;
             T = NullLocalizer.Instance;
@@ -53,6 +56,7 @@ namespace OrchardPros.Controllers {
             _ticketService = ticketService;
             _subscriptionService = subscriptionService;
             _countryRepository = countryRepository;
+            _openAuthServices = openAuthServices;
         }
 
         public Localizer T { get; set; }
@@ -83,6 +87,15 @@ namespace OrchardPros.Controllers {
             var pagerShape = New.Pager(pager).TotalItemCount(tickets.TotalItemCount);
             var ticketsFollowed = Wrap(New.Profile_TicketsFollowed(Tickets: tickets, Pager: pagerShape));
             return new ShapeResult(this, ticketsFollowed);
+        }
+
+        public ActionResult ConnectedApps() {
+            var user = GetUser();
+            var userProvidersPart = user.As<UserProvidersPart>();
+            var availableApps = _openAuthServices.GetProviders().ToArray();
+            var connectedApps = userProvidersPart.Providers;
+            var shape = Wrap(New.Profile_ConnectedApps(AvailableApps: availableApps, ConnectedApps: connectedApps));
+            return new ShapeResult(this, shape);
         }
 
         public ActionResult Settings() {

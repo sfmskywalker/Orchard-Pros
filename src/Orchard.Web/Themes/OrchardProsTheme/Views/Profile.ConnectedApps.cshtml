@@ -1,0 +1,26 @@
+﻿@using NGM.OpenAuthentication.Models
+@using Orchard.Utility.Extensions
+@{
+    var connectedApps = (IList<UserProviderEntry>) Model.ConnectedApps;
+    var allProviders = (IList<OrchardAuthenticationClientData>) Model.AvailableApps;
+    var availableProviders = allProviders.Where(provider => !connectedApps.Any(x => String.Equals(x.ProviderName, provider.ProviderName, StringComparison.OrdinalIgnoreCase))).ToArray();
+
+    Script.Require("ShapesBase");
+}
+<p>You are connected to the following OAuth providers:</p>
+<ul>
+    @foreach (var connectedApp in connectedApps) {
+        <li>@connectedApp.ProviderName</li>
+    }
+</ul>
+
+@if (availableProviders.Any()) {
+    <p>The following providers are available to link your Orchard Pros account with. To be able to receive payments, connect with Stripe</p>
+    <ul class="social-oauth">
+        @foreach (var provider in availableProviders) {
+            <li class="@provider.ProviderName.HtmlClassify()">
+                <a href="@Url.Action("SignIn", "OAuth", new {Id = provider.ProviderName, Area = "OrchardPros"})">&nbsp;</a>
+            </li>
+        }
+    </ul>
+}

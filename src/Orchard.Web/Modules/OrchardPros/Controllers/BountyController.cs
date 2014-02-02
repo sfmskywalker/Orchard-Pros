@@ -18,18 +18,18 @@ namespace OrchardPros.Controllers {
         private readonly IClock _clock;
         private readonly IOrchardServices _services;
         private readonly IAuthorizer _authorizer;
-        private readonly ICommerceService _commerceService;
+        private readonly ITransactionService _transactionService;
 
         public BountyController(
             ITicketService ticketService, 
             IClock clock, 
-            IOrchardServices services, ICommerceService commerceService) {
+            IOrchardServices services, ITransactionService transactionService) {
 
             _notifier = services.Notifier;
             _ticketService = ticketService;
             _clock = clock;
             _services = services;
-            _commerceService = commerceService;
+            _transactionService = transactionService;
             _authorizer = services.Authorizer;
             T = NullLocalizer.Instance;
         }
@@ -61,8 +61,7 @@ namespace OrchardPros.Controllers {
             }
 
             // ReSharper disable once PossibleInvalidOperationException
-            var transaction = _commerceService.CreateTransaction(CurrentUser, "Bounty", model.Amount.Value);
-            transaction.Context = ticket.Id.ToString(CultureInfo.InvariantCulture);
+            var transaction = _transactionService.Create(CurrentUser, "Bounty", model.Amount.Value, "USD", ticket.Id.ToString(CultureInfo.InvariantCulture));
             return RedirectToAction("Pay", "Stripe", new { id = transaction.Handle });
         }
     }
