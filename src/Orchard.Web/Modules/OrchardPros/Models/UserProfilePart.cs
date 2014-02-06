@@ -84,8 +84,36 @@ namespace OrchardPros.Models {
                 if (value == null)
                     return;
 
-                notificationSettingsElement = new XElement("NotificationSettings", value.Select(x => new XElement("Notification", new XAttribute("Name", x.Name))));
+                notificationSettingsElement = new XElement("NotificationSettings", 
+                    value.Select(x => new XElement("Notification", new XAttribute("Name", x.Name))));
+
                 infoSet.Element.Add(notificationSettingsElement);
+            }
+        }
+
+        public IEnumerable<UserPayoutProvider> PayoutProviders {
+            get {
+                var infoSet = this.As<InfosetPart>().Infoset;
+                var providersElement = infoSet.Element.Element("PayoutProviders") ?? new XElement("PayoutProviders");
+                var providerElements = providersElement.Elements("Provider");
+                return providerElements.Select(x => new UserPayoutProvider { ProviderId = x.Attr<int>("ProviderId"), AccessToken = x.Attr("AccessToken")});
+            }
+            set {
+                var infoSet = this.As<InfosetPart>().Infoset;
+                var providersElement = infoSet.Element.Element("PayoutProviders");
+
+                if(providersElement != null)
+                    providersElement.Remove();
+
+                if (value == null)
+                    return;
+
+                providersElement = new XElement("PayoutProviders", 
+                    value.Select(x => new XElement("Provider", 
+                        new XAttribute("ProviderId", x.ProviderId),
+                        new XAttribute("AccessToken", x.AccessToken))));
+
+                infoSet.Element.Add(providersElement);
             }
         }
 

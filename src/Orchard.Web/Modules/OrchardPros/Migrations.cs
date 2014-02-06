@@ -49,6 +49,11 @@ namespace OrchardPros {
                 .Column<DateTime>("CreatedUtc", c => c.NotNull())
                 .Column<DateTime>("CompletedUtc", c => c.Nullable()));
 
+            // PayoutProvider
+            SchemaBuilder.CreateTable("PayoutProvider", table => table
+                .Column<int>("Id", c => c.PrimaryKey().Identity())
+                .Column<string>("Name", c => c.WithLength(128)));
+
             // Subscription
             SchemaBuilder.CreateTable("Subscription", table => table
                 .Column<int>("Id", c => c.PrimaryKey().Identity())

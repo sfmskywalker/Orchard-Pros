@@ -192,8 +192,10 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Models\PayoutProvider.cs" />
     <Compile Include="Models\Transfer.cs" />
     <Compile Include="Models\TransferStatus.cs" />
+    <Compile Include="Models\UserPayoutProvider.cs" />
     <Compile Include="Services\ITransactionEventHandler.cs" />
     <Compile Include="Controllers\StripeController.cs" />
     <Compile Include="Controllers\BountyController.cs" />
