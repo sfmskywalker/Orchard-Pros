@@ -1,0 +1,27 @@
+﻿@model OrchardPros.Models.StripeSettingsPart
+<fieldset>
+    <div class="form-group">
+        @Html.LabelFor(m => m.EndpointUrl, T("Endpoint Url"))
+        @Html.TextBoxFor(m => m.EndpointUrl, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TestSecretKey, T("Test Secret Key"))
+        @Html.TextBoxFor(m => m.TestSecretKey, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TestPublishableKey, T("Test Publishable Key"))
+        @Html.TextBoxFor(m => m.TestPublishableKey, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LiveSecretKey, T("Live Secret Key"))
+        @Html.TextBoxFor(m => m.LiveSecretKey, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LivePublishableKey, T("Live Publishable Key"))
+        @Html.TextBoxFor(m => m.LivePublishableKey, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.CheckBoxFor(m => m.Live)
+        @Html.LabelFor(m => m.Live, T("Live Mode").ToString(), new { @class = "forcheckbox" })
+    </div>
+</fieldset>

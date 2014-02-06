@@ -40,6 +40,7 @@
                         <li><a href="@Url.Action("Index", "Profile", new { userName = currentUser.UserName, area = "OrchardPros" })">@T("Profile")</a></li>
                         <li><a href="@Url.Action("TicketsCreated", "Profile", new { userName = currentUser.UserName, area = "OrchardPros" })">@T("Tickets Created")</a></li>
                         <li><a href="@Url.Action("TicketsFollowed", "Profile", new { userName = currentUser.UserName, area = "OrchardPros" })">@T("Tickets Followed")</a></li>
+                        <li><a href="@Url.Action("PayoutProviders", "Profile", new { userName = currentUser.UserName, area = "OrchardPros" })">@T("Payout")</a></li>
                         <li><a href="@Url.Action("Settings", "Profile", new { userName = currentUser.UserName, area = "OrchardPros" })">@T("Settings")</a></li>
                         <li><a href="@Url.Action("Signout", "Account", new { userName = currentUser.UserName, area = "OrchardPros" })">@T("Sign out")</a></li>
                     </ul>

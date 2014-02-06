@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents.Extensions;
 using Orchard.Data;
@@ -238,6 +237,10 @@ namespace OrchardPros {
                 .Creatable(false)
                 .Draftable()
                 .Indexed("Tickets"));
+
+            // Stripe
+            ContentDefinitionManager.AlterPartDefinition("StripeSettingsPart", part => part.Attachable(false));
+            ContentDefinitionManager.AlterTypeDefinition("Site", type => type.WithPart("StripeSettingsPart"));
 
             CreateCountries();
             return 1;

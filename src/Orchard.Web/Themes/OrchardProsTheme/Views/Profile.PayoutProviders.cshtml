@@ -1,0 +1,32 @@
+﻿@using Orchard.Utility.Extensions
+@using OrchardPros.Models
+@{
+    var connectedProviders = (IList<UserPayoutProvider>) Model.ConnectedProviders;
+    var allProviders = (IList<PayoutProvider>) Model.AvailableProviders;
+    var availableProviders = allProviders.Where(provider => connectedProviders.All(x => x.ProviderId != provider.Id)).ToArray();
+
+    Script.Require("ShapesBase");
+}
+@if (connectedProviders.Any()) {
+    <p>@T("You are connected with the following Payout Providers:")</p>
+    <ul>
+        @foreach (var connectedProvider in connectedProviders) {
+            var provider = allProviders.Single(x => x.Id == connectedProvider.ProviderId);
+            <li>@provider.Name</li>
+        }
+    </ul>
+}
+else {
+  <p>@T("In order to receive payments, please connect with one of the below payment providers.")</p>
+}
+
+@if (availableProviders.Any()) {
+    <p>@T("The following Payput providers are available to link your Orchard Pros account.")</p>
+    <ul class="social-oauth">
+        @foreach (var provider in availableProviders) {
+            <li class="@provider.Name.HtmlClassify()">
+                Connect.
+            </li>
+        }
+    </ul>
+}

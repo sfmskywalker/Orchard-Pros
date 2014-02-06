@@ -4,5 +4,6 @@
          Parts_Ticket_Edit="Content:2"
          Parts_UserProfile="Content:1"
          Parts_UserProfile_Edit="Content:1"
-         Parts_Replies="Content:10"/>
+         Parts_Replies="Content:10"
+         Parts_StripeSettings_Edit="Content:0"/>
 </Placement>

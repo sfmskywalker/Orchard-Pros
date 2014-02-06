@@ -31,6 +31,7 @@ namespace OrchardPros.Controllers {
         private readonly ISubscriptionService _subscriptionService;
         private readonly IRepository<Country> _countryRepository;
         private readonly IOpenAuthServices _openAuthServices;
+        private readonly IRepository<PayoutProvider> _payoutProviderRepository;
 
         public ProfileController(
             IShapeFactory shapeFactory, 
@@ -43,7 +44,8 @@ namespace OrchardPros.Controllers {
             ITicketService ticketService, 
             ISubscriptionService subscriptionService, 
             IRepository<Country> countryRepository, 
-            IOpenAuthServices openAuthServices) {
+            IOpenAuthServices openAuthServices, 
+            IRepository<PayoutProvider> payoutProviderRepository) {
 
             New = shapeFactory;
             T = NullLocalizer.Instance;
@@ -57,6 +59,7 @@ namespace OrchardPros.Controllers {
             _subscriptionService = subscriptionService;
             _countryRepository = countryRepository;
             _openAuthServices = openAuthServices;
+            _payoutProviderRepository = payoutProviderRepository;
         }
 
         public Localizer T { get; set; }
@@ -87,6 +90,15 @@ namespace OrchardPros.Controllers {
             var pagerShape = New.Pager(pager).TotalItemCount(tickets.TotalItemCount);
             var ticketsFollowed = Wrap(New.Profile_TicketsFollowed(Tickets: tickets, Pager: pagerShape));
             return new ShapeResult(this, ticketsFollowed);
+        }
+
+        public ActionResult PayoutProviders() {
+            var user = GetUser();
+            var userProfilePart = user.As<UserProfilePart>();
+            var availableProviders = _payoutProviderRepository.Table.ToArray();
+            var connectedProviders = userProfilePart.PayoutProviders.ToArray();
+            var shape = Wrap(New.Profile_PayoutProviders(AvailableProviders: availableProviders, ConnectedProviders: connectedProviders));
+            return new ShapeResult(this, shape);
         }
 
         public ActionResult ConnectedApps() {

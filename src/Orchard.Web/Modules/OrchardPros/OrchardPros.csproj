@@ -192,7 +192,10 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Drivers\StripeSettingsPartDriver.cs" />
+    <Compile Include="Handlers\StripeSettingsPartHandler.cs" />
     <Compile Include="Models\PayoutProvider.cs" />
+    <Compile Include="Models\StripeSettingsPart.cs" />
     <Compile Include="Models\Transfer.cs" />
     <Compile Include="Models\TransferStatus.cs" />
     <Compile Include="Models\UserPayoutProvider.cs" />
@@ -522,6 +525,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Profile.ConnectedApps.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Profile.PayoutProviders.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts\StripeSettings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
