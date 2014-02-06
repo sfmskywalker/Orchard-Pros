@@ -6,6 +6,7 @@ using System.Web.WebPages;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
 using Orchard.DisplayManagement.Shapes;
+using Orchard.Environment.Configuration;
 using Orchard.Localization;
 using Orchard.Mvc.Html;
 using Orchard.Mvc.Spooling;
@@ -187,6 +188,28 @@ namespace Orchard.Mvc.ViewEngines.Razor {
                 writer.Write(Display(item));
             }
             return writer;
+        }
+
+        private string _tenantPrefix;
+        public override string Href(string path, params object[] pathParts) {
+            if (_tenantPrefix == null) {
+                _tenantPrefix = WorkContext.Resolve<ShellSettings>().RequestUrlPrefix ?? "";
+            }
+
+            if (!String.IsNullOrEmpty(_tenantPrefix)) {
+
+                if (path.StartsWith("~/")
+                    && !path.StartsWith("~/Modules", StringComparison.OrdinalIgnoreCase)
+                    && !path.StartsWith("~/Themes", StringComparison.OrdinalIgnoreCase)
+                    && !path.StartsWith("~/Media", StringComparison.OrdinalIgnoreCase)
+                    && !path.StartsWith("~/Core", StringComparison.OrdinalIgnoreCase)) {
+                    
+                    return base.Href("~/" + _tenantPrefix + path.Substring(2), pathParts);
+                }
+
+            }
+
+            return base.Href(path, pathParts);
         }
 
         public IDisposable Capture(Action<IHtmlString> callback) {
