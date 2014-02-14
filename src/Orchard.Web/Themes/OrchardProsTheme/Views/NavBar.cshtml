@@ -23,12 +23,20 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <form class="navbar-form navbar-left" role="search" method="GET" action="@Url.Action("Index", "Ticket", new { area = "OrchardPros" })">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search" name="term" value="@Request.QueryString["term"]">
-                        </div>
-                        <button type="submit" class="btn btn-default btn-submit">@T("Submit")</button>
-                    </form>
+					<form class="navbar-form navbar-left" role="form" method="GET" action="@Url.Action("Index", "Ticket", new { area = "OrchardPros" })">
+				    	<div class="input-group">
+							<input type="text" class="form-control" placeholder="Search" name="term" value="@Request.QueryString["term"]">
+							<div class="input-group-btn col-lg-3">
+								<button type="button" class="btn btn-default btn-submit dropdown-toggle" data-toggle="dropdown">@T("Search") <span class="caret"></span></button>
+				            	<ul class="dropdown-menu pull-right" role="menu">
+				        	      <li><a href="#">All</a></li>
+				    	          <li><a href="#">Tickets</a></li>
+					              <li><a href="#">People</a></li>
+					              <li><a href="#">Companies</a></li>
+					            </ul>
+				          	</div><!-- /btn-group -->
+				        </div><!-- /input-group -->
+					</form>                    
                 </li>
             </ul>
         </div>
