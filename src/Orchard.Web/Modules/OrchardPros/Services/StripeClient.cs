@@ -55,6 +55,37 @@ namespace OrchardPros.Services {
             };
         }
 
+        public StripeToken Token(string code, string grantType = "authorization_code") {
+            using (var httpClient = new HttpClient { BaseAddress = new Uri("https://connect.stripe.com") }) {
+                var config = _configAccessor.GetConfiguration();
+                var result = httpClient.PostAsync("oauth/token", new FormUrlEncodedContent(new Dictionary<string, string> {
+                    {"client_secret", config.SecretKey},
+                    {"code", code},
+                    {"grant_type", grantType}
+                })).Result;
+
+                result.EnsureSuccessStatusCode();
+                var content = result.Content.ReadAsStringAsync().Result;
+                var json = JObject.Parse(content);
+                var error = json.Value<string>("error");
+
+                if (!String.IsNullOrWhiteSpace(error)) {
+                    var errorDescription = json.Value<string>("error_description");
+                    throw new ApplicationException(String.Format("Stripe error: {0}. Description: {1}", error, errorDescription));
+                }
+
+                return new StripeToken {
+                    AccessToken = json.Value<string>("access_token"),
+                    LiveMode = json.Value<bool>("livemode"),
+                    PublishableKey = json.Value<string>("stripe_publishable_key"),
+                    RefreshToken = json.Value<string>("refresh_token"),
+                    Scope = json.Value<string>("scope"),
+                    TokenType = json.Value<string>("token_type"),
+                    UserId = json.Value<string>("stripeuser_id")
+                };
+            }
+        }
+
         void IDisposable.Dispose() {
             if (_httpClient.IsValueCreated) {
                 _httpClient.Value.Dispose();

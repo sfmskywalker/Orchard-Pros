@@ -1,9 +1,9 @@
 ﻿@using Orchard.Utility.Extensions
 @using OrchardPros.Models
 @{
-    var connectedProviders = (IList<UserPayoutProvider>) Model.ConnectedProviders;
-    var allProviders = (IList<PayoutProvider>) Model.AvailableProviders;
-    var availableProviders = allProviders.Where(provider => connectedProviders.All(x => x.ProviderId != provider.Id)).ToArray();
+    var connectedProviders = (IDictionary<string, UserPayoutProvider>) Model.ConnectedProviders;
+    var providerShapes = (IList<dynamic>) Model.AvailableProviders;
+    var availableProviders = providerShapes.Where(provider => connectedProviders.Values.All(x => x.ProviderName != provider.Provider.Name)).ToArray();
 
     Script.Require("ShapesBase");
 }
@@ -11,8 +11,8 @@
     <p>@T("You are connected with the following Payout Providers:")</p>
     <ul>
         @foreach (var connectedProvider in connectedProviders) {
-            var provider = allProviders.Single(x => x.Id == connectedProvider.ProviderId);
-            <li>@provider.Name</li>
+            var provider = providerShapes.Single(x => x.Provider.Name == connectedProvider.Value.ProviderName);
+            <li>@provider.Provider.Name</li>
         }
     </ul>
 }
@@ -21,11 +21,12 @@ else {
 }
 
 @if (availableProviders.Any()) {
-    <p>@T("The following Payput providers are available to link your Orchard Pros account.")</p>
+    <p>@T("The following Payout providers are available to link your Orchard Pros account.")</p>
     <ul class="social-oauth">
-        @foreach (var provider in availableProviders) {
-            <li class="@provider.Name.HtmlClassify()">
-                Connect.
+        @foreach (var providerShape in availableProviders) {
+	        var name = (string) providerShape.Provider.Name;
+            <li class="@name.HtmlClassify()">
+                @Display(providerShape)
             </li>
         }
     </ul>
