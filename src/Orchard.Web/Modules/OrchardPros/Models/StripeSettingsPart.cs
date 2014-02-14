@@ -26,6 +26,16 @@ namespace OrchardPros.Models {
             set { this.Store(x => x.TestPublishableKey, value); }
         }
 
+        public string TestClientId {
+            get { return this.Retrieve(x => x.TestClientId); }
+            set { this.Store(x => x.TestClientId, value); }
+        }
+
+        public string LiveClientId {
+            get { return this.Retrieve(x => x.LiveClientId); }
+            set { this.Store(x => x.LiveClientId, value); }
+        }
+
         public bool Live {
             get { return this.Retrieve(x => x.Live); }
             set { this.Store(x => x.Live, value); }
@@ -37,6 +47,10 @@ namespace OrchardPros.Models {
 
         public string PublishableKey {
             get { return Live ? LivePublishableKey : TestPublishableKey; }
+        }
+
+        public string ClientId {
+            get { return Live ? LiveClientId : TestClientId; }
         }
     }
 }
