@@ -28,6 +28,7 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 .container > .navbar-header { margin-right:50px; }
 .navbar-brand { padding: 0px 15px 0px 0px; }
 .navbar .btn-create-ticket { margin-top:8px; }
+.search-dropdown { width:50%; }
 
 /* Markdown */
 .mdd_editor_wrap { clear: both;margin-top: 30px; }

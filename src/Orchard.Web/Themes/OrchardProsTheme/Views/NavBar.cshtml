@@ -21,12 +21,12 @@
                 <li><a href="@Url.Action("Index", "People", new { area = "OrchardPros" })">@T("People")</a></li>
                 <li><a href="@Url.Action("Index", "Companies", new { area = "OrchardPros" })">@T("Companies")</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right col-lg-4">
                 <li>
 					<form class="navbar-form navbar-left" role="form" method="GET" action="@Url.Action("Index", "Ticket", new { area = "OrchardPros" })">
-				    	<div class="input-group">
+				    	<div class="input-group search-dropdown">
 							<input type="text" class="form-control" placeholder="Search" name="term" value="@Request.QueryString["term"]">
-							<div class="input-group-btn col-lg-3">
+							<div class="input-group-btn">
 								<button type="button" class="btn btn-default btn-submit dropdown-toggle" data-toggle="dropdown">@T("Search") <span class="caret"></span></button>
 				            	<ul class="dropdown-menu pull-right" role="menu">
 				        	      <li><a href="#">All</a></li>
