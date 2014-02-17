@@ -18,6 +18,10 @@ p.small { font-size:10px; }
 input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -ms-border-radius:3px; }
 
 /* Buttons */
+.btn-create-ticket {}
+.btn-solve-ticket {}
+.btn-post {}
+.btn-create-ticket {}
 
 /* Pagers */
 
@@ -25,8 +29,10 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 
 /* Navbar */
 .navbar { background:none; border-bottom:none; }
+.sitebar .navbar-nav > li > a { padding:0px 15px; color:#fff; }
 .container > .navbar-header { margin-right:50px; }
 .navbar-brand { padding: 0px 15px 0px 0px; }
+.navbar-brand .beta { font-size:0.5em; border:1px solid #aaa; color:#aaa; padding:2px; position:relative; top:-6px; left:5px; }
 .navbar .btn-create-ticket { margin-top:8px; }
 .search-dropdown { width:50%; }
 
@@ -91,6 +97,7 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 
 /* Ticket posts */
 article.ticket-post { width:100%; float:left; clear:both; padding:20px 0px; }
+article.ticket-post.solved { border-left: #c9e3a7 10px solid; padding-left:10px; }
 .ticket-summary { float:left; width:70%; }
 .ticket-summary h2, .ticket-summary h3 { margin-top:0px; }
 .category-link { float:left; margin-right:10px; font-size:12px; }
@@ -168,9 +175,10 @@ article.ticket-reply .idplate { float:right; }
 
 /* File Upload */
 #file-upload { text-align:center; border:1px dashed #aaa; background:#fff; margin-top:49px; }
+#file-upload:hover { border:1px dashed #000; }
 
 /* Footer */
-footer { background:#eee; border-top:3px solid #94c74f; margin-top:30px; }
+.footer { background:#eee; border-top:3px solid #94c74f; margin-top:30px; }
 .footer-block { float:left; }
 .footer-block.orchard-network { width:25%; margin-right:20px; }
 .footer-block { width:50%; }
@@ -180,3 +188,17 @@ footer { background:#eee; border-top:3px solid #94c74f; margin-top:30px; }
 .bordered-full { border:1px solid #ddd; }
 .bordered-top-bottom { border-top:1px solid #ddd; border-bottom:1px solid #ddd; }
 .bordered-left-right { border-left:1px solid #ddd; border-right:1px solid #ddd; }
+
+/* Responsive elements */
+/* Mobile */
+@media (max-width: 767px) {
+}
+/* Tablet */
+@media (min-width: 768px) and (max-width: 991px) {
+}
+/* Desktop */
+@media (min-width: 992px) and (max-width: 1199px) {
+}
+/* Large Desktop */
+@media (min-width: 1200px) {
+}
