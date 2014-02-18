@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using NGM.OpenAuthentication.Models;
@@ -31,7 +32,7 @@ namespace OrchardPros.Controllers {
         private readonly ISubscriptionService _subscriptionService;
         private readonly IRepository<Country> _countryRepository;
         private readonly IOpenAuthServices _openAuthServices;
-        private readonly IRepository<PayoutProvider> _payoutProviderRepository;
+        private readonly Lazy<IEnumerable<IPayoutProvider>> _payoutProviders;
 
         public ProfileController(
             IShapeFactory shapeFactory, 
@@ -45,7 +46,7 @@ namespace OrchardPros.Controllers {
             ISubscriptionService subscriptionService, 
             IRepository<Country> countryRepository, 
             IOpenAuthServices openAuthServices, 
-            IRepository<PayoutProvider> payoutProviderRepository) {
+            Lazy<IEnumerable<IPayoutProvider>> payoutProviders) {
 
             New = shapeFactory;
             T = NullLocalizer.Instance;
@@ -59,7 +60,7 @@ namespace OrchardPros.Controllers {
             _subscriptionService = subscriptionService;
             _countryRepository = countryRepository;
             _openAuthServices = openAuthServices;
-            _payoutProviderRepository = payoutProviderRepository;
+            _payoutProviders = payoutProviders;
         }
 
         public Localizer T { get; set; }
@@ -95,8 +96,8 @@ namespace OrchardPros.Controllers {
         public ActionResult PayoutProviders() {
             var user = GetUser();
             var userProfilePart = user.As<UserProfilePart>();
-            var availableProviders = _payoutProviderRepository.Table.ToArray();
-            var connectedProviders = userProfilePart.PayoutProviders.ToArray();
+            var availableProviders = _payoutProviders.Value.Select(x => x.BuildDisplay(New)).ToArray();
+            var connectedProviders = userProfilePart.PayoutProviders;
             var shape = Wrap(New.Profile_PayoutProviders(AvailableProviders: availableProviders, ConnectedProviders: connectedProviders));
             return new ShapeResult(this, shape);
         }

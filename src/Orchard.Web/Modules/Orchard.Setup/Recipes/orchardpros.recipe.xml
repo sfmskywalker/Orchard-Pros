@@ -217,7 +217,7 @@
     <ThemeSiteSettingsPart CurrentThemeName="OrchardProsTheme" />
     <WebSearchSettingsPart />
     <SmtpSettingsPart Address="noreply@orchardpros.net" Host="localhost" Port="25" EnableSsl="false" RequireCredentials="false" UserName="" Password="" />
-    <StripeSettingsPart EndpointUrl="https://api.stripe.com/" LiveSecretKey="sk_live_dxs0V8R7uGYeVMOcAJHm9WcC" TestSecretKey="sk_test_PNCH1IHnneafL8NvQWZnVK2w" LivePublishableKey="pk_live_4xLAX4EhUuS7VpSIRJo8qdmd" TestPublishableKey="pk_test_p1ZgvvsTvnbUNWdO7CBSMeJ6" Live="false" />
+      <StripeSettingsPart EndpointUrl="https://api.stripe.com/" LiveSecretKey="sk_live_dxs0V8R7uGYeVMOcAJHm9WcC" TestSecretKey="sk_test_PNCH1IHnneafL8NvQWZnVK2w" LivePublishableKey="pk_live_4xLAX4EhUuS7VpSIRJo8qdmd" TestPublishableKey="pk_test_p1ZgvvsTvnbUNWdO7CBSMeJ6" TestClientId="ca_3QONsMVA4RBlfyenLEcWj8L6Br4Xs7u6" LiveClientId="ca_3QONgG2BwJHCBbWqHtNYjhdUWbkzWDzZ" Live="false" />
   </Settings>
 
   <Migration features="*" />

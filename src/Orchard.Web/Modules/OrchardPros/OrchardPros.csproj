@@ -124,6 +124,7 @@
     <Content Include="Scripts\tabify.min.js">
       <DependentUpon>tabify.js</DependentUpon>
     </Content>
+    <Content Include="Styles\stripe.css" />
     <Content Include="Styles\admin-tabs.css">
       <DependentUpon>admin-tabs.less</DependentUpon>
     </Content>
@@ -194,11 +195,13 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Drivers\StripeSettingsPartDriver.cs" />
     <Compile Include="Handlers\StripeSettingsPartHandler.cs" />
-    <Compile Include="Models\PayoutProvider.cs" />
+    <Compile Include="Models\StripeToken.cs" />
     <Compile Include="Models\StripeSettingsPart.cs" />
     <Compile Include="Models\Transfer.cs" />
     <Compile Include="Models\TransferStatus.cs" />
     <Compile Include="Models\UserPayoutProvider.cs" />
+    <Compile Include="PayoutProviders\IStripePayoutProvider.cs" />
+    <Compile Include="Services\IPayoutProvider.cs" />
     <Compile Include="Services\ITransactionEventHandler.cs" />
     <Compile Include="Controllers\StripeController.cs" />
     <Compile Include="Controllers\BountyController.cs" />
@@ -206,8 +209,11 @@
     <Compile Include="Models\TransactionContext.cs" />
     <Compile Include="Events\TicketTransactionEventHandler.cs" />
     <Compile Include="Services\ITransferService.cs" />
+    <Compile Include="Services\PayoutProviderBase.cs" />
+    <Compile Include="PayoutProviders\Stripe.cs" />
     <Compile Include="Services\TransactionEventHandlerBase.cs" />
     <Compile Include="Services\TransferService.cs" />
+    <Compile Include="ResourceManifest.cs" />
     <Compile Include="ViewModels\StripeErrorViewModel.cs" />
     <Compile Include="Services\DefaultHandleGenerator.cs" />
     <Compile Include="Services\IHandleGenerator.cs" />
@@ -531,6 +537,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts\StripeSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PayoutProvider-Stripe-Connect.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

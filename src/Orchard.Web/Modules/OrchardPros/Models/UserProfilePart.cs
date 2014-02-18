@@ -91,12 +91,16 @@ namespace OrchardPros.Models {
             }
         }
 
-        public IEnumerable<UserPayoutProvider> PayoutProviders {
+        public IDictionary<string, UserPayoutProvider> PayoutProviders {
             get {
                 var infoSet = this.As<InfosetPart>().Infoset;
                 var providersElement = infoSet.Element.Element("PayoutProviders") ?? new XElement("PayoutProviders");
                 var providerElements = providersElement.Elements("Provider");
-                return providerElements.Select(x => new UserPayoutProvider { ProviderId = x.Attr<int>("ProviderId"), AccessToken = x.Attr("AccessToken")});
+                return providerElements.Select(x => new UserPayoutProvider {
+                    ProviderName = x.Attr("ProviderName"), 
+                    AccessToken = x.Attr("AccessToken"),
+                    RefreshToken = x.Attr("RefreshToken")
+                }).ToDictionary(x => x.ProviderName);
             }
             set {
                 var infoSet = this.As<InfosetPart>().Infoset;
@@ -109,9 +113,10 @@ namespace OrchardPros.Models {
                     return;
 
                 providersElement = new XElement("PayoutProviders", 
-                    value.Select(x => new XElement("Provider", 
-                        new XAttribute("ProviderId", x.ProviderId),
-                        new XAttribute("AccessToken", x.AccessToken))));
+                    value.Values.Select(x => new XElement("Provider", 
+                        new XAttribute("ProviderName", x.ProviderName),
+                        new XAttribute("AccessToken", x.AccessToken),
+                        new XAttribute("RefreshToken", x.RefreshToken))));
 
                 infoSet.Element.Add(providersElement);
             }
@@ -129,6 +134,10 @@ namespace OrchardPros.Models {
 
         public string FullName {
             get { return String.Format("{0} {1}", FirstName, String.IsNullOrWhiteSpace(MiddleName) ? LastName : MiddleName + " " + LastName); }
+        }
+
+        public string FullLastName {
+            get { return String.IsNullOrWhiteSpace(MiddleName) ? LastName : MiddleName + " " + LastName; }
         }
 
         public string DisplayName {
