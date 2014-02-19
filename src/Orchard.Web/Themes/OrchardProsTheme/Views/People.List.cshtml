@@ -1,4 +1,4 @@
-﻿@using Orchard.ContentManagement
+@using Orchard.ContentManagement
 @using Orchard.Security
 @using OrchardPros.Models
 @{
@@ -36,7 +36,6 @@
                     }
                     <!-- Card -->
 						<div class="media">
-							<a href="#" class="pull-left"><img src="@Url.AvatarUrl(user, this, 64)" class="media-object profile-img-m"></a>
 							<ul class="expert-info media-body">
 								<li class="name">@Html.ProfileLink(user)</li>
 								<li class="title">@T("Lv. {0:00} {1}", profile.Level, profile.RankName)</li>
