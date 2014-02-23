@@ -17,9 +17,10 @@
 .navbar-brand { padding: 0px 15px 0px 0px; }
 .navbar-brand .beta { font-size:0.5em; border:1px solid #aaa; color:#aaa; padding:2px; position:relative; top:-6px; left:5px; }
 .navbar > .container .navbar-brand { margin-left:0px; }
-.navbar-default .navbar-nav > li > .btn-create-ticket { color:#fff; margin-top:10px; }
+.navbar-default .navbar-nav > li > .btn-create-ticket { color:#fff; margin-top:10px; margin-right:10px; }
 .navbar-collapse { padding-right:0px; }
 .navbar-form { padding-right:0px; }
+.navbar-right .dropdown-menu { text-align:right; }
 
 /* Type styling */
 body { font-family:'Open Sans', Helvetica, sans-serif; font-size:14px; line-height:1.5em; }
@@ -34,14 +35,18 @@ p.small { font-size:10px; }
 
 /* Form styling */
 input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -ms-border-radius:3px; }
-
-/* Pagers */
+.dropdown-menu { font-size:12px; }
 
 /* Buttons */
 .btn-create-ticket { background:url(../Images/icon-plus.png) #94c74f no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff; }
-.btn-create-ticket:hover { background-color:#c9e3a7 !important; color:#fff !important; }
-.btn-solve-ticket {}
-.btn-post {}
+.btn-solve-ticket { background:url(../Images/icon-check.png) #94c74f no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff; }
+.btn-edit { background:url(../Images/icon-signup.png) #94c74f no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff; }
+
+.btn-post { background:#94c74f; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
+.btn-save { background:#94c74f; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
+.btn-submit { background:#94c74f; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
+.btn-create-ticket:hover, .btn-solve-ticket:hover, .btn-post:hover,
+.btn-save:hover, .btn-edit:hover, .btn-submit:hover { background-color:#c9e3a7 !important; color:#fff !important; }
 
 /* Markdown */
 .mdd_editor_wrap { clear: both;margin-top: 30px; }
@@ -82,26 +87,30 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 .jumbotron.account img { position:absolute; left:40px; bottom:40px; }
 
 /* Header */
-.header { background:#c9e3a7; width:100%; padding:10px 0px; margin-bottom:30px; float:left; clear:both; }
-.header h1 { margin-top:0px; margin-left:20px; }
+.header { background:url(../Images/header-lg.jpg) #c9e3a7 no-repeat right center; width:100%; height:60px; margin-bottom:30px; float:left; clear:both; -moz-border-radius:3px; -webkit-border-radius:3px; -ms-border-radius:3px; border-radius:3px; }
+.header h1 { margin-top:10px; margin-left:20px; }
 
 /* Overlay */
 .overlay {display: none; width:100%; height:100%; background:rgba(0,0,0,0.8); position:fixed; z-index:900; }
 .popup { position:absolute; top:50%; left:50%; width:30%; height:auto; margin-left:-15%; margin-top:-15%; z-index:999; background:#fff; }
 
 /* Sorter */
-.sorter {}
+.sorter { font-size:12px; }
 .sorter .nav-tabs {}
 .sorter .sorter-link { float:right; margin-top:-32px; }
-.sorter .filter-results { float:right; margin-top:-32px; }
-.sorter .filter-results span { margin-left:5px; font-size:12px; }
-.sorter.bottom {}
+.sorter .filter-results { float:right; margin-top:-39px; }
+.sorter .filter-results span { margin-left:5px; font-size:12px; line-height:2.4em; }
+.sorter.bottom { width:100%; margin-top:10px; float:left; clear:both; }
+.sorter.bottom .action-link { margin-right:2em; }
 .sorter.bottom .sorter-link { margin-top:0px; }
 .sorter.bottom .filter-results { margin-top:0px; }
 .sorter.bottom .pagination { margin:0px; }
 
+/* Navtabs */
+.nav-tabs > li > a { color:#555; font-size:12px; }
+
 /* Ticket posts */
-article.ticket-post { width:100%; float:left; clear:both; padding:20px 0px; }
+article.ticket-post { width:100%; float:left; clear:both; padding:20px 0px; border-bottom:1px solid #ddd; }
 article.ticket-post.solved { border-left: #c9e3a7 10px solid; padding-left:10px; }
 .ticket-summary { float:left; width:70%; }
 .ticket-summary h2, .ticket-summary h3 { margin-top:0px; }
@@ -109,15 +118,15 @@ article.ticket-post.solved { border-left: #c9e3a7 10px solid; padding-left:10px;
 .tags { float:left; margin-bottom:10px; }
 .ticket-status { float:right; width:30%; clear:right; }
 .ticket-status ul { list-style:none; padding-left:0px; float:right; clear:both; }
-.ticket-status ul li { width:46px; height:46px; margin-right:3px; background:#eee;  border:1px solid #333; text-align:center; float:left; }
+.ticket-status ul li { width:46px; height:46px; margin-right:5px; background:#eee; text-align:center; float:left; -moz-border-radius:2px; -webkit-border-radius:2px; -ms-border-radius:2px; border-radius:2px; }
 .ticket-status ul li.votes.negative { background:#e3a7a7; }
 .ticket-status ul li.votes.positive { background:#c9e3a7; }
 .ticket-status ul li.views { }
 .ticket-status ul li.replies { margin-right:0px; }
-.ticket-status ul li.replies.solved { background:#94c74f; }
+.ticket-status ul li.replies.solved { background:url(../Images/icon-check.png) right top no-repeat #c9e3a7; }
 .ticket-status ul li span { font-size:10px; line-height:1em; display:block; }
 .ticket-status ul li span.number { margin-top:10px; }
-.ticket-info { width:100%; font-weight:700; font-size:12px; float:left; clear:both; }
+.ticket-info { width:100%; font-size:12px; float:left; clear:both; }
 .ticket-info .ticket-expiration { float:left; margin-right:3em; }
 .ticket-info .ticket-bounty { float:left; margin-right:3em; }
 .ticket-info .ticket-exp { float:left; margin-right:3em; }
@@ -130,11 +139,12 @@ article.ticket-post.solved { border-left: #c9e3a7 10px solid; padding-left:10px;
 article.ticket-reply { width:100%; float:left; clear:both; padding:20px 0px; }
 article.ticket-reply .ticket-status { float:left; width:10%; clear:left; }
 article.ticket-reply .ticket-status ul { float:left; }
-article.ticket-reply .ticket-status .votes { float:none; }
-.ticket-status .rate { width:21px; height:21px; border:none; text-align:center; margin-top:4px; padding:5px; color:#fff; float:left; }
+article.ticket-reply .ticket-status .votes { }
+.ticket-status .rate { width:21px; height:21px; border:none; text-align:center; margin-top:4px; font-size:8px; color:#fff; float:left; }
 .ticket-status .rate.positive { background:#c9e3a7; margin-right:4px; }
 .ticket-status .rate.negative { background:#e3a7a7; }
-article.ticket-reply .ticket-summary { float:right; width:90%; min-height:288px; } 
+.ticket-status .rate a { color:#fff; }
+article.ticket-reply .ticket-summary { float:right; width:90%; min-height:180px; } 
 article.ticket-reply .ticket-info { border-top:1px solid #eee; }
 article.ticket-reply .idplate { float:right; }
 
@@ -146,7 +156,7 @@ article.ticket-reply .idplate { float:right; }
 .ticket-details .ticket-status ul { float:left; }
 .ticket-details .ticket-summary .tags { clear:both; }
 
-.ticket-deadline { border-top:3px solid #eee; border-bottom:3px solid #eee; background:#c9e3a7; text-align:center; }
+.ticket-deadline { background:#c9e3a7; text-align:center; margin:0px 15px 15px 15px; -moz-border-radius:3px; -webkit-border-radius:3px; -ms-border-radius:3px; border-radius:3px; -moz-box-shadow:inset 0px 0px 10px rgba(0,0,0,0.3); -webkit-box-shadow:inset 0px 0px 10px rgba(0,0,0,0.3); box-shadow:inset 0px 0px 10px rgba(0,0,0,0.3); }
 .ticket-deadline h2 { margin-top:0px; }
 .ticket-deadline .ticket-bounty { margin-right:30px; }
 .ticket-deadline .ticket-exp { }
@@ -156,7 +166,7 @@ article.ticket-reply .idplate { float:right; }
 
 /* Blocks */
 .block {}
-.block.create-account {}
+.block.create-account { margin-bottom:30px; }
 .block.quote { background:#94c74f; color:#fff; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -ms-border-radius:3px; }
 .block.quote .dropcap { background:url(../images/left-quote.png) no-repeat left top; width:20px; height:40px; margin-right:10px; float:left; }
 .block.quote blockquote { border:none; }
@@ -173,6 +183,11 @@ article.ticket-reply .idplate { float:right; }
 /* ID Plate */
 .idplate { width:100%; }
 .idplate ul.expert-info { list-style:none; padding-left:0px; }
+.idplate li.title,
+.idplate li.rating,
+.idplate li.activity p,
+.idplate li.experience p,
+.idplate li.achievements p { font-size:12px; margin-bottom:0.25em; }
 
 /* Categories */
 .list-categories { padding-left:20px; margin-bottom:0px; }
@@ -206,4 +221,7 @@ footer { background:#eee; border-top:3px solid #94c74f; margin-top:30px; }
 }
 /* Large Desktop */
 @media (min-width: 1200px) {
+.jumbotron { background:url(../images/jumbotron-lg.jpg) no-repeat center top; }
+.jumbotron h1, .jumbotron .h1 { top:230px; }
+
 }

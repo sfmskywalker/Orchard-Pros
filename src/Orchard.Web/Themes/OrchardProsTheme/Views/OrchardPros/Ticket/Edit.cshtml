@@ -1,4 +1,4 @@
-﻿@model OrchardPros.ViewModels.TicketViewModel
+@model OrchardPros.ViewModels.TicketViewModel
 @{
     Layout.Title = @T("Edit Ticket");
 }
@@ -7,7 +7,7 @@
         @Html.ValidationSummary()
         @Html.EditorForModel()
         <fieldset>
-            <button type="submit" class="btn btn-success btn-submit">@T("Save Ticket")</button>
+            <button type="submit" class="btn btn-success btn-edit">@T("Save Ticket")</button>
             @Html.ActionLink(T("Cancel").ToString(), "Edit", "Ticket", new { Model.Id, Area = "OrchardPros" }, new { @class = "btn btn-default" })
         </fieldset>
     }

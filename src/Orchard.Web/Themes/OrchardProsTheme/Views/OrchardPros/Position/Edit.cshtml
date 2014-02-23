@@ -1,4 +1,4 @@
-﻿@model OrchardPros.ViewModels.PositionViewModel
+@model OrchardPros.ViewModels.PositionViewModel
 @{
     Layout.Title = @T("Create Position");
 }
@@ -6,7 +6,7 @@
 @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", "Position", new { Area = "OrchardPros" }), FormMethod.Post, new { role = "form", @class = "form-horizontal" })) {
     @Html.EditorForModel()
     <fieldset>
-        <button class="btn btn-success btn-save" type="submit" name="submit.Save" value="submit.Save">@T("Save")</button>
+        <button class="btn btn-success btn-edit" type="submit" name="submit.Save" value="submit.Save">@T("Save")</button>
         @Html.Link(T("Cancel").ToString(), Url.Profile(Model.User), new { @class = "btn btn-default" })
     </fieldset>
 }
