@@ -1,4 +1,4 @@
-﻿@using OrchardPros.ViewModels
+@using OrchardPros.ViewModels
 @{
     var model = (SignUpViewModel) Model.Model;
 }
@@ -22,7 +22,7 @@
             @Html.PasswordFor(m => model.PasswordRepeat, new { @class = "form-control", placeholder = T("Repeat your password").ToString() })
         </div>
         <div>
-            <button type="submit" class="btn btn-primary btn-lg">@T("Sign Up")</button>
+            <button type="submit" class="btn btn-primary btn-lg">@T("Sign up")</button>
         </div>
     </fieldset>
 }
