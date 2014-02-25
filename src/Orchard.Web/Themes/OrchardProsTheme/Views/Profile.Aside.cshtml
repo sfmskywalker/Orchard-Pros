@@ -7,7 +7,7 @@
     var profilePart = user.As<UserProfilePart>();
 }
 <aside>
-    <div class="panel panel-default idplate">
+    <div class="panel panel-default profile idplate">
         <div class="panel-heading">
             <h3 class="panel-title">@T("Info")</h3>
         </div>
@@ -27,7 +27,7 @@
         </div>
         <div class="panel-body">
             <ul class="expert-info">
-                <li class="activity bordered-top-bottom">
+                <li class="activity">
                     <h4>Activity</h4>
                     <p>@T("Active since {0}", profilePart.CreatedUtc.ToString("D", CultureInfo.InvariantCulture))</p>
                     <p>@T("Replies: {0}", profilePart.Replies.Count())</p>

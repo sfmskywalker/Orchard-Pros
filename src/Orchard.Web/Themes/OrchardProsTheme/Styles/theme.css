@@ -34,16 +34,18 @@ p { font-size:14px; margin-bottom:1em; }
 p.small { font-size:10px; }
 
 /* Form styling */
+label { font-weight:normal; }
 input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -ms-border-radius:3px; }
 .dropdown-menu { font-size:12px; }
 
 /* Buttons */
+.btn-submit { background:#94c74f; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
 .btn-create-ticket { background:url(../Images/icon-plus.png) #94c74f no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff; }
 .btn-solve-ticket { background:url(../Images/icon-check.png) #94c74f no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff; }
 .btn-edit { background:url(../Images/icon-signup.png) #f3b735 no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff; }
 .btn-post { background:url(../Images/icon-signin.png) #94c74f no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
-.btn-save { background:#94c74f; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
-.btn-submit { background:#94c74f; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
+.btn-save { background:url(../Images/icon-save.png) #94c74f no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
+.btn-remove { background:url(../Images/icon-remove.png) #c74f4f no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
 .btn-signin { background:url(../Images/icon-signin.png) #aaa no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
 .btn-upload { background:url(../Images/icon-upload.png) #aaa no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
 .btn-create-account { background:url(../Images/icon-signin.png) #f3b735 no-repeat 10px center; border:none; padding:5px 20px 5px 40px !important; color:#fff;}
@@ -51,6 +53,7 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 .btn-save:hover, .btn-submit:hover, .btn-signin:hover, .btn-create-account:hover { background-color:#c9e3a7 !important; color:#fff !important; }
 .btn-upload:hover, .btn-signin:hover { background-color:#ccc !important; color:#fff !important; }
 .btn-edit:hover, .btn-create-account:hover { background-color:#f2d087 !important; color:#fff !important; }
+.btn-remove:hover { background-color:#e3a7a7 !important; color:#fff !important; }
 
 /* Markdown */
 .mdd_editor_wrap { clear: both;margin-top: 30px; }
@@ -178,12 +181,22 @@ article.ticket-reply .idplate { float:right; }
 .block.quote .quote-author { text-align:right; color:#fff; }
 .block.tagcloud {}
 .block.tagcloud a { text-decoration:none; }
+/* Currently not in use
 .block.filters {}
 .block.filters .btn-group { width:100%; margin-bottom:5px; }
 .block.filters .btn { width:100%; text-align:left; }
 .block.filters .caret-container { position:absolute; top:0px; right:0px; border-left:1px solid #eee; padding:0px 15px; height:100%; }
 .block.filters .caret { position:relative; top:5px; }
 .block.filters .dropdown { width:100%; }
+*/
+
+/* Filters */
+.filters { width:100%; margin-bottom:30px; background:#eee; float:left; clear:both; -moz-border-radius:3px; -webkit-border-radius:3px; -ms-border-radius:3px; border-radius:3px; }
+.filters ul { list-style:none; margin:10px 0px; padding-left:10px; float:left; clear:both; }
+.filters li.filter { float:left; margin-right:20px; padding:5px; background:#f2d087; border:1px solid #aaa; -moz-border-radius:3px; -webkit-border-radius:3px; -ms-border-radius:3px; border-radius:3px; }
+.filters li.filter:hover { background:#ccc; }
+.filters li.filter span.glyphicon { margin-left:10px; }
+.filters li.filter a { color:#fff; text-decoration:none; }
 
 /* ID Plate */
 .idplate { width:100%; }
@@ -202,6 +215,31 @@ article.ticket-reply .idplate { float:right; }
 #file-upload { text-align:center; border:1px dashed #aaa; background:#fff; margin-top:49px; }
 #file-upload:hover { border:1px dashed #000; }
 
+/* Profile */
+.profile.idplate .panel-body { border-bottom:1px solid #ddd; padding:5px 15px; }
+.profile-title, .profile-summary, .profile-experience, .profile-skills, .profile-recommendations,
+.profile-account, .profile-personal-details, .profile-avatar, .profile-wallpaper, .profile-notifications, .profile-payment 
+{ border-bottom:1px solid #ddd; padding-bottom:10px; margin-bottom:30px; }
+
+.profile-title h2 { background:url(../Images/icon-title.png) no-repeat left center; }
+.profile-summary h2 { background:url(../Images/icon-summary.png) no-repeat left center; }
+.profile-experience h2 { background:url(../Images/icon-experience.png) no-repeat left center; }
+.profile-skills h2 { background:url(../Images/icon-skills.png) no-repeat left center; }
+.profile-recommendations h2 { background:url(../Images/icon-recommendations.png) no-repeat left center; }
+.profile-account h2 { background:url(../Images/icon-profile-settings.png) no-repeat left center; }
+.profile-personal-details h2 { background:url(../Images/icon-title.png) no-repeat left center; }
+.profile-avatar h2 { background:url(../Images/icon-image.png) no-repeat left center; }
+.profile-wallpaper h2 { background:url(../Images/icon-image.png) no-repeat left center; }
+.profile-notifications h2 { background:url(../Images/icon-notifications.png) no-repeat left center; }
+.profile-payment h2 { background:url(../Images/icon-payment.png) no-repeat left center; }
+
+.profile-title h2, .profile-summary h2, .profile-experience h2, .profile-skills h2, .profile-recommendations h2,
+.profile-account h2, .profile-personal-details h2, .profile-avatar h2, .profile-wallpaper h2, .profile-notifications h2, .profile-payment h2 
+{ padding-left:40px; line-height:2.5em; }
+.list-jobs { list-style:none; padding-left:0px; }
+.list-skills { list-style:none; padding-left:0px; }
+.profile-actions a { font-size:12px; margin-right:1em; }
+
 /* Footer */
 footer { background:#eee; border-top:3px solid #94c74f; margin-top:30px; }
 .footer-block { float:left; }
@@ -213,6 +251,9 @@ footer { background:#eee; border-top:3px solid #94c74f; margin-top:30px; }
 .bordered-full { border:1px solid #ddd; }
 .bordered-top-bottom { border-top:1px solid #ddd; border-bottom:1px solid #ddd; }
 .bordered-left-right { border-left:1px solid #ddd; border-right:1px solid #ddd; }
+.no-border { border:0px !important; }
+.no-padding { padding:0px !important; }
+.no-margin { margin:0px !important; }
 
 /* Responsive elements */
 /* Mobile */

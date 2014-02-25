@@ -1,4 +1,4 @@
-﻿@using Orchard.ContentManagement
+@using Orchard.ContentManagement
 @using Orchard.Security
 @using OrchardPros.Models
 @using OrchardPros.ViewModels
@@ -69,7 +69,7 @@
     </article>
     <article class="profile-avatar">
         <h2>@T("Avatar")</h2>
-        <div class="form-group">
+        <div class="form-group no-margin">
             <label class="radio-inline">
                 <input type="radio" name="@Html.FieldNameFor(m => accountSettings.AvatarType)" value="@AvatarType.Gravatar" @if (accountSettings.AvatarType == AvatarType.Gravatar) { <text> checked="checked" </text>    } />
                 @T("Gravatar")
@@ -79,11 +79,11 @@
                 @T("Uploaded Picture")
             </label>
         </div>
-        <div class="form-group @if(accountSettings.AvatarType == AvatarType.Gravatar){<text>hidden</text>}" data-controller="avatar-type-localstorage">
+        <div class="form-group no-margin @if(accountSettings.AvatarType == AvatarType.Gravatar){<text>hidden</text>}" data-controller="avatar-type-localstorage">
             @if (profile.AvatarField.MediaParts.Any()) {
                 var mediaPart = profile.AvatarField.MediaParts.First();
                 <img id="current-avatar" src="@mediaPart.MediaUrl" width="128" height="128" />
-                <button type="button" id="delete-avatar" class="btn btn-default" data-state-field="@Html.FieldIdFor(m => accountSettings.DeleteAvatar)">@T("Delete")</button>
+                <button type="button" id="delete-avatar" class="btn btn-default btn-remove" data-state-field="@Html.FieldIdFor(m => accountSettings.DeleteAvatar)">@T("Delete")</button>
                 @Html.HiddenFor(m => accountSettings.DeleteAvatar)
                 <p id="avatar-removed-hint" class="alert alert-info hidden">@T("You need to save your changes for this change to take effect.")</p>
             }
@@ -92,11 +92,11 @@
     </article>
     <article class="profile-wallpaper">
         <h2>@T("Wallpaper")</h2>
-        <div class="form-group">
+        <div class="form-group no-margin">
             @if (profile.WallpaperField.MediaParts.Any()) {
                 var mediaPart = profile.WallpaperField.MediaParts.First();
                 <img id="current-wallpaper" src="@mediaPart.MediaUrl" width="256" height="128" />
-                <button type="button" id="delete-wallpaper" class="btn btn-default" data-state-field="@Html.FieldIdFor(m => accountSettings.DeleteWallpaper)">@T("Delete")</button>
+                <button type="button" id="delete-wallpaper" class="btn btn-default btn-remove" data-state-field="@Html.FieldIdFor(m => accountSettings.DeleteWallpaper)">@T("Delete")</button>
                 @Html.HiddenFor(m => accountSettings.DeleteWallpaper)
                 <p id="wallpaper-removed-hint" class="alert alert-info hidden">@T("You need to save your changes for this change to take effect.")</p>
             }
@@ -122,7 +122,7 @@ notificationIndex++;
         <p>Link your Paypal account to receive and transfer bounty payments.</p>
         <p>Paypal logo and API go here</p>
     </article>
-    <div class="form-group">
+    <div class="form-group no-margin">
         <button type="submit" class="btn btn-success btn-save">@T("Save Settings")</button>
     </div>
 }
