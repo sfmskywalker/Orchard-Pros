@@ -22,6 +22,12 @@
     }
     else {
         <div class="sorter">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#">Activity</a></li>
+                <li><a href="#">Registration date</a></li>
+                <li><a href="#">Name</a></li>
+                <li><a href="#">Experience</a></li>
+            </ul>
             @PageSizes()
         </div>
         foreach (var user in users) {
@@ -29,30 +35,43 @@
             var userUrl = Url.Profile(user);
             <article class="user">
                 <div class="user-summary">
-                    <h2><a href="@userUrl">@profile.DisplayName</a></h2>
-                    <a href="@userUrl"><img src="@Url.AvatarUrl(user, this, 128)" /></a>
-                    @if (profile.Country != null) {
-                        <a href="@Url.Action("Index", "People", new {countryCode = profile.Country.Code})" class="country-link">@profile.Country.Name</a>
-                    }
                     <!-- Card -->
-						<div class="media">
-							<ul class="expert-info media-body">
-								<li class="name">@Html.ProfileLink(user)</li>
-								<li class="title">@T("Lv. {0:00} {1}", profile.Level, profile.RankName)</li>
-								<li class="rating">
-									@for (var i = 0; i < profile.Rating; i++) {
-										<span class="glyphicon glyphicon-star"></span>
-									}
-								</li>
-								<li class="experience">
-									<h4>@T("Experience")</h4>
-									<p>@T("Total EXP: {0}", profile.ExperiencePoints)</p>
-									<p>@T("EXP earned this week: {0}", profile.ExperiencePoints)</p>
-								</li>
-							</ul>
-						</div>
+                    <div class="panel panel-default idplate">
+                        <div class="panel-body">
+                            <div class="media">
+                                <a href="@userUrl" class="pull-left"><img src="@Url.AvatarUrl(user, this, 64)" class="media-object profile-img-m"></a>
+                                @if (profile.Country != null) {
+                                    <a href="@Url.Action("Index", "People", new {countryCode = profile.Country.Code})" class="country-link">@profile.Country.Name</a>
+                                }
+                                <ul class="expert-info media-body people">
+                                    <li class="name">@Html.ProfileLink(user)</li>
+                                    <li class="title">@T("Lv. {0:00} {1}", profile.Level, profile.RankName)</li>
+                                    <li class="rating">
+                                        @for (var i = 0; i < profile.Rating; i++) {
+                                            <span class="glyphicon glyphicon-star"></span>
+                                        }
+                                    </li>
+                                    <li class="experience">
+                                        <p>@T("Total EXP: {0}", profile.ExperiencePoints)</p>
+                                    </li>
+                                    <li class="achievements">
+                                        <p>
+                                            <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                            <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                            <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                            <img src="~/themes/orchardprostheme/images/temp-icon-achievement.png" class="icon-achievement" alt="Achievement">
+                                        </p>
+                                    </li>
+                                </ul>
+                                <ul class="expert-info people expanded">
+                                    <li class="title">Jobtitle</li>
+                                    <li class="area">Amsterdam area, The Netherlands</li>
+                                    <li class="summary"><p>Lorem ipsum dolor sit amet, pri eros semper assueverit ad. Vel ei nisl iudico essent, minim doming inimicus sea in, falli mazim ea ius.</p></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div> <!-- /.panel -->
                     <!-- End Card -->
-                    
                 </div>
             </article>
         }

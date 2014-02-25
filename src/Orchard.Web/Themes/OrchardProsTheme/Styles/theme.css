@@ -32,6 +32,8 @@ h3, .h3 { font-size:16px; }
 h4, .h4 { font-size:14px; }
 p { font-size:14px; margin-bottom:1em; }
 p.small { font-size:10px; }
+a { color:#4f87c7; }
+a:hover { color:#b7cde5; text-decoration:none; }
 
 /* Form styling */
 label { font-weight:normal; }
@@ -101,7 +103,7 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 .popup { position:absolute; top:50%; left:50%; width:30%; height:auto; margin-left:-15%; margin-top:-15%; z-index:999; background:#fff; -moz-border-radius:3px; -webkit-border-radius:3px; -ms-border-radius:3px; border-radius:3px; }
 
 /* Sorter */
-.sorter { font-size:12px; }
+.sorter { font-size:12px; width:100%; }
 .sorter .nav-tabs {}
 .sorter .sorter-link { float:right; margin-top:-32px; }
 .sorter .filter-results { float:right; margin-top:-39px; }
@@ -200,12 +202,17 @@ article.ticket-reply .idplate { float:right; }
 
 /* ID Plate */
 .idplate { width:100%; }
-.idplate ul.expert-info { list-style:none; padding-left:0px; }
+.idplate ul.expert-info { list-style:none; padding-left:0px; float:left; }
+.idplate ul.expert-info.people { width:20%; }
+.idplate ul.expert-info.people.expanded { width:60%; }
 .idplate li.title,
 .idplate li.rating,
 .idplate li.activity p,
 .idplate li.experience p,
-.idplate li.achievements p { font-size:12px; margin-bottom:0.25em; }
+.idplate li.achievements p, 
+.idplate li.area,
+.idplate li.summary p { font-size:12px; margin-bottom:0.25em; }
+.idplate li.area { font-size:10px; }
 
 /* Categories */
 .list-categories { padding-left:20px; margin-bottom:0px; }
@@ -240,10 +247,19 @@ article.ticket-reply .idplate { float:right; }
 .list-skills { list-style:none; padding-left:0px; }
 .profile-actions a { font-size:12px; margin-right:1em; }
 
+/* People */
+article.user { margin-top:20px; }
+
+/* Companies */
+article.company { margin-top:20px; }
+
 /* Footer */
 footer { background:#eee; border-top:3px solid #94c74f; margin-top:30px; }
+footer .list { padding-left:0px; list-style:none; }
+footer .list a { color:#333; font-size:12px; text-decoration:none; }
+footer .list a:hover { color:#4f87c7; }
 .footer-block { float:left; }
-.footer-block.orchard-network { width:25%; margin-right:20px; }
+.footer-block.orchard-network { width:33%; margin-right:20px; }
 .footer-block { width:50%; }
 
 /* Helpers */
