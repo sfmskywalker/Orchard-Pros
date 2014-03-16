@@ -1,7 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using Orchard.ContentManagement;
 using Orchard.Mvc.Html;
 using Orchard.Security;
 using OrchardPros.Models;
@@ -10,9 +9,9 @@ namespace OrchardPros.Helpers {
     public static class HtmlExtensions {
         public const string Area = "OrchardPros";
 
-        public static IHtmlString ProfileLink(this HtmlHelper html, IUser user, object htmlAttributes = null) {
+        public static IHtmlString ProfileLink(this HtmlHelper html, IUser user, string displayName = null, object htmlAttributes = null) {
             var userName = user != null ? user.UserName : "#removed";
-            var displayName = user != null ? user.As<UserProfilePart>().DisplayName : "Removed";
+            displayName = displayName == null && user != null ? user.UserName : "Removed";
             return html.ProfileLink(displayName, userName, htmlAttributes);
         }
 

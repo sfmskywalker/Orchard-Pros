@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /* Theme styling for Orchard Pros */
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,700,300);
@@ -206,6 +206,7 @@ article.ticket-reply .idplate { float:right; }
 .idplate ul.expert-info.people { width:20%; }
 .idplate ul.expert-info.people.expanded { width:60%; }
 .idplate li.title,
+.idplate li.member-since,
 .idplate li.rating,
 .idplate li.activity p,
 .idplate li.experience p,

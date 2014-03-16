@@ -81,9 +81,7 @@ namespace OrchardPros.Drivers {
             partElement.Add(CreatePositionsElement(part));
             partElement.Add(CreateSkillsElement(part));
             partElement.Add(CreateExperiencesElement(part));
-
-            if(!String.IsNullOrWhiteSpace(part.Bio))
-                partElement.SetValue(part.Bio);
+            partElement.Add(CreateBioElement(part));
         }
 
         protected override void Importing(UserProfilePart part, ImportContentContext context) {
@@ -168,6 +166,10 @@ namespace OrchardPros.Drivers {
                         new XAttribute("LocalPositionId", experience.Position.Id),
                         new XAttribute("CreatedUtc", experience.CreatedUtc),
                         new XText(experience.Description))));
+        }
+
+        private XElement CreateBioElement(UserProfilePart part) {
+            return new XElement("Bio", part.Bio);
         }
 
         private XElement CreateSkillsElement(UserProfilePart part) {

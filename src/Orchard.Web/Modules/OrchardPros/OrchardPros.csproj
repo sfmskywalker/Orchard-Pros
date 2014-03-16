@@ -193,6 +193,11 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BioController.cs" />
+    <Compile Include="Models\PeopleCriteria.cs" />
+    <Compile Include="Services\IPeopleService.cs" />
+    <Compile Include="Services\PeopleService.cs" />
+    <Compile Include="ViewModels\BioViewModel.cs" />
     <Compile Include="Drivers\StripeSettingsPartDriver.cs" />
     <Compile Include="Handlers\StripeSettingsPartHandler.cs" />
     <Compile Include="Models\StripeToken.cs" />
@@ -540,6 +545,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\PayoutProvider-Stripe-Connect.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Bio\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\BioViewModel.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

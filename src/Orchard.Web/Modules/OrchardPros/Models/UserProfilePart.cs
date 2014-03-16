@@ -123,8 +123,8 @@ namespace OrchardPros.Models {
         }
 
         public DateTime CreatedUtc {
-            get { return this.Retrieve(x => x.CreatedUtc); }
-            set { this.Store(x => x.CreatedUtc, value); }
+            get { return Retrieve(x => x.CreatedUtc).GetValueOrDefault(); }
+            set { Store(x => x.CreatedUtc, value); }
         }
 
         public DateTime? LastLoggedInUtc {
@@ -157,6 +157,11 @@ namespace OrchardPros.Models {
             set { Store(x => x.ExperiencePoints, value); }
         }
 
+        public int ActivityPoints {
+            get { return Retrieve(x => x.ActivityPoints); }
+            set { Store(x => x.ActivityPoints, value); }
+        }
+
         public int Rating {
             get { return RatingField.Value; }
         }
@@ -187,6 +192,11 @@ namespace OrchardPros.Models {
 
         public IEnumerable<TicketPart> SolvedTickets {
             get { return SolvedTicketsField.Value; }
+        }
+
+        public Position LatestPosition() {
+            var position = Positions.OrderByDescending(x => x.PeriodStartYear).ThenByDescending(x => x.PeriodStartMonth).ThenByDescending(x => x.IsCurrentPosition).FirstOrDefault();
+            return position;
         }
     }
 }

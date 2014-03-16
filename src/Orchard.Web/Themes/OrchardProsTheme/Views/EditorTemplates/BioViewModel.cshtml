@@ -1,0 +1,8 @@
+﻿@model OrchardPros.ViewModels.BioViewModel
+<fieldset>
+    <div class="form-group">
+        <div class="col-sm-12">
+            @Html.EditorFor(m => m.Bio, new { Placeholder = T("Tell us something about your self.").Text })
+        </div>
+    </div>
+</fieldset>

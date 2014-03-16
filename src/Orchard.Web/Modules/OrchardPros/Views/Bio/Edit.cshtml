@@ -1,0 +1,12 @@
+﻿@model OrchardPros.ViewModels.BioViewModel
+@{
+    Layout.Title = @T("Edit Bio");
+}
+@Html.ValidationSummary()
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.EditorForModel()
+    <fieldset>
+        <button class="primaryAction" type="submit" name="submit.Save" value="submit.Save">@T("Save")</button>
+        @Html.ActionLink(T("Cancel").ToString(), "Edit", "Admin", new { Model.Profile.Id, Area = "Orchard.Users" }, new { @class = "button" })
+    </fieldset>
+}

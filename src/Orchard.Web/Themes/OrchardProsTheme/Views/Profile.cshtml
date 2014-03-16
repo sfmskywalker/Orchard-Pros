@@ -26,6 +26,9 @@
 <article class="profile-summary">
     <h2>@T("Summary")</h2>
     <p>@userProfilePart.Bio</p>
+    @if (canEditProfile) {
+        <a class="btn btn-default btn-sm" href="@Url.Action("Edit", "Bio", new {area = "OrchardPros"})">@T("Edit Bio")</a>
+    }
 </article>
 <article class="profile-experience">
     <h2>@T("Positions")</h2>

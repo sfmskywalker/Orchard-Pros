@@ -6,7 +6,6 @@ using Orchard.Caching;
 using Orchard.ContentManagement;
 using Orchard.Core.Common.Models;
 using Orchard.Data;
-using Orchard.Search.Models;
 using Orchard.Search.Services;
 using Orchard.Security;
 using Orchard.Services;
@@ -146,12 +145,12 @@ namespace OrchardPros.Services {
 
             if (categoryId != null) {
                 var category = String.Format("|{0}|", categoryId);
-                commonQuery = baseQuery.Where<TicketPartRecord>(x => x.Categories.Contains(category)).Join<CommonPartRecord>();
+                commonQuery = commonQuery.Where<TicketPartRecord>(x => x.Categories.Contains(category)).Join<CommonPartRecord>();
             }
 
             if (tagId != null) {
                 var tag = String.Format("|{0}|", tagId);
-                commonQuery = baseQuery.Where<TicketPartRecord>(x => x.Tags.Contains(tag)).Join<CommonPartRecord>();
+                commonQuery = commonQuery.Where<TicketPartRecord>(x => x.Tags.Contains(tag)).Join<CommonPartRecord>();
             }
 
             var ticketsQuery = commonQuery;

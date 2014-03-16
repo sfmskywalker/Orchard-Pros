@@ -19,10 +19,10 @@ namespace OrchardPros.Controllers {
         private readonly INotifier _notifier;
         private readonly IOrchardServices _services;
 
-        public SkillController(ISkillManager skillManager, INotifier notifier, IOrchardServices services) {
+        public SkillController(ISkillManager skillManager, IOrchardServices services) {
             _contentManager = services.ContentManager;
             _skillManager = skillManager;
-            _notifier = notifier;
+            _notifier = services.Notifier;
             _services = services;
             T = NullLocalizer.Instance;
         }

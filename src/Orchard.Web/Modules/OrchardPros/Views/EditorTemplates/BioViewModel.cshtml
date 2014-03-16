@@ -1,0 +1,7 @@
+﻿@model OrchardPros.ViewModels.BioViewModel
+<fieldset>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Bio, T("Bio"))
+        @Html.TextAreaFor(m => m.Bio, new { @class = "text large" })
+    </div>
+</fieldset>

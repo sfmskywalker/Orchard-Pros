@@ -23,16 +23,17 @@
     else {
         <div class="sorter">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#">Activity</a></li>
-                <li><a href="#">Registration date</a></li>
-                <li><a href="#">Name</a></li>
-                <li><a href="#">Experience</a></li>
+                <li class="active"><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.Activity, area = "OrchardPros" })">@T("Activity")</a></li>
+                <li><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.RegistrationDate, area = "OrchardPros" })">@T("Registration date")</a></li>
+                <li><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.Name, area = "OrchardPros" })">@T("Name")</a></li>
+                <li><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.Experience, area = "OrchardPros" })">@T("Experience")</a></li>
             </ul>
             @PageSizes()
         </div>
         foreach (var user in users) {
             var profile = user.As<UserProfilePart>();
             var userUrl = Url.Profile(user);
+            var latestPosition = profile.LatestPosition();
             <article class="user">
                 <div class="user-summary">
                     <!-- Card -->
@@ -64,9 +65,14 @@
                                     </li>
                                 </ul>
                                 <ul class="expert-info people expanded">
-                                    <li class="title">Jobtitle</li>
-                                    <li class="area">Amsterdam area, The Netherlands</li>
-                                    <li class="summary"><p>Lorem ipsum dolor sit amet, pri eros semper assueverit ad. Vel ei nisl iudico essent, minim doming inimicus sea in, falli mazim ea ius.</p></li>
+                                    @if (latestPosition != null) {
+                                        <li class="title">@latestPosition.Title</li>
+                                        <li class="area">@latestPosition.Location</li>
+                                    }
+                                    <li class="member-since">@T("Member since {0:MM/dd/yyyy}", profile.CreatedUtc)</li>
+                                    @if (!String.IsNullOrWhiteSpace(profile.Bio)) {
+                                        <li class="summary">@profile.Bio</li>
+                                    }
                                 </ul>
                             </div>
                         </div>

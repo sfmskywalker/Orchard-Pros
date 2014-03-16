@@ -114,7 +114,9 @@ namespace OrchardPros {
             SchemaBuilder.CreateTable("UserProfilePartRecord", table => table
                 .ContentPartRecord()
                 .Column<int>("CountryId")
-                .Column<int>("ExperiencePoints", c => c.NotNull()));
+                .Column<int>("ExperiencePoints", c => c.NotNull())
+                .Column<int>("ActivityPoints", c => c.NotNull())
+                .Column<DateTime>("CreatedUtc"));
 
             ContentDefinitionManager.AlterPartDefinition("UserProfilePart", part => part
                 .WithDescription("Stores professional background information about a user"));
