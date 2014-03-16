@@ -11,8 +11,10 @@ namespace Orchard.Settings {
         string SuperUser { get; }
         string HomePage { get; set; }
         string SiteCulture { get; set; }
+        string SiteCalendar { get; set; }
         ResourceDebugMode ResourceDebugMode { get; set; }
         int PageSize { get; set; }
+        int MaxPageSize { get; set; }
         string BaseUrl { get; }
         string SiteTimeZone { get; }
     }

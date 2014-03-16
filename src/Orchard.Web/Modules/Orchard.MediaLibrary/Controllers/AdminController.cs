@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Web.Mvc;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Localization;
 using Orchard.Logging;
 using Orchard.MediaLibrary.Models;
@@ -12,7 +11,6 @@ using Orchard.Mvc;
 using Orchard.Themes;
 using Orchard.UI.Navigation;
 using Orchard.ContentManagement.MetaData;
-using System.Collections.Generic;
 using Orchard.Validation;
 
 namespace Orchard.MediaLibrary.Controllers {
@@ -50,8 +48,8 @@ namespace Orchard.MediaLibrary.Controllers {
             
             var viewModel = new MediaManagerIndexViewModel {
                 DialogMode = dialog,
-                Folders = _mediaLibraryService.GetMediaFolders(null).Select(GetFolderHierarchy),
                 FolderPath = folderPath,
+                ChildFoldersViewModel = new MediaManagerChildFoldersViewModel{Children = _mediaLibraryService.GetMediaFolders(null)},
                 MediaTypes = _mediaLibraryService.GetMediaTypes(),
                 CustomActionsShapes = explorerShape.Actions,
                 CustomNavigationShapes = explorerShape.Navigation,
@@ -98,6 +96,20 @@ namespace Orchard.MediaLibrary.Controllers {
                 MediaItemsCount = mediaPartsCount
             };
 
+            return View(viewModel);
+        }
+
+        [Themed(false)]
+        public ActionResult ChildFolders(string folderPath = null) {
+            if (!Services.Authorizer.Authorize(Permissions.ManageMediaContent, T("Cannot get child folder listing")))
+                return new HttpUnauthorizedResult();
+
+            var viewModel = new MediaManagerChildFoldersViewModel {
+                Children = _mediaLibraryService.GetMediaFolders(folderPath)
+            };
+
+            Response.ContentType = "text/json";
+            
             return View(viewModel);
         }
 

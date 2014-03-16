@@ -63,6 +63,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\windowsazure\Microsoft.ApplicationServer.Caching.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\windowsazure\Microsoft.Data.Services.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\windowsazure\Microsoft.WindowsAzure.Configuration.dll</HintPath>
@@ -74,6 +79,7 @@
     <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\windowsazure\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -84,6 +90,8 @@
       <HintPath>..\..\..\..\lib\nhibernate\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
@@ -93,6 +101,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\Environment\Configuration\DefaultPlatformConfigurationAccessor.cs" />
+    <Compile Include="Services\Environment\Configuration\IPlatformConfigurationAccessor.cs" />
     <Compile Include="Services\TaskLease\AzureMachineNameProvider.cs" />
     <Content Include="Web.config" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,7 +132,6 @@
     <Compile Include="Services\Caching\Output\AzureOutputCacheStorageProvider.cs" />
     <Compile Include="Services\Caching\Output\IAzureOutputCacheHolder.cs" />
     <Compile Include="Services\Environment\Configuration\AzureBlobShellSettingsManager.cs" />
-    <Compile Include="Services\Environment\Configuration\PlatformConfiguration.cs" />
     <Compile Include="Services\FileSystems\AzureFileSystem.cs" />
     <Compile Include="Services\FileSystems\CloudBlobContainerExtensions.cs" />
     <Compile Include="Services\FileSystems\Media\AzureBlobStorageProvider.cs" />
