@@ -38,6 +38,7 @@ namespace OrchardPros.Controllers {
                 Users: users,
                 Countries: countries,
                 Country: country,
+                Criteria: criteria,
                 Pager: pagerShape);
 
             return View(viewModel);

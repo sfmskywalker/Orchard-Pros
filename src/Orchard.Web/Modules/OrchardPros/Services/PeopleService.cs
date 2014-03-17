@@ -52,9 +52,9 @@ namespace OrchardPros.Services {
             }
 
             var peopleQuery = commonQuery;
+            var totalCount = peopleQuery.Count();
             var pagedQuery = skip != null && take != null ? peopleQuery.Slice(skip.Value, take.Value) : peopleQuery.List();
             var people = pagedQuery.ToArray();
-            var totalCount = skip == null || take == null ? people.Length : peopleQuery.List().Count();
 
             return people.Select(x => x.As<IUser>()).ToPagedList(totalCount);
         }

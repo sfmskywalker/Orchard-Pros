@@ -154,9 +154,9 @@ namespace OrchardPros.Services {
             }
 
             var ticketsQuery = commonQuery;
+            var totalCount = ticketsQuery.Count();
             var pagedQuery = skip != null && take != null ? ticketsQuery.Slice(skip.Value, take.Value) : ticketsQuery.List();
             var tickets = pagedQuery.ToArray();
-            var totalCount = skip == null || take == null ? tickets.Length : ticketsQuery.List().Count();
 
             return tickets.ToPagedList(totalCount);
         }

@@ -4,14 +4,17 @@
 @{
     var users = (IList<IUser>)Model.Users;
     var pager = Model.Pager;
+    var criteria = (PeopleCriteria)Model.Criteria;
 }
 @helper PageSizes() {
     var pager = Model.Pager;
     var country = (Country)Model.Country;
+    var criteria = (PeopleCriteria)Model.Criteria;
+    
     var pageSizes = new[] { 10, 20, 50 };
     <div class="btn-group btn-group-sm filter-results">
         @foreach (var pageSize in pageSizes) {
-            <a href="@Url.Action("Index", "People", new { countryCode = country != null ? country.Code : default(string), pageSize = pageSize, })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
+            <a href="@Url.Action("Index", "People", new { countryCode = country != null ? country.Code : default(string), pageSize = pageSize, criteria = criteria })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
         }
         <span>@T("per page")</span>
     </div>
@@ -23,10 +26,10 @@
     else {
         <div class="sorter">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.Activity, area = "OrchardPros" })">@T("Activity")</a></li>
-                <li><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.RegistrationDate, area = "OrchardPros" })">@T("Registration date")</a></li>
-                <li><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.Name, area = "OrchardPros" })">@T("Name")</a></li>
-                <li><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.Experience, area = "OrchardPros" })">@T("Experience")</a></li>
+                <li @if (criteria == PeopleCriteria.Activity) { <text> class="active" </text> }><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.Activity, area = "OrchardPros" })">@T("Activity")</a></li>
+                <li @if (criteria == PeopleCriteria.RegistrationDate) { <text> class="active" </text>  }><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.RegistrationDate, area = "OrchardPros" })">@T("Registration date")</a></li>
+                <li @if (criteria == PeopleCriteria.Name) { <text> class="active" </text>  }><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.Name, area = "OrchardPros" })">@T("Name")</a></li>
+                <li @if (criteria == PeopleCriteria.Experience) { <text> class="active" </text>  }><a href="@Url.Action("Index", "People", new { criteria = PeopleCriteria.Experience, area = "OrchardPros" })">@T("Experience")</a></li>
             </ul>
             @PageSizes()
         </div>
