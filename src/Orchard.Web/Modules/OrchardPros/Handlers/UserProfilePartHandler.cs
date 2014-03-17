@@ -3,6 +3,7 @@ using Contrib.Voting.Services;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
+using Orchard.Security;
 using OrchardPros.Models;
 using OrchardPros.Services;
 
@@ -34,6 +35,7 @@ namespace OrchardPros.Handlers {
             _votingService = votingService;
             Filters.Add(StorageFilter.For(repository));
             OnActivated<UserProfilePart>(SetupFields);
+            OnIndexing<UserProfilePart>(IndexUserProfiles);
         }
 
         private void SetupFields(ActivatedContentContext context, UserProfilePart part) {
@@ -47,6 +49,14 @@ namespace OrchardPros.Handlers {
                 var result = _votingService.GetResult(part.Id, "average");
                 return (int) (result != null ? result.Value : 1);
             });
+        }
+
+        private void IndexUserProfiles(IndexContentContext context, UserProfilePart part) {
+            context.DocumentIndex
+                .Add("username", part.As<IUser>().UserName).Store()
+                .Add("firstname", part.FirstName).Store()
+                .Add("lastname", part.LastName).Store()
+                .Add("bio", part.Bio).RemoveTags().Store();
         }
     }
 }

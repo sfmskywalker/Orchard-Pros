@@ -131,7 +131,7 @@ namespace OrchardPros {
             // User
             ContentDefinitionManager.AlterTypeDefinition("User", type => type
                 .WithPart("UserProfilePart")
-                .Indexed("Users"));
+                .Indexed("People"));
             
             // Voting
             SchemaBuilder.CreateTable("Vote", table => table
