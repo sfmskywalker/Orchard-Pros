@@ -21,16 +21,14 @@
                 }
             </div>
             <div class="col-md-6">
-                <form role="form" class="sign-up">
-                    <h3>Sign Up</h3>
-                    <p>
-                        @T("Not a member yet?")<br>
-                        @T("Sign up and get started!")
-                    </p>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success btn-create-account">@T("Create account")</button>
-                    </div>
-                </form>
+                <h3>@T("Sign Up")</h3>
+                <p>
+                    @T("Not a member yet?")<br>
+                    @T("Sign up and get started!")
+                </p>
+                <div class="form-group">
+                    <a href="@Url.Action("SignUp", "Account", new { area = "OrchardPros" })" class="btn btn-success btn-create-account">@T("Create account")</a>
+                </div>
             </div>
         </div>
         <!-- /.sign-in-up -->
