@@ -1,5 +1,6 @@
 ﻿@{
     Layout.Title = @T("Tickets");
+    Layout.FilterFunctions.Add(New.Tickets_List_Filter_Functions());
     Layout.Content.Add(Model.Tickets_List);
     Layout.AsideSecond.Add(Model.Tickets_List_Filter);
 }

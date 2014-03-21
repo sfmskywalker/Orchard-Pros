@@ -46,6 +46,10 @@
                     @Display(Model.AsideFirst)
                 </div>
             }
+            
+            @if (Model.FilterFunctions != null) {
+                @Display(Model.FilterFunctions)
+            }
 
             @if (Model.Content != null) {
                 <div class="@ContentZoneClass()">
