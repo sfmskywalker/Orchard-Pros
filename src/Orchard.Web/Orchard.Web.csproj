@@ -158,7 +158,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Sites.config" />
-    <Content Include=".deployment" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
