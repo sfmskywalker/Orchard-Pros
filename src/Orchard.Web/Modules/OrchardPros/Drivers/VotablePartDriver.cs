@@ -1,7 +1,7 @@
 using Orchard;
 using Orchard.ContentManagement.Drivers;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.User;
 
 namespace OrchardPros.Drivers {
     public class VotablePartDriver : ContentPartDriver<VotablePart> {

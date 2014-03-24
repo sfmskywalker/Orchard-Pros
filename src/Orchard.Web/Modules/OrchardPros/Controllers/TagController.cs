@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Web.Mvc;
-using OrchardPros.Services;
+using OrchardPros.Services.Content;
 
 namespace OrchardPros.Controllers {
     public class TagController : Controller {

@@ -24,7 +24,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             @if (!isAuthenticated) {
-                <li><a href="@Url.Action("SignIn", "Account", new {area = "OrchardPros"})">@T("Sign in")</a></li>
+                <li><a href="@Url.Action("SignIn", "Account", new { returnUrl = Request.Url.PathAndQuery, area = "OrchardPros"})">@T("Sign in")</a></li>
                 <li><a href="@Url.Action("SignUp", "Account", new {area = "OrchardPros"})">@T("Register")</a></li>
             }
             else {

@@ -5,7 +5,8 @@ using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
 using Orchard.Security;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.Content;
+using OrchardPros.Services.User;
 
 namespace OrchardPros.Handlers {
     public class UserProfilePartHandler : ContentHandler {

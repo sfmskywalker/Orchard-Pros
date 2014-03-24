@@ -1,11 +1,26 @@
-﻿<!-- Filters -->
-<div class="container">
-    <div class="filters">
-        <ul>
-            <li class="filter"><a href="#">Category<span class="glyphicon glyphicon-remove"></span></a></li>
-            <li class="filter"><a href="#">Category<span class="glyphicon glyphicon-remove"></span></a></li>
-            <li class="filter"><a href="#">Tag<span class="glyphicon glyphicon-remove"></span></a></li>
-            <li class="filter"><a href="#">Tag<span class="glyphicon glyphicon-remove"></span></a></li>
-        </ul>
+﻿@using Orchard.Taxonomies.Models
+@{
+    var categories = (IList<TermPart>)Model.Categories;
+    var tags = (IList<TermPart>)Model.Tags;
+    var categoryId = (int?)Model.CategoryId;
+    var tagId = (int?)Model.TagId;
+
+    var selectedCategory = categoryId != null ? categories.Single(x => x.Id == categoryId) : default(TermPart);
+    var selectedTag = tagId != null ? tags.Single(x => x.Id == tagId) : default(TermPart);
+}
+@if (selectedCategory != null || selectedTag != null) {
+    <!-- Filters -->
+    <div class="container">
+        <div class="filters">
+            <ul>
+                @if (selectedCategory != null) {
+                    <li class="filter"><a href="@Url.Action("Index", "Ticket", new {tagId = tagId, Area = "OrchardPros"})">@selectedCategory.Name<span class="glyphicon glyphicon-remove"></span></a></li>
+                }
+                @if (selectedTag != null) {
+                    <li class="filter"><a href="@Url.Action("Index", "Ticket", new {categoryId = categoryId, Area = "OrchardPros"})">@selectedTag.Name<span class="glyphicon glyphicon-remove"></span></a></li>
+                }
+            </ul>
+        </div>
     </div>
-</div> <!-- /Filters -->
+    <!-- /Filters -->
+}

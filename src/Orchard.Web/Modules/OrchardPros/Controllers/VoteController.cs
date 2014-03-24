@@ -2,7 +2,7 @@ using System.Web.Mvc;
 using Orchard;
 using Orchard.ContentManagement;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.User;
 
 namespace OrchardPros.Controllers {
     [Authorize]

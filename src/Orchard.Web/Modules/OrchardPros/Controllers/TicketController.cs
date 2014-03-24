@@ -15,8 +15,9 @@ using Orchard.Themes;
 using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
 using OrchardPros.Models;
-using OrchardPros.Services;
 using OrchardPros.Helpers;
+using OrchardPros.Services.Content;
+using OrchardPros.Services.User;
 using OrchardPros.ViewModels;
 
 namespace OrchardPros.Controllers {
@@ -57,8 +58,8 @@ namespace OrchardPros.Controllers {
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        private UserProfilePart CurrentUser {
-            get { return _services.WorkContext.CurrentUser.As<UserProfilePart>(); }
+        private IUser CurrentUser {
+            get { return _services.WorkContext.CurrentUser; }
         }
 
         [AllowAnonymous]
@@ -76,6 +77,7 @@ namespace OrchardPros.Controllers {
                     Categories: _ticketService.GetCategories().ToArray(),
                     Tags: _ticketService.GetPopularTags().ToArray(),
                     CategoryId: categoryId,
+                    TagId: tagId,
                     Criteria: criteria,
                     Pager: pagerShape));
             return View(viewModel);
@@ -98,6 +100,7 @@ namespace OrchardPros.Controllers {
             var ticket = _ticketService.Create(user, model.Subject, model.Body, model.Type, t => {
                 t.DeadlineUtc = model.DeadlineUtc.Value;
                 t.ExperiencePoints = _ticketService.CalculateExperience(CurrentUser);
+                t.ExternalUrl = model.ExternalUrl.TrimSafe();
             });
 
             _ticketService.AssignCategories(ticket, model.Categories);
@@ -121,7 +124,8 @@ namespace OrchardPros.Controllers {
                 Body = ticket.Body,
                 ExperiencePoints = ticket.ExperiencePoints,
                 Subject = ticket.Subject,
-                Type = ticket.Type
+                Type = ticket.Type,
+                ExternalUrl = ticket.ExternalUrl
             }, ticket);
             return View(model);
         }
@@ -139,6 +143,7 @@ namespace OrchardPros.Controllers {
             ticket.Body = model.Body.TrimSafe();
             ticket.Subject = model.Subject;
             ticket.Type = model.Type;
+            ticket.ExternalUrl = model.ExternalUrl.TrimSafe();
 
             _ticketService.AssignCategories(ticket, model.Categories);
             _ticketService.AssignTags(ticket, model.Tags);
@@ -169,7 +174,7 @@ namespace OrchardPros.Controllers {
 
             if (!isOwnReply) {
                 if (rating != null) {
-                    _votingService.Vote(reply.User.ContentItem, currentUser.As<IUser>().UserName, Request.UserHostAddress, rating.Value);
+                    _votingService.Vote(reply.User.ContentItem, currentUser.UserName, Request.UserHostAddress, rating.Value);
                 }
 
                 if (!String.IsNullOrWhiteSpace(recommendation)) {

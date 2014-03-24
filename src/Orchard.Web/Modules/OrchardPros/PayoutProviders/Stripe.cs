@@ -5,7 +5,7 @@ using Orchard;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.Commerce;
 
 namespace OrchardPros.PayoutProviders {
     public class Stripe : PayoutProviderBase, IStripePayoutProvider {
@@ -23,12 +23,12 @@ namespace OrchardPros.PayoutProviders {
             const string baseUrl = "https://connect.stripe.com/oauth/authorize";
             var parameters = new Dictionary<string, string> {
                 {"response_type", "code"},
-		        {"client_id", settings.ClientId},
-		        {"stripe_user[email]", user.Email},
+                {"client_id", settings.ClientId},
+                {"stripe_user[email]", user.Email},
                 {"stripe_user[country]", profile.Country != null ? profile.Country.Code : ""},
                 {"stripe_user[first_name]", profile.FirstName},
                 {"stripe_user[last_name]", profile.FullLastName}
-	        };
+            };
             var parametersQuery = parameters.Where(x => !String.IsNullOrWhiteSpace(x.Value));
             var connectUrl = String.Format("{0}?{1}", baseUrl, String.Join("&", parametersQuery.Select(x => String.Format("{0}={1}", x.Key, x.Value))));
             shape.ConnectUrl = connectUrl;

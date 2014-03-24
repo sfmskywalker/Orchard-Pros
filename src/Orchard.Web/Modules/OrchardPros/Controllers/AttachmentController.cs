@@ -1,6 +1,6 @@
 using System.Web.Mvc;
 using Orchard.Themes;
-using OrchardPros.Services;
+using OrchardPros.Services.Content;
 
 namespace OrchardPros.Controllers {
     [Authorize, Themed]

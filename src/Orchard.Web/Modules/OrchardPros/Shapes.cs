@@ -5,7 +5,8 @@ using Orchard.Environment;
 using Orchard.Security;
 using OrchardPros.Helpers;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.Content;
+using OrchardPros.Services.Security;
 
 namespace OrchardPros {
     public class Shapes : IShapeTableProvider {

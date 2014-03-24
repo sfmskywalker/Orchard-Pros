@@ -27,6 +27,10 @@
     @Html.HiddenFor(m => m.Tags, new { data_tags = Url.Action("Search", "Tag", new { Area = "OrchardPros" }), @class = "form-control", placeholder = T("Tag your ticket, separated by comma [,]") })
 </div>
 <div class="form-group">
+    @Html.LabelFor(m => m.ExternalUrl, T("External URL"))
+    @Html.TextBoxFor(m => m.ExternalUrl, new { @class = "form-control", placeholder = T("Optionally link to an external page, for example, an issue on CodePlex or question on StackOverflow.") })
+</div>
+<div class="form-group">
     <label for="exp">Experience points</label>
     <p>@T("This ticket will be worth <strong>{0} EXP</strong>.", Model.ExperiencePoints)</p>
 </div>
@@ -35,6 +39,5 @@
     @Html.TextBoxFor(m => m.DeadlineUtc, new { @class = "form-control" })
 </div>
 <div class="form-group">
-    <label>@T("Attachments")</label>
     @Html.EditorFor(m => m.Attachments)
 </div>

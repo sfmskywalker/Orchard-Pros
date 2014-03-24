@@ -24,6 +24,10 @@
         @Html.EditorFor(m => m.Tags, new { TermsSourceUrl = Url.Action("SearchTags", "Ticket", new { Area = "OrchardPros" }) })
     </div>
     <div class="form-group">
+        @Html.LabelFor(m => m.ExternalUrl, T("External URL"))
+        @Html.TextBoxFor(m => m.ExternalUrl, new { @class = "text large" })
+    </div>
+    <div class="form-group">
         @Html.LabelFor(m => m.ExperiencePoints, T("EXP"))
         @Html.TextBoxFor(m => m.ExperiencePoints, new { @class = "text small" })
         @Html.ValidationMessageFor(m => m.ExperiencePoints)

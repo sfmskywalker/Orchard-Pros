@@ -16,7 +16,11 @@ using Orchard.UI.Notify;
 using Orchard.Users.Services;
 using OrchardPros.Helpers;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.Commerce;
+using OrchardPros.Services.Content;
+using OrchardPros.Services.Notifications;
+using OrchardPros.Services.Security;
+using OrchardPros.Services.User;
 using OrchardPros.ViewModels;
 
 namespace OrchardPros.Controllers {

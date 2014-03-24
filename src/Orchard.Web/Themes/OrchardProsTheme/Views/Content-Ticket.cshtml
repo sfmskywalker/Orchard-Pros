@@ -26,6 +26,9 @@
         @Html.ValidationSummary()
         <h2>@ticket.Subject</h2>
         @Display(Model.Content)
+        @if (!String.IsNullOrWhiteSpace(ticket.ExternalUrl)) {
+            <i>@T("External URL:") <a href="@ticket.ExternalUrl" target="_blank">@ticket.ExternalUrl</a></i>
+        }
     </article>
     <div class="sorter bottom">
         @if (isFollowing) {

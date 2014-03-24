@@ -50,6 +50,12 @@ namespace OrchardPros.Models {
             set { Store(x => x.AnswerId, value); }
         }
 
+        public string ExternalUrl
+        {
+            get { return this.Retrieve(x => x.ExternalUrl); }
+            set { this.Store(x => x.ExternalUrl, value); }
+        }
+
         public string Subject {
             get { return this.As<TitlePart>().Title; }
             set { this.As<TitlePart>().Title = value; }

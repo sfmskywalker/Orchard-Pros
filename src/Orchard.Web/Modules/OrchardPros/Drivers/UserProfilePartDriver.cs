@@ -9,7 +9,7 @@ using Orchard.ContentManagement.Handlers;
 using Orchard.Localization;
 using OrchardPros.Helpers;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.User;
 using OrchardPros.ViewModels;
 
 namespace OrchardPros.Drivers {

@@ -1,0 +1,13 @@
+﻿@using Orchard.ContentManagement
+@model OrchardPros.Models.Transaction
+@{
+    var ticketId = Int32.Parse(Model.Context);
+    var ticket = WorkContext.Resolve<IContentManager>().Get(ticketId);
+    Layout.Title = @T("Payment Succesful!");
+}
+<p>
+    @T("Your payment was succesfully received and the bounty has been created. If you decide to cancel the bounty, the funds will be returned.")
+</p>
+<p>
+    <a class="btn btn-success" href="@Url.ItemDisplayUrl(ticket)">@T("View Ticket")</a>
+</p>

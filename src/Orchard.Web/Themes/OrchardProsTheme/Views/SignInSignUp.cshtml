@@ -1,8 +1,11 @@
+@{
+    var returnUrl = (string)Model.ReturnUrl;
+}
 <section class="half-size center-block">
     @Html.ValidationSummary()
     <div class="sign-in-up row">
         <div class="col-md-6">
-            @using (Html.BeginFormAntiForgeryPost(Url.Action("SignIn", "Account", new { Area = "OrchardPros" }), FormMethod.Post, new { role = "form", @class = "sign-in" })) {
+            @using (Html.BeginFormAntiForgeryPost(Url.Action("SignIn", "Account", new { returnUrl = returnUrl, area = "OrchardPros" }), FormMethod.Post, new { role = "form", @class = "sign-in" })) {
                 <h3>@T("Sign in")</h3>
                 <div class="form-group">
                     <label for="sign-in-username">@T("User Name or Email Address")</label>

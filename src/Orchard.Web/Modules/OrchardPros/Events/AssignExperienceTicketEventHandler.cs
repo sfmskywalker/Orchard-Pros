@@ -1,17 +1,17 @@
-using Orchard.ContentManagement;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.Content;
+using OrchardPros.Services.User;
 
 namespace OrchardPros.Events {
-    public class AssignExperienceTicketEventHandler : ITicketEventHandler {
+    public class TicketEventHandler : ITicketEventHandler {
         private readonly IUserManager _userManager;
 
-        public AssignExperienceTicketEventHandler(IUserManager userManager) {
+        public TicketEventHandler(IUserManager userManager) {
             _userManager = userManager;
         }
 
         public void Solved(TicketSolvedContext context) {
-            _userManager.AddXp(context.Expert.As<UserProfilePart>(), context.Ticket.ExperiencePoints);
+            _userManager.AddXp(context.Expert, context.Ticket.ExperiencePoints);
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Linq;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.Content;
 
 namespace OrchardPros.Handlers {
     public class SubscriptionSourcePartHandler : ContentHandler {

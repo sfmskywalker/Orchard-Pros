@@ -1,0 +1,17 @@
+﻿@model OrchardPros.ViewModels.StripeViewModel
+@{
+    Layout.Title = @T("Pay with Stripe");
+}
+@Html.ValidationSummary()
+@using (Html.BeginFormAntiForgeryPost(Url.Action("Charge", "Stripe", new { id = Model.Transaction.Handle, area = "OrchardPros" }))) {
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_p1ZgvvsTvnbUNWdO7CBSMeJ6"
+            data-image="@Url.Content("~/modules/orchardpros/images/stripe-dialog-icon-placeholder.png")"
+            data-name="@WorkContext.CurrentSite.SiteName"
+            data-description="Bounty (@Model.Transaction.Amount.ToString("c"))"
+            data-amount="@Model.AmountInCents"
+            data-currency="USD"
+            data-label="@T("Pay with Stripe")"
+            data-email="@Model.User.Email">
+    </script>
+}

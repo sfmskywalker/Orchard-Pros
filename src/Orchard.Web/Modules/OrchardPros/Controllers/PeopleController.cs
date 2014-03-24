@@ -6,7 +6,7 @@ using Orchard.Data;
 using Orchard.Themes;
 using Orchard.UI.Navigation;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.User;
 
 namespace OrchardPros.Controllers {
     [Themed]

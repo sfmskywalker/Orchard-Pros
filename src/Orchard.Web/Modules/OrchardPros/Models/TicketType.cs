@@ -1,7 +1,7 @@
 ﻿namespace OrchardPros.Models {
     public enum TicketType {
         Question,
-        Bug,
+        Issue,
         Task
     }
 }

@@ -458,6 +458,18 @@
   <ItemGroup>
     <Content Include="Views\Tickets.List.Filter.Functions.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros\Stripe\Error.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros\Stripe\Pay.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros\Stripe\PaymentFailed.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros\Stripe\Success.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

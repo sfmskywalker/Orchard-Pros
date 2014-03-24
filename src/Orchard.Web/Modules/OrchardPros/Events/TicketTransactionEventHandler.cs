@@ -1,6 +1,7 @@
 using System;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.Commerce;
+using OrchardPros.Services.Content;
 
 namespace OrchardPros.Events {
     public class TicketTransactionEventHandler : TransactionEventHandlerBase {

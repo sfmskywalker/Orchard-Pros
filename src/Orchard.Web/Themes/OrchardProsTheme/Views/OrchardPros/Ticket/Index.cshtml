@@ -1,6 +1,10 @@
 ﻿@{
     Layout.Title = @T("Tickets");
-    Layout.FilterFunctions.Add(New.Tickets_List_Filter_Functions());
     Layout.Content.Add(Model.Tickets_List);
     Layout.AsideSecond.Add(Model.Tickets_List_Filter);
+    Layout.FilterFunctions.Add(New.Tickets_List_Filter_Functions(
+        Categories: Model.Tickets_List_Filter.Categories,
+        Tags: Model.Tickets_List_Filter.Tags,
+        CategoryId: Model.Tickets_List_Filter.CategoryId,
+        TagId: Model.Tickets_List_Filter.TagId));
 }

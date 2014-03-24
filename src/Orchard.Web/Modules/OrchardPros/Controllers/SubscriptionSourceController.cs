@@ -1,22 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Orchard;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.Handlers;
 using Orchard.Localization;
-using Orchard.Logging;
-using Orchard.Mvc.Html;
 using Orchard.Security;
-using Orchard.Services;
 using Orchard.Themes;
-using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
 using OrchardPros.Models;
-using OrchardPros.Services;
-using OrchardPros.Helpers;
-using OrchardPros.ViewModels;
+using OrchardPros.Services.Content;
 
 namespace OrchardPros.Controllers {
     [Authorize, Themed]

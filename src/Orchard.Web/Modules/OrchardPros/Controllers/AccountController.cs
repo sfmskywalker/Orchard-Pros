@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Orchard.DisplayManagement;
 using Orchard.Localization;
 using Orchard.Mvc.Extensions;
@@ -63,12 +64,13 @@ namespace OrchardPros.Controllers {
         }
 
         [AllowAnonymous]
-        public ActionResult SignIn() {
-            return View(New.SignIn());
+        public ActionResult SignIn(string returnUrl) {
+            return View(New.SignIn(ReturnUrl: returnUrl));
         }
 
         [HttpPost, AllowAnonymous]
-        public ActionResult SignIn(string userNameOrEmail, string password) {
+        public ActionResult SignIn(string userNameOrEmail, string password, string returnUrl)
+        {
             IUser user = null;
 
             if (ModelState.IsValid) {
@@ -85,7 +87,7 @@ namespace OrchardPros.Controllers {
 
             _authenticationService.SignIn(user, true);
             _userEventHandler.LoggedIn(user);
-            return Response.IsRequestBeingRedirected ? (ActionResult)new EmptyResult() : RedirectToAction("Index", "Profile");
+            return Response.IsRequestBeingRedirected ? new EmptyResult() : Url.IsLocalUrl(returnUrl) ? (ActionResult) Redirect(returnUrl) : RedirectToAction("Index", "Profile");
         }
 
         public ActionResult SignOut() {

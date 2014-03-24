@@ -7,7 +7,8 @@ using Orchard.Security;
 using Orchard.Services;
 using Orchard.Themes;
 using Orchard.UI.Notify;
-using OrchardPros.Services;
+using OrchardPros.Services.Commerce;
+using OrchardPros.Services.Content;
 using OrchardPros.ViewModels;
 
 namespace OrchardPros.Controllers {

@@ -15,10 +15,10 @@
             <h3 class="panel-title">@T("Categories")</h3>
         </div>
         <div class="panel-body">
-            <ul class="list-categories">
+            <ul class="list-categories list-unstyled">
                 @foreach (var category in categories) {
                     <li @if (categoryId == category.Id) { <text> class="active" </text> }>
-                        <a href="@Url.Action("Index", "Ticket", new { area = "OrchardPros", criteria, page, pageSize, categoryId = category.Id })">@category.Name</a>
+                        <a href="@Url.Action("Index", "Ticket", new { area = "OrchardPros", criteria, page, pageSize, categoryId = category.Id, tagId = tagId })">@category.Name</a>
                     </li>
                 }
             </ul>
@@ -40,7 +40,7 @@
     <div class="block tagcloud">
         <h3>@T("Popular tags")</h3>
         @foreach (var tag in tags) {
-            <a @if(tag.Id == tagId){<text>class="active"</text>} href="@Url.Action("Index", "Ticket", new { area = "OrchardPros", criteria, page, pageSize, tagId = tag.Id })">
+            <a @if(tag.Id == tagId){<text>class="active"</text>} href="@Url.Action("Index", "Ticket", new { area = "OrchardPros", criteria, page, pageSize, tagId = tag.Id, categoryId = categoryId })">
                 <span class="label label-default">@tag.Name</span>
             </a>
         }

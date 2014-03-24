@@ -5,7 +5,7 @@ using Orchard.Mvc.Html;
 using Orchard.Security;
 using Orchard.Themes;
 using Orchard.UI.Notify;
-using OrchardPros.Services;
+using OrchardPros.Services.Content;
 using OrchardPros.ViewModels;
 
 namespace OrchardPros.Controllers {

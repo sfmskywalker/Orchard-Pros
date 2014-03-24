@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Web.Mvc;
 using Orchard;
 using Orchard.ContentManagement;
@@ -10,7 +9,7 @@ using Orchard.Themes;
 using Orchard.UI.Notify;
 using OrchardPros.Models;
 using OrchardPros.PayoutProviders;
-using OrchardPros.Services;
+using OrchardPros.Services.Commerce;
 using OrchardPros.ViewModels;
 
 namespace OrchardPros.Controllers {

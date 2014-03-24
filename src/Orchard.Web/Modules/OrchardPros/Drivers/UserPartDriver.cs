@@ -2,7 +2,7 @@ using System.Linq;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.Users.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.Content;
 
 namespace OrchardPros.Drivers {
     public class UserPartDriver : ContentPartDriver<UserPart> {

@@ -28,11 +28,11 @@
             </div>
             <div class="ticket-summary">
                 @foreach (var category in categories) {
-                    <a href="#" class="category-link">@category.Name</a>
+                    <a href="@Url.Action("Index", "Ticket", new { area = "OrchardPros", categoryId = category.Id })" class="category-link">@category.Name</a>
                 }
                 <div class="tags">
                     @foreach (var tag in tags) {
-                        <a href="#"><span class="label label-default">@tag.Name</span></a>
+                        <a href="@Url.Action("Index", "Ticket", new { area = "OrchardPros", tagId = tag.Id })"><span class="label label-default">@tag.Name</span></a>
                     }
                 </div>
             </div>

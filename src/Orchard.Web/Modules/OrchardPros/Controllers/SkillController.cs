@@ -8,7 +8,7 @@ using Orchard.Themes;
 using Orchard.UI.Notify;
 using OrchardPros.Helpers;
 using OrchardPros.Models;
-using OrchardPros.Services;
+using OrchardPros.Services.User;
 using OrchardPros.ViewModels;
 
 namespace OrchardPros.Controllers {
