@@ -1,4 +1,4 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 /* Theme styling for Orchard Pros */
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,700,300);
@@ -142,8 +142,6 @@ article.ticket-post.solved { border-left: #c9e3a7 10px solid; padding-left:10px;
 .ticket-info .ticket-timestamp { float:right; font-weight:normal; }
 .ticket-timestamp .author { font-weight:700; padding-left:5px; }
 
-#file-upload input { cursor: none; height: 0; left: 0; opacity: 0; position: absolute; top: 0; width: 0; z-index: 1000; }
-
 /* Ticket replies */
 article.ticket-reply { width:100%; float:left; clear:both; padding:20px 0px; }
 article.ticket-reply .ticket-status { float:left; width:10%; clear:left; }
@@ -222,6 +220,7 @@ article.ticket-reply .idplate { float:right; }
 /* File Upload */
 #file-upload { text-align:center; border:1px dashed #aaa; background:#fff; margin-top:49px; }
 #file-upload:hover { border:1px dashed #000; }
+#file-upload input { cursor: none; height: 0; left: 0; opacity: 0; position: absolute; top: 0; width: 0; z-index: 1000; }
 
 /* Profile */
 .profile.idplate .panel-body { border-bottom:1px solid #ddd; padding:5px 15px; }
