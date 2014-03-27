@@ -113,10 +113,28 @@
             <TermPart Count="0" Selectable="true" Weight="5" TaxonomyId="/alias=category" Path="" />
         </CategoryTerm>
         <CategoryTerm Id="/alias=category\/codeplex-issues" Status="Published">
-            <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2014-03-23T22:52:54.2843719Z" PublishedUtc="2014-03-23T22:52:54.2982152Z" ModifiedUtc="2014-03-23T22:52:54.2843719Z" />
+            <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2014-03-23T22:52:54.2843719Z" PublishedUtc="2014-03-23T22:59:28.7875785Z" ModifiedUtc="2014-03-23T22:59:28.6814131Z" />
             <AutoroutePart Alias="category/codeplex-issues" UseCustomPattern="false" />
             <TitlePart Title="CodePlex Issues" />
             <TermPart Count="0" Selectable="true" Weight="4" TaxonomyId="/alias=category" Path="" />
+        </CategoryTerm>
+        <CategoryTerm Id="/alias=category\/administration" Status="Published">
+            <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2014-03-27T00:23:49.5937845Z" PublishedUtc="2014-03-27T00:23:50.1178461Z" ModifiedUtc="2014-03-27T00:23:49.7008243Z" />
+            <AutoroutePart Alias="category/administration" UseCustomPattern="false" />
+            <TitlePart Title="Administration" />
+            <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=category" Path="" />
+        </CategoryTerm>
+        <CategoryTerm Id="/alias=category\/deployment" Status="Published">
+            <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2014-03-27T00:24:00.1347055Z" PublishedUtc="2014-03-27T00:24:00.1916783Z" ModifiedUtc="2014-03-27T00:24:00.1467064Z" />
+            <AutoroutePart Alias="category/deployment" UseCustomPattern="false" />
+            <TitlePart Title="Deployment" />
+            <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=category" Path="" />
+        </CategoryTerm>
+        <CategoryTerm Id="/alias=category\/support" Status="Published">
+            <CommonPart Owner="/User.UserName=admin" Container="/alias=category" CreatedUtc="2014-03-27T00:24:17.1707484Z" PublishedUtc="2014-03-27T00:24:17.2277734Z" ModifiedUtc="2014-03-27T00:24:17.183781Z" />
+            <AutoroutePart Alias="category/support" UseCustomPattern="false" />
+            <TitlePart Title="Support" />
+            <TermPart Count="0" Selectable="true" Weight="0" TaxonomyId="/alias=category" Path="" />
         </CategoryTerm>
         <TagTerm Id="/alias=tag\/admin" Status="Published">
             <CommonPart Owner="/User.UserName=admin" Container="/alias=tag" CreatedUtc="2014-03-23T22:56:19.2326147Z" PublishedUtc="2014-03-23T22:56:19.280616Z" ModifiedUtc="2014-03-23T22:56:19.2326147Z" />
