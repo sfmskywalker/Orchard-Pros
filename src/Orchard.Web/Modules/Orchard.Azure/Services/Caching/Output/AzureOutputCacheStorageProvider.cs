@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Microsoft.ApplicationServer.Caching;
 using Orchard.Azure.Services.Environment.Configuration;
@@ -8,13 +9,13 @@ using Orchard.Environment.Extensions;
 using Orchard.Logging;
 using Orchard.OutputCache.Models;
 using Orchard.OutputCache.Services;
-using System.Globalization;
 
 namespace Orchard.Azure.Services.Caching.Output {
 
     [OrchardFeature(Constants.OutputCacheFeatureName)]
     [OrchardSuppressDependency("Orchard.OutputCache.Services.DefaultCacheStorageProvider")]
     public class AzureOutputCacheStorageProvider : Component, IOutputCacheStorageProvider {
+
         private readonly DataCache _cache;
         private readonly string _regionAlphaNumeric;
 
@@ -27,7 +28,6 @@ namespace Orchard.Azure.Services.Caching.Output {
             // from the region, and append the hash code of the original string to mitigate the risk
             // of two distinct original region strings yielding the same transformed region string.
             _regionAlphaNumeric = new String(Array.FindAll(region.ToCharArray(), Char.IsLetterOrDigit)) + region.GetHashCode().ToString(CultureInfo.InvariantCulture);
-
 
             _cache = cacheHolder.TryGetDataCache(() => {
                 CacheClientConfiguration cacheConfig;
