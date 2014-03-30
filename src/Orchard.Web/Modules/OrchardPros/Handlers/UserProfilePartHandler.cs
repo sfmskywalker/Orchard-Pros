@@ -57,7 +57,7 @@ namespace OrchardPros.Handlers {
                 .Add("username", part.As<IUser>().UserName).Store()
                 .Add("firstname", part.FirstName).Store()
                 .Add("lastname", part.LastName).Store()
-                .Add("bio", part.Bio).RemoveTags().Store();
+                .Add("bio", part.Bio).RemoveTags().Analyze().Store();
         }
     }
 }
