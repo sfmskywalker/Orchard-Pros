@@ -10,7 +10,7 @@
     var currentPosition = userProfilePart.Positions.Current();
     var recommendations = userProfilePart.Recommendations;
     var isCurrentUser = (bool)Model.IsCurrentUser;
-    var filteredRecommendations = isCurrentUser ? recommendations : recommendations.Where(x => x.IsPublished() && x.AllowPublication).ToArray();
+    var filteredRecommendations = isCurrentUser ? recommendations : recommendations.Where(x => x.IsPublished()).ToArray();
     var skills = userProfilePart.Skills;
 }
 <article class="profile-title">
@@ -107,24 +107,19 @@
                 <a href="@Url.Profile(recommendation.RecommendingUser)" class="pull-left"><img src="@Url.AvatarUrl(recommendation.RecommendingUser, this, 32)" alt="@recommendation.RecommendingUser.UserName" class="profile-img-s media-object"></a>
                 <div class="media-body">
                     <p><span class="dropcap">&nbsp;</span>@recommendation.Body</p>
-                    @if (recommendation.AllowPublication) {
-                        if (!recommendation.IsPublished()) {
-                            <div class="profile-actions">
-                                <a href="@Url.Action("Publish", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Publish")</a>
-                            </div>
-                        }
-                        else {
-                            <div class="profile-actions">
-                                <a href="@Url.Action("Unpublish", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Unpublish")</a>
-                            </div>
-                        }
+                    @if (!recommendation.IsPublished()) {
+                        <div class="profile-actions">
+                            <a href="@Url.Action("Publish", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Publish")</a>
+                        </div>
+                    }
+                    else {
+                        <div class="profile-actions">
+                            <a href="@Url.Action("Unpublish", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Unpublish")</a>
+                        </div>
                     }
                     <div class="profile-actions">
                         <a href="@Url.Action("Delete", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()" data-prompt="@T("Are you sure you want to delete this recommendation?")">@T("Delete")</a>
                     </div>
-                    @if (!recommendation.AllowPublication) {
-                        <span>@T("The user does not allow this recommendation to be published.")</span>
-                    }
                 </div>
             </div>
         }

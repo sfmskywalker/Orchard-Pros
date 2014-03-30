@@ -12,10 +12,10 @@ namespace OrchardPros.Security {
                     context.Granted = !IsCurrentUser(context.User, context.Content);
                 }
                 else if(context.Permission.Name == Permissions.PublishRecommendation.Name) {
-                    context.Granted = IsRecipientAndNotCreator(context.User, context.Content);
+                    context.Granted = IsRecommendedUserAndNotCreator(context.User, context.Content);
                 }
                 else if (context.Permission.Name == Permissions.DeleteRecommendation.Name) {
-                    context.Granted = IsRecipient(context.User, context.Content);
+                    context.Granted = IsRecommendedUser(context.User, context.Content);
                 }
             }
         }
@@ -34,7 +34,7 @@ namespace OrchardPros.Security {
             return currentUser.Id == user.Id;
         }
 
-        private bool IsRecipient(IUser user, IContent content) {
+        private bool IsRecommendedUser(IUser user, IContent content) {
             if (user == null || content == null)
                 return false;
 
@@ -43,10 +43,10 @@ namespace OrchardPros.Security {
             if (recommendationPart == null)
                 return false;
 
-            return recommendationPart.UserId == user.Id;
+            return recommendationPart.RecommendedUserId == user.Id;
         }
 
-        private bool IsRecipientAndNotCreator(IUser user, IContent content) {
+        private bool IsRecommendedUserAndNotCreator(IUser user, IContent content) {
             if (user == null || content == null)
                 return false;
 
@@ -55,7 +55,7 @@ namespace OrchardPros.Security {
             if (recommendationPart == null)
                 return false;
 
-            return recommendationPart.RecommendingUser.Id != user.Id && recommendationPart.UserId == user.Id;
+            return recommendationPart.RecommendingUser.Id != user.Id && recommendationPart.RecommendedUserId == user.Id;
         }
     }
 }

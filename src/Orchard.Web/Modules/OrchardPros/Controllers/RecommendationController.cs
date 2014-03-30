@@ -60,13 +60,12 @@ namespace OrchardPros.Controllers {
             }
 
             _recommendationManager.Create(r => {
-                r.AllowPublication = model.AllowPublication;
                 r.Body = model.Text.TrimSafe();
                 r.RecommendingUser = CurrentUser;
                 r.User = user;
             });
 
-            _notifier.Information(T("Your recommendation has been created. Thanks!"));
+            _notifier.Information(T("Your recommendation has been created and awaiting approval."));
             return Redirect(Url.Profile(id));
         }
 

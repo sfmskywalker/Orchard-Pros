@@ -23,9 +23,9 @@ namespace OrchardPros.Handlers {
         }
 
         private void SetupLazyFields(ActivatedContentContext context, RecommendationPart part) {
-            part.UserField.Loader(() => _contentManager.Get<IUser>(part.UserId));
+            part.UserField.Loader(() => _contentManager.Get<IUser>(part.RecommendedUserId));
             part.UserField.Setter(x => {
-                part.UserId = x.Id;
+                part.RecommendedUserId = x.Id;
                 return x;
             });
         }

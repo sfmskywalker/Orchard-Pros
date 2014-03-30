@@ -96,7 +96,7 @@ namespace OrchardPros {
             // Recommendation
             SchemaBuilder.CreateTable("RecommendationPartRecord", table => table
                 .ContentPartRecord()
-                .Column<int>("UserId"));
+                .Column<int>("RecommendedUserId"));
 
             ContentDefinitionManager.AlterPartDefinition("RecommendationPart", part => part
                 .Attachable(false)

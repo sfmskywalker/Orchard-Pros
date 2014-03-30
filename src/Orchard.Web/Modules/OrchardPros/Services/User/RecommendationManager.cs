@@ -14,8 +14,8 @@ namespace OrchardPros.Services.User {
             return _contentManager.Create("Recommendation", VersionOptions.Draft, initialize);
         }
 
-        public IContentQuery<ContentItem, RecommendationPartRecord> GetByUser(int userId) {
-            return _contentManager.Query(VersionOptions.Latest).Join<RecommendationPartRecord>().Where(x => x.UserId == userId);
+        public IContentQuery<ContentItem, RecommendationPartRecord> GetByRecommendedUser(int userId) {
+            return _contentManager.Query(VersionOptions.Latest).Join<RecommendationPartRecord>().Where(x => x.RecommendedUserId == userId);
         }
     }
 }

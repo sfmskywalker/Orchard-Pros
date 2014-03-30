@@ -7,9 +7,9 @@ namespace OrchardPros.Models {
     public class RecommendationPart : ContentPart<RecommendationPartRecord> {
         internal LazyField<IUser> UserField = new LazyField<IUser>();
 
-        public int UserId {
-            get { return Retrieve(x => x.UserId); }
-            set { Store(x => x.UserId, value); }
+        public int RecommendedUserId {
+            get { return Retrieve(x => x.RecommendedUserId); }
+            set { Store(x => x.RecommendedUserId, value); }
         }
 
         public IUser User {
@@ -25,11 +25,6 @@ namespace OrchardPros.Models {
         public string Body {
             get { return this.As<BodyPart>().Text; }
             set { this.As<BodyPart>().Text = value; }
-        }
-
-        public bool AllowPublication {
-            get { return this.Retrieve(x => x.AllowPublication); }
-            set { this.Store(x => x.AllowPublication, value); }
         }
     }
 }

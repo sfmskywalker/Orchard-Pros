@@ -42,7 +42,7 @@ namespace OrchardPros.Handlers {
         private void SetupFields(ActivatedContentContext context, UserProfilePart part) {
             part.PositionsField.Loader(() => _positionManager.Fetch(part.Id).ToArray());
             part.SkillsField.Loader(() => _skillManager.Fetch(part.Id).ToArray());
-            part.RecommendationsField.Loader(() => _recommendationManager.GetByUser(part.Id).List<RecommendationPart>().ToArray());
+            part.RecommendationsField.Loader(() => _recommendationManager.GetByRecommendedUser(part.Id).List<RecommendationPart>().ToArray());
             part.ExperienceField.Loader(() => _experienceManager.Fetch(part.Id).ToArray());
             part.RepliesField.Loader(() => _replyService.GetRepliesByUser(part.Id).ToArray());
             part.SolvedTicketsField.Loader(() => _ticketService.GetSolvedTicketsFor(part.Id).ToArray());

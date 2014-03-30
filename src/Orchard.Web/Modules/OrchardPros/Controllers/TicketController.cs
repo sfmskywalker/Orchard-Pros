@@ -179,10 +179,9 @@ namespace OrchardPros.Controllers {
 
                 if (!String.IsNullOrWhiteSpace(recommendation)) {
                     _recommendationManager.Create(r => {
-                        r.AllowPublication = allowPublication == true;
                         r.Body = recommendation.TrimSafe();
                         r.RecommendingUser = ticket.User;
-                        r.UserId = reply.User.Id;
+                        r.RecommendedUserId = reply.User.Id;
                     });
                     _notifier.Information(allowPublication == true
                         ? T("Your recommendation has been created and will be published when approved. Thanks!")
