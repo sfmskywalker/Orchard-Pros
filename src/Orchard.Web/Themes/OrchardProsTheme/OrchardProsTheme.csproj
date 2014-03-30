@@ -127,6 +127,7 @@
     <Content Include="Scripts\select2.min.js">
       <DependentUpon>select2.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\search.js" />
     <Content Include="Scripts\voting.js" />
     <Content Include="Scripts\ticket.js" />
     <Content Include="Scripts\select2-initialization.js" />

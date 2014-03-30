@@ -35,17 +35,17 @@ namespace OrchardPros.Controllers {
                 case SearchIndex.Tickets:
                     indexName = "Tickets";
                     indexDisplayName = T("Tickets");
-                    searchFields = new[] {"author", "body", "title", "Categories", "Tags"};
+                    searchFields = new[] {"author", "body", "title", "username", "firstname", "lastname", "bio", "Categories", "Tags"};
                     break;
                 case SearchIndex.People:
                     indexName = "People";
                     indexDisplayName = T("People");
-                    searchFields = new[] { "author", "body", "title", "Categories", "Tags" };
+                    searchFields = new[] { "body", "title", "username", "firstname", "lastname", "bio" };
                     break;
                 default:
                     indexName = "All";
                     indexDisplayName = T("All");
-                    searchFields = new[] { "author", "body", "title", "Categories", "Tags" };
+                    searchFields = new[] { "author", "body", "title", "username", "firstname", "lastname", "bio", "Categories", "Tags" };
                     break;
             }
 

@@ -1,0 +1,13 @@
+﻿@using Orchard.ContentManagement
+@using Orchard.Security
+@using OrchardPros.Models
+@{
+	var part = (UserProfilePart)Model.ContentPart;
+	var user = part.As<IUser>();
+}
+<section>
+	<strong>@user.UserName</strong><br/>
+	@if (!String.IsNullOrWhiteSpace(part.Bio)) {
+		@part.Bio
+	}
+</section>
