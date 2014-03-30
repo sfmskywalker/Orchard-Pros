@@ -102,24 +102,30 @@
         <p>@T("No recommendations were given yet.")</p>
     }
     else {
+        var canPublishRecommendations = Authorizer.Authorize(Permissions.PublishRecommendation);
+        var canDeleteRecommendations = Authorizer.Authorize(Permissions.DeleteRecommendation);
         foreach (var recommendation in filteredRecommendations) {
             <div class="media">
                 <a href="@Url.Profile(recommendation.RecommendingUser)" class="pull-left"><img src="@Url.AvatarUrl(recommendation.RecommendingUser, this, 32)" alt="@recommendation.RecommendingUser.UserName" class="profile-img-s media-object"></a>
                 <div class="media-body">
                     <p><span class="dropcap">&nbsp;</span>@recommendation.Body</p>
-                    @if (!recommendation.IsPublished()) {
+                    @if (canPublishRecommendations) {
+                        if (!recommendation.IsPublished()) {
+                            <div class="profile-actions">
+                                <a href="@Url.Action("Publish", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Publish")</a>
+                            </div>
+                        }
+                        else {
+                            <div class="profile-actions">
+                                <a href="@Url.Action("Unpublish", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Unpublish")</a>
+                            </div>
+                        }
+                    }
+                    @if (canDeleteRecommendations) {
                         <div class="profile-actions">
-                            <a href="@Url.Action("Publish", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Publish")</a>
+                            <a href="@Url.Action("Delete", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()" data-prompt="@T("Are you sure you want to delete this recommendation?")">@T("Delete")</a>
                         </div>
                     }
-                    else {
-                        <div class="profile-actions">
-                            <a href="@Url.Action("Unpublish", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Unpublish")</a>
-                        </div>
-                    }
-                    <div class="profile-actions">
-                        <a href="@Url.Action("Delete", "Recommendation", new {id = recommendation.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()" data-prompt="@T("Are you sure you want to delete this recommendation?")">@T("Delete")</a>
-                    </div>
                 </div>
             </div>
         }
