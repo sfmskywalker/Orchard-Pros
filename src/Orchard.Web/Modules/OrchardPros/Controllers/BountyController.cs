@@ -61,7 +61,6 @@ namespace OrchardPros.Controllers {
                 return View(model);
             }
 
-            // ReSharper disable once PossibleInvalidOperationException
             var transaction = _transactionService.Create(CurrentUser, "Bounty", model.Amount.Value, "USD", ticket.Id.ToString(CultureInfo.InvariantCulture));
             return RedirectToAction("Pay", "Stripe", new { id = transaction.Handle });
         }

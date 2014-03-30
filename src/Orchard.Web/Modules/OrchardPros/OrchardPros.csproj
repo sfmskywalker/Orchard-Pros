@@ -195,6 +195,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BioController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Models\TransferReport.cs" />
     <Compile Include="ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="Models\SearchIndex.cs" />
     <Compile Include="Events\VotingEventHandler.cs" />

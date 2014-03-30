@@ -37,6 +37,7 @@ namespace OrchardPros.Controllers {
         private readonly IRepository<Country> _countryRepository;
         private readonly IOpenAuthServices _openAuthServices;
         private readonly Lazy<IEnumerable<IPayoutProvider>> _payoutProviders;
+        private readonly ITransferService _transferService;
 
         public ProfileController(
             IShapeFactory shapeFactory, 
@@ -50,7 +51,8 @@ namespace OrchardPros.Controllers {
             ISubscriptionService subscriptionService, 
             IRepository<Country> countryRepository, 
             IOpenAuthServices openAuthServices, 
-            Lazy<IEnumerable<IPayoutProvider>> payoutProviders) {
+            Lazy<IEnumerable<IPayoutProvider>> payoutProviders, 
+            ITransferService transferService) {
 
             New = shapeFactory;
             T = NullLocalizer.Instance;
@@ -65,6 +67,7 @@ namespace OrchardPros.Controllers {
             _countryRepository = countryRepository;
             _openAuthServices = openAuthServices;
             _payoutProviders = payoutProviders;
+            _transferService = transferService;
         }
 
         public Localizer T { get; set; }
@@ -104,6 +107,18 @@ namespace OrchardPros.Controllers {
             var pagerShape = New.Pager(pager).TotalItemCount(tickets.TotalItemCount);
             var ticketsFollowed = Wrap(New.Profile_TicketsFollowed(Tickets: tickets, Pager: pagerShape));
             return new ShapeResult(this, ticketsFollowed);
+        }
+
+        public ActionResult Transfers(PagerParameters pagerParameters) {
+            var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
+            var user = GetUser();
+            var transfers = _transferService.GetTransfersByUser(user.Id, pager.GetStartIndex(), pager.PageSize);
+            var transferReport = _transferService.GetTranferReportByUser(user.Id);
+            var ticketIds = transfers.Select(x => Int32.Parse(x.Context));
+            var tickets = _services.ContentManager.GetMany<TicketPart>(ticketIds, VersionOptions.Published, QueryHints.Empty).ToDictionary(x => x.Id);
+            var pagerShape = New.Pager(pager).TotalItemCount(transfers.TotalItemCount);
+            var transfersShape = Wrap(New.Profile_Transfers(Transfers: transfers, Pager: pagerShape, TicketsDictionary: tickets, TransferReport: transferReport));
+            return new ShapeResult(this, transfersShape);
         }
 
         public ActionResult PayoutProviders() {

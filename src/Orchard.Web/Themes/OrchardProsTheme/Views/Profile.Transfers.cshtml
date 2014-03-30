@@ -1,0 +1,51 @@
+﻿@using System.Globalization
+@using OrchardPros.Models
+@{
+    var transfers = (IPagedList<Transfer>)Model.Transfers;
+    var transferReport = (TransferReport) Model.TransferReport;
+    var ticketsDictionary = (IDictionary<int, TicketPart>) Model.TicketsDictionary;
+    var pager = Model.Pager;
+}
+<!-- Transfers -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>@T("Amount")</th>
+            <th>@T("Date")</th>
+            <th>@T("Ticket")</th>
+            <th>@T("Status")</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (transfers.Any()) {
+            foreach (var transfer in transfers) {
+                var ticketId = Int32.Parse(transfer.Context);
+                var ticket = ticketsDictionary[ticketId];
+                <tr>
+                    <td>@transfer.Amount.ToString("c")</td>
+                    <td>@transfer.CreatedUtc.ToString("D", CultureInfo.InvariantCulture))</td>
+                    <td>@Html.ItemDisplayLink(ticket)</td>
+                    <td>@T(transfer.Status.ToString())</td>
+                </tr>
+            }
+        }
+        else {
+            <tr>
+                <td colspan="4">
+                    <p>@T("There are no transfers to display yet.")</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">
+                <strong>Total Paid:</strong>@transferReport.TotalPaid.ToString("c")<br/>
+                <strong>Total Pending:</strong>@transferReport.TotalPending.ToString("c")<br />
+                <strong>Total:</strong>@transferReport.Total.ToString("c")<br />
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<!-- /Transfers -->
+@Display(pager)

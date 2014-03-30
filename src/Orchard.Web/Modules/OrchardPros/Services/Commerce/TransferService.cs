@@ -1,3 +1,4 @@
+using System.Linq;
 using Orchard.Data;
 using Orchard.Services;
 using OrchardPros.Models;
@@ -24,6 +25,27 @@ namespace OrchardPros.Services.Commerce {
 
             _transferRepository.Create(transfer);
             return transfer;
+        }
+
+        public IPagedList<Transfer> GetTransfersByUser(int userId, int? skip, int? take) {
+            var query = _transferRepository.Fetch(x => x.RecipientUserId == userId, x => x.Desc(o => o.CreatedUtc));
+            var totalItemCount = query.LongCount();
+
+            return skip != null 
+                ? new PagedList<Transfer>(_transferRepository.Fetch(x => x.RecipientUserId == userId, x => x.Desc(o => o.CreatedUtc), skip.Value, take.Value), totalItemCount) 
+                : new PagedList<Transfer>(query, totalItemCount);
+        }
+
+        public TransferReport GetTranferReportByUser(int userId) {
+            var baseQuery = _transferRepository.Fetch(x => x.RecipientUserId == userId);
+            var totalPaid = baseQuery.Where(x => x.Status == TransferStatus.Completed).Sum(x => x.Amount);
+            var totalPending = baseQuery.Where(x => x.Status == TransferStatus.Pending).Sum(x => x.Amount);
+
+            return new TransferReport {
+                UserId = userId,
+                TotalPaid = totalPaid,
+                TotalPending = totalPending
+            };
         }
     }
 }
