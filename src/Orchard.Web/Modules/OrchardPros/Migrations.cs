@@ -131,7 +131,7 @@ namespace OrchardPros {
             // User
             ContentDefinitionManager.AlterTypeDefinition("User", type => type
                 .WithPart("UserProfilePart")
-                .Indexed("People"));
+                .Indexed("All", "People"));
             
             // Voting
             SchemaBuilder.CreateTable("Vote", table => table
@@ -189,7 +189,7 @@ namespace OrchardPros {
                 .WithPart("BodyPart", p => p.WithSetting("BodyTypePartSettings.Flavor", "markdowndeep"))
                 .WithPart("AttachmentsHolderPart")
                 .WithPart("VotablePart")
-                .Indexed("Tickets"));
+                .Indexed("All", "Tickets"));
 
 
             // Ticket
@@ -233,7 +233,7 @@ namespace OrchardPros {
                 .WithPart("SubscriptionSourcePart")
                 .Creatable(false)
                 .Draftable()
-                .Indexed("Tickets"));
+                .Indexed("All", "Tickets"));
 
             // Stripe
             ContentDefinitionManager.AlterPartDefinition("StripeSettingsPart", part => part.Attachable(false));

@@ -194,6 +194,9 @@
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BioController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="ViewModels\SearchResultsViewModel.cs" />
+    <Compile Include="Models\SearchIndex.cs" />
     <Compile Include="Events\VotingEventHandler.cs" />
     <Compile Include="Models\PeopleCriteria.cs" />
     <Compile Include="Services\User\IPeopleService.cs" />
@@ -555,7 +558,9 @@
   <ItemGroup>
     <Content Include="Views\EditorTemplates\BioViewModel.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Search\Index.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /* Theme styling for Orchard Pros */
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,700,300);
@@ -21,6 +21,8 @@
 .navbar-collapse { padding-right:0px; }
 .navbar-form { padding-right:0px; }
 .navbar-right .dropdown-menu { text-align:right; }
+.search-dropdown .btn-search { border-right: none; }
+.search-dropdown .dropdown-toggle { border-left: none; }
 
 /* Type styling */
 body { font-family:'Open Sans', Helvetica, sans-serif; font-size:14px; line-height:1.5em; }

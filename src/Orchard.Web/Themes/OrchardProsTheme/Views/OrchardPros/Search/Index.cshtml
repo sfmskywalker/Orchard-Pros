@@ -1,0 +1,35 @@
+﻿@model OrchardPros.ViewModels.SearchResultsViewModel
+@{
+    Layout.Title = @T("Search Results - {0}", Model.IndexDisplayName);
+}
+@helper PageSizes() {
+    var pager = Model.Pager;
+    var pageSizes = new[] { 10, 20, 50 };
+    <div class="btn-group btn-group-sm filter-results">
+        @foreach (var pageSize in pageSizes) {
+            <a href="@Url.Action("Index", "Ticket", new { pageSize = pageSize })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
+        }
+        <span>@T("per page")</span>
+    </div>
+}
+<section>
+    <div class="sorter">
+        @PageSizes()
+    </div>
+
+    @if (!Model.ContentItems.Any()) {
+        <p>@T("There are no results to be displayed in the current view.")</p>
+    }
+    else {
+        <!-- Results -->
+        foreach (var contentItemShape in Model.ContentItemShapes) {
+            @Display(contentItemShape)
+        }
+        <!-- /Results -->
+    }
+        
+    <div class="sorter bottom">
+        @Display(Model.Pager)
+        @PageSizes()
+    </div>
+</section>

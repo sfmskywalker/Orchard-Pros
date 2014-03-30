@@ -219,6 +219,20 @@ namespace OrchardPros.Services.Content {
             return GetTags().OrderByDescending(x => x.Weight).Take(15).OrderBy(x => x.Name);
         }
 
+        private IEnumerable<int> SearchTickets(string term, int skip, int? take) {
+            var searchHits = _searchService.Query(
+                query: term,
+                filterCulture: false,
+                skip: skip,
+                take: take,
+                index: "Tickets",
+                searchFields: new[] { "author", "body", "title", "Categories", "Tags" },
+                shapeResult: searchHit => searchHit);
+
+            var foundIds = searchHits.Select(searchHit => searchHit.ContentItemId).ToList();
+            return foundIds;
+        }
+
         private IEnumerable<TermPart> ParseTags(string tags) {
             var tagList = !String.IsNullOrWhiteSpace(tags) ? tags.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim().ToLower()).ToArray() : new string[0];
             var taxonomy = GetOrCreateTaxonomy("Tag");
@@ -260,20 +274,6 @@ namespace OrchardPros.Services.Content {
 
         private IEnumerable<TermPart> GetTerms(int taxonomyId) {
             return _taxonomyService.GetTerms(taxonomyId).OrderBy(x => x.Name);
-        }
-
-        private IEnumerable<int> SearchTickets(string term, int skip, int? take) {
-            var searchHits = _searchService.Query(
-                query: term, 
-                filterCulture: false,
-                skip: skip,
-                take: take,
-                index: "Tickets",
-                searchFields: new[]{"author", "body", "title", "Categories", "Tags"},
-                shapeResult: searchHit => searchHit);
-
-            var foundIds = searchHits.Select(searchHit => searchHit.ContentItemId).ToList();
-            return foundIds;
         }
     }
 }
