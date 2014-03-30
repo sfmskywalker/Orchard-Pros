@@ -7,7 +7,8 @@ using OrchardPros.Models;
 
 namespace OrchardPros.Services.Content {
     public interface ITicketService : IDependency {
-        IPagedList<TicketPart> GetTicketsFor(int userId, int? skip = null, int? take = null);
+        IPagedList<TicketPart> GetTicketsCreatedBy(int userId, int? skip = null, int? take = null);
+        IPagedList<TicketPart> GetTicketsSolvedBy(int userId, int? skip = null, int? take = null);
         IEnumerable<TermPart> GetCategories();
         IEnumerable<TermPart> GetCategoriesFor(int ticketId);
         IEnumerable<TermPart> GetTags();
@@ -32,7 +33,6 @@ namespace OrchardPros.Services.Content {
 
         void Publish(TicketPart ticket);
         void Solve(TicketPart ticket, ReplyPart reply);
-        IEnumerable<TicketPart> GetSolvedTicketsFor(int userId);
         IEnumerable<TermPart> GetPopularTags();
     }
 }

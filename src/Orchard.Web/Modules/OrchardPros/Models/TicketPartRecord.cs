@@ -9,6 +9,7 @@ namespace OrchardPros.Models {
         public virtual int ExperiencePoints { get; set; }
         public virtual DateTime? SolvedUtc { get; set; }
         public virtual int? AnswerId { get; set; }
+        public virtual int? SolvedByUserId { get; set; }
         public virtual string Categories { get; set; }
         public virtual string Tags { get; set; }
     }

@@ -82,7 +82,7 @@ namespace OrchardPros.Controllers {
         public ActionResult TicketsCreated(string userName, PagerParameters pagerParameters) {
             var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
             var user = GetUser(userName);
-            var tickets = _ticketService.GetTicketsFor(user.Id, pager.GetStartIndex(), pager.PageSize);
+            var tickets = _ticketService.GetTicketsCreatedBy(user.Id, pager.GetStartIndex(), pager.PageSize);
             var pagerShape = New.Pager(pager).TotalItemCount(tickets.TotalItemCount);
             var ticketsCreated = Wrap(New.Profile_TicketsCreated(Tickets: tickets, Pager: pagerShape), user);
             return new ShapeResult(this, ticketsCreated);
@@ -92,6 +92,15 @@ namespace OrchardPros.Controllers {
             var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
             var user = GetUser();
             var tickets = _subscriptionService.GetSubscriptionSourcesByUser(user.Id).As<TicketPart>();
+            var pagerShape = New.Pager(pager).TotalItemCount(tickets.TotalItemCount);
+            var ticketsFollowed = Wrap(New.Profile_TicketsFollowed(Tickets: tickets, Pager: pagerShape));
+            return new ShapeResult(this, ticketsFollowed);
+        }
+
+        public ActionResult TicketsSolved(PagerParameters pagerParameters) {
+            var pager = new Pager(_services.WorkContext.CurrentSite, pagerParameters);
+            var user = GetUser();
+            var tickets = _ticketService.GetTicketsSolvedBy(user.Id, pager.GetStartIndex(), pager.PageSize);
             var pagerShape = New.Pager(pager).TotalItemCount(tickets.TotalItemCount);
             var ticketsFollowed = Wrap(New.Profile_TicketsFollowed(Tickets: tickets, Pager: pagerShape));
             return new ShapeResult(this, ticketsFollowed);

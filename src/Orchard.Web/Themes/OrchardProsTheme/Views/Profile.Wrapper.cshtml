@@ -11,10 +11,11 @@
     <div class="sorter">
         <ul class="nav nav-tabs">
             <li @if (String.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text> }><a href="@Url.Action("Index", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("Profile")</a></li>
-            <li @if (String.Equals(currentAction, "TicketsCreated", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text>  }><a href="@Url.Action("TicketsCreated", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("Tickets Created")</a></li>
+            <li @if (String.Equals(currentAction, "TicketsCreated", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text>  }><a href="@Url.Action("TicketsCreated", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("My Tickets")</a></li>
             
             @if (isCurrentUser) { 
-                <li @if (String.Equals(currentAction, "TicketsFollowed", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text>  }><a href="@Url.Action("TicketsFollowed", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("Tickets Followed")</a></li>
+                <li @if (String.Equals(currentAction, "TicketsFollowed", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text>  }><a href="@Url.Action("TicketsFollowed", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("Tickets I'm Following")</a></li>
+                <li @if (String.Equals(currentAction, "TicketsSolved", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text>   }><a href="@Url.Action("TicketsSolved", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("Tickets I Solved")</a></li>
                 <li @if (String.Equals(currentAction, "PayoutProviders", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text>   }><a href="@Url.Action("PayoutProviders", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("Payout")</a></li>
                 @*<li @if (String.Equals(currentAction, "ConnectedApps", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text>   }><a href="@Url.Action("ConnectedApps", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("Connected Apps")</a></li>*@
                 <li @if (String.Equals(currentAction, "Settings", StringComparison.OrdinalIgnoreCase)) { <text> class="active" </text>  }><a href="@Url.Action("Settings", "Profile", new { userName = user.UserName, area = "OrchardPros" })">@T("Settings")</a></li>

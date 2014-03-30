@@ -30,8 +30,8 @@
                 <li class="activity">
                     <h4>Activity</h4>
                     <p>@T("Active since {0}", profilePart.CreatedUtc.ToString("D", CultureInfo.InvariantCulture))</p>
-                    <p>@T("Replies: {0}", profilePart.Replies.Count())</p>
-                    <p>@T("Tickets solved: {0}", profilePart.SolvedTickets.Count())</p>
+                    <p>@T("Replies: {0}", profilePart.Replies)</p>
+                    <p>@T("Tickets solved: {0}", profilePart.SolvedTickets)</p>
                 </li>
             </ul>
         </div>

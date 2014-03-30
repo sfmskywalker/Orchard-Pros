@@ -41,6 +41,11 @@ namespace OrchardPros.Models {
             set { Store(x => x.SolvedUtc, value); }
         }
 
+        public int? SolvedByUserId {
+            get { return Retrieve(x => x.SolvedByUserId); }
+            set { Store(x => x.SolvedByUserId, value); }
+        }
+
         public bool IsSolved {
             get { return SolvedUtc != null; }
         }

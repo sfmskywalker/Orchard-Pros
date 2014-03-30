@@ -200,6 +200,7 @@ namespace OrchardPros {
                 .Column<DateTime>("DeadlineUtc")
                 .Column<int>("ExperiencePoints")
                 .Column<DateTime>("SolvedUtc")
+                .Column<int>("SolvedByUserId")
                 .Column<int>("AnswerId")
                 .Column<string>("Categories", c => c.WithLength(512))
                 .Column<string>("Tags", c => c.WithLength(512)));

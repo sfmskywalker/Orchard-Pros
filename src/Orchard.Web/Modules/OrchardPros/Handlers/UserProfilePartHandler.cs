@@ -44,8 +44,8 @@ namespace OrchardPros.Handlers {
             part.SkillsField.Loader(() => _skillManager.Fetch(part.Id).ToArray());
             part.RecommendationsField.Loader(() => _recommendationManager.GetByRecommendedUser(part.Id).List<RecommendationPart>().ToArray());
             part.ExperienceField.Loader(() => _experienceManager.Fetch(part.Id).ToArray());
-            part.RepliesField.Loader(() => _replyService.GetRepliesByUser(part.Id).ToArray());
-            part.SolvedTicketsField.Loader(() => _ticketService.GetSolvedTicketsFor(part.Id).ToArray());
+            part.RepliesField.Loader(() => _replyService.GetRepliesByUser(part.Id).Count());
+            part.SolvedTicketsField.Loader(() => _ticketService.GetTicketsSolvedBy(part.Id, 0, 1).TotalItemCount);
             part.RatingField.Loader(() => {
                 var result = _votingService.GetResult(part.Id, "average");
                 return (int) (result != null ? result.Value : 1);

@@ -23,8 +23,6 @@ namespace OrchardPros.Services.Content {
         private readonly IUserManager _userManager;
         private readonly ISignals _signals;
         private readonly IClock _clock;
-        private readonly IReplyService _replyService;
-        private readonly IRepository<TicketPartRecord> _ticketPartRepository;
         private readonly ISearchService _searchService;
         private readonly ITicketEventHandler _ticketEventHandlers;
         private readonly ITransferService _transferService;
@@ -35,8 +33,6 @@ namespace OrchardPros.Services.Content {
             IUserManager userManager,
             ISignals signals,
             IClock clock,
-            IReplyService replyService,
-            IRepository<TicketPartRecord> ticketPartRepository, 
             ISearchService searchService, 
             ITicketEventHandler ticketEventHandlers, 
             ITransferService transferService) {
@@ -46,15 +42,24 @@ namespace OrchardPros.Services.Content {
             _userManager = userManager;
             _signals = signals;
             _clock = clock;
-            _replyService = replyService;
-            _ticketPartRepository = ticketPartRepository;
             _searchService = searchService;
             _ticketEventHandlers = ticketEventHandlers;
             _transferService = transferService;
         }
 
-        public IPagedList<TicketPart> GetTicketsFor(int userId, int? skip = null, int? take = null) {
+        public IPagedList<TicketPart> GetTicketsCreatedBy(int userId, int? skip = null, int? take = null) {
             var query = _contentManager.Query<CommonPart, CommonPartRecord>().Where(x => x.OwnerId == userId).Join<TicketPartRecord>();
+            var totalItemCount = query.Count();
+
+            if (skip != null && take != null) {
+                return new PagedList<TicketPart>(query.Slice(skip.Value, take.Value).Select(x => x.As<TicketPart>()), totalItemCount);
+            }
+
+            return new PagedList<TicketPart>(query.ForPart<TicketPart>().List(), totalItemCount);
+        }
+
+        public IPagedList<TicketPart> GetTicketsSolvedBy(int userId, int? skip = null, int? take = null) {
+            var query = _contentManager.Query<TicketPart, TicketPartRecord>().Where(x => x.SolvedByUserId == userId);
             var totalItemCount = query.Count();
 
             if (skip != null && take != null) {
@@ -190,6 +195,7 @@ namespace OrchardPros.Services.Content {
             var expertPart = reply.User.As<UserProfilePart>();
 
             ticket.SolvedUtc = _clock.UtcNow;
+            ticket.SolvedByUserId = reply.User.Id;
             ticket.AnswerId = reply.Id;
 
             _ticketEventHandlers.Solved(new TicketSolvedContext {
@@ -202,17 +208,6 @@ namespace OrchardPros.Services.Content {
             if (ticket.Bounty != null) {
                 _transferService.Create(reply.User.Id, ticket.Bounty.Value, "USD", ticket.Id.ToString(CultureInfo.InvariantCulture));
             }
-        }
-
-        public IEnumerable<TicketPart> GetSolvedTicketsFor(int userId) {
-            var replyIds = _replyService.GetRepliesByUser(userId).Select(x => x.Id).ToArray();
-            var answeredTicketsQuery = from ticket in _ticketPartRepository.Table
-                                       where ticket.AnswerId != null
-                                       let answerId = ticket.AnswerId.Value
-                                       where replyIds.Contains(answerId)
-                                       select ticket.Id;
-            var ticketIds = answeredTicketsQuery.ToArray();
-            return _contentManager.GetMany<TicketPart>(ticketIds, VersionOptions.Published, QueryHints.Empty);
         }
 
         public IEnumerable<TermPart> GetPopularTags() {

@@ -15,8 +15,8 @@ namespace OrchardPros.Models {
         internal LazyField<IEnumerable<Skill>> SkillsField = new LazyField<IEnumerable<Skill>>();
         internal LazyField<IEnumerable<RecommendationPart>> RecommendationsField = new LazyField<IEnumerable<RecommendationPart>>();
         internal LazyField<IEnumerable<Experience>> ExperienceField = new LazyField<IEnumerable<Experience>>();
-        internal LazyField<IEnumerable<ReplyPart>> RepliesField = new LazyField<IEnumerable<ReplyPart>>();
-        internal LazyField<IEnumerable<TicketPart>> SolvedTicketsField = new LazyField<IEnumerable<TicketPart>>();
+        internal LazyField<int> RepliesField = new LazyField<int>();
+        internal LazyField<long> SolvedTicketsField = new LazyField<long>();
         internal LazyField<int> RatingField = new LazyField<int>();
 
         public string FirstName {
@@ -186,11 +186,11 @@ namespace OrchardPros.Models {
             get { return ExperienceField.Value; }
         }
 
-        public IEnumerable<ReplyPart> Replies {
+        public int Replies {
             get { return RepliesField.Value; }
         }
 
-        public IEnumerable<TicketPart> SolvedTickets {
+        public long SolvedTickets {
             get { return SolvedTicketsField.Value; }
         }
 

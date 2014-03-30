@@ -15,7 +15,7 @@ namespace OrchardPros.Drivers {
         protected override DriverResult Editor(UserPart part, dynamic shapeHelper) {
             return ContentShape("Parts_User_Tickets", () => shapeHelper.EditorTemplate(
                 TemplateName: "Parts/User.Tickets",
-                Model: shapeHelper.ViewModel(UserPart: part, Tickets: _ticketService.GetTicketsFor(part.Id).ToArray()),
+                Model: shapeHelper.ViewModel(UserPart: part, Tickets: _ticketService.GetTicketsCreatedBy(part.Id).ToArray()),
                 Prefix: Prefix));
         }
 
