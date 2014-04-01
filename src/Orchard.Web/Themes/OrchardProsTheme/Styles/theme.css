@@ -1,4 +1,4 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 /* Theme styling for Orchard Pros */
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,700,300);
@@ -107,12 +107,12 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 .popup { position:absolute; top:50%; left:50%; width:30%; height:auto; margin-left:-15%; margin-top:-15%; z-index:999; background:#fff; -moz-border-radius:3px; -webkit-border-radius:3px; -ms-border-radius:3px; border-radius:3px; }
 
 /* Sorter */
-.sorter { font-size:12px; width:100%; }
+.sorter { font-size:12px; width:100%; clear:both; }
 .sorter .nav-tabs {}
 .sorter .sorter-link { float:right; margin-top:-32px; }
 .sorter .filter-results { float:right; margin-top:-39px; }
 .sorter .filter-results span { margin-left:5px; font-size:12px; line-height:2.4em; }
-.sorter.bottom { width:100%; margin-top:10px; float:left; clear:both; }
+.sorter.bottom { width:100%; margin-top:10px; float:left; }
 .sorter.bottom .action-link { margin-right:2em; }
 .sorter.bottom .sorter-link { margin-top:0px; }
 .sorter.bottom .filter-results { margin-top:0px; }
@@ -257,8 +257,24 @@ article.user { margin-top:20px; }
 /* Companies */
 article.company { margin-top:20px; }
 
+/* Search Results */
+ul.list-results { padding-left:0px; list-style:none; }
+ul.list-results li { background:url(../Images/icon-title.png) #eee no-repeat 0px 0px; padding-left:30px; }
+.search-result { border-bottom:1px solid #aaa; margin-bottom:30px; }
+.search-result .ticket-summary { width:90%; float:right; }
+.search-result .search-summary { width:90%; float:right; }
+.search-result .search-summary h2 { margin-top:0px; }
+.search-result .ticket-info { width:auto; clear:left; }
+.search-result-type { float:left; }
+.search-result-type i.icon-ticket { width:32px; height:32px; background:#ccc; display:block; }
+.search-result-type i.icon-reply { width:32px; height:32px; background:#ccc; display:block; }
+.search-result-type i.icon-people { width:32px; height:32px; background:#ccc; display:block; }
+.search-result-type i.icon-company { width:32px; height:32px; background:#ccc; display:block; }
+.search-result-type i.icon-page { width:32px; height:32px; background:#ccc; display:block; }
+
+
 /* Footer */
-body > .container { padding-bottom:150px; /* Height of sticky footer */ }
+body > .container { /* padding-bottom:150px; Height of sticky footer */ }
 footer { background:#eee; border-top:3px solid #94c74f; margin-top:30px; height:150px; width:100%; position:relative; bottom:0px; }
 footer .list { padding-left:0px; list-style:none; }
 footer .list a { color:#333; font-size:12px; text-decoration:none; }
