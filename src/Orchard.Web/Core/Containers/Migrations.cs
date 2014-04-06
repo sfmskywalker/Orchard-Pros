@@ -22,7 +22,13 @@ namespace Orchard.Core.Containers {
             SchemaBuilder.CreateTable("ContainerWidgetPartRecord", table => table
                 .ContentPartRecord()
                 .Column<int>("ContainerId")
-                .Column<int>("PageSize"));
+                .Column<int>("PageSize")
+                .Column<string>("OrderByProperty", c => c.WithLength(64))
+                .Column<int>("OrderByDirection")
+                .Column<bool>("ApplyFilter")
+                .Column<string>("FilterByProperty", c => c.WithLength(64))
+                .Column<string>("FilterByOperator", c => c.WithLength(4))
+                .Column<string>("FilterByValue", c => c.WithLength(128)));
 
             SchemaBuilder.CreateTable("ContainablePartRecord", table => table
                 .ContentPartRecord()
@@ -42,7 +48,7 @@ namespace Orchard.Core.Containers {
                 .Attachable()
                 .WithDescription("Allows your content item to be contained by a content item that has the ContainerPart attached."));
 
-            return 5;
+            return 6;
         }
 
         public int UpdateFrom1() {
@@ -77,8 +83,6 @@ namespace Orchard.Core.Containers {
             ContentDefinitionManager.DeleteTypeDefinition("CustomPropertiesPart");
             SchemaBuilder.DropTable("CustomPropertiesPartRecord");
             SchemaBuilder.AlterTable("ContainerPartRecord", table => {
-                table.DropColumn("OrderByProperty");
-                table.DropColumn("OrderByDirection");
                 table.DropColumn("ItemContentType");
                 table.AddColumn<string>("ItemContentTypes");
                 table.AddColumn<bool>("ShowOnAdminMenu");
@@ -95,15 +99,29 @@ namespace Orchard.Core.Containers {
                 table.AddColumn<int>("Position");
             });
 
-            SchemaBuilder.AlterTable("ContainerWidgetPartRecord", table => {
-                table.DropColumn("OrderByProperty");
-                table.DropColumn("OrderByDirection");
-                table.DropColumn("ApplyFilter");
-                table.DropColumn("FilterByProperty");
-                table.DropColumn("FilterByOperator");
-                table.DropColumn("FilterByValue");
-            });
-            return 5;
+            return 6;
+        }
+
+        public int UpdateFrom5() {
+            SchemaBuilder.AlterTable("ContainerWidgetPartRecord", table => table
+                .AddColumn<string>("OrderByProperty", c => c.WithLength(64)));
+
+            SchemaBuilder.AlterTable("ContainerWidgetPartRecord", table => table
+                .AddColumn<int>("OrderByDirection"));
+
+            SchemaBuilder.AlterTable("ContainerWidgetPartRecord", table => table
+                .AddColumn<bool>("ApplyFilter"));
+
+            SchemaBuilder.AlterTable("ContainerWidgetPartRecord", table => table
+                .AddColumn<string>("FilterByProperty", c => c.WithLength(64)));
+
+            SchemaBuilder.AlterTable("ContainerWidgetPartRecord", table => table
+                .AddColumn<string>("FilterByOperator", c => c.WithLength(4)));
+
+            SchemaBuilder.AlterTable("ContainerWidgetPartRecord", table => table
+                .AddColumn<string>("FilterByValue", c => c.WithLength(128)));
+
+            return 6;
         }
     }
 }
