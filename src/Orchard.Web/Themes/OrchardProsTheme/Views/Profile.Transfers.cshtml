@@ -23,7 +23,7 @@
                 var ticket = ticketsDictionary[ticketId];
                 <tr>
                     <td>@transfer.Amount.ToString("c")</td>
-                    <td>@transfer.CreatedUtc.ToString("D", CultureInfo.InvariantCulture))</td>
+                    <td>@transfer.CreatedUtc.ToString("D", CultureInfo.InvariantCulture)</td>
                     <td>@Html.ItemDisplayLink(ticket)</td>
                     <td>@T(transfer.Status.ToString())</td>
                 </tr>
