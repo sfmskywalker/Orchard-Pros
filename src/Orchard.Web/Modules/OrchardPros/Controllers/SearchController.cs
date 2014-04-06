@@ -59,7 +59,7 @@ namespace OrchardPros.Controllers {
 
             var foundIds = searchHits.Select(searchHit => searchHit.ContentItemId).ToArray();
             var foundItems = _services.ContentManager.GetMany<IContent>(foundIds, VersionOptions.Published, QueryHints.Empty).ToArray();
-            var foundItemShapes = foundItems.Select(x => _services.ContentManager.BuildDisplay(x, "Summary")).ToArray();
+            var foundItemShapes = foundItems.Select(x => _services.ContentManager.BuildDisplay(x, "SearchResult")).ToArray();
             
             searchHits.TotalItemCount -= foundIds.Count() - foundItems.Count();
             var pagerShape = _services.New.Pager(pager).TotalItemCount(searchHits.TotalItemCount);

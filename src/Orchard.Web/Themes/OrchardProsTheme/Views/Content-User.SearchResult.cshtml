@@ -1,0 +1,22 @@
+@using Orchard.ContentManagement
+@using Orchard.Users.Models
+@using OrchardPros.Models
+@using OrchardPros.Providers.SummaryGenerators
+@{
+    var contentItem = (IContent)Model.ContentItem;
+    var user = contentItem.As<UserPart>();
+    var profile = contentItem.As<UserProfilePart>();
+}
+<!-- Search result People -->
+<article class="ticket-reply search-result">
+    <div class="search-result-type">
+        <i class="icon-people"><img src="@Url.AvatarUrl(user, this, 30)" alt="Profile image" class="profile-img-s"></i>
+        <p class="small">@T("User")</p>
+        @Html.ProfileLink(user)
+    </div>
+    <div class="search-summary">
+        <h2>@Html.ProfileLink(T("Lv. {0:00} {1}", profile.Level, profile.RankName).Text, user)</h2>
+        @Html.Summarize(profile.Bio, "markdowndeep", SummaryGenerators.PlainTextWords, 100)
+    </div>
+</article>
+<!-- /Search result People -->

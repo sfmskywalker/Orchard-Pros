@@ -8,7 +8,7 @@ using Orchard.Security;
 using Orchard.Themes;
 using Orchard.UI.Notify;
 using OrchardPros.Models;
-using OrchardPros.PayoutProviders;
+using OrchardPros.Providers.PayoutProviders;
 using OrchardPros.Services.Commerce;
 using OrchardPros.ViewModels;
 

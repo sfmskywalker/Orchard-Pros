@@ -7,7 +7,7 @@ using Orchard.DisplayManagement;
 using OrchardPros.Models;
 using OrchardPros.Services.Commerce;
 
-namespace OrchardPros.PayoutProviders {
+namespace OrchardPros.Providers.PayoutProviders {
     public class Stripe : PayoutProviderBase, IStripePayoutProvider {
         private readonly IOrchardServices _services;
 

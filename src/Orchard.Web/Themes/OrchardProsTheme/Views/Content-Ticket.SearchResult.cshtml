@@ -1,0 +1,43 @@
+@using Orchard.ContentManagement
+@using Orchard.Core.Common.Models
+@using OrchardPros.Models
+@{
+    var contentItem = (IContent)Model.ContentItem;
+    var ticketPart = contentItem.As<TicketPart>();
+    var bodyPart = contentItem.As<BodyPart>();
+    var statisticsPart = contentItem.As<StatisticsPart>();
+    var repliesPart = contentItem.As<RepliesPart>();
+}
+<!-- Search result Ticket-->
+<article class="ticket-post search-result">
+    <div class="search-result-type">
+        <i class="icon-ticket">&nbsp;</i>
+        <p class="small">@T("Ticket")</p>
+        @Html.ProfileLink(ticketPart.User)
+    </div>
+    <div class="ticket-summary">
+        <h2><a href="@Url.ItemDisplayUrl(ticketPart)">@ticketPart.Subject</a></h2>
+        @Html.Summarize(bodyPart, 100)
+        <div class="ticket-status">
+            <ul>
+                <li class="views"><span class="number">@statisticsPart.ViewCount</span><span class="type">@T("views")</span></li>
+                <li class="replies @if(ticketPart.IsSolved){<text>solved</text>}"><span class="number">@repliesPart.Replies.Count()</span><span class="type">@T("replies")</span></li>
+            </ul>
+        </div>
+        @foreach (var category in ticketPart.Categories) {
+            <a href="@Url.Category(category)" class="category-link">@category.Name</a>
+        }
+        <div class="tags">
+            @foreach (var tag in ticketPart.Tags) {
+                <a href="@Url.Tag(tag)"><span class="label label-default">@tag.Name</span></a>
+            }
+        </div>
+        <div class="ticket-info">
+            <span class="ticket-expiration">
+                @ticketPart.GetExpirationText(T)
+            </span>
+            <span class="ticket-exp">@T("EXP: {0}", ticketPart.ExperiencePoints)</span>
+        </div>
+    </div>
+</article>
+<!-- /Search result Ticket -->

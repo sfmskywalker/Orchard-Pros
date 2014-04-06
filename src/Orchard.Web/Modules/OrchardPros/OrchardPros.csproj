@@ -51,6 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\nhibernate\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\..\..\..\lib\htmlagilitypack\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="MarkdownDeep, Version=1.1.4105.19498, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\MarkdownDeep\MarkdownDeep.dll</HintPath>
@@ -195,7 +198,20 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BioController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Helpers\BodyPartExtensions.cs" />
+    <Compile Include="Helpers\FlavoredStringHelper.cs" />
+    <Compile Include="Helpers\HtmlSanitizer.cs" />
+    <Compile Include="Helpers\SummaryHtmlHelper.cs" />
     <Compile Include="Models\TransferReport.cs" />
+    <Compile Include="Providers\SummaryGenerators\CharactersSummaryGenerator.cs" />
+    <Compile Include="Providers\SummaryGenerators\ParagraphsSummaryGenerator.cs" />
+    <Compile Include="Providers\SummaryGenerators\PlainTextWordsSummaryGenerator.cs" />
+    <Compile Include="Providers\SummaryGenerators\SummaryGenerators.cs" />
+    <Compile Include="Providers\SummaryGenerators\WordsSummaryGenerator.cs" />
+    <Compile Include="Services\Content\ISummarizer.cs" />
+    <Compile Include="Services\Content\ISummaryGenerator.cs" />
+    <Compile Include="Services\Content\SummarizeContext.cs" />
+    <Compile Include="Services\Content\Summarizer.cs" />
     <Compile Include="ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="Models\SearchIndex.cs" />
     <Compile Include="Events\VotingEventHandler.cs" />
@@ -213,7 +229,7 @@
     <Compile Include="Models\Transfer.cs" />
     <Compile Include="Models\TransferStatus.cs" />
     <Compile Include="Models\UserPayoutProvider.cs" />
-    <Compile Include="PayoutProviders\IStripePayoutProvider.cs" />
+    <Compile Include="Providers\PayoutProviders\IStripePayoutProvider.cs" />
     <Compile Include="Services\Commerce\IPayoutProvider.cs" />
     <Compile Include="Services\Commerce\ITransactionEventHandler.cs" />
     <Compile Include="Controllers\StripeController.cs" />
@@ -223,7 +239,7 @@
     <Compile Include="Events\TicketTransactionEventHandler.cs" />
     <Compile Include="Services\Commerce\ITransferService.cs" />
     <Compile Include="Services\Commerce\PayoutProviderBase.cs" />
-    <Compile Include="PayoutProviders\Stripe.cs" />
+    <Compile Include="Providers\PayoutProviders\Stripe.cs" />
     <Compile Include="Services\Commerce\TransactionEventHandlerBase.cs" />
     <Compile Include="Services\Commerce\TransferService.cs" />
     <Compile Include="ResourceManifest.cs" />
