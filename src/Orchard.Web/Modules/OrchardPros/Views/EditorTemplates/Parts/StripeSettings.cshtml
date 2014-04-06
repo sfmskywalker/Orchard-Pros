@@ -7,19 +7,19 @@
     </div>
 </fieldset>
 <fieldset>
-	<legend>@T("Development")</legend>
-	<div class="form-group">
-		@Html.LabelFor(m => m.TestSecretKey, T("Secret Key"))
-		@Html.TextBoxFor(m => m.TestSecretKey, new { @class = "text large" })
-	</div>
-	<div class="form-group">
-		@Html.LabelFor(m => m.TestPublishableKey, T("Publishable Key"))
-		@Html.TextBoxFor(m => m.TestPublishableKey, new { @class = "text large" })
-	</div>
-	<div class="form-group">
-		@Html.LabelFor(m => m.TestClientId, T("Client ID"))
-		@Html.TextBoxFor(m => m.TestClientId, new { @class = "text large" })
-	</div>
+    <legend>@T("Development")</legend>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TestSecretKey, T("Secret Key"))
+        @Html.TextBoxFor(m => m.TestSecretKey, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TestPublishableKey, T("Publishable Key"))
+        @Html.TextBoxFor(m => m.TestPublishableKey, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TestClientId, T("Client ID"))
+        @Html.TextBoxFor(m => m.TestClientId, new { @class = "text large" })
+    </div>
 </fieldset>
 <fieldset>
     <legend>@T("Production")</legend>
@@ -38,7 +38,7 @@
 </fieldset>
 <fieldset>
     <legend>@T("Mode")</legend>
-	<div class="form-group">
+    <div class="form-group">
         <label>
             @Html.RadioButtonFor(m => m.Live, false)
             @T("Development")
@@ -47,5 +47,5 @@
             @Html.RadioButtonFor(m => m.Live, true)
             @T("Production")
         </label>
-	</div>
+    </div>
 </fieldset>
