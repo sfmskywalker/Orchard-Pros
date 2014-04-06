@@ -1,35 +1,70 @@
-﻿@model OrchardPros.ViewModels.SearchResultsViewModel
+﻿@using OrchardPros.Models
+@model OrchardPros.ViewModels.SearchResultsViewModel
+@{
+    var index = Model.Index;
+}
 @{
     Layout.Title = @T("Search Results - {0}", Model.IndexDisplayName);
+}
+@functions {
+
+    string SearchUrl(SearchIndex index) {
+        var pageSize = (int?)Model.Pager.PageSize;
+        return Url.Action("Index", "Search", new { pageSize = pageSize, index = index, term = Model.Term });
+    }
+
 }
 @helper PageSizes() {
     var pager = Model.Pager;
     var pageSizes = new[] { 10, 20, 50 };
     <div class="btn-group btn-group-sm filter-results">
         @foreach (var pageSize in pageSizes) {
-            <a href="@Url.Action("Index", "Ticket", new { pageSize = pageSize })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
+            <a href="@Url.Action("Index", "Search", new { pageSize = pageSize })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
         }
         <span>@T("per page")</span>
     </div>
 }
-<section>
-    <div class="sorter">
-        @PageSizes()
-    </div>
+<!-- Search template Starts here -->
+<div class="row">
+    <div class="col-md-2">
+        <aside>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Search</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-results">
+                        <li class="results-all @if (index == SearchIndex.All) {<text>active</text>}"><a href="@SearchUrl(SearchIndex.All)">@T("All results")</a></li>
+                        <li class="results-tickets @if (index == SearchIndex.Tickets) { <text> active </text> }"><a href="@SearchUrl(SearchIndex.Tickets)">@T("Tickets")</a></li>
+                        <li class="results-people @if (index == SearchIndex.People) { <text> active </text> } "><a href="@SearchUrl(SearchIndex.People)">@T("People")</a></li>
+                        <li class="results-pages @if (index == SearchIndex.Pages) { <text> active </text> } "><a href="@SearchUrl(SearchIndex.Pages)">@T("Pages")</a></li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+    </div> <!-- /.col-md-2 -->
+    <div class="col-md-10">
+        <section>
+            <div class="sorter">
+                @PageSizes()
+            </div>
 
-    @if (!Model.ContentItems.Any()) {
-        <p>@T("There are no results to be displayed in the current view.")</p>
-    }
-    else {
-        <!-- Results -->
-        foreach (var contentItemShape in Model.ContentItemShapes) {
-            @Display(contentItemShape)
-        }
-        <!-- /Results -->
-    }
-        
-    <div class="sorter bottom">
-        @Display(Model.Pager)
-        @PageSizes()
-    </div>
-</section>
+            @if (!Model.ContentItems.Any()) {
+                <p>@T("There are no results to be displayed in the current view.")</p>
+            }
+            else {
+                <!-- Results -->
+                foreach (var contentItemShape in Model.ContentItemShapes) {
+                    @Display(contentItemShape)
+                }
+                <!-- /Results -->
+            }
+
+            <div class="sorter bottom">
+                @Display(Model.Pager)
+                @PageSizes()
+            </div>
+        </section>
+    </div> <!-- /.col-md-10 -->
+</div> <!-- /.row -->
+<!-- Search template Ends here -->

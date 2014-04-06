@@ -41,6 +41,11 @@ namespace OrchardPros.Controllers {
                     indexDisplayName = T("People");
                     searchFields = new[] { "body", "title", "username", "firstname", "lastname", "bio" };
                     break;
+                case SearchIndex.Pages:
+                    indexName = "Pages";
+                    indexDisplayName = T("Pages");
+                    searchFields = new[] { "body", "title" };
+                    break;
                 default:
                     indexName = "All";
                     indexDisplayName = T("All");
@@ -64,6 +69,8 @@ namespace OrchardPros.Controllers {
             searchHits.TotalItemCount -= foundIds.Count() - foundItems.Count();
             var pagerShape = _services.New.Pager(pager).TotalItemCount(searchHits.TotalItemCount);
             var viewModel = new SearchResultsViewModel {
+                Term = term,
+                Index = index.Value,
                 IndexDisplayName = indexDisplayName,
                 ContentItems = foundItems,
                 ContentItemShapes = foundItemShapes,

@@ -21,7 +21,7 @@
 
     <Metadata>
         <Types>
-            <Page ContentTypeSettings.Draftable="True" TypeIndexing.Indexes="All">
+            <Page ContentTypeSettings.Draftable="True" TypeIndexing.Indexes="All,Pages">
                 <TagsPart />
                 <LocalizationPart />
                 <TitlePart/>
@@ -569,5 +569,6 @@
         index create "All"
         index create "Tickets"
         index create "People"
+        index create "Pages"
     </Command>
 </Orchard>
