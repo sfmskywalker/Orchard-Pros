@@ -3,6 +3,7 @@ namespace OrchardPros.Models {
         All,
         Tickets,
         People,
-        Companies
+        Companies,
+        Pages
     }
 }

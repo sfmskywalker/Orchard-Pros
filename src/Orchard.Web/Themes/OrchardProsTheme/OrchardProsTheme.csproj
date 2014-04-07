@@ -83,11 +83,15 @@
     <Content Include="Html %28Reference%29\account-tickets.html" />
     <Content Include="Html %28Reference%29\base-account.html" />
     <Content Include="Html %28Reference%29\base.html" />
+    <Content Include="Html %28Reference%29\companies.html" />
     <Content Include="Html %28Reference%29\home.html" />
     <Content Include="Html %28Reference%29\index.html" />
+    <Content Include="Html %28Reference%29\search-results.html" />
     <Content Include="Html %28Reference%29\sign-up.html" />
+    <Content Include="Html %28Reference%29\template-email.html" />
     <Content Include="Html %28Reference%29\ticket-create.html" />
     <Content Include="Html %28Reference%29\ticket-post.html" />
+    <Content Include="Html %28Reference%29\tickets-filters.html" />
     <Content Include="Html %28Reference%29\tickets.html" />
     <Content Include="Images\delete.gif" />
     <Content Include="Images\file-document.png" />
@@ -485,6 +489,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Profile.Transfers.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content-Ticket.SearchResult.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content-Reply.SearchResult.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content-User.SearchResult.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content-Page.SearchResult.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

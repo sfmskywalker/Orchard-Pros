@@ -1,0 +1,26 @@
+@using Orchard.ContentManagement
+@using Orchard.Core.Common.Models
+@using Orchard.Core.Title.Models
+@using OrchardPros.Models
+@{
+    var contentItem = (ContentItem) Model.ContentItem;
+    var replyPart = contentItem.As<ReplyPart>();
+    var bodyPart = contentItem.As<BodyPart>();
+    var ticket = replyPart.ContainingContent.As<TicketPart>();
+    var user = replyPart.User;
+    var subject = !String.IsNullOrWhiteSpace(replyPart.Subject) ? replyPart.Subject : "Re: " + ticket.As<TitlePart>().Title;
+
+}
+<!-- Search result Reply -->
+<article class="ticket-reply search-result">
+    <div class="search-result-type">
+        <i class="icon-reply">&nbsp;</i>
+        <p class="small">@T("Reply")</p>
+        @Html.ProfileLink(user)
+    </div>
+    <div class="ticket-summary">
+        <h2><a href="@Url.Reply(replyPart)">@subject</a></h2>
+        @Html.Summarize(bodyPart, 100)
+    </div>
+</article>
+<!-- /Search result Reply -->

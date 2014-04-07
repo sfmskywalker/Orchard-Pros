@@ -36,6 +36,10 @@ namespace OrchardPros.Helpers {
             return url.ItemDisplayUrl(ticket);
         }
 
+        public static string Reply(this UrlHelper url, ReplyPart reply) {
+            return url.ItemDisplayUrl(reply.ContainingContent);
+        }
+
         public static string Category(this UrlHelper url, TermPart category) {
             return url.Action("Index", "Ticket", new { categoryId = category.Id, area = Area });
         }

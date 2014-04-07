@@ -22,11 +22,10 @@
 }
 <!-- Ticket reply -->
 <article class="ticket-reply">
-    <div class="col-md-8">
+    <div class="col-md-8 @if (isAnswer) {<text>alert alert-success</text>}">
         <div class="ticket-summary">
             @if (!String.IsNullOrWhiteSpace(replyPart.Subject)) {
                 <h3>@replyPart.Subject</h3>
-                if (isAnswer) { <h2>@T("This is the answer.")</h2> }
             }
             @Display(Model.Content)
             @if (attachments.Any()) {

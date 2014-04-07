@@ -1,0 +1,21 @@
+@using Orchard.ContentManagement
+@using Orchard.Core.Common.Models
+@{
+    var contentItem = (IContent)Model.ContentItem;
+    var commonPart = contentItem.As<CommonPart>();
+    var bodyPart = contentItem.As<BodyPart>();
+    var owner = commonPart.Owner;
+}
+<!-- Search result Page -->
+<article class="ticket-reply search-result">
+    <div class="search-result-type">
+        <i class="icon-page">&nbsp;</i>
+        <p class="small">@T("Page")</p>
+        @Html.ProfileLink(owner)
+    </div>
+    <div class="search-summary">
+        <h2>@Html.ItemDisplayLink(contentItem)</h2>
+        @Html.Summarize(bodyPart, 100)
+    </div>
+</article>
+<!-- /Search result Page -->
