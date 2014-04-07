@@ -31,4 +31,3 @@ var Orchard;
     })(Orchard.Azure || (Orchard.Azure = {}));
     var Azure = Orchard.Azure;
 })(Orchard || (Orchard = {}));
-//# sourceMappingURL=cloudmedia-autorefresh.js.map

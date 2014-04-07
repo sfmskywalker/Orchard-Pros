@@ -406,14 +406,14 @@
             <CommonPart Owner="/User.UserName=admin" Container="/Layer.LayerName=TheHomepage" CreatedUtc="2014-01-04T20:23:36.5207684Z" PublishedUtc="2014-01-04T20:23:36.5577465Z" ModifiedUtc="2014-01-04T20:23:36.5657474Z" />
             <WidgetPart Title="Create Ticket" Position="1" Zone="AsideSecond" RenderTitle="false" Name="" />
         </ShapeWidget>
-        <User Id="/User.UserName=snow" Status="Published">
+        <User Id="/User.UserName=sfmskywalker" Status="Published">
             <MediaLibraryPickerField.Avatar ContentItems="/Identifier=5b76ff5ab622433cb15c9e17392dd983" />
-            <UserPart Email="sipkeschoorstra@hotmail.com" EmailStatus="Approved" HashAlgorithm="SHA1" NormalizedUserName="snow" Password="Y2SFFbW9VLIKcE5swgdoMNywFZI=" PasswordFormat="Hashed" PasswordSalt="Ems5sdEvbk5tkFG8GMhdsw==" RegistrationStatus="Approved" UserName="snow" />
+            <UserPart Email="sipke@orchardpros.net" EmailStatus="Approved" HashAlgorithm="SHA1" NormalizedUserName="sfmskywalker" Password="Y2SFFbW9VLIKcE5swgdoMNywFZI=" PasswordFormat="Hashed" PasswordSalt="Ems5sdEvbk5tkFG8GMhdsw==" RegistrationStatus="Approved" UserName="sfmskywalker" />
             <UserRolesPart Roles="Member" />
             <UserProfilePart FirstName="Sipke" MiddleName="" LastName="Schoorstra" AvatarType="LocalStorage" CreatedUtc="2014-01-01T00:00:00Z" Level="80" ExperiencePoints="364000" Rating="1">
                 <Positions>
-                    <Position LocalId="1" CompanyName="IDeliverable" Title="Orchard Expert" Location="Rotterdam" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2013" PeriodStartMonth="11">Doing Orchard development &amp; consultancy.</Position>
-                    <Position LocalId="2" CompanyName="Skywalker Software Development" Title="Founder" Location="Rotterdam" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2011" PeriodStartMonth="6">Freelance Orchard Developer.</Position>
+                    <Position LocalId="1" CompanyName="IDeliverable" Title="Orchard Expert" Location="Hilversum" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2013" PeriodStartMonth="11">Doing Orchard development &amp; consultancy.</Position>
+                    <Position LocalId="2" CompanyName="Skywalker Software Development" Title="Founder" Location="Hilversum" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2011" PeriodStartMonth="6">Freelance Orchard Developer.</Position>
                 </Positions>
                 <Skills>
                     <Skill Name="Orchard" Rating="9" />
@@ -424,10 +424,6 @@
                     <Experience LocalPositionId="1" CreatedUtc="2013-12-21T11:29:16">I've done some cool projects here.</Experience>
                     <Experience LocalPositionId="2" CreatedUtc="2013-12-21T11:29:40">Did a lot of cool projects here.</Experience>
                 </Experiences>
-                <Recommendations>
-                    <Recommendation RecommendingUserId="/User.UserName=snow" Approved="true" CreatedUtc="2013-12-20T23:33:55">This guy is awesome.</Recommendation>
-                    <Recommendation RecommendingUserId="/User.UserName=snow" Approved="false" CreatedUtc="2013-12-20T23:34:17">This guy SUCKS!!</Recommendation>
-                </Recommendations>
                 <Bio>
                     I grew up in Bergen, Noord-Holland with my 8 bit NES and later my self-earned 16 bit SNES by being a paperboy. Inspired by games like Mario, Zelda, Mystic Quest &amp; Secret Of Mana, I knew that I wanted to create games myself and started drawing heroes, dragons, elves and trees (I should mention girls as well). But I wanted more, so at some point I sold my game consoles and bought a PC with Klik &amp; Play and Macromedia Director and learned to script, which provided me with a great preparation for the multimedia study I started the year after. During this period I moved on to C++ and DirectX which gave me the confidence that I could actually become a programmer. At some point a company invited me to work for them and that’s how I got into the Internet of things. Since then, I’ve worked for a variety of companies building a vast range of .NET applications, including for the web, desktop, servers, and embedded systems. In 2003 I started as a freelancer and developed a new CMS along the way to serve my clients. During that time I found out how hard it is to maintain and evolve a CMS all by yourself, so at some point I started looking for an open source CMS. Being in love with MVC, I was content when I found out about Oxite, but mesmerized when I found out about Orchard.
                     In my spare time, I enjoy reading, blogging, jogging, working on personal projects and dreaming about my next killer RPG.
@@ -452,9 +448,6 @@
                 <Experiences>
                     <Experience LocalPositionId="1" CreatedUtc="2013-12-21T11:29:16">I've done some cool projects here.</Experience>
                 </Experiences>
-                <Recommendations>
-                    <Recommendation RecommendingUserId="/User.UserName=snow" Approved="true" CreatedUtc="2013-12-20T23:33:55">Jay is iemand die goed aan kan voelen wat iemand wil en kan daar perfect op in spelen. Of het nou gaat om design of creatieve ideeën, bij beide zal hij je nooit te kort schieten. Al met al is het altijd plezierig om met Jay samen te werken!</Recommendation>
-                </Recommendations>
                 <Bio>
                     Jay Tang | VISUAL CREATURE is a freelance photographer and visual designer based in the Amsterdam area, The Netherlands. He specializes in visual identities, graphic design, web design and photography, which includes fashion, glamour &amp; beauty, interiors, architecture and commercial works.
                     He is the co-founder of Amsterdam-based creative agency Terra Preta.
@@ -466,7 +459,7 @@
     </Data>
 
     <Settings>
-        <SiteSettingsPart PageTitleSeparator=" - " SiteName="Orchard Pros" SiteSalt="1f8757683b674a5eb38a0b2dec50727b" SuperUser="admin" SiteCulture="en-US" PageSize="10" SiteTimeZone="W. Europe Standard Time" BaseUrl="http://localhost:30356" />
+        <SiteSettingsPart PageTitleSeparator=" - " SiteName="Orchard Pros" SiteSalt="1f8757683b674a5eb38a0b2dec50727b" SuperUser="sfmskywalker" SiteCulture="en-US" PageSize="10" SiteTimeZone="W. Europe Standard Time" BaseUrl="http://localhost:30356" />
         <RegistrationSettingsPart UsersCanRegister="true" UsersMustValidateEmail="false" ValidateEmailRegisteredWebsite="" ValidateEmailContactEMail="" UsersAreModerated="false" NotifyModeration="false" NotificationsRecipients="" EnableLostPassword="true" />
         <OpenAuthenticationSettingsPart AutoRegistrationEnabled="true" />
         <CacheSettingsPart DefaultCacheDuration="0" DefaultMaxAge="0" ApplyCulture="false" DebugMode="false" />
@@ -564,7 +557,7 @@
     <Command>
         site setting set baseurl
         menu create /MenuName:"Main Menu"
-        page create /Slug:"welcome-to-orchard-pros" /Title:"Welcome to Orchard Pros!" /Path:"welcome-to-orchard-pros" /Homepage:true /Publish:true /UseWelcomeText:true
+        page create /Slug:"home" /Title:"Home" /Path:"home" /Homepage:true /Publish:true /UseWelcomeText:false
         theme activate "Orchard Pros"
         index create "All"
         index create "Tickets"

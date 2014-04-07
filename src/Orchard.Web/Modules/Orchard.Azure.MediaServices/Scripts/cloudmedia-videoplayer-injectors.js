@@ -83,4 +83,3 @@
     })(Orchard.Azure || (Orchard.Azure = {}));
     var Azure = Orchard.Azure;
 })(Orchard || (Orchard = {}));
-//# sourceMappingURL=cloudmedia-videoplayer-injectors.js.map
