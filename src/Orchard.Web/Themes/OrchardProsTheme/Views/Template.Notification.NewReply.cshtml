@@ -1,0 +1,13 @@
+﻿@using Orchard.ContentManagement
+@using Orchard.Security
+@using OrchardPros.Models
+@{
+    var recipient = (IUser) Model.Recipient;
+    var ticket = (IContent)Model.Ticket;
+    var reply = (ReplyPart) Model.Reply;
+    var createdBy = reply.User;
+    var ticketUrl = VirtualPathUtility.AppendTrailingSlash(WorkContext.CurrentSite.BaseUrl) + Url.ItemDisplayUrl(ticket);
+    var createdByUrl = VirtualPathUtility.AppendTrailingSlash(WorkContext.CurrentSite.BaseUrl) + Url.ItemDisplayUrl(createdBy);
+}
+<h2>New Reply</h2>
+@T("Dear {0}, a new reply was created by <a href=\"{1}\">{2}</a> for ticket <a href=\"{3}\">{4}</a>.", recipient.UserName, createdByUrl, createdBy.UserName, ticketUrl, Html.ItemDisplayText(ticket))

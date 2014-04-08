@@ -530,6 +530,12 @@
   <ItemGroup>
     <Content Include="Views\Template.User.Wrapper.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Template.Notification.NewReply.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Template.Notification.Wrapper.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
