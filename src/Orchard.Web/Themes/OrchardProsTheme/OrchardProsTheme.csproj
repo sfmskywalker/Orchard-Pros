@@ -126,6 +126,7 @@
     <Content Include="Images\left-quote.png" />
     <Content Include="Images\logo-orchard-pros.png" />
     <Content Include="Images\social-facebook.png" />
+    <Content Include="Images\social-google.png" />
     <Content Include="Images\social-openid.png" />
     <Content Include="Images\social-twitter.png" />
     <Content Include="Images\star.gif" />
@@ -522,6 +523,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Content-Page.SearchResult.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Template.User.LostPassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Template.User.Wrapper.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

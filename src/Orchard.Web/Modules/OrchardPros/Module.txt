@@ -6,12 +6,12 @@ Version: 1.0
 OrchardVersion: 1.0
 Description: Orchard Pros
 Features:
-	MarkdownDeep:
-		Name: MarkdownDeep
-		Description: Exposes the MarkdownDeep editor and HTML filter.
-		Category: Input Editor
-	OrchardPros:
-		Name: Orchard Pros
+    MarkdownDeep:
+        Name: MarkdownDeep
+        Description: Exposes the MarkdownDeep editor and HTML filter.
+        Category: Input Editor
+    OrchardPros:
+        Name: Orchard Pros
         Description: Orchard Pros.
         Category: Orchard Pros
-		Dependencies: Orchard.Users, Orchard.Taxonomies, MarkdownDeep, Lucene, Orchard.Search, Contrib.Voting
+        Dependencies: Orchard.Users, Orchard.Taxonomies, MarkdownDeep, Lucene, Orchard.Search, Contrib.Voting, Orchard.JobsQueue, Orchard.Email

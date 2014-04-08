@@ -159,9 +159,17 @@
       <Project>{b262a7c7-8205-4b94-a359-f5379025df32}</Project>
       <Name>NGM.OpenAuthentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Email\Orchard.Email.csproj">
+      <Project>{05660f47-d649-48bd-9ded-df4e01e7cff9}</Project>
+      <Name>Orchard.Email</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
       <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
       <Name>Orchard.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.JobsQueue\Orchard.JobsQueue.csproj">
+      <Project>{085948ff-0e9b-4a9a-b564-f8b8b4bdddbc}</Project>
+      <Name>Orchard.JobsQueue</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.MediaLibrary\Orchard.MediaLibrary.csproj">
       <Project>{73a7688a-5bd3-4f7e-adfa-ce36c5a10e3b}</Project>
@@ -580,6 +588,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Parts\UserProfile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Template.Notification.NewReply.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Template.Notification.Wrapper.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
