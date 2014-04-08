@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Web.Routing;
 using Contrib.Voting.Services;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
@@ -37,6 +38,7 @@ namespace OrchardPros.Handlers {
             Filters.Add(StorageFilter.For(repository));
             OnActivated<UserProfilePart>(SetupFields);
             OnIndexing<UserProfilePart>(IndexUserProfiles);
+            OnGetContentItemMetadata<UserProfilePart>(SetupDisplayRoute);
         }
 
         private void SetupFields(ActivatedContentContext context, UserProfilePart part) {
@@ -58,6 +60,15 @@ namespace OrchardPros.Handlers {
                 .Add("firstname", part.FirstName).Store()
                 .Add("lastname", part.LastName).Store()
                 .Add("bio", part.Bio).RemoveTags().Analyze().Store();
+        }
+
+        private void SetupDisplayRoute(GetContentItemMetadataContext context, UserProfilePart part) {
+            context.Metadata.DisplayRouteValues = new RouteValueDictionary {
+                { "userName", part.As<IUser>().UserName },
+                {"action", "Index"},
+                {"controller", "Profile"},
+                {"area", "OrchardPros"}
+            };
         }
     }
 }
