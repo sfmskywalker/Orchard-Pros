@@ -1,4 +1,4 @@
-﻿@{
+@{
     Style.Include("bootstrap.css", "bootstrap.min.css");
     Style.Include("theme.css", "theme.min.css");
     Script.Require("jQuery").Define(x => x.SetCdn("https://code.jquery.com/jquery.js")).UseCdn(false).AtFoot();
@@ -20,6 +20,7 @@
         return Model.Content == null && Model.AsideSecond == null ? "col-md-12" : "col-md-4";
     }
 }
+
 @if (Model.Overlays != null) {
     @Display(Model.Overlays)
 }
