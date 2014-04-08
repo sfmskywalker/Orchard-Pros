@@ -1,4 +1,4 @@
-﻿@using Orchard.Mvc.Html;
+@using Orchard.Mvc.Html;
 @using Orchard.UI.Resources;
 @{
     RegisterLink(new LinkEntry { Type = "image/x-icon", Rel = "shortcut icon", Href = Url.Content("~/modules/orchard.themes/Content/orchard.ico") });
@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@Html.Title(title, siteName)</title>
     @Display(Model.Head)
+    @Display(New.GoogleAnalytics())
 </head>
 <body>
     @Display(Model.Body)
