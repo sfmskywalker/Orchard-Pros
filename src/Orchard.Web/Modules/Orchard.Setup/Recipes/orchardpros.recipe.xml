@@ -15,7 +15,7 @@
                    Orchard.Scripting,Orchard.Scripting.Lightweight,PackagingServices,Orchard.Packaging,
                    Orchard.Fields,Orchard.OutputCache,Orchard.Workflows,
                    UrlAlternates, Orchard.ImportExport,
-                   Orchard.Email,
+                   Orchard.Email, Orchard.JobsQueue.UI,
                    NGM.OpenAuthentication.Workflows,
                    OrchardPros, OrchardProsTheme" />
 
