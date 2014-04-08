@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Orchard.ContentManagement;
+using Orchard.Data;
 using Orchard.Search.Services;
 using Orchard.Security;
 using Orchard.Users.Models;
@@ -12,13 +13,16 @@ namespace OrchardPros.Services.User {
     public class PeopleService : IPeopleService {
         private readonly IContentManager _contentManager;
         private readonly ISearchService _searchService;
+        private readonly IRepository<Country> _countryRepository;
 
         public PeopleService(
             IContentManager contentManager,
-            ISearchService searchService) {
+            ISearchService searchService, 
+            IRepository<Country> countryRepository) {
 
             _contentManager = contentManager;
             _searchService = searchService;
+            _countryRepository = countryRepository;
         }
 
         public IPagedList<IUser> GetPeople(int? skip = null, int? take = null, PeopleCriteria criteria = PeopleCriteria.Activity, string countryCode = null, string term = null) {
@@ -48,7 +52,8 @@ namespace OrchardPros.Services.User {
             }
 
             if (!String.IsNullOrWhiteSpace(countryCode)) {
-                commonQuery = commonQuery.Where<UserProfilePartRecord>(x => x.Country.Code == countryCode);
+                var country = _countryRepository.Get(x => x.Code == countryCode);
+                commonQuery = commonQuery.Where<UserProfilePartRecord>(x => x.Country.Id == country.Id);
             }
 
             var peopleQuery = commonQuery;

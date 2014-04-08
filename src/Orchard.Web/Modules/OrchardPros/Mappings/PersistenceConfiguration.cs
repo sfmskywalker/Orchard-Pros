@@ -18,7 +18,7 @@ namespace OrchardPros.Mappings {
         public void Finished(Configuration cfg) {}
 
         public void ComputingHash(Hash hash) {
-            hash.AddStringInvariant("52FD7BC1-0EA3-41DE-87CE-078DDCE4B4985");
+            hash.AddStringInvariant("42FD7BC1-0EA3-41DE-87CE-078DDCE4B4985");
         }
     }
 }

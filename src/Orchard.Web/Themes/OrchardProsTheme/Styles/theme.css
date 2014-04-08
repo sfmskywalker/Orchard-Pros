@@ -78,6 +78,7 @@ input { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -m
 .sign-in-up ul.social-oauth li { float:left; margin-right:5px; width:29px; height:29px; }
 .sign-in-up ul.social-oauth li.facebook { background:url(../images/social-facebook.png) no-repeat center center; }
 .sign-in-up ul.social-oauth li.twitter { background:url(../images/social-twitter.png) no-repeat center center; }
+.sign-in-up ul.social-oauth li.google { background:url(../images/social-google.png) no-repeat center center; }
 .sign-in-up ul.social-oauth li.openid { background:url(../images/social-openid.png) no-repeat center center; }
 .sign-in-up ul.social-oauth li a { width:100%; height:100%; text-decoration:none; display:block; }
 .sign-in-up ul.social-oauth li a:hover { background:#fff; opacity:0.2; }
