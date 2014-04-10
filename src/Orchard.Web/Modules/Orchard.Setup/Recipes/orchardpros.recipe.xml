@@ -410,7 +410,7 @@
             <MediaLibraryPickerField.Avatar ContentItems="/Identifier=5b76ff5ab622433cb15c9e17392dd983" />
             <UserPart Email="sipke@orchardpros.net" EmailStatus="Approved" HashAlgorithm="SHA1" NormalizedUserName="sfmskywalker" Password="Y2SFFbW9VLIKcE5swgdoMNywFZI=" PasswordFormat="Hashed" PasswordSalt="Ems5sdEvbk5tkFG8GMhdsw==" RegistrationStatus="Approved" UserName="sfmskywalker" />
             <UserRolesPart Roles="Member" />
-            <UserProfilePart FirstName="Sipke" MiddleName="" LastName="Schoorstra" AvatarType="LocalStorage" CreatedUtc="2014-01-01T00:00:00Z" Level="80" ExperiencePoints="364000" Rating="1">
+            <UserProfilePart FirstName="Sipke" MiddleName="" LastName="Schoorstra" AvatarType="LocalStorage" CreatedUtc="2014-01-01T00:00:00Z" Level="1" ExperiencePoints="0" Rating="1">
                 <Positions>
                     <Position LocalId="1" CompanyName="IDeliverable" Title="Orchard Expert" Location="Hilversum" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2013" PeriodStartMonth="11">Doing Orchard development &amp; consultancy.</Position>
                     <Position LocalId="2" CompanyName="Skywalker Software Development" Title="Founder" Location="Hilversum" IsCurrentPosition="true" IsArchived="false" PeriodStartYear="2011" PeriodStartMonth="6">Freelance Orchard Developer.</Position>
