@@ -16,17 +16,21 @@
                    Orchard.Fields,Orchard.OutputCache,Orchard.Workflows,
                    UrlAlternates, Orchard.ImportExport,
                    Orchard.Email, Orchard.JobsQueue.UI,
-                   NGM.OpenAuthentication.Workflows,
+                   NGM.OpenAuthentication.Workflows, Vandelay.Industries,
                    OrchardPros, OrchardProsTheme" />
 
     <Metadata>
         <Types>
-            <Page ContentTypeSettings.Draftable="True" TypeIndexing.Indexes="All,Pages">
+            <Page ContentTypeSettings.Creatable="True" ContentTypeSettings.Draftable="True" TypeIndexing.Indexes="All,Pages" DisplayName="Page">
+                <CommonPart DateEditorSettings.ShowDateEditor="true" />
+                <PublishLaterPart />
+                <TitlePart />
+                <AutoroutePart AutorouteSettings.AllowCustomPattern="true" AutorouteSettings.AutomaticAdjustmentOnEdit="false" AutorouteSettings.PatternDefinitions="[{Name:'Title', Pattern: '{Content.Slug}', Description: 'my-page'}]" AutorouteSettings.DefaultPatternIndex="0" />
+                <BodyPart />
                 <TagsPart />
                 <LocalizationPart />
-                <TitlePart/>
-                <AutoroutePart />
                 <MenuPart />
+                <MetaPart />
             </Page>
             <ShapeWidget ContentTypeSettings.Creatable="False" ContentTypeSettings.Draftable="False" Stereotype="Widget" DisplayName="Shape Widget">
                 <CommonPart DateEditorSettings.ShowDateEditor="False" OwnerEditorSettings.ShowOwnerEditor="False" />
