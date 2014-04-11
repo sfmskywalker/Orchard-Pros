@@ -518,42 +518,42 @@
         </Workflow>
         <Workflow Name="Open Authentication" Enabled="true">
             <Activities>
-                <Activity Id="9" Name="OAuthVerify" Start="true" X="733" Y="299">
+                <Activity Id="16" Name="OAuthVerify" Start="true" X="733" Y="299">
                     <State>{}</State>
                 </Activity>
-                <Activity Id="10" Name="Notify" Start="false" X="651" Y="493">
+                <Activity Id="17" Name="Notify" Start="false" X="651" Y="493">
                     <State>{"Notification":"Error","Message":"Your authentication request failed."}</State>
                 </Activity>
-                <Activity Id="11" Name="OAuthSignIn" Start="false" X="885" Y="479">
+                <Activity Id="18" Name="OAuthSignIn" Start="false" X="885" Y="479">
                     <State>{}</State>
                 </Activity>
-                <Activity Id="12" Name="Notify" Start="false" X="936" Y="676">
-                    <State>{"Notification":"Information","Message":"You have been logged using your {0} account."}</State>
+                <Activity Id="19" Name="Notify" Start="false" X="911" Y="666">
+                    <State>{"Notification":"Information","Message":"You have been logged using your {Workflow.State:OAuthResult.Provider} account."}</State>
                 </Activity>
-                <Activity Id="13" Name="OAuthCreateOrAssociateUser" Start="false" X="1234" Y="308">
+                <Activity Id="20" Name="OAuthCreateOrAssociateUser" Start="false" X="1234" Y="308">
                     <State>{}</State>
                 </Activity>
-                <Activity Id="14" Name="Notify" Start="false" X="1109" Y="511">
-                    <State>{"Notification":"Information","Message":"Your {0} account has been attached to your local account."}</State>
+                <Activity Id="21" Name="Notify" Start="false" X="1109" Y="511">
+                    <State>{"Notification":"Information","Message":"Your {Workflow.State:OAuthResult.Provider} account has been attached to your local account."}</State>
                 </Activity>
-                <Activity Id="15" Name="Redirect" Start="false" X="1066" Y="764">
+                <Activity Id="22" Name="Redirect" Start="false" X="1070" Y="706">
                     <State>{"Url":"~/profile"}</State>
                 </Activity>
-                <Activity Id="16" Name="Notify" Start="false" X="1427" Y="601">
-                    <State>{"Notification":"Information","Message":"You have been logged in using your {0} account. We have created a local account for you with the name '{1}'"}</State>
+                <Activity Id="23" Name="Notify" Start="false" X="1427" Y="601">
+                    <State>{"Notification":"Information","Message":"You have been logged in using your {Workflow.State:OAuthResult.Provider} account. We have created a local account for you with the name '{Workflow.State:CreatedUser}'."}</State>
                 </Activity>
             </Activities>
             <Transitions>
-                <Transition SourceActivityId="9" SourceEndpoint="Failed" DestinationActivityId="10" DestinationEndpoint="" />
-                <Transition SourceActivityId="9" SourceEndpoint="AssociationFound" DestinationActivityId="11" DestinationEndpoint="" />
-                <Transition SourceActivityId="11" SourceEndpoint="Failed" DestinationActivityId="10" DestinationEndpoint="" />
-                <Transition SourceActivityId="11" SourceEndpoint="Success" DestinationActivityId="12" DestinationEndpoint="" />
-                <Transition SourceActivityId="9" SourceEndpoint="AssociationNotFound" DestinationActivityId="13" DestinationEndpoint="" />
-                <Transition SourceActivityId="14" SourceEndpoint="Done" DestinationActivityId="15" DestinationEndpoint="" />
-                <Transition SourceActivityId="13" SourceEndpoint="CurrentUserAssociated" DestinationActivityId="14" DestinationEndpoint="" />
-                <Transition SourceActivityId="16" SourceEndpoint="Done" DestinationActivityId="15" DestinationEndpoint="" />
-                <Transition SourceActivityId="13" SourceEndpoint="NewUserAssociated" DestinationActivityId="16" DestinationEndpoint="" />
-                <Transition SourceActivityId="12" SourceEndpoint="Done" DestinationActivityId="15" DestinationEndpoint="" />
+                <Transition SourceActivityId="16" SourceEndpoint="Failed" DestinationActivityId="17" DestinationEndpoint="" />
+                <Transition SourceActivityId="16" SourceEndpoint="AssociationFound" DestinationActivityId="18" DestinationEndpoint="" />
+                <Transition SourceActivityId="18" SourceEndpoint="Failed" DestinationActivityId="17" DestinationEndpoint="" />
+                <Transition SourceActivityId="18" SourceEndpoint="Success" DestinationActivityId="19" DestinationEndpoint="" />
+                <Transition SourceActivityId="16" SourceEndpoint="AssociationNotFound" DestinationActivityId="20" DestinationEndpoint="" />
+                <Transition SourceActivityId="21" SourceEndpoint="Done" DestinationActivityId="22" DestinationEndpoint="" />
+                <Transition SourceActivityId="20" SourceEndpoint="CurrentUserAssociated" DestinationActivityId="21" DestinationEndpoint="" />
+                <Transition SourceActivityId="23" SourceEndpoint="Done" DestinationActivityId="22" DestinationEndpoint="" />
+                <Transition SourceActivityId="20" SourceEndpoint="NewUserAssociated" DestinationActivityId="23" DestinationEndpoint="" />
+                <Transition SourceActivityId="19" SourceEndpoint="Done" DestinationActivityId="22" DestinationEndpoint="" />
             </Transitions>
         </Workflow>
     </Workflows>
