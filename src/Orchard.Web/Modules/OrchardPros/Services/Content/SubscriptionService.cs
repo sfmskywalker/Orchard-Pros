@@ -60,5 +60,9 @@ namespace OrchardPros.Services.Content {
             var ids = query.ToArray();
             return _contentManager.GetMany<SubscriptionSourcePart>(ids, VersionOptions.Published, QueryHints.Empty).ToPagedList(count);
         }
+
+        public bool HasSubscription(SubscriptionSourcePart subscriptionSource, IUser user) {
+            return subscriptionSource.Subscribers.Any(x => x.Id == user.Id);
+        }
     }
 }

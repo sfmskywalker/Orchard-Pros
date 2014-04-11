@@ -7,6 +7,7 @@ using Orchard.Email.Services;
 using Orchard.JobsQueue.Services;
 using Orchard.Localization;
 using OrchardPros.Models;
+using OrchardPros.Services.Content;
 using OrchardPros.Services.User;
 
 namespace OrchardPros.Handlers {
@@ -15,15 +16,24 @@ namespace OrchardPros.Handlers {
         private readonly IShapeFactory _shapeFactory;
         private readonly IShapeDisplay _shapeDisplay;
         private readonly IJobsQueueService _jobsQueueService;
+        private readonly ISubscriptionService _subscriptionService;
 
-        public ReplyPartHandler(IUserManager userManager, IShapeFactory shapeFactory, IShapeDisplay shapeDisplay, IJobsQueueService jobsQueueService) {
+        public ReplyPartHandler(
+            IUserManager userManager, 
+            IShapeFactory shapeFactory, 
+            IShapeDisplay shapeDisplay, 
+            IJobsQueueService jobsQueueService, 
+            ISubscriptionService subscriptionService) {
+
             _userManager = userManager;
             _shapeFactory = shapeFactory;
             _shapeDisplay = shapeDisplay;
             _jobsQueueService = jobsQueueService;
+            _subscriptionService = subscriptionService;
             T = NullLocalizer.Instance;
 
             OnCreated<ReplyPart>(UpdateStats);
+            OnCreated<ReplyPart>(Subscribe);
             OnCreated<ReplyPart>(SendNotifications);
         }
 
@@ -35,6 +45,16 @@ namespace OrchardPros.Handlers {
             var xpToAdd = _userManager.CalculateXpWhenReplied(ticketOwner);
             _userManager.AddXp(user, xpToAdd);
             _userManager.AddActivityPoints(user, 5);
+        }
+
+        private void Subscribe(CreateContentContext context, ReplyPart part)
+        {
+            var user = part.User;
+            var ticket = part.ContainingContent.As<TicketPart>();
+            var subscriptionSource = ticket.As<SubscriptionSourcePart>();
+
+            if(!_subscriptionService.HasSubscription(subscriptionSource, user))
+                _subscriptionService.Subscribe(subscriptionSource, user);
         }
 
         private void SendNotifications(CreateContentContext context, ReplyPart part) {

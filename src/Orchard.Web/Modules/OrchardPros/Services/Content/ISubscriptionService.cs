@@ -9,5 +9,6 @@ namespace OrchardPros.Services.Content {
         Subscription Subscribe(SubscriptionSourcePart subscriptionSource, IUser user);
         void Unsubscribe(SubscriptionSourcePart subscriptionSource, IUser user);
         IPagedList<SubscriptionSourcePart> GetSubscriptionSourcesByUser(int userId, int? skip = null, int? take = null);
+        bool HasSubscription(SubscriptionSourcePart subscriptionSource, IUser user);
     }
 }
