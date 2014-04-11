@@ -9,7 +9,7 @@
     var subscriptionSource = ticket.As<SubscriptionSourcePart>();
     var user = ticket.User;
     var currentUser = WorkContext.CurrentUser;
-    var isFollowing = subscriptionSource.Subscribers.Any(x => x.Id == currentUser.Id);
+    var isFollowing = currentUser != null && subscriptionSource.Subscribers.Any(x => x.Id == currentUser.Id);
     
     Script.Require("jQuery");
     Script.Include("ticket.js");
@@ -31,14 +31,16 @@
         }
     </article>
     <div class="sorter bottom">
-        @if (isFollowing) {
-            <a href="@Url.Action("Unsubscribe", "SubscriptionSource", new { id = ticket.Id, area = "OrchardPros", returnUrl = Request.Path })" class="action-link" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Unfollow Ticket")</a>
-        }
-        else {
-            <a href="@Url.Action("Subscribe", "SubscriptionSource", new { id = ticket.Id, area = "OrchardPros", returnUrl = Request.Path })" class="action-link" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Follow Ticket")</a>
-        }
-        <a href="#post-reply" class="sorter-link" data-reply-subject="@T("Re: {0}", ticket.Subject)">@T("Reply")</a>
+        @if (currentUser != null) {
+            if (isFollowing) {
+                <a href="@Url.Action("Unsubscribe", "SubscriptionSource", new {id = ticket.Id, area = "OrchardPros", returnUrl = Request.Path})" class="action-link" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Unfollow Ticket")</a>
+            }
+            else {
+                <a href="@Url.Action("Subscribe", "SubscriptionSource", new {id = ticket.Id, area = "OrchardPros", returnUrl = Request.Path})" class="action-link" data-post="@Html.AntiForgeryTokenValueOrchard()">@T("Follow Ticket")</a>
+            }
+            <a href="#post-reply" class="sorter-link" data-reply-subject="@T("Re: {0}", ticket.Subject)">@T("Reply")</a>
         @*<a href="#" class="action-link">Share</a>*@
-        <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<a href="@Url.Profile(user)" class="author">@user.UserName</a></span>
+            <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: ticket.LastModifiedUtc))<a href="@Url.Profile(user)" class="author">@user.UserName</a></span>
+        }
     </div>
 </section>
