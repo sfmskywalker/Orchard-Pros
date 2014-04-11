@@ -19,7 +19,7 @@
     var pageSizes = new[] { 10, 20, 50 };
     <div class="btn-group btn-group-sm filter-results">
         @foreach (var pageSize in pageSizes) {
-            <a href="@Url.Action("Index", "Search", new { pageSize = pageSize })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
+            <a href="@Url.Action("Index", "Search", new { pageSize = pageSize, term = Model.Term })" class="btn btn-default @if(pageSize == (int)pager.PageSize){<text>active</text>}">@pageSize</a>
         }
         <span>@T("per page")</span>
     </div>
