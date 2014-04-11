@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
 using OrchardPros.Models;
@@ -10,14 +11,25 @@ namespace OrchardPros.Handlers {
     public class TicketPartHandler : ContentHandler {
         private readonly ITicketService _ticketService;
         private readonly IUserManager _userManager;
+        private readonly IReplyService _replyService;
+        private readonly IContentManager _contentManager;
 
-        public TicketPartHandler(IRepository<TicketPartRecord> repository, ITicketService ticketService, IUserManager userManager) {
+        public TicketPartHandler(
+            IRepository<TicketPartRecord> repository, 
+            ITicketService ticketService, 
+            IUserManager userManager, 
+            IReplyService replyService, 
+            IContentManager contentManager) {
+
             _ticketService = ticketService;
             _userManager = userManager;
+            _replyService = replyService;
+            _contentManager = contentManager;
             Filters.Add(StorageFilter.For(repository));
             OnActivated<TicketPart>(SetupLazyFields);
             OnCreated<TicketPart>(OnTicketCreated);
             OnUpdated<TicketPart>(OnTicketUpdated);
+            OnRemoved<TicketPart>(OnTicketRemoved);
         }
 
         private void OnTicketCreated(CreateContentContext context, TicketPart part) {
@@ -36,6 +48,15 @@ namespace OrchardPros.Handlers {
             part.LastModifiedUtcField.Loader(() => _ticketService.GetLastModifiedUtcFor(part));
             part.LastModifierField.Loader(() => _ticketService.GetLastModifierFor(part));
             part.RemainingTimeFunc = () => _ticketService.GetRemainingTimeFor(part);
+        }
+
+        private void OnTicketRemoved(RemoveContentContext context, TicketPart part) {
+            // Delete replies.
+            var replies = _replyService.GetRepliesByContent(part.Id);
+
+            foreach (var reply in replies) {
+                _contentManager.Remove(reply.ContentItem);
+            }
         }
     }
 }
