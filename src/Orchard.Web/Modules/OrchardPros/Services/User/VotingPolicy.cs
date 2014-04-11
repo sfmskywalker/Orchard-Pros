@@ -5,6 +5,7 @@ using Contrib.Voting.Services;
 using Orchard.ContentManagement;
 using Orchard.Mvc;
 using Orchard.Security;
+using OrchardPros.Helpers;
 using OrchardPros.Models;
 
 namespace OrchardPros.Services.User {
@@ -18,6 +19,8 @@ namespace OrchardPros.Services.User {
         }
 
         public VotingCapabilities GetCapabilities(IContent content, IUser user) {
+            Guard.ArgumentNull(content, "content");
+            Guard.ArgumentNull(user, "user");
             var vote = _votingService.Get(x => x.ContentItemRecord.Id == content.Id && x.Username == user.UserName).FirstOrDefault();
             return GetCapabilities(content, user, vote);
         }

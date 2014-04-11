@@ -206,6 +206,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BioController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Helpers\Guard.cs" />
     <Compile Include="Helpers\BodyPartExtensions.cs" />
     <Compile Include="Helpers\FlavoredStringHelper.cs" />
     <Compile Include="Helpers\HtmlSanitizer.cs" />
@@ -594,6 +595,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Template.Notification.Wrapper.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\Votable.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\Votable.Anonymous.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

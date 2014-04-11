@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Orchard.ContentManagement;
 using Orchard.Core.Common.Models;
 using Orchard.Security;
+using OrchardPros.Helpers;
 using OrchardPros.Models;
 
 namespace OrchardPros.Services.Content {
@@ -22,6 +23,7 @@ namespace OrchardPros.Services.Content {
         }
 
         public ReplyPart Create(IContent container, string body, IUser user, string subject = null, int? parentReplyId = null, Action<ReplyPart> initialize = null) {
+            Guard.ArgumentNull(container, "container");
             return _contentManager.Create<ReplyPart>("Reply", r => {
                 r.ContainingContent = container;
                 r.Body = body;
