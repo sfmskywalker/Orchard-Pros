@@ -528,7 +528,7 @@
     <Content Include="Views\Template.User.LostPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Template.User.Wrapper.cshtml" />
+    <Content Include="Views\Template.Wrapper.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Template.Notification.NewReply.cshtml" />
