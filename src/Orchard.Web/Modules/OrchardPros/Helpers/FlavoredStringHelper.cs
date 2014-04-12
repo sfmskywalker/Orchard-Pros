@@ -10,7 +10,9 @@ namespace OrchardPros.Helpers {
         /// <summary>
         /// Transforms the specified text with the specified flavor into HTML.
         /// </summary>
-        public static string TransformText(string text, string flavor) {
+        public static string TransformText(this string text, string flavor) {
+            if (text == null)
+                return null;
             var context = HttpContext.Current.Request.RequestContext.GetWorkContext();
             var filters = context.Resolve<IEnumerable<IHtmlFilter>>();
             return filters.Where(x => x.GetType().Name.Equals(flavor + "filter", StringComparison.OrdinalIgnoreCase)).Aggregate(text, (t, filter) => filter.ProcessContent(t, flavor));
