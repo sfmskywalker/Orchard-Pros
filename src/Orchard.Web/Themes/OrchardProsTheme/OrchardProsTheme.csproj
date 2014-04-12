@@ -146,7 +146,9 @@
     <Content Include="Scripts\html5shiv.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.rating.js" />
-    <Content Include="Scripts\jquery.rating.pack.js" />
+    <Content Include="Scripts\jquery.rating.min.js">
+      <DependentUpon>jquery.rating.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\less-1.5.0.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\common.js" />
@@ -541,6 +543,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Template.Notification.NewRecommendation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jquery.rating.min.js.map">
+      <DependentUpon>jquery.rating.min.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

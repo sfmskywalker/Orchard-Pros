@@ -1,8 +1,14 @@
 @using Orchard.ContentManagement
 @using Orchard.Security
+@using Orchard.Utility.Extensions
 @using OrchardPros
 @using OrchardPros.Helpers
 @using OrchardPros.Models
+@{
+    Style.Include("jquery.rating.css");
+    Script.Require("jQuery");
+    Script.Include("jquery.rating.js", "jquery.rating.min.js");
+}
 @{
     var user = (IUser)Model.User;
     var userProfilePart = user.As<UserProfilePart>();
@@ -43,10 +49,10 @@
                     <p>@position.CompanyName</p>
                     <p class="small">@T("From: {0} to: {1}", position.Start(), position.End())</p>
                     @if (canEditProfile) {
-                            <div class="profile-actions">
-                                <a href="@Url.Action("Edit", "Position", new { id = position.Id, area = "OrchardPros" })">@T("Edit")</a>
-                                <a href="@Url.Action("Delete", "Position", new { id = position.Id, area = "OrchardPros" })" data-post="@Html.AntiForgeryTokenValueOrchard()" data-prompt="@T("Are you sure you want to delete this Position?")">@T("Delete")</a>
-                            </div>
+                        <div class="profile-actions">
+                            <a href="@Url.Action("Edit", "Position", new { id = position.Id, area = "OrchardPros" })">@T("Edit")</a>
+                            <a href="@Url.Action("Delete", "Position", new { id = position.Id, area = "OrchardPros" })" data-post="@Html.AntiForgeryTokenValueOrchard()" data-prompt="@T("Are you sure you want to delete this Position?")">@T("Delete")</a>
+                        </div>
                     }
                 </li>
             }
@@ -65,34 +71,39 @@
             <p>@T("No skills have been specified yet.")</p>
         }
         else {
-            if (isCurrentUser) {
-                <ul class="list-skills">
-                    @foreach (var skill in skills) {
-                        <li>
+            //if (isCurrentUser) {
+            <div class="container">
+                @foreach (var skill in skills) {
+                    <div class="row">
+                        <div class="col-md-2">
+                            @for (var i = 1; i <= 10; i++) {
+                                <input type="radio" name="Rating-@skill.Name.HtmlClassify()" value="@(i)" class="star" data-rating='{"split":2}' @if (i <= skill.Rating) { <text> checked="checked" </text>    } disabled="disabled" />
+                            }
+                        </div>
+                        <div class="col-md-4">
                             <span>@skill.Name</span>
-                            <p>
-                                @for (var i = 0; i < skill.Rating; i++) {
-                                    <span class="glyphicon glyphicon-star"></span>
-                                }
-                            </p>
+                        </div>
+                        <div class="col-md-6">
                             @if (canEditProfile) {
                                 <div class="profile-actions">
                                     <a href="@Url.Action("Edit", "Skill", new {id = skill.Id, area = "OrchardPros"})">@T("Edit")</a>
                                     <a href="@Url.Action("Delete", "Skill", new {id = skill.Id, area = "OrchardPros"})" data-post="@Html.AntiForgeryTokenValueOrchard()" data-prompt="@T("Are you sure you want to delete this Skill?")">@T("Delete")</a>
                                 </div>
                             }
-                        </li>
-                    }
-                </ul>
-            }
-            else {
-                foreach (var skill in skills) {
-                    <a href="#" class="label label-default">@skill.Name</a>
+                        </div>
+                    </div>
                 }
-            }
+            </div>
+            @*}
+                else {
+                    foreach (var skill in skills) {
+                        <a href="#" class="label label-default">@skill.Name</a>
+                    }
+                }*@
         }
     </div>
     @if (canEditProfile) {
+        <br />
         <a class="btn btn-default btn-create-ticket btn-sm" href="@Url.Action("Create", "Skill", new {area = "OrchardPros"})">@T("Add Skill")</a>
     }
 </article>

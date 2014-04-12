@@ -1,6 +1,11 @@
 ﻿@{
-    var ratings = Enumerable.Range(1, 10);
-    var currentValue = (ViewData.TemplateInfo.FormattedModelValue as int?);
-    var options = ratings.Select(x => new SelectListItem {Text = x.ToString(), Value = x.ToString(), Selected = x == currentValue});
+    Style.Include("jquery.rating.css");
+    Script.Require("jQuery");
+    Script.Include("jquery.rating.js", "jquery.rating.min.js");
 }
-@Html.DropDownList("", options, new { @class = "form-control" })
+@{
+    var currentValue = (ViewData.TemplateInfo.FormattedModelValue as int?);
+}
+@for (var i = 1; i <= 10; i++) {
+    <input type="radio" name="Rating" value="@(i)" class="star" data-rating='{"split":2}' @if(i <= currentValue){<text>checked="checked"</text>} />
+}
