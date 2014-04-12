@@ -31,7 +31,7 @@ namespace OrchardPros.Controllers {
             var users = _peopleService.GetPeople(pager.GetStartIndex(), pager.PageSize, criteria, countryCode, term);
             var country = !String.IsNullOrWhiteSpace(countryCode) ? _countryRepository.Get(x => x.Code == countryCode) : default(Country);
             var pagerShape = _services.New.Pager(pager).TotalItemCount(users.TotalItemCount);
-            var countries = _services.ContentManager.Query<UserProfilePart>().Where<UserProfilePartRecord>(x => x.Country != null).List().Select(x => x.Country).Distinct().ToArray();
+            var countries = _services.ContentManager.Query<UserProfilePart>().Where<UserProfilePartRecord>(x => x.Country != null).List().OrderBy(x => x.Country.Name).Select(x => x.Country).Distinct().ToArray();
             var viewModel = _services.New.ViewModel(
                 Users: users,
                 Countries: countries,

@@ -160,7 +160,7 @@ namespace OrchardPros.Controllers {
             var shape = Wrap(New.Profile_Settings(
                 AccountSettings: settingsModel,
                 User: currentUser,
-                Countries: _countryRepository.Table.ToArray()));
+                Countries: _countryRepository.Table.OrderBy(x => x.Name).ToArray()));
             return new ShapeResult(this, shape);
         }
 
