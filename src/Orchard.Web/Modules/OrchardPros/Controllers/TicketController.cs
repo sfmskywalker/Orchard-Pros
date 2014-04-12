@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Contrib.Voting.Services;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
+using Orchard.Core.Feeds;
 using Orchard.Localization;
 using Orchard.Logging;
 using Orchard.Mvc.Html;
@@ -32,6 +34,7 @@ namespace OrchardPros.Controllers {
         private readonly IAuthorizer _authorizer;
         private readonly IEnumerable<IContentHandler> _handlers;
         private readonly IVotingService _votingService;
+        private readonly IFeedManager _feedManager;
 
         public TicketController(
             ITicketService ticketService, 
@@ -41,7 +44,8 @@ namespace OrchardPros.Controllers {
             IRecommendationManager recommendationManager, 
             IAuthorizer authorizer, 
             IEnumerable<IContentHandler> handlers, 
-            IVotingService votingService) {
+            IVotingService votingService, 
+            IFeedManager feedManager) {
 
             _notifier = services.Notifier;
             _ticketService = ticketService;
@@ -52,6 +56,7 @@ namespace OrchardPros.Controllers {
             _authorizer = authorizer;
             _handlers = handlers;
             _votingService = votingService;
+            _feedManager = feedManager;
             T = NullLocalizer.Instance;
         }
 
@@ -80,6 +85,8 @@ namespace OrchardPros.Controllers {
                     TagId: tagId,
                     Criteria: criteria,
                     Pager: pagerShape));
+
+            _feedManager.RegisterTicketsFeed();
             return View(viewModel);
         }
 

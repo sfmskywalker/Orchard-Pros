@@ -206,6 +206,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BioController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Feeds\TicketFeedItemBuilder.cs" />
+    <Compile Include="Feeds\TicketsFeedQuery.cs" />
+    <Compile Include="Helpers\FeedRegistrationHelper.cs" />
     <Compile Include="Helpers\Guard.cs" />
     <Compile Include="Helpers\BodyPartExtensions.cs" />
     <Compile Include="Helpers\FlavoredStringHelper.cs" />
