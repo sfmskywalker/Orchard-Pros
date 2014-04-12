@@ -5,8 +5,8 @@
     var categoryId = (int?)Model.CategoryId;
     var tagId = (int?)Model.TagId;
 
-    var selectedCategory = categoryId != null ? categories.Single(x => x.Id == categoryId) : default(TermPart);
-    var selectedTag = tagId != null ? tags.Single(x => x.Id == tagId) : default(TermPart);
+    var selectedCategory = categoryId != null ? categories.SingleOrDefault(x => x.Id == categoryId) : default(TermPart);
+    var selectedTag = tagId != null ? tags.SingleOrDefault(x => x.Id == tagId) : default(TermPart);
 }
 @if (selectedCategory != null || selectedTag != null) {
     <!-- Filters -->
