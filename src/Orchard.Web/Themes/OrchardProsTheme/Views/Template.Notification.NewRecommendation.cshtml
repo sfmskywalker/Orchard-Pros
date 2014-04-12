@@ -1,0 +1,22 @@
+﻿@using Orchard.Security
+@using OrchardPros.Models
+@{
+    var recommendedUser = (IUser) Model.RecommendedUser;
+    var recommendingUser = (IUser)Model.RecommendingUser;
+    var recommendation = (RecommendationPart) Model.Recommendation;
+    var recommendedUserUrl = VirtualPathUtility.AppendTrailingSlash(WorkContext.CurrentSite.BaseUrl) + Url.ItemDisplayUrl(recommendedUser);
+    var recommendingUserUrl = VirtualPathUtility.AppendTrailingSlash(WorkContext.CurrentSite.BaseUrl) + Url.ItemDisplayUrl(recommendingUser);
+
+    Model.FooterText = T("You are receiving this email because you are an Orchard Pros member and someone recommended you.");
+    Model.Metadata.Wrappers.Clear();
+    Model.Metadata.Wrappers.Add("Template_Wrapper");
+}
+<p>
+    @T("Dear {0}, you have been recommended by <a href=\"{1}\">{2}</a>! Check it out on your <a href=\"{3}\">profile page</a>.", recommendedUser.UserName, recommendingUserUrl, recommendingUser.UserName, recommendedUserUrl)
+</p>
+<p>
+    &quot;@recommendation.Body&quot;
+</p>
+<p>
+    <strong>Note:</strong> this recommendation will only appear on your profile after you publish it.
+</p>

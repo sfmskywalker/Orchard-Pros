@@ -1,10 +1,6 @@
-using System.Collections.Generic;
 using System.Linq;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
-using Orchard.DisplayManagement;
-using Orchard.Email.Services;
-using Orchard.JobsQueue.Services;
 using Orchard.Localization;
 using OrchardPros.Models;
 using OrchardPros.Services.Content;
@@ -13,23 +9,17 @@ using OrchardPros.Services.User;
 namespace OrchardPros.Handlers {
     public class ReplyPartHandler : ContentHandler {
         private readonly IUserManager _userManager;
-        private readonly IShapeFactory _shapeFactory;
-        private readonly IShapeDisplay _shapeDisplay;
-        private readonly IJobsQueueService _jobsQueueService;
         private readonly ISubscriptionService _subscriptionService;
+        private readonly IEmailService _emailService;
 
         public ReplyPartHandler(
             IUserManager userManager, 
-            IShapeFactory shapeFactory, 
-            IShapeDisplay shapeDisplay, 
-            IJobsQueueService jobsQueueService, 
-            ISubscriptionService subscriptionService) {
+            ISubscriptionService subscriptionService, 
+            IEmailService emailService) {
 
             _userManager = userManager;
-            _shapeFactory = shapeFactory;
-            _shapeDisplay = shapeDisplay;
-            _jobsQueueService = jobsQueueService;
             _subscriptionService = subscriptionService;
+            _emailService = emailService;
             T = NullLocalizer.Instance;
 
             OnCreated<ReplyPart>(UpdateStats);
@@ -67,23 +57,11 @@ namespace OrchardPros.Handlers {
             subscribers.RemoveAll(x => x.UserName == part.User.UserName);
 
             foreach (var subscriber in subscribers) {
-                var template = _shapeFactory.Create("Template_Notification_NewReply", Arguments.From(new {
+                _emailService.Queue(T("New Ticket Reply"), subscriber.Email, "Template_Notification_NewReply", new {
                     Ticket = ticket,
                     Reply = part,
                     Recipient = subscriber
-                }));
-
-                var messageParameters = new Dictionary<string, object> {
-                    {"Subject", T("New Ticket Reply").Text},
-                    {"Body", _shapeDisplay.Display(template)},
-                    {"Recipients", subscriber.Email }
-                };
-                var jobParameters = new {
-                    type = SmtpMessageChannel.MessageType, 
-                    parameters = messageParameters
-                };
-
-                _jobsQueueService.Enqueue("IMessageService.Send", jobParameters, 0);
+                });
             }
         }
     }
