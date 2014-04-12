@@ -73,8 +73,6 @@ namespace OrchardPros.Handlers {
                     Recipient = subscriber
                 }));
 
-                template.Metadata.Wrappers.Add("Template_Notification_Wrapper");
-
                 var messageParameters = new Dictionary<string, object> {
                     {"Subject", T("New Ticket Reply").Text},
                     {"Body", _shapeDisplay.Display(template)},
