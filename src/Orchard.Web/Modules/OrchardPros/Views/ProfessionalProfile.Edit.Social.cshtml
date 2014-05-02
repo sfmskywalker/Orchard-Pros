@@ -1,0 +1,26 @@
+﻿@using OrchardPros.Models
+@{
+    var profile = (UserProfilePart) Model.Profile;
+}
+<fieldset>
+    <div class="form-group">
+        @Html.LabelFor(m => profile.TwitterAlias, T("Twitter Alias"))
+        @Html.TextBoxFor(m => profile.TwitterAlias, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => profile.FacebookUrl, T("Facebook Url"))
+        @Html.TextBoxFor(m => profile.FacebookUrl, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => profile.LinkedInUrl, T("LinkedIn Url"))
+        @Html.TextBoxFor(m => profile.LinkedInUrl, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => profile.CompanyWebsiteUrl, T("Company Website"))
+        @Html.TextBoxFor(m => profile.CompanyWebsiteUrl, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => profile.BlogUrl, T("Blog"))
+        @Html.TextBoxFor(m => profile.BlogUrl, new { @class = "text large" })
+    </div>
+</fieldset>

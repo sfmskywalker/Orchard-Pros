@@ -1,0 +1,12 @@
+﻿@model OrchardPros.ViewModels.SocialChannelsViewModel
+@{
+    Layout.Title = @T("Edit Social Channels");
+}
+@Html.ValidationSummary()
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.EditorForModel()
+    <fieldset>
+        <button class="primaryAction" type="submit" name="submit.Save" value="submit.Save">@T("Save")</button>
+        @Html.ActionLink(T("Cancel").ToString(), "Edit", "Admin", new { Model.User.Id, Area = "Orchard.Users" }, new { @class = "button" })
+    </fieldset>
+}

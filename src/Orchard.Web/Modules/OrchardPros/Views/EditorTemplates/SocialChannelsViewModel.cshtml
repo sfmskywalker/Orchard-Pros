@@ -1,0 +1,23 @@
+﻿@model OrchardPros.ViewModels.SocialChannelsViewModel
+<fieldset>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TwitterAlias, T("Twitter Alias"))
+        @Html.TextBoxFor(m => m.TwitterAlias, new { @class = "text medium" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.FacebookUrl, T("Facebook Url"))
+        @Html.TextBoxFor(m => m.FacebookUrl, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LinkedInUrl, T("LinkedIn Url"))
+        @Html.TextBoxFor(m => m.LinkedInUrl, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CompanyWebsiteUrl, T("Company Url"))
+        @Html.TextBoxFor(m => m.CompanyWebsiteUrl, new { @class = "text large" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.BlogUrl, T("Blog Url"))
+        @Html.TextBoxFor(m => m.BlogUrl, new { @class = "text large" })
+    </div>
+</fieldset>

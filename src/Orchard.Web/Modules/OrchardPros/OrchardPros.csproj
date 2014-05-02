@@ -204,6 +204,7 @@
     <Compile Include="Activities\UserSignedOutActivity.cs" />
     <Compile Include="Activities\UserSignedUpActivity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\SocialChannelsController.cs" />
     <Compile Include="Controllers\BioController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Feeds\TicketFeedItemBuilder.cs" />
@@ -257,6 +258,7 @@
     <Compile Include="Services\Commerce\TransactionEventHandlerBase.cs" />
     <Compile Include="Services\Commerce\TransferService.cs" />
     <Compile Include="ResourceManifest.cs" />
+    <Compile Include="ViewModels\SocialChannelsViewModel.cs" />
     <Compile Include="ViewModels\StripeErrorViewModel.cs" />
     <Compile Include="Services\System\DefaultHandleGenerator.cs" />
     <Compile Include="Services\System\IHandleGenerator.cs" />
@@ -612,6 +614,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Template.Notification.TicketSolved.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ProfessionalProfile.Edit.Social.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SocialChannels\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\SocialChannelsViewModel.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

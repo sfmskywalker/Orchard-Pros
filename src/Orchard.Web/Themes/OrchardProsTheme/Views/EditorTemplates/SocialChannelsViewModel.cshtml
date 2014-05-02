@@ -1,0 +1,33 @@
+﻿@model OrchardPros.ViewModels.SocialChannelsViewModel
+<fieldset>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TwitterAlias, T("Twitter Alias").ToString(), new { @class = "col-sm-2" })
+        <div class="col-sm-4">
+            @Html.TextBoxFor(m => m.TwitterAlias, new { @class = "form-control", placeholder = T("Enter your twitter handle") })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.FacebookUrl, T("Facebook Url").ToString(), new { @class = "col-sm-2" })
+        <div class="col-sm-4">
+            @Html.TextBoxFor(m => m.FacebookUrl, new { @class = "form-control", placeholder = T("Enter the URL to your facebook page") })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LinkedInUrl, T("LinkedIn Url").ToString(), new { @class = "col-sm-2" })
+        <div class="col-sm-4">
+            @Html.TextBoxFor(m => m.LinkedInUrl, new { @class = "form-control", placeholder = T("Enter the URL to your LinkedIn page") })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CompanyWebsiteUrl, T("Company Url").ToString(), new { @class = "col-sm-2" })
+        <div class="col-sm-4">
+            @Html.TextBoxFor(m => m.CompanyWebsiteUrl, new { @class = "form-control", placeholder = T("Enter the URL to your company's website") })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.BlogUrl, T("Blog Url").ToString(), new { @class = "col-sm-2" })
+        <div class="col-sm-4">
+            @Html.TextBoxFor(m => m.BlogUrl, new { @class = "form-control", placeholder = T("Enter the URL to your blog") })
+        </div>
+    </div>
+</fieldset>

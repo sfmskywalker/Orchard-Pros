@@ -22,5 +22,9 @@ namespace OrchardPros.Helpers {
         public static string TrimSafe(this string value) {
             return value != null ? value.Trim() : null;
         }
+
+        public static bool IsNullOrWhiteSpaceAny(params string[] values) {
+            return values.Any(String.IsNullOrWhiteSpace);
+        }
     }
 }

@@ -162,6 +162,31 @@ namespace OrchardPros.Models {
             set { Store(x => x.ActivityPoints, value); }
         }
 
+        public string TwitterAlias {
+            get { return this.Retrieve(x => x.TwitterAlias); }
+            set { this.Store(x => x.TwitterAlias, value); }
+        }
+
+        public string FacebookUrl {
+            get { return this.Retrieve(x => x.FacebookUrl); }
+            set { this.Store(x => x.FacebookUrl, value); }
+        }
+
+        public string LinkedInUrl {
+            get { return this.Retrieve(x => x.LinkedInUrl); }
+            set { this.Store(x => x.LinkedInUrl, value); }
+        }
+
+        public string CompanyWebsiteUrl {
+            get { return this.Retrieve(x => x.CompanyWebsiteUrl); }
+            set { this.Store(x => x.CompanyWebsiteUrl, value); }
+        }
+
+        public string BlogUrl {
+            get { return this.Retrieve(x => x.BlogUrl); }
+            set { this.Store(x => x.BlogUrl, value); }
+        }
+
         public int Rating {
             get { return RatingField.Value; }
         }

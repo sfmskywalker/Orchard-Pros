@@ -45,12 +45,18 @@ namespace OrchardPros.Drivers {
                     Bio = part.Bio,
                     Level = part.Level,
                     ExperiencePoints = part.ExperiencePoints,
+                    TwitterAlias = part.TwitterAlias,
+                    FacebookUrl = part.FacebookUrl,
+                    BlogUrl = part.BlogUrl,
+                    CompanyWebsiteUrl = part.CompanyWebsiteUrl,
+                    LinkedInUrl = part.LinkedInUrl,
                     Tabs = shapeHelper.Tabs()
                 };
                 viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Positions(TabText: T("Positions"), Profile: part, Positions: part.Positions.ToList()));
                 viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Skills(TabText: T("Skills"), Profile: part, Skills: part.Skills.ToList()));
                 viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Recommendations(TabText: T("Recommendations"), Profile: part));
                 viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Experience(TabText: T("Experience"), Profile: part, Experience: _experienceManager.Fetch(part.Id).ToList()));
+                viewModel.Tabs.Add(shapeHelper.ProfessionalProfile_Edit_Social(TabText: T("Social"), Profile: part));
 
                 if (updater != null) {
                     if (updater.TryUpdateModel(viewModel, Prefix, null, new[] {"Tabs"})) {
@@ -61,6 +67,11 @@ namespace OrchardPros.Drivers {
                         part.Bio = viewModel.Bio;
                         part.Level = viewModel.Level;
                         part.ExperiencePoints = viewModel.ExperiencePoints;
+                        part.TwitterAlias = viewModel.TwitterAlias.TrimSafe();
+                        part.FacebookUrl = viewModel.FacebookUrl.TrimSafe();
+                        part.LinkedInUrl = viewModel.LinkedInUrl.TrimSafe();
+                        part.CompanyWebsiteUrl = viewModel.CompanyWebsiteUrl.TrimSafe();
+                        part.BlogUrl = viewModel.BlogUrl.TrimSafe();
                     }
                 }
 
@@ -78,6 +89,11 @@ namespace OrchardPros.Drivers {
             partElement.SetAttributeValue("LastLoggedInUtc", part.LastLoggedInUtc);
             partElement.SetAttributeValue("Level", part.Level);
             partElement.SetAttributeValue("ExperiencePoints", part.ExperiencePoints);
+            partElement.SetAttributeValue("TwitterAlias", part.TwitterAlias);
+            partElement.SetAttributeValue("FacebookUrl", part.FacebookUrl);
+            partElement.SetAttributeValue("LinkedInUrl", part.LinkedInUrl);
+            partElement.SetAttributeValue("CompanyWebsiteUrl", part.CompanyWebsiteUrl);
+            partElement.SetAttributeValue("BlogUrl", part.BlogUrl);
             partElement.Add(CreatePositionsElement(part));
             partElement.Add(CreateSkillsElement(part));
             partElement.Add(CreateExperiencesElement(part));
@@ -97,6 +113,11 @@ namespace OrchardPros.Drivers {
             context.ImportAttribute(part.PartDefinition.Name, "LastLoggedInUtc", x => part.LastLoggedInUtc = XmlConvert.ToDateTime(x, XmlDateTimeSerializationMode.Utc));
             context.ImportAttribute(part.PartDefinition.Name, "Level", x => part.Level = XmlConvert.ToInt32(x));
             context.ImportAttribute(part.PartDefinition.Name, "ExperiencePoints", x => part.ExperiencePoints = XmlConvert.ToInt32(x));
+            context.ImportAttribute(part.PartDefinition.Name, "TwitterAlias", x => part.TwitterAlias = x);
+            context.ImportAttribute(part.PartDefinition.Name, "FacebookUrl", x => part.FacebookUrl = x);
+            context.ImportAttribute(part.PartDefinition.Name, "LinkedInUrl", x => part.LinkedInUrl = x);
+            context.ImportAttribute(part.PartDefinition.Name, "CompanyWebsiteUrl", x => part.CompanyWebsiteUrl = x);
+            context.ImportAttribute(part.PartDefinition.Name, "BlogUrl", x => part.BlogUrl = x);
 
             part.Bio = bioElement != null ? bioElement.Value : null;
             ImportSkills(part, partElement);

@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /* Theme styling for Orchard Pros */
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,700,300);
@@ -251,6 +251,15 @@ article.ticket-reply .idplate { float:right; }
 .list-jobs { list-style:none; padding-left:0px; }
 .list-skills { list-style:none; padding-left:0px; }
 .profile-actions a { font-size:12px; margin-right:1em; }
+
+.social-channels ul:after { content: "."; display: block; height: 0; clear: both; visibility: hidden;}
+.social-channels ul li { float: left;margin-right: 0.6em; }
+.social-channels ul li a { display: block; width: 32px; height: 32px;background: url('../Images/social.png') no-repeat; }
+.social-channels ul li a.twitter { background-position: 0 -128px; }
+.social-channels ul li a.facebook { background-position: 0 -64px; }
+.social-channels ul li a.linkedin { background-position: 0 -192px; }
+.social-channels ul li a.company { background-position: 0 0; }
+.social-channels ul li a.blog { background-position: 0 -320px; }
 
 /* People */
 article.user { margin-top:20px; }

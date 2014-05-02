@@ -1,10 +1,13 @@
 @using System.Globalization
 @using Orchard.ContentManagement
 @using Orchard.Security
+@using OrchardPros
 @using OrchardPros.Models
 @{
     var user = (IUser) Model.User;
     var profilePart = user.As<UserProfilePart>();
+    var canEditProfile = Authorizer.Authorize(Permissions.ManageOwnProfile, user);
+    var hasAnySocialChannels = !StringHelpers.IsNullOrWhiteSpaceAny(profilePart.TwitterAlias, profilePart.FacebookUrl, profilePart.LinkedInUrl, profilePart.CompanyWebsiteUrl, profilePart.BlogUrl);
 }
 <aside>
     <div class="panel panel-default profile idplate">
@@ -35,6 +38,32 @@
                 </li>
             </ul>
         </div>
+    @if (canEditProfile || hasAnySocialChannels) {
+        <div class="panel-body">
+            <div class="social-channels">
+                <h4>@T("Social")</h4>
+                <ul class="expert-info">
+                    @if (!String.IsNullOrWhiteSpace(profilePart.TwitterAlias)) {
+                        <li><a class="twitter" href="@String.Format("http://twitter.com/{0}", profilePart.TwitterAlias)" title="Twitter" target="_blank"></a></li>
+                    }
+                    @if (!String.IsNullOrWhiteSpace(profilePart.FacebookUrl)) {
+                        <li><a class="facebook" href="@profilePart.FacebookUrl" title="Facebook" target="_blank"></a></li>
+                    }
+                    @if (!String.IsNullOrWhiteSpace(profilePart.LinkedInUrl)) {
+                        <li><a class="linkedin" href="@profilePart.LinkedInUrl" title="LinkedIn" target="_blank"></a></li>
+                    }
+                    @if (!String.IsNullOrWhiteSpace(profilePart.CompanyWebsiteUrl)) {
+                        <li><a class="company" href="@profilePart.CompanyWebsiteUrl" title="Company Website" target="_blank"></a></li>
+                    }
+                    @if (!String.IsNullOrWhiteSpace(profilePart.BlogUrl)) {
+                        <li><a class="blog" href="@profilePart.BlogUrl" title="Blog" target="_blank"></a></li>
+                    }
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <a class="btn btn-default btn-sm" href="@Url.Action("Edit", "SocialChannels", new {area = "OrchardPros"})">@T("Edit Social Channels")</a>
+        </div>
+    }
         @*<div class="panel-body">
             <ul class="expert-info">
                 <li class="achievements">

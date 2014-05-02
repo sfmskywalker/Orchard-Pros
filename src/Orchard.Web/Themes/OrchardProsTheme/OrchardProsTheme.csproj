@@ -552,6 +552,12 @@
   <ItemGroup>
     <Content Include="Views\Template.Notification.TicketSolved.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OrchardPros\SocialChannels\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\SocialChannelsViewModel.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
