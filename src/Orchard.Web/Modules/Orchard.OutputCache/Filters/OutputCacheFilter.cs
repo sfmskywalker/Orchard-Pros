@@ -183,12 +183,6 @@ namespace Orchard.OutputCache.Filters {
             // different tenants with the same urls have different entries
             _varyRequestHeaders.Add("HOST");
 
-            // Set the Vary: Accept-Encoding response header. 
-            // This instructs the proxies to cache two versions of the resource: one compressed, and one uncompressed. 
-            // The correct version of the resource is delivered based on the client request header. 
-            // This is a good choice for applications that are singly homed and depend on public proxies for user locality.
-            _varyRequestHeaders.Add("Accept-Encoding");
-
             // caches the ignored urls to prevent a query to the settings
             _ignoredUrls = _cacheManager.Get("CacheSettingsPart.IgnoredUrls",
                 context => {
@@ -320,14 +314,30 @@ namespace Orchard.OutputCache.Filters {
                 _filter = null;
                 if (_previousFilter != null) {
                     response.Filter = _previousFilter;
-                } 
+                }
+ 
+                // if the result of a POST is a Redirect, remove any Cache Item for this url
+                // so that the redirected client gets a fresh result
+                // i.e., Comment creation
+                if (filterContext.HttpContext.Request.HttpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase) &&
+                    !String.IsNullOrWhiteSpace(filterContext.HttpContext.Response.RedirectLocation)) {
+                    
+                    var url = filterContext.HttpContext.Response.RedirectLocation;
+                    if (!VirtualPathUtility.IsAbsolute(url)) {
+                        var applicationRoot = new UrlHelper(filterContext.HttpContext.Request.RequestContext).MakeAbsolute("/");
+                        if (url.StartsWith(applicationRoot, StringComparison.OrdinalIgnoreCase)) {
+                            url = url.Substring(applicationRoot.Length);
+                        }
+                    }
+                    
+                    var redirectionInvariantCacheKey = ComputeCacheKey(_shellSettings.Name, url, () => _workContext.CurrentCulture, _themeManager.GetRequestTheme(filterContext.RequestContext).Id, null);
+
+                    _cacheService.RemoveByTag(redirectionInvariantCacheKey);
+                }
+
                 return;
             }
 
-            // if the result of a POST is a Redirect, remove any Cache Item for this url
-            // so that the redirected client gets a fresh result
-            // also add a random token to the query string so that public cachers (IIS, proxies, ...) don't return cached content
-            // i.e., Comment creation
 
             // ignore in admin
             if (AdminFilter.IsApplied(new RequestContext(filterContext.HttpContext, new RouteData()))) {
@@ -417,8 +427,8 @@ namespace Orchard.OutputCache.Filters {
 
             Logger.Debug("Cache item added: " + _cacheItem.CacheKey);
 
-            // remove old cache data
-            _cacheService.RemoveByTag(_invariantCacheKey);
+            // remove only the current version of the page
+            _cacheService.RemoveByTag(_cacheKey);
 
             // add data to cache
             _cacheStorageProvider.Set(_cacheKey, _cacheItem);
@@ -463,6 +473,7 @@ namespace Orchard.OutputCache.Filters {
                 null
                 );
 
+            // remove all cached version of the same page
             _cacheService.RemoveByTag(invariantCacheKey);
 
             filterContext.Result = new RedirectResult(redirectUrl, ((RedirectResult) filterContext.Result).Permanent);
@@ -488,6 +499,11 @@ namespace Orchard.OutputCache.Filters {
                 response.Cache.SetCacheability(HttpCacheability.Public);
                 response.Cache.SetMaxAge(maxAge);
             }
+
+            // keeping this examples for later usage
+            // response.Cache.VaryByParams["*"] = true;
+            // response.DisableUserCache();
+            // response.DisableKernelCache();
 
             // an ETag is a string that uniquely identifies a specific version of a component.
             // we use the cache item to detect if it's a new one
@@ -654,7 +670,11 @@ namespace Orchard.OutputCache.Filters {
         }
 
         protected override void Dispose(bool disposing) {
-            _mem.Dispose();
+            if (disposing) {
+                _mem.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 
