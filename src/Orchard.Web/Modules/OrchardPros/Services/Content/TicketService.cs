@@ -192,8 +192,6 @@ namespace OrchardPros.Services.Content {
             if (ticket.SolvedUtc != null)
                 throw new InvalidOperationException("The ticket has already been solved");
 
-            var expertPart = reply.User.As<UserProfilePart>();
-
             ticket.SolvedUtc = _clock.UtcNow;
             ticket.SolvedByUserId = reply.User.Id;
             ticket.AnswerId = reply.Id;

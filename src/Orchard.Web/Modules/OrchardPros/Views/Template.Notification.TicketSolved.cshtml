@@ -1,0 +1,17 @@
+﻿@using Orchard.ContentManagement
+@using Orchard.Security
+@using OrchardPros.Models
+@{
+    var expert = (IUser)Model.Expert;
+    var ticket = (IContent)Model.Ticket;
+    var ticketPart = ticket.As<TicketPart>();
+    var ticketUrl = VirtualPathUtility.AppendTrailingSlash(WorkContext.CurrentSite.BaseUrl) + Url.ItemDisplayUrl(ticket);
+}
+<p>@T("Dear {0}, your reply on ticket <a href=\"{1}\">{2}</a> was marked as the answer! Very nice and keep that up.", expert.UserName, ticketUrl, Html.ItemDisplayText(ticket))</p>
+<p>@T("Rewards:")</p>
+<ul>
+    <li>@T("Experience Points: {0}", ticketPart.ExperiencePoints)</li>
+    @if (ticketPart.Bounty != null) {
+        <li>@T("Bounty: {0}", ticketPart.Bounty)</li>
+    }
+</ul>

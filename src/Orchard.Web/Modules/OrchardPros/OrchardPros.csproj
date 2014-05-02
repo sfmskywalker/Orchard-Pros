@@ -354,7 +354,7 @@
     <Compile Include="Services\Content\SubscriptionService.cs" />
     <Compile Include="Models\VotingCapabilities.cs" />
     <Compile Include="Models\TicketSolvedContext.cs" />
-    <Compile Include="Events\AssignExperienceTicketEventHandler.cs" />
+    <Compile Include="Events\TicketEventHandler.cs" />
     <Compile Include="Services\User\VotingPolicy.cs" />
     <Compile Include="Models\XpReceivedContext.cs" />
     <Compile Include="Shapes.cs" />
@@ -609,6 +609,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Template.Notification.NewRecommendation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Template.Notification.TicketSolved.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
