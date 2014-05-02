@@ -18,7 +18,7 @@ namespace OrchardPros.Helpers {
 
         public static string UploadedAvatarUrl<T>(this UrlHelper urlHelper, IUser user, Orchard.Mvc.ViewEngines.Razor.WebViewPage<T> view, int size) {
             var profile = user.As<UserProfilePart>();
-            var resizedMediaUrl = !String.IsNullOrWhiteSpace(profile.Avatar) ? "~" + view.Display.ResizeMediaUrl(Path: profile.Avatar, Width: size, Height: size, Mode: "crop").ToString() : default(string);
+            var resizedMediaUrl = !String.IsNullOrWhiteSpace(profile.Avatar) ? (string)view.Display.ResizeMediaUrl(Path: profile.Avatar, Width: size, Height: size, Mode: "crop").ToString() : default(string);
             return urlHelper.Content(resizedMediaUrl ?? String.Format(DefaultAvatarUrl, size));
         }
 
