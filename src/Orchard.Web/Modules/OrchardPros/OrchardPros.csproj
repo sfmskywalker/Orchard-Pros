@@ -221,6 +221,7 @@
     <Compile Include="Providers\SummaryGenerators\PlainTextWordsSummaryGenerator.cs" />
     <Compile Include="Providers\SummaryGenerators\SummaryGenerators.cs" />
     <Compile Include="Providers\SummaryGenerators\WordsSummaryGenerator.cs" />
+    <Compile Include="Security\ReplyAuthorizationEventHandler.cs" />
     <Compile Include="Services\Content\EmailService.cs" />
     <Compile Include="Services\Content\IEmailService.cs" />
     <Compile Include="Services\Content\ISummarizer.cs" />
@@ -623,6 +624,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\SocialChannelsViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Reply\Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

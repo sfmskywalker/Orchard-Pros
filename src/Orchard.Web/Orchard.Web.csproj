@@ -160,6 +160,7 @@
     <Content Include="Config\Sites.config" />
     <None Include="Properties\PublishProfiles\orchardpros-staging - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\orchardpros-staging - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\orchardpros__staging.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

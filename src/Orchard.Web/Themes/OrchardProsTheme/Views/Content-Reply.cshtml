@@ -43,7 +43,13 @@
             @Display(Model.Voting)
         </div>
         <div class="ticket-info">
-            @if (isAuthenticated) { <a href="#post-reply" data-reply-id="@replyPart.Id" data-reply-subject="@T("Re: {0}", replyPart.Subject)">@T("Reply")</a> }
+            @if (isAuthenticated) {
+                <a href="#post-reply" data-reply-id="@replyPart.Id" data-reply-subject="@T("Re: {0}", replyPart.Subject)">@T("Reply")</a>
+                if (currentUser.Id == user.Id) {
+                    @T(" | ")
+                    <a href="@Url.Action("Edit", "Reply", new { id = replyPart.Id, area = "OrchardPros" })">@T("Edit")</a>
+                }
+            }
             <span class="ticket-timestamp">@T("{0} by", Display.DateTimeRelative(dateTimeUtc: createdUtc))<span class="author">@Html.ProfileLink(user)</span></span>
         </div>
     </div>
@@ -54,7 +60,7 @@
                     <a href="#" class="pull-left"><img src="@Url.AvatarUrl(user, this, 64)" class="media-object profile-img-m"></a>
                     <ul class="expert-info media-body">
                         <li class="name">@Html.ProfileLink(user)</li>
-                        <li class="title">@T("Lv. {0:00} {1}", profile.Level, profile.RankName)</li>
+                        <li class="title">@T("Lv. {0:00} {1}", profile.LevelDisplay, profile.RankName)</li>
                         <li class="rating">
                             @for (var i = 0; i < profile.Rating; i++) {
                                 <span class="glyphicon glyphicon-star"></span>
