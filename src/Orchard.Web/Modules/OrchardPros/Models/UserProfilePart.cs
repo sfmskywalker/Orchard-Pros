@@ -152,6 +152,10 @@ namespace OrchardPros.Models {
             set { this.Store(x => x.Level, value); }
         }
 
+        public int LevelDisplay {
+            get { return Level + 1; }
+        }
+
         public int ExperiencePoints {
             get { return Retrieve(x => x.ExperiencePoints); }
             set { Store(x => x.ExperiencePoints, value); }

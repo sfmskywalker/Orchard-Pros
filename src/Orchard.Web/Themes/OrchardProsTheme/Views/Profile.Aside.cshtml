@@ -17,7 +17,7 @@
         <div class="panel-body">
             <ul class="expert-info">
                 <li class="name">@Html.ProfileLink(user)</li>
-                <li class="title">@T("Lv. {0:d2} {1}", profilePart.Level, profilePart.RankName)</li>
+                <li class="title">@T("Lv. {0:d2} {1}", profilePart.LevelDisplay, profilePart.RankName)</li>
                 <li class="rating">
                     @for (var i = 0; i < profilePart.Rating; i++) {
                         <span class="glyphicon glyphicon-star"></span>
@@ -61,7 +61,9 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <a class="btn btn-default btn-sm" href="@Url.Action("Edit", "SocialChannels", new {area = "OrchardPros"})">@T("Edit Social Channels")</a>
+            @if (canEditProfile) { 
+                <a class="btn btn-default btn-sm" href="@Url.Action("Edit", "SocialChannels", new {area = "OrchardPros"})">@T("Edit Social Channels")</a>
+            }
         </div>
     }
         @*<div class="panel-body">

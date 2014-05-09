@@ -43,13 +43,13 @@
                     <div class="panel panel-default idplate">
                         <div class="panel-body">
                             <div class="media">
-                                <a href="@userUrl" class="pull-left"><img src="@Url.AvatarUrl(user, this, 64)" class="media-object profile-img-m"></a>
+                                <a href="@userUrl" class="pull-left"><img src="@Url.AvatarUrl(user, this, 64)" class="media-object profile-img-m" alt=""></a>
                                 @if (profile.Country != null) {
                                     <a href="@Url.Action("Index", "People", new {countryCode = profile.Country.Code})" class="country-link">@profile.Country.Name</a>
                                 }
                                 <ul class="expert-info media-body people">
                                     <li class="name">@Html.ProfileLink(user)</li>
-                                    <li class="title">@T("Lv. {0:00} {1}", profile.Level, profile.RankName)</li>
+                                    <li class="title">@T("Lv. {0:00} {1}", profile.LevelDisplay, profile.RankName)</li>
                                     <li class="rating">
                                         @for (var i = 0; i < profile.Rating; i++) {
                                             <span class="glyphicon glyphicon-star"></span>

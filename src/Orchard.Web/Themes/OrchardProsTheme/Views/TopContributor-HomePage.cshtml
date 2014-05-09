@@ -15,7 +15,7 @@
                 <a href="#" class="pull-left"><img src="@Url.AvatarUrl(user, this, 64)" class="media-object profile-img-m"></a>
                 <ul class="expert-info media-body">
                     <li class="name">@Html.ProfileLink(user)</li>
-                    <li class="title">@T("Lv. {0:00} {1}", profile.Level, profile.RankName)</li>
+                    <li class="title">@T("Lv. {0:00} {1}", profile.LevelDisplay, profile.RankName)</li>
                     <li class="rating">
                         @for (var i = 0; i < profile.Rating; i++) {
                             <span class="glyphicon glyphicon-star"></span>
