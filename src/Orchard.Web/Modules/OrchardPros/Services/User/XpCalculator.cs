@@ -2,7 +2,7 @@ using System;
 
 namespace OrchardPros.Services.User {
     public class XpCalculator : IXpCalculator {
-        private const int BaseXp = 100;
+        private const int BaseXp = 30;
         private const double Factor = 1.4;
 
         public int CalculateXp(int level) {
