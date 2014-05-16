@@ -159,6 +159,10 @@
       <Project>{b262a7c7-8205-4b94-a359-f5379025df32}</Project>
       <Name>NGM.OpenAuthentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Autoroute\Orchard.Autoroute.csproj">
+      <Project>{66fccd76-2761-47e3-8d11-b45d0001ddaa}</Project>
+      <Name>Orchard.Autoroute</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Email\Orchard.Email.csproj">
       <Project>{05660f47-d649-48bd-9ded-df4e01e7cff9}</Project>
       <Name>Orchard.Email</Name>
@@ -222,12 +226,15 @@
     <Compile Include="Providers\SummaryGenerators\SummaryGenerators.cs" />
     <Compile Include="Providers\SummaryGenerators\WordsSummaryGenerator.cs" />
     <Compile Include="Security\ReplyAuthorizationEventHandler.cs" />
+    <Compile Include="Services\Content\CurrentContentAccessor.cs" />
     <Compile Include="Services\Content\EmailService.cs" />
+    <Compile Include="Services\Content\ICurrentContentAccessor.cs" />
     <Compile Include="Services\Content\IEmailService.cs" />
     <Compile Include="Services\Content\ISummarizer.cs" />
     <Compile Include="Services\Content\ISummaryGenerator.cs" />
     <Compile Include="Services\Content\SummarizeContext.cs" />
     <Compile Include="Services\Content\Summarizer.cs" />
+    <Compile Include="Services\Filters\CurrentContentFilter.cs" />
     <Compile Include="ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="Models\SearchIndex.cs" />
     <Compile Include="Events\VotingEventHandler.cs" />

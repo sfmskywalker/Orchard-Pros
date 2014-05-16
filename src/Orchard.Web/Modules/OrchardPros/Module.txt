@@ -14,4 +14,4 @@ Features:
         Name: Orchard Pros
         Description: Orchard Pros.
         Category: Orchard Pros
-        Dependencies: Orchard.Users, Orchard.Taxonomies, MarkdownDeep, Lucene, Orchard.Search, Contrib.Voting, Orchard.JobsQueue, Orchard.Email, Feeds
+        Dependencies: Orchard.Users, Orchard.Taxonomies, MarkdownDeep, Lucene, Orchard.Search, Contrib.Voting, Orchard.JobsQueue, Orchard.Email, Feeds, Orchard.Autoroute
