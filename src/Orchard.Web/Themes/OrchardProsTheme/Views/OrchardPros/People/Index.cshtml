@@ -2,4 +2,5 @@
     Layout.Title = @T("People");
     Layout.Content.Add(New.People_List(Users: Model.Users, Pager: Model.Pager, Country: Model.Country, Criteria: Model.Criteria));
     Layout.AsideSecond.Add(New.People_List_Filter(Pager: Model.Pager, Countries: Model.Countries, Country: Model.Country));
+    Layout.FilterFunctions.Add(New.People_List_Filter_Functions(Countries: Model.Countries, SelectedCountry: Model.Country));
 }

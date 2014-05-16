@@ -1,0 +1,15 @@
+﻿@using OrchardPros.Models
+@{
+    var selectedCountry = (Country)Model.SelectedCountry;
+}
+@if (selectedCountry != null) {
+    <!-- Filters -->
+    <div class="container">
+        <div class="filters">
+            <ul>
+                <li class="filter"><a href="@Url.Action("Index", "People", new { area = "OrchardPros" })">@selectedCountry.Name<span class="glyphicon glyphicon-remove"></span></a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- /Filters -->
+}
