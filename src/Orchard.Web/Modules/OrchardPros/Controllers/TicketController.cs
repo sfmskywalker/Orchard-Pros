@@ -225,6 +225,7 @@ namespace OrchardPros.Controllers {
             model.Attachments = new AttachmentsViewModel {
                 CurrentFiles = ticket.As<AttachmentsHolderPart>().Attachments.Select(x => new AttachmentViewModel {FileName = x.OriginalFileName, FileSize = x.FileSize}).ToList()
             };
+            model.Ticket = ticket;
             return model;
         }
     }

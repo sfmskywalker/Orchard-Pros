@@ -8,7 +8,7 @@
         @Html.EditorForModel()
         <fieldset>
             <button type="submit" class="btn btn-success btn-edit">@T("Save Ticket")</button>
-            @Html.ActionLink(T("Cancel").ToString(), "Edit", "Ticket", new { Model.Id, Area = "OrchardPros" }, new { @class = "btn btn-default" })
+            @Html.ItemDisplayLink(T("Cancel").Text, Model.Ticket, new {@class = "btn btn-default"})
         </fieldset>
     }
 </section>

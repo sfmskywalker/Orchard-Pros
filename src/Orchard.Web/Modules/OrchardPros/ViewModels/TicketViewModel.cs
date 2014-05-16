@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using Orchard.ContentManagement;
 using Orchard.Security;
 using Orchard.Taxonomies.Models;
 using OrchardPros.Models;
@@ -32,5 +33,6 @@ namespace OrchardPros.ViewModels {
         public IUser User { get; set; }
         public IEnumerable<TermPart> CategoryTerms { get; set; }
         public AttachmentsViewModel Attachments { get; set; }
+        public TicketPart Ticket { get; set; }
     }
 }

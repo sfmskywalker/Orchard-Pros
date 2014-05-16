@@ -1,6 +1,7 @@
 @model OrchardPros.ViewModels.TicketViewModel
 @{
     Layout.Title = @T("Create a Ticket");
+    var returnUrl = !String.IsNullOrWhiteSpace(Request.UrlReferrer.AbsoluteUri) ? Request.UrlReferrer.AbsoluteUri : Url.Content("~/");
 }
 <section class="half-size center-block">
     @using (Html.BeginFormAntiForgeryPost()) {
@@ -8,6 +9,7 @@
         @Html.EditorForModel()
         <fieldset>
             <button type="submit" class="btn btn-create-ticket">@T("Create Ticket")</button>
+            <a href="@returnUrl" class="btn btn-default">@T("Cancel")</a>
         </fieldset>
     }
 </section>
