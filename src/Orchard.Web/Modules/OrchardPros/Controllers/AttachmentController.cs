@@ -22,6 +22,7 @@ namespace OrchardPros.Controllers {
             });
         }
 
+        [AllowAnonymous]
         public ActionResult Download(string id) {
             var attachment = _attachmentService.GetAttachmentByIdentifier(id);
 
