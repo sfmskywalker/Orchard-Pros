@@ -2,7 +2,7 @@
 AntiForgery: enabled
 Author: The Orchard Team
 Website: http://orchardproject.net
-Version: 1.8
+Version: 1.8.1
 OrchardVersion: 1.8
 Description: Provides a set of Orchard service implementations targeting Microsoft Azure services.
 Category: Hosting
@@ -15,6 +15,11 @@ Features:
 	Orchard.Azure.OutputCache:
 		Name: Microsoft Azure Output Cache
 		Description: Activates an Orchard output cache provider that targets Windows Azure Cache.
+		Dependencies: Orchard.Azure, Orchard.OutputCache
+		Category: Performance
+	Orchard.Azure.RedisOutputCache:
+		Name: Microsoft Azure Redis Output Cache
+		Description: Activates an Orchard output cache provider that targets Windows Azure Redis Cache.
 		Dependencies: Orchard.Azure, Orchard.OutputCache
 		Category: Performance
 	Orchard.Azure.DatabaseCache:

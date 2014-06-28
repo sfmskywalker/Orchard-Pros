@@ -2,7 +2,7 @@
 AntiForgery: enabled
 Author: The Orchard Team
 Website: http://orchardproject.net
-Version: 1.8
+Version: 1.8.1
 OrchardVersion: 1.8
 Description: The users module enables user management.
 Features:
@@ -10,3 +10,8 @@ Features:
 		Description: Standard users.
 		Category: Core
 		Dependencies: Settings
+	Orchard.Users.Workflows:
+		Name: Users Workflows Activities
+		Description: Provides User based Workflow Activites.
+		Category: Workflows
+		Dependencies: Orchard.Workflows

@@ -36,5 +36,6 @@ namespace OrchardPros.Events {
         public void SentChallengeEmail(IUser user) {}
         public void ConfirmedEmail(IUser user) {}
         public void Approved(IUser user) {}
+        public void LoggingIn(string userNameOrEmail, string password) { }
     }
 }

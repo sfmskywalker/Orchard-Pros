@@ -68,8 +68,8 @@ namespace OrchardPros.Services.User {
             var searchHits = _searchService.Query(
                 query: term, 
                 filterCulture: false,
-                skip: skip,
-                take: take,
+                page: skip,
+                pageSize: take,
                 index: "People",
                 searchFields: new[]{"author", "body", "title", "Categories", "Tags"},
                 shapeResult: searchHit => searchHit);

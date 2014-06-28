@@ -56,8 +56,8 @@ namespace OrchardPros.Controllers {
             var searchHits = _searchService.Query(
                 query: term,
                 filterCulture: false,
-                skip: pager.Page,
-                take: pager.PageSize,
+                page: pager.Page,
+                pageSize: pager.PageSize,
                 index: indexName,
                 searchFields: searchFields,
                 shapeResult: searchHit => searchHit);

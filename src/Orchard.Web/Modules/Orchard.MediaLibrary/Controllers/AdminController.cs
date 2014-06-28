@@ -47,11 +47,13 @@ namespace Orchard.MediaLibrary.Controllers {
             explorer.Weld(new MediaLibraryExplorerPart());
 
             var explorerShape = Services.ContentManager.BuildDisplay(explorer);
-            
+
+            var rootMediaFolder = _mediaLibraryService.GetRootMediaFolder();
+
             var viewModel = new MediaManagerIndexViewModel {
                 DialogMode = dialog,
                 FolderPath = folderPath,
-                ChildFoldersViewModel = new MediaManagerChildFoldersViewModel{Children = _mediaLibraryService.GetMediaFolders(null)},
+                ChildFoldersViewModel = new MediaManagerChildFoldersViewModel{Children = _mediaLibraryService.GetMediaFolders(rootMediaFolder == null ? null : rootMediaFolder.MediaPath)},
                 MediaTypes = _mediaLibraryService.GetMediaTypes(),
                 CustomActionsShapes = explorerShape.Actions,
                 CustomNavigationShapes = explorerShape.Navigation,
@@ -100,7 +102,8 @@ namespace Orchard.MediaLibrary.Controllers {
 
             var viewModel = new MediaManagerMediaItemsViewModel {
                 MediaItems = mediaItems,
-                MediaItemsCount = mediaPartsCount
+                MediaItemsCount = mediaPartsCount,
+                FolderPath = folderPath
             };
 
             return View(viewModel);
