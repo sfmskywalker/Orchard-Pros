@@ -483,17 +483,24 @@ $(function () {
             return false;
         });
 
-        $("#media-library-main-selection-select > .button-select").on('click', function() {
-            if (parent.$.colorbox) {
-                var selectedData = [];
-                for (var i = 0; i < viewModel.selection().length; i++) {
-                    var selection = viewModel.selection()[i];
-                    selectedData.push(selection.data);
-                }
-                parent.$.colorbox.selectedData = selectedData;
-                parent.$.colorbox.close();
-            }
-            ;
+        var pickAndClose = function () {
+        	if (parent.$.colorbox) {
+        		var selectedData = [];
+        		for (var i = 0; i < viewModel.selection().length; i++) {
+        			var selection = viewModel.selection()[i];
+        			selectedData.push(selection.data);
+        		}
+        		parent.$.colorbox.selectedData = selectedData;
+        		parent.$.colorbox.close();
+        	};
+        }
+
+        $("#media-library-main-selection-select > .button-select").on('click', function () {
+        	pickAndClose();
+        });
+
+        $("#media-library-main-list").on('dblclick', function () {
+        	pickAndClose();
         });
 
         $("#media-library-main-selection-select > .button-cancel").on('click', function() {
@@ -559,6 +566,40 @@ $(function () {
                     viewModel.clearSelection();
                 } else {
                     console.log('failed to delete media items');
+                }
+                return false;
+            });
+            return false;
+        });
+
+        $('#clone-selection-button').click(function () {
+            if (!confirm(settings.cloneConfirmationMessage)) {
+                return false;
+            }
+
+            var ids = [];
+            viewModel.selection().forEach(function (item) { ids.push(item.data.id); });
+
+            if (ids.length != 1) {
+                return false;
+            }
+
+            var url = settings.cloneActionUrl;
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                dataType: "json",
+                traditional: true,
+                data: {
+                    mediaItemId: ids[0],
+                    __RequestVerificationToken: settings.antiForgeryToken
+                }
+            }).done(function (result) {
+                if (result) {
+                    viewModel.getMediaItems(viewModel.pageCount);
+                } else {
+                    console.log('failed to clone media items');
                 }
                 return false;
             });

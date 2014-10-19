@@ -188,7 +188,7 @@ namespace Orchard.ContentManagement {
                                x => x.ContentItemRecord.Id == id && x.Number == options.VersionNumber);
                 }
                 else {
-                    versionRecord = contentItemVersionRecords.FirstOrDefault();
+                    versionRecord = contentItemVersionRecords.LastOrDefault();
                 }
             }
 
@@ -649,9 +649,6 @@ namespace Orchard.ContentManagement {
         }
 
         public void Clear() {
-            var session = _sessionLocator.Value.For(typeof(ContentItemRecord));
-            session.Clear();
-            _contentManagerSession().Clear();
         }
 
         public IContentQuery<ContentItem> Query() {
