@@ -5,6 +5,7 @@ using Orchard.ContentManagement;
 using Orchard.Core.Feeds;
 using Orchard.Core.Feeds.Models;
 using Orchard.Core.Title.Models;
+using OrchardPros.Helpers;
 using OrchardPros.Models;
 
 namespace OrchardPros.Feeds {

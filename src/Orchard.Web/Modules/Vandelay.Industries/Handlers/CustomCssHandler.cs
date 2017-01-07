@@ -36,6 +36,7 @@ namespace Vandelay.Industries.Handlers {
                     id = settings.CustomId;
                 }
                 if (!String.IsNullOrWhiteSpace(id)) {
+                    context.Shape.Id = id;
                     context.Shape.Attributes.Add("id", id);
                 }
                 var scriptList = customCss.Scripts;
@@ -54,7 +55,10 @@ namespace Vandelay.Industries.Handlers {
                     }
 
                     else {
-                        _resourceManager.Value.Require("script", script);
+                        var scriptsByName = _resourceManager.Value.FindResource(new RequireSettings() { Name = script, Type = "script" });
+                        var stylesByName = _resourceManager.Value.FindResource(new RequireSettings() { Name = script, Type = "stylesheet" });
+                        if (scriptsByName != null) _resourceManager.Value.Require("script", script);
+                        if (stylesByName != null) _resourceManager.Value.Require("stylesheet", script);
                     }
                 }
             }

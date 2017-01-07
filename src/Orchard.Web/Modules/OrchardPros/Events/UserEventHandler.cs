@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Orchard.ContentManagement;
 using Orchard.Security;
 using Orchard.Services;
@@ -37,5 +38,6 @@ namespace OrchardPros.Events {
         public void ConfirmedEmail(IUser user) {}
         public void Approved(IUser user) {}
         public void LoggingIn(string userNameOrEmail, string password) { }
+        public void LogInFailed(string userNameOrEmail, string password) { }
     }
 }

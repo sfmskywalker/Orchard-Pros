@@ -32,10 +32,10 @@ namespace OrchardPros.Helpers {
 
             var workContext = urlHelper.RequestContext.GetWorkContext();
             return new Gravatar {
-                DefaultImage = VirtualPathUtility.AppendTrailingSlash(workContext.CurrentSite.BaseUrl) + urlHelper.Content(String.Format(DefaultAvatarUrl, size)),
-                MaxRating = Rating.PG,
+                Default = VirtualPathUtility.AppendTrailingSlash(workContext.CurrentSite.BaseUrl) + urlHelper.Content(String.Format(DefaultAvatarUrl, size)),
+                Rating = GravatarRating.PG,
                 Size = size
-            }.GetImageSource(email);
+            }.GetUrl(email);
         }
     }
 }
